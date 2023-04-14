@@ -1,32 +1,67 @@
 import React from 'react';
-import {SafeAreaView, View, Image, TextInput} from 'react-native';
+import {View, Image, TextInput, Pressable, StyleSheet} from 'react-native';
 import {COLORS, SIZES, assets} from '../../constants';
+import {useNavigation} from '@react-navigation/native';
+import Icon from 'react-native-ionicons';
 
 const Search = () => {
+  const navigation = useNavigation();
   return (
-    <SafeAreaView style={{width: '90%', marginTop: SIZES.font}}>
-      <View
-        style={{
-          width: '100%',
-          borderRadius: SIZES.font,
-          backgroundColor: COLORS.gray,
-          flexDirection: 'row',
-          alignItems: 'center',
-          paddingHorizontal: SIZES.font,
+    <View style={styles.container}>
+      <Pressable
+        onPress={() => {
+          navigation.goBack();
         }}>
-        <Image
-          source={assets.search}
-          resizeMode="contain"
-          style={{width: 20, height: 20, marginRight: SIZES.base}}
+        <Icon
+          name="arrow-back"
+          color={COLORS.primary}
+          size={SIZES.extraLarge}
         />
-        <TextInput
-          placeholder="검색"
-          style={{flex: 1}}
-          onChangeText={() => {}}
-        />
+      </Pressable>
+      <View style={styles.searchContainer}>
+        <View style={styles.searchBar}>
+          <Image
+            source={assets.search}
+            resizeMode="contain"
+            style={styles.searchIcon}
+          />
+          <TextInput
+            placeholder="검색"
+            style={styles.searchInput}
+            onChangeText={() => {}}
+          />
+        </View>
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    marginTop: SIZES.font,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+  },
+  searchContainer: {
+    width: '80%',
+  },
+  searchBar: {
+    width: '100%',
+    borderRadius: SIZES.font,
+    backgroundColor: COLORS.gray,
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: SIZES.font,
+  },
+  searchIcon: {
+    width: 20,
+    height: 20,
+    marginRight: SIZES.base,
+  },
+  searchInput: {
+    flex: 1,
+  },
+});
 
 export default Search;
