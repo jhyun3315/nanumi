@@ -16,7 +16,7 @@ import DetailDesc from './DetailDesc';
 const DetailHeader = ({data, navigation}) => (
   <View style={{width: '100%', height: 373}}>
     <Image
-      source={data.image}
+      source={{uri: data.image}}
       resizeMode="cover"
       style={{width: '100%', height: '100%'}}
     />
@@ -34,7 +34,6 @@ const DetailHeader = ({data, navigation}) => (
 
 const ProductDetail = ({route, navigation}) => {
   const {data} = route.params;
-  console.log(data);
   return (
     <SafeAreaView style={{flex: 1}}>
       <FocusedStatusBar

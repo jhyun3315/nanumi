@@ -7,7 +7,6 @@ import {RectButton} from '../../ui/Button';
 
 const ProductCard = ({data}) => {
   const navigation = useNavigation();
-
   return (
     <View
       style={{
@@ -19,8 +18,8 @@ const ProductCard = ({data}) => {
       }}>
       <View style={{width: '100%', height: 250}}>
         <Image
-          source={data.image}
-          resizeMode="cover"
+          source={{uri: data.image}}
+          resizeMode="contain"
           style={{
             width: '100%',
             height: '100%',

@@ -1,7 +1,7 @@
 import React from 'react';
 
 import {SafeAreaView, StyleSheet, View, FlatList, Text} from 'react-native';
-import {COLORS, NFTData} from '../../constants';
+import {COLORS, Data} from '../../constants';
 import FocusedStatusBar from '../../ui/FocusedStatusBar';
 import Header from '../../ui/Header';
 import ProductCard from '../product/ProductCard';
@@ -13,7 +13,7 @@ const Home = () => {
       <View style={{flex: 1}}>
         <View style={{zIndex: 0}}>
           <FlatList
-            data={NFTData}
+            data={Data}
             renderItem={({item}) => <ProductCard data={item} />}
             keyExtractor={item => item.id}
             showsVerticalScrollIndicator={false}

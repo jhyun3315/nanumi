@@ -17,7 +17,6 @@ const DetailDesc = ({data}) => {
           alignItems: 'center',
         }}>
         <ProductTitle title={data.name} titleSize={SIZES.extraLarge} />
-        <ProductPrice />
       </View>
 
       <View style={{marginVertical: SIZES.extraLarge * 1.5}}>
@@ -27,7 +26,7 @@ const DetailDesc = ({data}) => {
             fontFamily: FONTS.medium,
             color: COLORS.primary,
           }}>
-          Description
+          카테고리
         </Text>
 
         <View style={{marginTop: SIZES.base}}>
