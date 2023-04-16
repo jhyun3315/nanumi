@@ -11,7 +11,7 @@ import FocusedStatusBar from './../../ui/FocusedStatusBar';
 import {COLORS, SIZES, SHADOWS, FONTS, assets} from '../../constants';
 import {CircleButton, RectButton} from './../../ui/Button';
 import {SubInfo} from './SubInfo';
-import DetailBid from './DetailBid';
+import DetailDesc from './DetailDesc';
 
 const DetailHeader = ({data, navigation}) => (
   <View style={{width: '100%', height: 373}}>
@@ -26,13 +26,15 @@ const DetailHeader = ({data, navigation}) => (
       handlePress={() => {
         navigation.goBack();
       }}
+      left={15}
+      top={StatusBar.currentHeight + 10}
     />
   </View>
 );
 
 const ProductDetail = ({route, navigation}) => {
   const {data} = route.params;
-
+  console.log(data);
   return (
     <SafeAreaView style={{flex: 1}}>
       <FocusedStatusBar
@@ -51,16 +53,23 @@ const ProductDetail = ({route, navigation}) => {
           zIndex: 1,
           backgroundColor: 'rgba(255,255,255,0.5)',
         }}>
-        <RectButton minWidth={170} fontSize={SIZES.large} {...SHADOWS.dark} />
+        <RectButton minWidth={170} fontSize={SIZES.large} {...SHADOWS.dark}>
+          나눔받기
+        </RectButton>
       </View>
       <FlatList
         data={data.bids}
-        renderItem={({item}) => <DetailBid bid={item} />}
         keyExtractor={item => item.id}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{paddingBottom: SIZES.extraLarge * 2}}
         ListHeaderComponent={() => (
-          <DetailHeader data={data} navigation={navigation} />
+          <>
+            <DetailHeader data={data} navigation={navigation} />
+            <SubInfo />
+            <View style={{padding: SIZES.font}}>
+              <DetailDesc data={data} />
+            </View>
+          </>
         )}
       />
     </SafeAreaView>
