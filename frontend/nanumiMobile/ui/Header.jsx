@@ -48,29 +48,6 @@ const Header = () => {
         <Text style={styles.greetingText}>안녕하세요. OOO님👋</Text>
         <Text style={styles.headerText}>원하는 물건을 찾아보세요</Text>
       </View>
-
-      {/* <View style={{marginTop: SIZES.font}}>
-        <View
-          style={{
-            width: '100%',
-            borderRadius: SIZES.font,
-            backgroundColor: COLORS.gray,
-            flexDirection: 'row',
-            alignItems: 'center',
-            paddingHorizontal: SIZES.font,
-          }}>
-          <Image
-            source={assets.search}
-            resizeMode="contain"
-            style={{
-              width: 20,
-              height: 20,
-              marginRight: SIZES.base,
-            }}
-          />
-          <TextInput placeholder="검색" style={{flex: 1}} />
-        </View>
-      </View> */}
     </View>
   );
 };
@@ -105,8 +82,8 @@ const styles = StyleSheet.create({
     position: 'absolute',
     width: 15,
     height: 15,
-    bottom: 0,
-    right: 0,
+    bottom: -1,
+    right: -1,
   },
 
   greetingText: {
