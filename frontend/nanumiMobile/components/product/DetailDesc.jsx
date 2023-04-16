@@ -16,7 +16,12 @@ const DetailDesc = ({data}) => {
           justifyContent: 'space-between',
           alignItems: 'center',
         }}>
-        <ProductTitle title={data.name} titleSize={SIZES.extraLarge} />
+        <ProductTitle
+          title={data.name}
+          subTitle={data.creator}
+          titleSize={SIZES.extraLarge}
+          subTitleSize={SIZES.font}
+        />
       </View>
 
       <View style={{marginVertical: SIZES.extraLarge * 1.5}}>
