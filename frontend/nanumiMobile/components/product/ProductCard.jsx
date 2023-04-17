@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, Image, Text} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import {COLORS, SIZES, SHADOWS, assets} from '../../constants';
+import {COLORS, SIZES, SHADOWS} from '../../constants';
 import {ProductPrice, ProductTitle, SubInfo} from './SubInfo';
 import {RectButton} from '../../ui/Button';
 
@@ -18,7 +18,9 @@ const ProductCard = ({data}) => {
       }}>
       <View style={{width: '100%', height: 250}}>
         <Image
-          source={{uri: data.image}}
+          source={{
+            uri: data.image,
+          }}
           resizeMode="contain"
           style={{
             width: '100%',
