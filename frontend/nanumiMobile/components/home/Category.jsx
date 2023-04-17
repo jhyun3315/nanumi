@@ -10,7 +10,7 @@ import {
   Image,
   StyleSheet,
 } from 'react-native';
-import {SIZES, assets} from '../../constants';
+import {COLORS, SIZES, assets} from '../../constants';
 import {CircleButton} from '../../ui/Button';
 
 const CATEGORIES = [
@@ -119,6 +119,7 @@ const Category = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: COLORS.white,
   },
   categoryContainer: {
     paddingHorizontal: SIZES.padding,
