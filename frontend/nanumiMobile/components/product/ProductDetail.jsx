@@ -1,10 +1,17 @@
 import React from 'react';
-import {SafeAreaView, View, Image, StatusBar, FlatList} from 'react-native';
 import FocusedStatusBar from './../../ui/FocusedStatusBar';
-import {SIZES, SHADOWS, assets} from '../../constants';
+import DetailDesc from './DetailDesc';
+import {
+  SafeAreaView,
+  View,
+  Image,
+  StatusBar,
+  FlatList,
+  StyleSheet,
+} from 'react-native';
+import {SIZES, SHADOWS, assets, COLORS} from '../../constants';
 import {CircleButton, RectButton} from './../../ui/Button';
 import {SubInfo} from './SubInfo';
-import DetailDesc from './DetailDesc';
 
 const DetailHeader = ({data, navigation}) => (
   <View style={{width: '100%', height: 373}}>
@@ -28,23 +35,13 @@ const DetailHeader = ({data, navigation}) => (
 const ProductDetail = ({route, navigation}) => {
   const {data} = route.params;
   return (
-    <SafeAreaView style={{flex: 1}}>
+    <SafeAreaView style={styles.container}>
       <FocusedStatusBar
         batStyle="dark-content"
         backgroundColor="transparent"
         translucent={true}
       />
-      <View
-        style={{
-          width: '100%',
-          position: 'absolute',
-          bottom: 0,
-          paddingVertical: SIZES.font,
-          justifyContent: 'center',
-          alignItems: 'center',
-          zIndex: 1,
-          backgroundColor: 'rgba(255,255,255,0.5)',
-        }}>
+      <View style={styles.buttonContainer}>
         <RectButton minWidth={170} fontSize={SIZES.large} {...SHADOWS.dark}>
           나눔받기
         </RectButton>
@@ -67,5 +64,22 @@ const ProductDetail = ({route, navigation}) => {
     </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: COLORS.white,
+  },
+  buttonContainer: {
+    width: '100%',
+    position: 'absolute',
+    bottom: 0,
+    paddingVertical: SIZES.font,
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 1,
+    backgroundColor: 'rgba(255,255,255,0.5)',
+  },
+});
 
 export default ProductDetail;

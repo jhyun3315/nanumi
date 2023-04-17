@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
-import {View, Text} from 'react-native';
-import {ProductPrice, ProductTitle} from './SubInfo';
+import {View, Text, StyleSheet} from 'react-native';
+import {ProductTitle} from './SubInfo';
 import {COLORS, SIZES, FONTS} from '../../constants';
 
 const DetailDesc = ({data}) => {
@@ -9,13 +9,7 @@ const DetailDesc = ({data}) => {
 
   return (
     <>
-      <View
-        style={{
-          width: '100%',
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-        }}>
+      <View style={styles.header}>
         <ProductTitle
           title={data.name}
           subTitle={data.creator}
@@ -24,33 +18,15 @@ const DetailDesc = ({data}) => {
         />
       </View>
 
-      <View style={{marginVertical: SIZES.extraLarge * 1.5}}>
-        <Text
-          style={{
-            fontSize: SIZES.font,
-            fontFamily: FONTS.medium,
-            color: COLORS.primary,
-          }}>
-          카테고리
-        </Text>
+      <View style={styles.container}>
+        <Text style={styles.categoryTitle}>카테고리</Text>
 
-        <View style={{marginTop: SIZES.base}}>
-          <Text
-            style={{
-              fontSize: SIZES.small,
-              fontFamily: FONTS.light,
-              color: COLORS.secondary,
-              lineHeight: SIZES.large,
-            }}>
+        <View style={styles.descriptionContainer}>
+          <Text style={styles.descriptionText}>
             {text}
             {!readMore && '...'}
             <Text
-              style={{
-                fontSize: SIZES.small,
-                fontFamily: FONTS.bold,
-                color: COLORS.primary,
-                lineHeight: SIZES.primary,
-              }}
+              style={styles.readMoreText}
               onPress={() => {
                 if (!readMore) {
                   setText(data.description);
@@ -68,5 +44,37 @@ const DetailDesc = ({data}) => {
     </>
   );
 };
+
+const styles = StyleSheet.create({
+  header: {
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  container: {
+    marginVertical: SIZES.extraLarge * 1.5,
+  },
+  categoryTitle: {
+    fontSize: SIZES.font,
+    fontFamily: FONTS.medium,
+    color: COLORS.primary,
+  },
+  descriptionContainer: {
+    marginTop: SIZES.base,
+  },
+  descriptionText: {
+    fontSize: SIZES.small,
+    fontFamily: FONTS.light,
+    color: COLORS.secondary,
+    lineHeight: SIZES.large,
+  },
+  readMoreText: {
+    fontSize: SIZES.small,
+    fontFamily: FONTS.bold,
+    color: COLORS.primary,
+    lineHeight: SIZES.primary,
+  },
+});
 
 export default DetailDesc;
