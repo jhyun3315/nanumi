@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {
   SafeAreaView,
@@ -10,8 +10,10 @@ import {
   Image,
   StyleSheet,
 } from 'react-native';
-import {COLORS, SIZES, assets} from '../../constants';
+import {COLORS, Data, SIZES, assets} from '../../constants';
 import {CircleButton} from '../../ui/Button';
+import {productState} from '../../state/product';
+import {useRecoilState} from 'recoil';
 
 const CATEGORIES = [
   {
@@ -85,11 +87,17 @@ const DetailHeader = ({navigation}) => (
 
 const Category = () => {
   const navigation = useNavigation();
+  const [data, setData] = useRecoilState(productState);
+  const handleCategoryClick = category => {
+    const selectedData = Data.filter(item => item.category === category);
+    setData(selectedData);
+    navigation.goBack();
+  };
 
   const renderCategory = ({item}) => (
     <Pressable
       style={styles.categoryItem}
-      onPress={() => console.log(item.name)}>
+      onPress={() => handleCategoryClick(item.id)}>
       <Image
         style={styles.categoryImage}
         source={item.source}

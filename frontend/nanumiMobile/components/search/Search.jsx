@@ -12,7 +12,6 @@ import {
 import {COLORS, Data, SIZES, assets} from '../../constants';
 import {useNavigation} from '@react-navigation/native';
 import ProductList from '../product/ProductList';
-import FocusedStatusBar from '../../ui/FocusedStatusBar';
 
 const Search = () => {
   const navigation = useNavigation();
