@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import {COLORS, SIZES, FONTS} from '../../constants';
 import {useNavigation} from '@react-navigation/native';
+import UserTextInput from './UserTextInput';
 
 const Login = () => {
   const navigation = useNavigation();
@@ -41,32 +42,8 @@ const Login = () => {
           </Text>
         </View>
         <View style={{marginVertical: SIZES.base * 3}}>
-          <TextInput
-            placeholder="Email"
-            placeholderTextColor={COLORS.gray}
-            style={{
-              fontFamily: FONTS.medium,
-              fontSize: SIZES.small,
-              padding: SIZES.base * 3,
-              backgroundColor: COLORS.lightBlue,
-              borderRadius: SIZES.base,
-              marginVertical: SIZES.base,
-            }}
-          />
-
-          <TextInput
-            placeholder="Password"
-            placeholderTextColor={COLORS.gray}
-            secureTextEntry
-            style={{
-              fontFamily: FONTS.medium,
-              fontSize: SIZES.small,
-              padding: SIZES.base * 3,
-              backgroundColor: COLORS.lightBlue,
-              borderRadius: SIZES.base,
-              marginVertical: SIZES.base,
-            }}
-          />
+          <UserTextInput placeholder="이메일" />
+          <UserTextInput placeholder="비밀번호" secureTextEntry={true} />
         </View>
         <View>
           <Text
