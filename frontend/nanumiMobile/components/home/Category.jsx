@@ -19,46 +19,55 @@ const CATEGORIES = [
   {
     name: '디지털기기',
     id: 'DIGITAL',
+    key: 1,
     source: require('../../assets/categories/Digital.png'),
   },
   {
     name: '생활가전',
     id: 'HOMEAPPLIANCES',
+    key: 2,
     source: require('../../assets/categories/HomeAppliances.png'),
   },
   {
     name: '가구/인테리어',
     id: 'FURNITURE',
+    key: 3,
     source: require('../../assets/categories/Furniture.png'),
   },
   {
     name: '생활/주방',
     id: 'KITCHEN',
+    key: 4,
     source: require('../../assets/categories/Kitchen.png'),
   },
   {
     name: '유아동',
     id: 'FEEDINGBOTTLE',
+    key: 5,
     source: require('../../assets/categories/FeedingBottle.png'),
   },
   {
     name: '유아도서',
     id: 'CHILDRENBOOK',
+    key: 6,
     source: require('../../assets/categories/ChildrenBook.png'),
   },
   {
     name: '여성의류',
     id: 'FEMALECLOTHES',
+    key: 7,
     source: require('../../assets/categories/FemaleClothes.png'),
   },
   {
     name: '여성잡화',
     id: 'FEMALEBAG',
+    key: 8,
     source: require('../../assets/categories/FemaleBag.png'),
   },
   {
     name: '남성패션/잡화',
     id: 'MALECLOTHES',
+    key: 9,
     source: require('../../assets/categories/MaleClothes.png'),
   },
   {
@@ -88,8 +97,8 @@ const DetailHeader = ({navigation}) => (
 const Category = () => {
   const navigation = useNavigation();
   const [data, setData] = useRecoilState(productState);
-  const handleCategoryClick = category => {
-    const selectedData = Data.filter(item => item.category === category);
+  const handleCategoryClick = categoryKey => {
+    const selectedData = Data.filter(item => item.key === categoryKey);
     setData(selectedData);
     navigation.goBack();
   };
@@ -97,7 +106,7 @@ const Category = () => {
   const renderCategory = ({item}) => (
     <Pressable
       style={styles.categoryItem}
-      onPress={() => handleCategoryClick(item.id)}>
+      onPress={() => handleCategoryClick(item.key)}>
       <Image
         style={styles.categoryImage}
         source={item.source}
