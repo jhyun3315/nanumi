@@ -72,7 +72,8 @@ const styles = StyleSheet.create({
   searchBar: {
     width: '100%',
     borderRadius: SIZES.font,
-    backgroundColor: COLORS.violet,
+    borderColor: COLORS.disable,
+    borderWidth: 1,
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: SIZES.font,
