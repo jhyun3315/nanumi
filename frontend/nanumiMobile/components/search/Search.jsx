@@ -6,7 +6,6 @@ import {
   TextInput,
   Pressable,
   StyleSheet,
-  FlatList,
   SafeAreaView,
 } from 'react-native';
 import {COLORS, Data, SIZES, assets} from '../../constants';

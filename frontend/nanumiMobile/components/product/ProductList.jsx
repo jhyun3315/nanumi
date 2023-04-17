@@ -2,7 +2,7 @@ import React from 'react';
 import ProductCard from './ProductCard';
 import Header from '../../ui/Header';
 import {COLORS} from '../../constants';
-import {View, FlatList, StyleSheet, Text} from 'react-native';
+import {View, FlatList, StyleSheet} from 'react-native';
 
 const ProductList = ({isSearch, data}) => {
   return (
