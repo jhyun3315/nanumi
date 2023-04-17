@@ -116,8 +116,6 @@ const Category = () => {
   );
 };
 
-export default Category;
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -140,3 +138,5 @@ const styles = StyleSheet.create({
     marginTop: SIZES.base,
   },
 });
+
+export default Category;
