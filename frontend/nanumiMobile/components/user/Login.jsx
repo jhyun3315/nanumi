@@ -62,15 +62,10 @@ const Login = () => {
             backgroundColor: COLORS.blue,
             marginVertical: SIZES.base * 3,
             borderRadius: SIZES.base,
-            shadowColor: COLORS.blue,
-            shadowOffset: {
-              width: 0,
-              height: SIZES.base,
-            },
-            shadowOpacity: 0.3,
-            shadowRadius: SIZES.base,
+
             elevation: 5,
-          }}>
+          }}
+          onPress={() => navigation.navigate('BottomTabs')}>
           <Text
             style={{
               fontFamily: FONTS.bold,
