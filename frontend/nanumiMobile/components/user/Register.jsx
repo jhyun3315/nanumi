@@ -1,18 +1,24 @@
-import React from 'react';
-import {
-  Text,
-  SafeAreaView,
-  View,
-  TextInput,
-  Pressable,
-  Image,
-} from 'react-native';
+import React, {useState} from 'react';
+import {Text, SafeAreaView, View, Pressable} from 'react-native';
 import {COLORS, SIZES, FONTS} from '../../constants';
 import {useNavigation} from '@react-navigation/native';
 import UserTextInput from './UserTextInput';
 
 const Register = () => {
   const navigation = useNavigation();
+  const [userInfo, setUserInfo] = useState({
+    email: '',
+    nickname: '',
+    password: '',
+    confirmPassword: '',
+  });
+
+  const handleInputChange = (key, value) => {
+    setUserInfo({
+      ...userInfo,
+      [key]: value,
+    });
+  };
 
   return (
     <SafeAreaView>
@@ -42,9 +48,28 @@ const Register = () => {
           </Text>
         </View>
         <View style={{marginVertical: SIZES.base * 3}}>
-          <UserTextInput placeholder="이메일" place />
-          <UserTextInput placeholder="비밀번호" secureTextEntry={true} />
-          <UserTextInput placeholder="비밀번호 확인" secureTextEntry={true} />
+          <UserTextInput
+            placeholder="이메일"
+            value={userInfo.email}
+            onChangeText={value => handleInputChange('email', value)}
+          />
+          <UserTextInput
+            placeholder="닉네임"
+            value={userInfo.nickname}
+            onChangeText={value => handleInputChange('nickname', value)}
+          />
+          <UserTextInput
+            placeholder="비밀번호"
+            secureTextEntry={true}
+            value={userInfo.password}
+            onChangeText={value => handleInputChange('password', value)}
+          />
+          <UserTextInput
+            placeholder="비밀번호 확인"
+            secureTextEntry={true}
+            value={userInfo.confirmPassword}
+            onChangeText={value => handleInputChange('confirmPassword', value)}
+          />
         </View>
 
         <Pressable

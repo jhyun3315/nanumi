@@ -1,18 +1,23 @@
-import React from 'react';
-import {
-  Text,
-  SafeAreaView,
-  View,
-  TextInput,
-  Pressable,
-  Image,
-} from 'react-native';
+import React, {useState} from 'react';
+import {Text, SafeAreaView, View, Pressable, Image} from 'react-native';
 import {COLORS, SIZES, FONTS} from '../../constants';
 import {useNavigation} from '@react-navigation/native';
 import UserTextInput from './UserTextInput';
 
 const Login = () => {
   const navigation = useNavigation();
+
+  const [userInfo, setUserInfo] = useState({
+    email: '',
+    password: '',
+  });
+
+  const handleInputChange = (key, value) => {
+    setUserInfo({
+      ...userInfo,
+      [key]: value,
+    });
+  };
 
   return (
     <SafeAreaView>
@@ -42,8 +47,15 @@ const Login = () => {
           </Text>
         </View>
         <View style={{marginVertical: SIZES.base * 3}}>
-          <UserTextInput placeholder="이메일" />
-          <UserTextInput placeholder="비밀번호" secureTextEntry={true} />
+          <UserTextInput
+            placeholder="이메일"
+            onChangeText={value => handleInputChange('email', value)}
+          />
+          <UserTextInput
+            placeholder="비밀번호"
+            secureTextEntry={true}
+            onChangeText={value => handleInputChange('password', value)}
+          />
         </View>
         <View>
           <Text

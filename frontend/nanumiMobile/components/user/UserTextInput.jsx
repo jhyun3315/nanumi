@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {TextInput} from 'react-native';
 import {COLORS, SIZES, FONTS} from '../../constants';
 
-const UserTextInput = ({...props}) => {
+const UserTextInput = ({onChangeText, value, ...props}) => {
   const [focused, setFocused] = useState(false);
   return (
     <TextInput
@@ -10,7 +10,9 @@ const UserTextInput = ({...props}) => {
         setFocused(true);
       }}
       onBlur={() => setFocused(false)}
+      onChangeText={onChangeText}
       placeholderTextColor={COLORS.gray}
+      value={value}
       secureTextEntry={props.secureTextEntry ? props.secureTextEntry : false}
       style={[
         {
