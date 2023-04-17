@@ -1,14 +1,7 @@
 import React from 'react';
-import {
-  SafeAreaView,
-  View,
-  Text,
-  Image,
-  StatusBar,
-  FlatList,
-} from 'react-native';
+import {SafeAreaView, View, Image, StatusBar, FlatList} from 'react-native';
 import FocusedStatusBar from './../../ui/FocusedStatusBar';
-import {COLORS, SIZES, SHADOWS, FONTS, assets} from '../../constants';
+import {SIZES, SHADOWS, assets} from '../../constants';
 import {CircleButton, RectButton} from './../../ui/Button';
 import {SubInfo} from './SubInfo';
 import DetailDesc from './DetailDesc';
