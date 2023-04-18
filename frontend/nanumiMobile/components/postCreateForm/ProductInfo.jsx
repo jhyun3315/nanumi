@@ -1,6 +1,7 @@
 import React from 'react';
 import {View, TextInput, StyleSheet, Pressable} from 'react-native';
 import {COLORS, FONTS, SIZES} from '../../constants';
+import CategoryList from '../modal/CategoryList';
 
 export const ProductTitle = () => {
   return (
@@ -14,19 +15,29 @@ export const ProductTitle = () => {
   );
 };
 
-export const ProductCategory = ({navigation, category, setCategory}) => {
+export const ProductCategory = ({
+  modalVisible,
+  setModalVisible,
+  selectedCategory,
+  handleCategorySelected,
+}) => {
   return (
     <Pressable
       style={styles.container}
       onPress={() => {
-        navigation.navigate('CreateCategory', {setCategory});
+        setModalVisible(true);
       }}>
       <TextInput
         placeholder="카테고리"
         placeholderTextColor={COLORS.gray}
         style={[styles.textInput, styles.category]}
+        value={selectedCategory}
         editable={false}
-        value={category}
+      />
+      <CategoryList
+        modalVisible={modalVisible}
+        handleCategorySelected={handleCategorySelected}
+        setModalVisible={setModalVisible}
       />
     </Pressable>
   );

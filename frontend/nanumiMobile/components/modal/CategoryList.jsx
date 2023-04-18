@@ -1,15 +1,14 @@
 import React from 'react';
 import {
-  SafeAreaView,
   FlatList,
   StyleSheet,
   Pressable,
   Image,
   Text,
+  Modal,
 } from 'react-native';
 import {COLORS, SIZES, FONTS} from '../../constants';
-import {useNavigation} from '@react-navigation/native';
-import BackHeader from '../../ui/BackHeader';
+import {CloseHeader} from '../../ui/BackHeader';
 
 const CATEGORIES = [
   {
@@ -74,27 +73,42 @@ const CATEGORIES = [
   },
 ];
 
-const renderItem = ({item}) => {
+const RenderCategory = ({item, handleCategorySelected}) => {
+  console.log(item);
   return (
-    <Pressable style={styles.categoryItem} onPress={() => {}}>
+    <Pressable
+      style={styles.categoryItem}
+      onPress={() => {
+        handleCategorySelected(item.name);
+      }}>
       <Image style={styles.categoryImage} source={item.source} />
       <Text style={styles.categoryName}>{item.name}</Text>
     </Pressable>
   );
 };
 
-const CategoryList = () => {
-  const navigation = useNavigation();
-
+const CategoryList = ({
+  modalVisible,
+  setModalVisible,
+  handleCategorySelected,
+}) => {
   return (
-    <SafeAreaView style={styles.categoryContainer}>
-      <BackHeader navigation={navigation} />
+    <Modal
+      style={styles.categoryContainer}
+      visible={modalVisible}
+      animationType="slide">
+      <CloseHeader setModalVisible={setModalVisible} />
       <FlatList
         data={CATEGORIES}
-        renderItem={renderItem}
+        renderItem={({item}) => (
+          <RenderCategory
+            item={item}
+            handleCategorySelected={handleCategorySelected}
+          />
+        )}
         keyExtractor={item => item.key.toString()}
       />
-    </SafeAreaView>
+    </Modal>
   );
 };
 

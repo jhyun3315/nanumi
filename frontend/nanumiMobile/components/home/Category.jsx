@@ -12,7 +12,7 @@ import {
 import {COLORS, Data, SIZES} from '../../constants';
 import {productState} from '../../state/product';
 import {useRecoilState} from 'recoil';
-import BackHeader from '../../ui/BackHeader';
+import {BackHeader} from '../../ui/BackHeader';
 
 const CATEGORIES = [
   {

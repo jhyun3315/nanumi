@@ -30,6 +30,13 @@ const CreateHeader = ({navigation}) => (
 
 const PostCreateForm = () => {
   const navigation = useNavigation();
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState('');
+
+  const handleCategorySelected = category => {
+    setSelectedCategory(category);
+    setModalVisible(false);
+  };
 
   const [images, setImages] = useState([
     'https://dnvefa72aowie.cloudfront.net/origin/article/202304/f4dc3285f453c0907743cc05c3c474a03dad9c360e5740f6728d0c710857bcb4.webp?q=95&s=1440x1440&t=inside',
@@ -51,7 +58,12 @@ const PostCreateForm = () => {
           />
         </View>
         <ProductTitle />
-        <ProductCategory navigation={navigation} />
+        <ProductCategory
+          modalVisible={modalVisible}
+          setModalVisible={setModalVisible}
+          selectedCategory={selectedCategory}
+          handleCategorySelected={handleCategorySelected}
+        />
       </View>
     </SafeAreaView>
   );
