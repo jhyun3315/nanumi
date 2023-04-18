@@ -1,13 +1,14 @@
 import React from 'react';
-import {View, Text, StatusBar} from 'react-native';
 import StackNavigator from './navigator/StackNavigator';
+import {StatusBar} from 'react-native';
+import {RecoilRoot} from 'recoil';
 
 const App = () => {
   return (
-    <>
+    <RecoilRoot>
       <StatusBar />
       <StackNavigator />
-    </>
+    </RecoilRoot>
   );
 };
 

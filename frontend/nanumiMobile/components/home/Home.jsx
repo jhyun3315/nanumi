@@ -1,15 +1,26 @@
 import React from 'react';
 
 import {SafeAreaView, StyleSheet} from 'react-native';
-import {COLORS, Data} from '../../constants';
+import {COLORS} from '../../constants';
+import {CategoryButton} from '../../ui/Button';
+import {useNavigation} from '@react-navigation/native';
+import {useRecoilValue} from 'recoil';
+import {productState} from '../../state/product';
 import FocusedStatusBar from '../../ui/FocusedStatusBar';
 import ProductList from '../product/ProductList';
 
 const Home = () => {
+  const navigation = useNavigation();
+  const data = useRecoilValue(productState);
+
   return (
     <SafeAreaView style={styles.container}>
       <FocusedStatusBar background={COLORS.secondary} />
-      <ProductList isSearch={false} data={Data} />
+      <ProductList isSearch={false} data={data} />
+      <CategoryButton
+        minwidth={40}
+        handlePress={() => navigation.navigate('Category')}
+      />
     </SafeAreaView>
   );
 };

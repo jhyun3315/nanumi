@@ -5,7 +5,12 @@ import {SIZES, COLORS, SHADOWS, assets, FONTS} from '../../constants';
 export const ProductTitle = ({title, titleSize, subTitle, subTitleSize}) => {
   return (
     <View>
-      <Text style={{fontFamily: FONTS.medium, fontSize: titleSize}}>
+      <Text
+        style={{
+          fontFamily: FONTS.medium,
+          fontSize: titleSize,
+          color: COLORS.primary,
+        }}>
         {title}
       </Text>
       <Text

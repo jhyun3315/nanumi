@@ -1,4 +1,5 @@
 import React from 'react';
+import Icon from 'react-native-ionicons';
 import {Pressable, View, Text, Image} from 'react-native';
 import {COLORS, SIZES, SHADOWS, FONTS} from '../constants';
 
@@ -55,6 +56,24 @@ export const RectButton = ({
         }}>
         {children}
       </Text>
+    </Pressable>
+  );
+};
+
+export const CategoryButton = ({minWidth, handlePress}) => {
+  return (
+    <Pressable
+      style={{
+        minWidth: minWidth,
+        backgroundColor: COLORS.violet,
+        borderRadius: SIZES.extraLarge,
+        padding: SIZES.small,
+        position: 'absolute',
+        bottom: 15,
+        right: 15,
+      }}
+      onPress={handlePress}>
+      <Icon name="cube" color={COLORS.white} />
     </Pressable>
   );
 };
