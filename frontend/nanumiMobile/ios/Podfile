@@ -19,6 +19,8 @@ target 'nanumiMobile' do
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
+  pod 'react-native-multiple-image-picker', :path => '../node_modules/@baronha/react-native-multiple-image-picker'
+
   target 'nanumiMobileTests' do
     inherit! :complete
     # Pods for testing

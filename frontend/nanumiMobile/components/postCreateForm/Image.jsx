@@ -17,9 +17,9 @@ export const ImageContainer = ({data}) => {
   );
 };
 
-export const AddImageButton = () => {
+export const AddImageButton = ({handlePress}) => {
   return (
-    <Pressable style={styles.addButton}>
+    <Pressable style={styles.addButton} onPress={handlePress}>
       <Icon name="camera" color={COLORS.primary} />
       <Text style={{color: COLORS.primary}}>0/10</Text>
     </Pressable>

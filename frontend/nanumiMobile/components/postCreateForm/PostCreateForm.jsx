@@ -3,24 +3,37 @@ import {View, StyleSheet, FlatList} from 'react-native';
 import {COLORS} from '../../constants';
 import {useNavigation} from '@react-navigation/native';
 import {AddImageButton, ImageContainer} from './Image';
-import {ProductCategory, ProductTitle} from './ProductInfo';
+import {ProductCategory, ProductDesc, ProductTitle} from './ProductInfo';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {CreateHeader} from '../../ui/CreateHeader';
+import {openPicker} from '@baronha/react-native-multiple-image-picker';
 
 const PostCreateForm = () => {
-  console.log('렌더링 확인');
   const navigation = useNavigation();
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState('');
-  const [images, setImages] = useState([
-    'https://dnvefa72aowie.cloudfront.net/origin/article/202304/f4dc3285f453c0907743cc05c3c474a03dad9c360e5740f6728d0c710857bcb4.webp?q=95&s=1440x1440&t=inside',
-    'https://dnvefa72aowie.cloudfront.net/origin/article/202304/540cdd9013c26f46e1e196f31d91591670d5480e927930dd1d0f37089d05cc67.webp?q=95&s=1440x1440&t=inside',
-  ]);
+  const [images, setImages] = useState([]);
 
   const handleCategorySelected = useCallback(category => {
     setSelectedCategory(category);
     setModalVisible(false);
   }, []);
+
+  const handleImageSelection = async () => {
+    try {
+      const response = await openPicker({
+        usedCameraButton: false,
+        maxVideo: 1,
+        selectedAssets: images,
+        isExportThumbnail: true,
+        isCrop: true,
+        isCropCircle: true,
+      });
+      console.log('response', response);
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   const renderItem = useCallback(
     ({item}) => <ImageContainer data={item} />,
@@ -34,7 +47,7 @@ const PostCreateForm = () => {
       <CreateHeader navigation={navigation} />
       <View style={styles.container}>
         <View style={styles.imageContainer}>
-          <AddImageButton />
+          <AddImageButton handlePress={handleImageSelection} />
           <FlatList
             horizontal={true}
             showsHorizontalScrollIndicator={false}
@@ -50,6 +63,7 @@ const PostCreateForm = () => {
           selectedCategory={selectedCategory}
           handleCategorySelected={handleCategorySelected}
         />
+        <ProductDesc />
       </View>
     </SafeAreaView>
   );

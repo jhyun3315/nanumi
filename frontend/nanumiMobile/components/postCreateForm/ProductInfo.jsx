@@ -9,7 +9,7 @@ export const ProductTitle = () => {
       <TextInput
         placeholder="상품명"
         placeholderTextColor={COLORS.gray}
-        style={[styles.textInput, styles.title]}
+        style={styles.title}
       />
     </View>
   );
@@ -30,7 +30,7 @@ export const ProductCategory = ({
       <TextInput
         placeholder="카테고리"
         placeholderTextColor={COLORS.gray}
-        style={[styles.textInput, styles.category]}
+        style={styles.category}
         value={selectedCategory}
         editable={false}
       />
@@ -40,6 +40,20 @@ export const ProductCategory = ({
         setModalVisible={setModalVisible}
       />
     </Pressable>
+  );
+};
+
+export const ProductDesc = () => {
+  return (
+    <View style={styles.textInputContainer}>
+      <TextInput
+        placeholder="OO동에 올릴 게시글 내용을 작성해주세요 (나눔 금지 물품은 게시가 제한될 수 있습니다.)"
+        placeholderTextColor={COLORS.gray}
+        style={[styles.textInput, styles.desc]}
+        numberOfLines={2}
+        multiline={true}
+      />
+    </View>
   );
 };
 
@@ -60,5 +74,21 @@ const styles = StyleSheet.create({
     color: COLORS.primary,
     fontFamily: FONTS.medium,
     lineHeight: 24,
+  },
+  textInputContainer: {
+    width: '100%',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    borderBottomColor: COLORS.gray,
+    borderBottomWidth: 1,
+    paddingBottom: 0,
+  },
+  textInput: {
+    textAlignVertical: 'top',
+  },
+  desc: {
+    color: COLORS.primary,
+    fontFamily: FONTS.medium,
+    lineHeight: 32,
   },
 });
