@@ -2,17 +2,17 @@ import React from 'react';
 import Icon from 'react-native-ionicons';
 import {View, Pressable, Image, Text, StyleSheet} from 'react-native';
 import {COLORS, SIZES} from '../../constants';
-export const ImageContainer = ({data}) => {
+export const ImageContainer = ({data, handlePress}) => {
   return (
     <View style={styles.container}>
       <Pressable
         style={styles.deleteContainer}
         onPress={() => {
-          console.log('on Press');
+          handlePress(data.name);
         }}>
         <Icon name="close" color={COLORS.primary} size={20} />
       </Pressable>
-      <Image style={styles.imageBox} source={{uri: data}} />
+      <Image style={styles.imageBox} source={{uri: `file:///${data.uri}`}} />
     </View>
   );
 };

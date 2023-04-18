@@ -29,18 +29,29 @@ const PostCreateForm = () => {
         isCrop: true,
         isCropCircle: true,
       });
-      console.log('response', response);
+      const paths = response.map(image => {
+        const nameParts = image.fileName.split('.');
+        const format = nameParts[nameParts.length - 1];
+        return {
+          uri: image.realPath,
+          name: image.fileName,
+          format: format,
+        };
+      });
+      setImages([...images, ...paths]);
     } catch (e) {
       console.log(e);
     }
   };
 
-  const renderItem = useCallback(
-    ({item}) => <ImageContainer data={item} />,
-    [],
-  );
+  const handleImageDelete = imageName => {
+    const newImages = images.filter(image => image.name !== imageName);
+    setImages(newImages);
+  };
 
-  const keyExtractor = useCallback((_, index) => `image-${index}`, []);
+  const renderItem = ({item}) => (
+    <ImageContainer data={item} handlePress={handleImageDelete} />
+  );
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: COLORS.white}}>
@@ -52,7 +63,7 @@ const PostCreateForm = () => {
             horizontal={true}
             showsHorizontalScrollIndicator={false}
             data={images}
-            keyExtractor={keyExtractor}
+            keyExtractor={(_, index) => `image-${index}`}
             renderItem={renderItem}
           />
         </View>
