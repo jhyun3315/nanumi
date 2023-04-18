@@ -19,4 +19,5 @@ public class LoginProvider {
 //    @Enumerated(EnumType.STRING)
     @Column(name = "name")
     private String name; // 나중에 AuthProvider name으로 바꿔야함!
+
 }

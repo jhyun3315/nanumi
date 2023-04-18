@@ -34,14 +34,19 @@ public class Product extends BaseTimeEntity {
     @JoinColumn(name="user_id")
     private User user;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="category_id")
+    private Category category;
+
     @Builder
-    public Product(long id, String name, String content, boolean is_closed, Address address, User user) {
+    public Product(long id, String name, String content, boolean is_closed, Address address, User user, Category category) {
         this.id = id;
         this.name = name;
         this.content = content;
         this.is_closed = is_closed;
         this.address = address;
         this.user = user;
+        this.category = category;
     }
 
 }

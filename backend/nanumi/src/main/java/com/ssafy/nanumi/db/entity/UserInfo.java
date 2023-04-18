@@ -1,6 +1,7 @@
 package com.ssafy.nanumi.db.entity;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
@@ -61,4 +62,20 @@ public class UserInfo {
     @OneToOne
     @Column(name = "user_id")
     private User user;
+
+    @Builder
+    public UserInfo(long id, double starPoint, double rating, String tier, double temperature, long visitCount, long giveCount, long givenCount, long reportedTotalCount, LocalDateTime stopDate, String refreshToken, User user) {
+        this.id = id;
+        this.starPoint = starPoint;
+        this.rating = rating;
+        this.tier = tier;
+        this.temperature = temperature;
+        this.visitCount = visitCount;
+        this.giveCount = giveCount;
+        this.givenCount = givenCount;
+        this.reportedTotalCount = reportedTotalCount;
+        this.stopDate = stopDate;
+        this.refreshToken = refreshToken;
+        this.user = user;
+    }
 }

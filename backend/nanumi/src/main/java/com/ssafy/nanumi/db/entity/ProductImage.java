@@ -15,8 +15,18 @@ public class ProductImage extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id",nullable = false)
-    private Long id;
+    private long id;
 
     @Column(name = "image_url", nullable = false)
     private String imageUrl;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="product_id")
+    private Product product;
+
+    public ProductImage(long id, String imageUrl, Product product) {
+        this.id = id;
+        this.imageUrl = imageUrl;
+        this.product = product;
+    }
 }

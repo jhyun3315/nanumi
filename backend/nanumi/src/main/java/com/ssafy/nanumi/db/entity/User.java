@@ -34,13 +34,18 @@ public class User extends BaseTimeEntity {
     @JoinColumn(name="address_id")
     private Address address;
 
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="login_provider")
+    private LoginProvider loginProvider;
+
     @Builder
-    public User(Long id, String nickname, String profileUrl, String password, boolean isDeleted, Address address) {
+    public User(Long id, String nickname, String profileUrl, String password, boolean isDeleted, Address address, LoginProvider loginProvider) {
         this.id = id;
         this.nickname = nickname;
         this.profileUrl = profileUrl;
         this.password = password;
         this.isDeleted = isDeleted;
         this.address = address;
+        this.loginProvider = loginProvider;
     }
 }
