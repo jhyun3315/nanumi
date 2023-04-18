@@ -1,47 +1,33 @@
-import React, {useState} from 'react';
-import {View, StyleSheet, FlatList, StatusBar, TextInput} from 'react-native';
-import {COLORS, SIZES, assets} from '../../constants';
+import React, {useState, useCallback} from 'react';
+import {View, StyleSheet, FlatList} from 'react-native';
+import {COLORS} from '../../constants';
 import {useNavigation} from '@react-navigation/native';
-import {CircleButton, RectButton} from '../../ui/Button';
 import {AddImageButton, ImageContainer} from './Image';
 import {ProductCategory, ProductTitle} from './ProductInfo';
 import {SafeAreaView} from 'react-native-safe-area-context';
-
-const CreateHeader = ({navigation}) => (
-  <View style={styles.header}>
-    <CircleButton
-      imgUrl={assets.left}
-      handlePress={() => {
-        navigation.goBack();
-      }}
-      left={16}
-      top={StatusBar.currentHeight - 12}
-    />
-    <RectButton
-      minWidth={64}
-      handlePress={() => console.log('등록')}
-      position={'absolute'}
-      right={16}
-      top={StatusBar.currentHeight - 12}>
-      등록
-    </RectButton>
-  </View>
-);
+import {CreateHeader} from '../../ui/CreateHeader';
 
 const PostCreateForm = () => {
+  console.log('렌더링 확인');
   const navigation = useNavigation();
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState('');
-
-  const handleCategorySelected = category => {
-    setSelectedCategory(category);
-    setModalVisible(false);
-  };
-
   const [images, setImages] = useState([
     'https://dnvefa72aowie.cloudfront.net/origin/article/202304/f4dc3285f453c0907743cc05c3c474a03dad9c360e5740f6728d0c710857bcb4.webp?q=95&s=1440x1440&t=inside',
     'https://dnvefa72aowie.cloudfront.net/origin/article/202304/540cdd9013c26f46e1e196f31d91591670d5480e927930dd1d0f37089d05cc67.webp?q=95&s=1440x1440&t=inside',
   ]);
+
+  const handleCategorySelected = useCallback(category => {
+    setSelectedCategory(category);
+    setModalVisible(false);
+  }, []);
+
+  const renderItem = useCallback(
+    ({item}) => <ImageContainer data={item} />,
+    [],
+  );
+
+  const keyExtractor = useCallback((_, index) => `image-${index}`, []);
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: COLORS.white}}>
@@ -53,8 +39,8 @@ const PostCreateForm = () => {
             horizontal={true}
             showsHorizontalScrollIndicator={false}
             data={images}
-            keyExtractor={(_, index) => `image-${index}`}
-            renderItem={({item}) => <ImageContainer data={item} />}
+            keyExtractor={keyExtractor}
+            renderItem={renderItem}
           />
         </View>
         <ProductTitle />
@@ -76,12 +62,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 16,
   },
-  header: {
-    width: '100%',
-    height: 60,
-    flexDirection: 'row',
-    marginBottom: SIZES.base,
-  },
+
   imageContainer: {
     flexDirection: 'row',
     alignItems: 'center',

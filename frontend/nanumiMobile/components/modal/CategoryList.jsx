@@ -74,7 +74,6 @@ const CATEGORIES = [
 ];
 
 const RenderCategory = ({item, handleCategorySelected}) => {
-  console.log(item);
   return (
     <Pressable
       style={styles.categoryItem}
