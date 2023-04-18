@@ -21,7 +21,7 @@ export const AddImageButton = () => {
   return (
     <Pressable style={styles.addButton}>
       <Icon name="camera" color={COLORS.primary} />
-      <Text>0/10</Text>
+      <Text style={{color: COLORS.primary}}>0/10</Text>
     </Pressable>
   );
 };

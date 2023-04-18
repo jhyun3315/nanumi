@@ -6,6 +6,7 @@ import LoginScreen from './../screens/LoginScreen';
 import RegisterScreen from '../screens/RegisterScreen';
 import CategoryScreen from '../screens/CategoryScreen';
 import PostCreateFormScreen from '../screens/PostCreateFormScreen';
+import CreateCategoryScreen from '../screens/CreateCategoryScreen';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {NavigationContainer} from '@react-navigation/native';
 
@@ -35,6 +36,14 @@ const StackNavigator = () => {
         <Stack.Screen
           name="Category"
           component={CategoryScreen}
+          options={{
+            presentation: 'modal',
+            animation: 'slide_from_bottom',
+          }}
+        />
+        <Stack.Screen
+          name="CreateCategory"
+          component={CreateCategoryScreen}
           options={{
             presentation: 'modal',
             animation: 'slide_from_bottom',

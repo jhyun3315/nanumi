@@ -154,6 +154,7 @@ const styles = StyleSheet.create({
   },
   categoryName: {
     marginTop: SIZES.base,
+    color: COLORS.primary,
   },
 });
 

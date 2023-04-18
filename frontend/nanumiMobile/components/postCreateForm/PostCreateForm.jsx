@@ -1,9 +1,11 @@
 import React, {useState} from 'react';
-import {View, StyleSheet, FlatList, StatusBar} from 'react-native';
+import {View, StyleSheet, FlatList, StatusBar, TextInput} from 'react-native';
 import {SIZES, assets} from '../../constants';
 import {useNavigation} from '@react-navigation/native';
 import {CircleButton, RectButton} from '../../ui/Button';
 import {AddImageButton, ImageContainer} from './Image';
+import {ProductCategory, ProductTitle} from './ProductInfo';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 const CreateHeader = ({navigation}) => (
   <View style={styles.header}>
@@ -34,19 +36,23 @@ const PostCreateForm = () => {
   ]);
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={{flex: 1}}>
       <CreateHeader navigation={navigation} />
-      <View style={styles.imageContainer}>
-        <AddImageButton />
-        <FlatList
-          horizontal={true}
-          showsHorizontalScrollIndicator={false}
-          data={images}
-          keyExtractor={(_, index) => `image-${index}`}
-          renderItem={({item}) => <ImageContainer data={item} />}
-        />
+      <View style={styles.container}>
+        <View style={styles.imageContainer}>
+          <AddImageButton />
+          <FlatList
+            horizontal={true}
+            showsHorizontalScrollIndicator={false}
+            data={images}
+            keyExtractor={(_, index) => `image-${index}`}
+            renderItem={({item}) => <ImageContainer data={item} />}
+          />
+        </View>
+        <ProductTitle />
+        <ProductCategory navigation={navigation} />
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -55,6 +61,7 @@ export default PostCreateForm;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingHorizontal: 16,
   },
   header: {
     width: '100%',
@@ -65,6 +72,5 @@ const styles = StyleSheet.create({
   imageContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 16,
   },
 });
