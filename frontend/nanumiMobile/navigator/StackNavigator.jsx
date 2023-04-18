@@ -5,6 +5,7 @@ import SearchScreen from '../screens/SearchScreen';
 import LoginScreen from './../screens/LoginScreen';
 import RegisterScreen from '../screens/RegisterScreen';
 import CategoryScreen from '../screens/CategoryScreen';
+import PostCreateFormScreen from '../screens/PostCreateFormScreen';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {NavigationContainer} from '@react-navigation/native';
 
@@ -23,7 +24,14 @@ const StackNavigator = () => {
         <Stack.Screen name="Search" component={SearchScreen} />
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Register" component={RegisterScreen} />
-
+        <Stack.Screen
+          name="PostCreateForm"
+          component={PostCreateFormScreen}
+          options={{
+            presentation: 'modal',
+            animation: 'slide_from_bottom',
+          }}
+        />
         <Stack.Screen
           name="Category"
           component={CategoryScreen}

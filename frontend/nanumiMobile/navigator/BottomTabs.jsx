@@ -11,7 +11,7 @@ import {GlobalColors} from '../constants/color';
 
 const Tab = createBottomTabNavigator();
 
-const BottomTabs = () => {
+const BottomTabs = ({navigation}) => {
   return (
     <Tab.Navigator
       screenOptions={{
@@ -58,11 +58,17 @@ const BottomTabs = () => {
       <Tab.Screen
         name="PostCreateForm"
         component={PostCreateFormScreen}
-        options={({}) => ({
+        options={({a}) => ({
           title: '게시글 작성',
           tabBarIcon: ({color, size}) => (
             <Icon name="add-circle-outline" color={color} size={size} />
           ),
+        })}
+        listeners={() => ({
+          tabPress: e => {
+            e.preventDefault();
+            navigation.navigate('PostCreateForm');
+          },
         })}
       />
       <Tab.Screen
