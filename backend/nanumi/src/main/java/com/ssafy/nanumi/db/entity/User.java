@@ -5,11 +5,8 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -19,10 +16,10 @@ public class User extends BaseTimeEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id",nullable = false)
-    private Long id;
+    private long id;
 
     @Column(name="nickname", columnDefinition="VARCHAR(20)", nullable = false)
-    private String nickName;
+    private String nickname;
 
     @Column(name="profile_url", columnDefinition="VARCHAR(150)", nullable = false)
     private String profileUrl;
@@ -38,9 +35,9 @@ public class User extends BaseTimeEntity {
     private Address address;
 
     @Builder
-    public User(Long id, String nickName, String profileUrl, String password, boolean isDeleted, Address address) {
+    public User(Long id, String nickname, String profileUrl, String password, boolean isDeleted, Address address) {
         this.id = id;
-        this.nickName = nickName;
+        this.nickname = nickname;
         this.profileUrl = profileUrl;
         this.password = password;
         this.isDeleted = isDeleted;

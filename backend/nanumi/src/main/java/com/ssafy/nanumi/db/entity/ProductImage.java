@@ -9,9 +9,9 @@ import javax.persistence.*;
 
 @Entity
 @Getter
-@Table(name="images")
+@Table(name="product_images")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Image extends BaseTimeEntity {
+public class ProductImage extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id",nullable = false)

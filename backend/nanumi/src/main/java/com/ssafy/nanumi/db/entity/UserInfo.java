@@ -7,6 +7,7 @@ import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Getter
 @Entity
@@ -19,39 +20,45 @@ public class UserInfo {
     @Column(name = "id", nullable = false)
     private long id;
 
-    @OneToOne
-    @Column(name = "user_id")
-    private User user;
-
     @ColumnDefault("0")
     @Column(name = "star_point")
     private double starPoint;
 
     @ColumnDefault("0")
-    @Column(name="rating", columnDefinition="DECIMAL(2,1)", nullable = false)
+    @Column(name="rating", nullable = false)
     private double rating;
 
     @ColumnDefault("브론즈")
-    @Column(name="tier", columnDefinition="VARCHAR(5)", nullable = false)
+    @Column(name="tier", nullable = false)
     private String tier;
 
     @ColumnDefault("0")
-    @Column(name="temperature", columnDefinition="DECIMAL(4,1)", nullable = false)
+    @Column(name="temperature", nullable = false)
     private double temperature;
 
     @ColumnDefault("0")
-    @Column(name="visit_counts", columnDefinition="INT", nullable = false)
+    @Column(name="visit_count", nullable = false)
     private long visitCount;
 
     @ColumnDefault("0")
-    @Column(name = "give_count", columnDefinition = "INT", nullable = false)
+    @Column(name = "give_count", nullable = false)
     private long giveCount;
 
     @ColumnDefault("0")
-    @Column(name="given_count", columnDefinition="INT", nullable = false)
+    @Column(name="given_count", nullable = false)
     private long givenCount;
 
     @ColumnDefault("0")
     @Column(name = "reported_total_count")
     private long reportedTotalCount;
+
+    @Column(name = "stop_date")
+    private LocalDateTime stopDate;
+
+    @Column(name = "refresh_token ")
+    private String refreshToken;
+
+    @OneToOne
+    @Column(name = "user_id")
+    private User user;
 }
