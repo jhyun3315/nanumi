@@ -3,7 +3,6 @@ import {View, Image, Text} from 'react-native';
 import {SIZES, COLORS, SHADOWS, assets, FONTS} from '../../constants';
 
 export const ProductTitle = ({title, titleSize, subTitle, subTitleSize}) => {
-  console.log(title);
   return (
     <View>
       <Text

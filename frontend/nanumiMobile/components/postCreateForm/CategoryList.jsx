@@ -1,17 +1,14 @@
 import React from 'react';
-import {useNavigation} from '@react-navigation/native';
 import {
   SafeAreaView,
-  View,
-  Text,
-  Pressable,
   FlatList,
-  Image,
   StyleSheet,
+  Pressable,
+  Image,
+  Text,
 } from 'react-native';
-import {COLORS, Data, SIZES} from '../../constants';
-import {productState} from '../../state/product';
-import {useRecoilState} from 'recoil';
+import {COLORS, SIZES, FONTS} from '../../constants';
+import {useNavigation} from '@react-navigation/native';
 import BackHeader from '../../ui/BackHeader';
 
 const CATEGORIES = [
@@ -77,68 +74,53 @@ const CATEGORIES = [
   },
 ];
 
-const Category = () => {
-  const navigation = useNavigation();
-  const [data, setData] = useRecoilState(productState);
-  const handleCategoryClick = categoryKey => {
-    const selectedData = Data.filter(item => item.key === categoryKey);
-    setData(selectedData);
-    navigation.goBack();
-  };
-
-  const renderCategory = ({item}) => (
-    <Pressable
-      style={styles.categoryItem}
-      onPress={() => handleCategoryClick(item.key)}>
-      <Image
-        style={styles.categoryImage}
-        source={item.source}
-        resizeMode="contain"
-      />
+const renderItem = ({item}) => {
+  return (
+    <Pressable style={styles.categoryItem} onPress={() => {}}>
+      <Image style={styles.categoryImage} source={item.source} />
       <Text style={styles.categoryName}>{item.name}</Text>
     </Pressable>
   );
+};
+
+const CategoryList = () => {
+  const navigation = useNavigation();
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.categoryContainer}>
       <BackHeader navigation={navigation} />
-      <View style={styles.categoryContainer}>
-        <FlatList
-          data={CATEGORIES}
-          keyExtractor={item => `${item.id}`}
-          numColumns={3}
-          columnWrapperStyle={{justifyContent: 'space-between'}}
-          renderItem={renderCategory}
-          showsVerticalScrollIndicator={false}
-        />
-      </View>
+      <FlatList
+        data={CATEGORIES}
+        renderItem={renderItem}
+        keyExtractor={item => item.key.toString()}
+      />
     </SafeAreaView>
   );
 };
 
+export default CategoryList;
+
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
+  categoryContainer: {
+    width: '100%',
     backgroundColor: COLORS.white,
   },
-  categoryContainer: {
-    paddingHorizontal: SIZES.padding,
-    flex: 1,
-  },
   categoryItem: {
-    flex: 1 / 3,
+    flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: SIZES.base * 2,
-    marginTop: SIZES.base * 2,
+    width: '100%',
+    marginVertical: 10,
+    paddingHorizontal: SIZES.extraLarge,
   },
   categoryImage: {
-    width: 24,
-    height: 24,
+    width: SIZES.extraLarge,
+    height: SIZES.extraLarge,
+    marginBottom: SIZES.base,
+    marginRight: SIZES.base,
   },
   categoryName: {
-    marginTop: SIZES.base,
+    fontFamily: FONTS.medium,
+    fontSize: SIZES.font,
     color: COLORS.primary,
   },
 });
-
-export default Category;

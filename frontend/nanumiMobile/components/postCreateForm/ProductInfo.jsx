@@ -1,33 +1,6 @@
 import React from 'react';
-import {
-  View,
-  TextInput,
-  StyleSheet,
-  Pressable,
-  Text,
-  SafeAreaView,
-  StatusBar,
-} from 'react-native';
-import {COLORS, FONTS, SIZES, assets} from '../../constants';
-import {CircleButton} from '../../ui/Button';
-import {useNavigation} from '@react-navigation/native';
-
-const DetailHeader = ({navigation}) => (
-  <View
-    style={{
-      width: '100%',
-      height: 60,
-    }}>
-    <CircleButton
-      imgUrl={assets.left}
-      handlePress={() => {
-        navigation.goBack();
-      }}
-      left={16}
-      top={StatusBar.currentHeight - 12}
-    />
-  </View>
-);
+import {View, TextInput, StyleSheet, Pressable} from 'react-native';
+import {COLORS, FONTS, SIZES} from '../../constants';
 
 export const ProductTitle = () => {
   return (
@@ -41,30 +14,21 @@ export const ProductTitle = () => {
   );
 };
 
-export const ProductCategory = ({navigation}) => {
+export const ProductCategory = ({navigation, category, setCategory}) => {
   return (
     <Pressable
       style={styles.container}
       onPress={() => {
-        navigation.navigate('CreateCategory');
+        navigation.navigate('CreateCategory', {setCategory});
       }}>
       <TextInput
         placeholder="카테고리"
         placeholderTextColor={COLORS.gray}
         style={[styles.textInput, styles.category]}
         editable={false}
+        value={category}
       />
     </Pressable>
-  );
-};
-
-export const CategoryList = () => {
-  const navigation = useNavigation();
-
-  return (
-    <SafeAreaView>
-      <DetailHeader navigation={navigation} />
-    </SafeAreaView>
   );
 };
 
@@ -76,16 +40,14 @@ const styles = StyleSheet.create({
     margin: 0,
     marginBottom: SIZES.base,
   },
-  textInput: {},
   title: {
     color: COLORS.primary,
     fontFamily: FONTS.bold,
     lineHeight: 32,
   },
-
   category: {
     color: COLORS.primary,
-    fontFamily: FONTS.bold,
+    fontFamily: FONTS.medium,
     lineHeight: 24,
   },
 });
