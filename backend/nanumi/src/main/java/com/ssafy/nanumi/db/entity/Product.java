@@ -24,7 +24,7 @@ public class Product extends BaseTimeEntity {
     private String content;
 
     @Column(name="is_closed", columnDefinition = "TINYINT", nullable = false)
-    private boolean is_closed;
+    private boolean isClosed;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="address_id")
@@ -43,10 +43,9 @@ public class Product extends BaseTimeEntity {
         this.id = id;
         this.name = name;
         this.content = content;
-        this.is_closed = is_closed;
+        this.isClosed = is_closed;
         this.address = address;
         this.user = user;
         this.category = category;
     }
-
 }

@@ -18,6 +18,6 @@ public class Category {
     @Column(name="name", columnDefinition="VARCHAR(20)", nullable = false)
     private String name;
 
-    @Column(name="name", columnDefinition="VARCHAR(150)", nullable = false)
-    private String image_url;
+    @Column(name="image_url", columnDefinition="VARCHAR(150)", nullable = false)
+    private String imageUrl;
 }
