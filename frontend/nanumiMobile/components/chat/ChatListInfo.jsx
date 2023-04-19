@@ -1,15 +1,33 @@
 import React from 'react';
 import {View, Text, Pressable, StyleSheet, Image} from 'react-native';
 import {COLORS, FONTS, SIZES} from '../../constants';
-export const ChatListItem = ({data}) => {
+export const ChatListItem = ({data, navigation}) => {
   const showStoryCircle = () => {};
+
+  const showNotification = type => {
+    if (data?.notification && type === 'number') {
+      return (
+        <View style={styles.notificationCircle}>
+          <Text style={styles.notification}>{data?.notification}</Text>
+        </View>
+      );
+    } else if (data?.notification && type === 'imageCircle') {
+      return {
+        borderColor: COLORS.primary,
+      };
+    }
+  };
 
   return (
     <View style={styles.chatContainer}>
-      <Pressable style={styles.conversation}>
-        <Pressable style={[styles.imageContainer]}>
+      <Pressable
+        style={styles.conversation}
+        onPress={() => {
+          navigation.navigate('ChatDetail');
+        }}>
+        <View style={[styles.imageContainer]}>
           <Image style={styles.image} source={data?.profileImage} />
-        </Pressable>
+        </View>
         <View
           style={{
             flex: 1,
@@ -20,14 +38,16 @@ export const ChatListItem = ({data}) => {
               flexDirection: 'row',
               justifyContent: 'space-between',
             }}>
-            <Text numberOfLine={1} style={[styles.text]}>
+            <Text numberOfLine={1} style={[styles.text, styles.username]}>
               {data?.username}
             </Text>
-            <Text style={[styles.text]}>{data?.time}</Text>
+            <Text style={[styles.text, styles.time]}>{data?.time}</Text>
           </View>
-          <View>
-            <Text style={[styles.text]}>{data?.lastMessage}</Text>
-            <Text style={[styles.text]}>{data?.notification}</Text>
+          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+            <Text style={[styles.text, styles.message]}>
+              {data?.lastMessage}
+            </Text>
+            {showNotification('number')}
           </View>
         </View>
       </Pressable>
@@ -61,5 +81,31 @@ const styles = StyleSheet.create({
   image: {
     width: '100%',
     height: '100%',
+  },
+  username: {
+    fontSize: SIZES.large,
+    width: 210,
+  },
+  message: {
+    fontSize: SIZES.extraLarge / 2,
+    color: COLORS.gray,
+  },
+  time: {
+    fontSize: SIZES.extraLarge / 2,
+    color: COLORS.gray,
+  },
+  notificationCircle: {
+    backgroundColor: COLORS.violet,
+    borderRadius: SIZES.extraLarge,
+    height: SIZES.large,
+    width: SIZES.large,
+    marginRight: SIZES.base,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  notification: {
+    color: COLORS.white,
+    fontSize: SIZES.base * 1.3,
+    fontFamily: FONTS.medium,
   },
 });
