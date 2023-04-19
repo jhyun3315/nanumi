@@ -1,7 +1,7 @@
 import React from 'react';
 import {StatusBar, View, StyleSheet} from 'react-native';
 import {CircleButton, RectButton} from './Button';
-import {SIZES, assets} from '../constants';
+import {COLORS, SIZES, assets} from '../constants';
 
 export const CreateHeader = ({navigation}) => (
   <View style={styles.header}>
@@ -29,6 +29,6 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 60,
     flexDirection: 'row',
-    marginBottom: SIZES.base,
+    marginBottom: SIZES.base * 2,
   },
 });

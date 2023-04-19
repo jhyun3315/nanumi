@@ -8,7 +8,7 @@ export const ImageContainer = ({data, handlePress}) => {
       <Pressable
         style={styles.deleteContainer}
         onPress={() => {
-          handlePress(data.name);
+          handlePress(data.id);
         }}>
         <Icon name="close" color={COLORS.primary} size={20} />
       </Pressable>
@@ -28,11 +28,11 @@ export const AddImageButton = ({handlePress}) => {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 6,
+    paddingHorizontal: 6,
   },
   deleteContainer: {
     position: 'absolute',
-    top: 0,
+    top: -5,
     right: 0,
     zIndex: 1,
     alignItems: 'center',
@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
   addButton: {
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: SIZES.font,
+    borderRadius: SIZES.base / 2,
     width: 64,
     height: 64,
     borderWidth: 1,

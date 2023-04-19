@@ -1,12 +1,13 @@
 import React, {useState, useCallback} from 'react';
 import {View, StyleSheet, FlatList} from 'react-native';
-import {COLORS} from '../../constants';
+import {COLORS, SIZES} from '../../constants';
 import {useNavigation} from '@react-navigation/native';
 import {AddImageButton, ImageContainer} from './Image';
 import {ProductCategory, ProductDesc, ProductTitle} from './ProductInfo';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {CreateHeader} from '../../ui/CreateHeader';
 import {openPicker} from '@baronha/react-native-multiple-image-picker';
+import {generateUniqueKey} from '../../util/uniqueId';
 
 const PostCreateForm = () => {
   const navigation = useNavigation();
@@ -23,9 +24,11 @@ const PostCreateForm = () => {
     try {
       const response = await openPicker({
         usedCameraButton: false,
-        maxVideo: 1,
-        selectedAssets: images,
+        mediaType: 'image',
+        doneTitle: '완료',
+        selectedAssets: [],
         isExportThumbnail: true,
+        maxSelectedAssets: 3,
         isCrop: true,
         isCropCircle: true,
       });
@@ -33,6 +36,7 @@ const PostCreateForm = () => {
         const nameParts = image.fileName.split('.');
         const format = nameParts[nameParts.length - 1];
         return {
+          id: generateUniqueKey(),
           uri: image.realPath,
           name: image.fileName,
           format: format,
@@ -44,8 +48,8 @@ const PostCreateForm = () => {
     }
   };
 
-  const handleImageDelete = imageName => {
-    const newImages = images.filter(image => image.name !== imageName);
+  const handleImageDelete = id => {
+    const newImages = images.filter(image => image.id !== id);
     setImages(newImages);
   };
 
@@ -58,13 +62,15 @@ const PostCreateForm = () => {
       <CreateHeader navigation={navigation} />
       <View style={styles.container}>
         <View style={styles.imageContainer}>
-          <AddImageButton handlePress={handleImageSelection} />
           <FlatList
             horizontal={true}
             showsHorizontalScrollIndicator={false}
             data={images}
             keyExtractor={(_, index) => `image-${index}`}
             renderItem={renderItem}
+            ListHeaderComponent={
+              <AddImageButton handlePress={handleImageSelection} />
+            }
           />
         </View>
         <ProductTitle />
@@ -91,5 +97,6 @@ const styles = StyleSheet.create({
   imageContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+    marginBottom: SIZES.large,
   },
 });
