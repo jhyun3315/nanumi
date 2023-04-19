@@ -1,5 +1,5 @@
 import React, {useState, useCallback} from 'react';
-import {View, StyleSheet, FlatList} from 'react-native';
+import {View, StyleSheet, FlatList, Alert} from 'react-native';
 import {COLORS, SIZES} from '../../constants';
 import {useNavigation} from '@react-navigation/native';
 import {AddImageButton, ImageContainer} from './Image';
@@ -28,9 +28,10 @@ const PostCreateForm = () => {
         doneTitle: '완료',
         selectedAssets: [],
         isExportThumbnail: true,
-        maxSelectedAssets: 3,
+        maxSelectedAssets: 10 - images.length,
         isCrop: true,
         isCropCircle: true,
+        usedCameraButton: true,
       });
       const paths = response.map(image => {
         const nameParts = image.fileName.split('.');
@@ -69,7 +70,10 @@ const PostCreateForm = () => {
             keyExtractor={(_, index) => `image-${index}`}
             renderItem={renderItem}
             ListHeaderComponent={
-              <AddImageButton handlePress={handleImageSelection} />
+              <AddImageButton
+                handlePress={handleImageSelection}
+                images={images}
+              />
             }
           />
         </View>

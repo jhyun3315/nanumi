@@ -11,7 +11,7 @@ const ProductCard = ({data}) => {
     <View style={styles.container}>
       <View style={styles.imageContainer}>
         <Image
-          source={{uri: data.image}}
+          source={{uri: data.image[0]}}
           resizeMode="contain"
           style={styles.image}
         />
