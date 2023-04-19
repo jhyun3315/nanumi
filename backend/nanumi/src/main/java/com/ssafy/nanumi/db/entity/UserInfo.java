@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 public class UserInfo {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
+    @Column(name = "id")
     private long id;
 
     @ColumnDefault("0")
@@ -29,7 +29,7 @@ public class UserInfo {
     @Column(name="rating", nullable = false)
     private double rating;
 
-    @ColumnDefault("브론즈")
+    @ColumnDefault("'브론즈'")
     @Column(name="tier", nullable = false)
     private String tier;
 
@@ -56,11 +56,11 @@ public class UserInfo {
     @Column(name = "stop_date")
     private LocalDateTime stopDate;
 
-    @Column(name = "refresh_token ")
+    @Column(name = "refresh_token")
     private String refreshToken;
 
     @OneToOne
-    @Column(name = "user_id")
+    @JoinColumn(name = "user_id")
     private User user;
 
     @Builder
