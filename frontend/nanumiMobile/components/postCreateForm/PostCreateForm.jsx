@@ -1,5 +1,5 @@
 import React, {useState, useCallback} from 'react';
-import {View, StyleSheet, FlatList, Alert} from 'react-native';
+import {View, StyleSheet, FlatList} from 'react-native';
 import {COLORS, SIZES} from '../../constants';
 import {useNavigation} from '@react-navigation/native';
 import {AddImageButton, ImageContainer} from './Image';

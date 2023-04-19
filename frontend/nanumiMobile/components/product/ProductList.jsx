@@ -11,7 +11,7 @@ const ProductList = ({isSearch, data}) => {
         <FlatList
           data={data}
           renderItem={({item}) => <ProductCard data={item} />}
-          keyExtractor={item => item.id}
+          keyExtractor={item => item.id.toString()}
           showsVerticalScrollIndicator={false}
           ListHeaderComponent={isSearch ? '' : <Header />}
           contentContainerStyle={styles.contentContainerStyle}

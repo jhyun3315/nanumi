@@ -86,8 +86,7 @@ const ProductDetail = ({route, navigation}) => {
         </RectButton>
       </View>
       <FlatList
-        data={data.bids}
-        keyExtractor={item => item.id}
+        keyExtractor={item => item.id.toString}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{paddingBottom: SIZES.extraLarge * 2}}
         ListHeaderComponent={() => (

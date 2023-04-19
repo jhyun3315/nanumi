@@ -50,7 +50,7 @@ export const ProductDesc = () => {
         placeholder="OO동에 올릴 게시글 내용을 작성해주세요 (나눔 금지 물품은 게시가 제한될 수 있습니다.)"
         placeholderTextColor={COLORS.gray}
         style={[styles.textInput, styles.desc]}
-        numberOfLines={2}
+        numberOfLines={6}
         multiline={true}
       />
     </View>
