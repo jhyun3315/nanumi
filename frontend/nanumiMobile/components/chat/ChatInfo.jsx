@@ -6,11 +6,13 @@ import {
   Pressable,
   TextInput,
   ScrollView,
+  Dimensions,
 } from 'react-native';
 import {MoreHeader} from '../../ui/BackHeader';
 import {SIZES, COLORS, FONTS} from '../../constants';
 import {MESSAGES} from '../../constants/dummy';
 import Icon from 'react-native-ionicons';
+const {height} = Dimensions.get('window');
 
 export const ChatHeader = ({navigation}) => {
   return (
@@ -101,6 +103,10 @@ export const MessagesList = () => {
 const styles = StyleSheet.create({
   inputContainer: {
     justifyContent: 'center',
+    width: '100%',
+    position: 'relative',
+    bottom: 0,
+    zIndex: 1,
   },
   innerContainer: {
     width: '100%',

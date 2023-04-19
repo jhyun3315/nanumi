@@ -1,8 +1,7 @@
 import React from 'react';
-import {FlatList, SafeAreaView, Text} from 'react-native';
+import {FlatList, SafeAreaView} from 'react-native';
 import {COLORS, assets} from '../../constants';
 import {ChatListItem} from './ChatListInfo';
-import {MoreHeader} from '../../ui/BackHeader';
 const USER = [
   {
     profileImage: assets.person01,
@@ -51,6 +50,7 @@ const USER = [
     notification: '3',
   },
 ];
+
 const ChatList = ({navigation}) => {
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: COLORS.white}}>

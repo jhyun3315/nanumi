@@ -15,13 +15,7 @@ const BottomTabs = ({navigation}) => {
     <Tab.Navigator
       screenOptions={{
         tabBarStyle: {
-          position: 'relative',
-          bottom: 0,
-          left: 0,
-          right: 0,
           height: 60,
-          borderTopRightRadius: Platform.OS === 'ios' ? 0 : 24,
-          borderTopLeftRadius: Platform.OS === 'ios' ? 0 : 24,
         },
         tabBarActiveTintColor: COLORS.violet,
         tabBarLabelStyle: {
