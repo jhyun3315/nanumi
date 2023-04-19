@@ -2,37 +2,37 @@ import React from 'react';
 import Icon from 'react-native-ionicons';
 import {View, Pressable, Image, Text, StyleSheet} from 'react-native';
 import {COLORS, SIZES} from '../../constants';
-export const ImageContainer = ({data}) => {
+export const ImageContainer = ({data, handlePress}) => {
   return (
     <View style={styles.container}>
       <Pressable
         style={styles.deleteContainer}
         onPress={() => {
-          console.log('on Press');
+          handlePress(data.id);
         }}>
         <Icon name="close" color={COLORS.primary} size={20} />
       </Pressable>
-      <Image style={styles.imageBox} source={{uri: data}} />
+      <Image style={styles.imageBox} source={{uri: `file:///${data.uri}`}} />
     </View>
   );
 };
 
-export const AddImageButton = () => {
+export const AddImageButton = ({images, handlePress}) => {
   return (
-    <Pressable style={styles.addButton}>
+    <Pressable style={styles.addButton} onPress={handlePress}>
       <Icon name="camera" color={COLORS.primary} />
-      <Text style={{color: COLORS.primary}}>0/10</Text>
+      <Text style={{color: COLORS.primary}}>{images.length}/10</Text>
     </Pressable>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    padding: 6,
+    paddingHorizontal: 6,
   },
   deleteContainer: {
     position: 'absolute',
-    top: 0,
+    top: -5,
     right: 0,
     zIndex: 1,
     alignItems: 'center',
@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
   addButton: {
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: SIZES.font,
+    borderRadius: SIZES.base / 2,
     width: 64,
     height: 64,
     borderWidth: 1,
