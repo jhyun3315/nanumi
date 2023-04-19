@@ -6,6 +6,7 @@ import LoginScreen from './../screens/LoginScreen';
 import RegisterScreen from '../screens/RegisterScreen';
 import CategoryScreen from '../screens/CategoryScreen';
 import PostCreateFormScreen from '../screens/PostCreateFormScreen';
+import ChatDetailScreen from '../screens/ChatDetailScreen';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {NavigationContainer} from '@react-navigation/native';
 
@@ -24,6 +25,7 @@ const StackNavigator = () => {
         <Stack.Screen name="Search" component={SearchScreen} />
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Register" component={RegisterScreen} />
+        <Stack.Screen name="ChatDetail" component={ChatDetailScreen} />
         <Stack.Screen
           name="PostCreateForm"
           component={PostCreateFormScreen}

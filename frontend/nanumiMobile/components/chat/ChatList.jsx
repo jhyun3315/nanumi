@@ -1,34 +1,30 @@
 import React from 'react';
-import {SafeAreaView} from 'react-native';
-import {ChatHeader, ChatInput, MessagesList} from './ChatInfo';
+import {FlatList, SafeAreaView, Text} from 'react-native';
 import {COLORS, assets} from '../../constants';
+import {ChatListItem} from './ChatListInfo';
 
-const CHAT = [
+const USER = [
   {
-    username: '오육56',
     profileImage: assets.person01,
-    isBlocked: false,
-    message: '언제 어디서 만날까',
-  },
-  {
-    username: '오육78',
-    profileImage: assets.person02,
-    isBlocked: true,
-    message: '언제 어디서 만나실ㄹㄹㄹㄹㄹ?',
-  },
-  {
-    username: '오육칠팔910',
-    profileImage: assets.person03,
-    isBlocked: false,
-    message: '언제 시간 가능?',
+    username: '다람쥐나무',
+    bio: '만나서 반가워요',
+    description: '안녕',
+    lastMessage: '뭐뭐뭐뭐무머ㅜ머',
+    time: '16:00',
+    notification: '3',
+    // isBlocked
+    // isMuted
+    // hasStory
   },
 ];
 const ChatList = ({navigation}) => {
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: COLORS.white}}>
-      <ChatHeader data={CHAT} navigation={navigation} />
-      <MessagesList />
-      <ChatInput />
+      <FlatList
+        data={USER}
+        renderItem={({item}) => <ChatListItem data={item} />}
+        keyExtractor={item => item.username}
+      />
     </SafeAreaView>
   );
 };
