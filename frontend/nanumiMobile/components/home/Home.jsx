@@ -18,7 +18,7 @@ const Home = () => {
       <FocusedStatusBar background={COLORS.secondary} />
       <ProductList isSearch={false} data={data} />
       <CategoryButton
-        minwidth={40}
+        minwidth={48}
         handlePress={() => navigation.navigate('Category')}
       />
     </SafeAreaView>

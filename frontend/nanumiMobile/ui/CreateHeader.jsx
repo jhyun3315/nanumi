@@ -1,7 +1,7 @@
 import React from 'react';
 import {StatusBar, View, StyleSheet} from 'react-native';
 import {CircleButton, RectButton} from './Button';
-import {COLORS, SIZES, assets} from '../constants';
+import {SIZES, assets} from '../constants';
 
 export const CreateHeader = ({navigation}) => (
   <View style={styles.header}>

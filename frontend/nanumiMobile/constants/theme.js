@@ -7,6 +7,7 @@ export const COLORS = {
   disable: '#D1BEFB',
   lightBlue: '#f1f4ff',
   blue: '#1F41BB',
+  lightGray: '#f0f0f0',
 };
 
 export const SIZES = {
