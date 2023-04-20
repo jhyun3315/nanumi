@@ -140,30 +140,24 @@ docker compose down
   - Java
     - OpenJDK 1.8.0_332
   - Springboot
-    - 2.4.5
+    - 2.7.10
   - Gradle
-    - 6.7
+    - 7.6
 - DBMS
 
-  - MySQL
-    - 5.7.35
+  - MariaDB
+    - 10.6.12 
   - Redis
     - 7.0.10
 
 - Deploy
 
-  - Docker
+  - Docker (ubuntu)
     - 20.10.23
   - Docker Compose
     - 2.15.1 -
   - Jenkins
-    - 2.387.1
-  - SonarQube
-    - 8.9
-  - PostGreSQL
-    - 7.3.17
-  - SonarScanner
-    - 4.8.0.2856
+    - 2.387.1   
   - Nginx
     - 1.23.3
 
