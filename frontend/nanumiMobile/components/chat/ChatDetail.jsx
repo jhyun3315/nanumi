@@ -12,7 +12,7 @@ import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
 const ChatDetail = ({navigation}) => {
   const bottomSheetModalRef = useRef(null);
-  const snapPoints = useMemo(() => ['25%', '50%'], []);
+  const snapPoints = useMemo(() => ['25%'], []);
   const handlePresentModalPress = useCallback(() => {
     bottomSheetModalRef.current?.present();
   });
