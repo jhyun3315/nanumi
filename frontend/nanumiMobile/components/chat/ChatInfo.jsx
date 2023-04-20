@@ -6,10 +6,10 @@ import {
   Pressable,
   TextInput,
   ScrollView,
-  Dimensions,
+  Image,
 } from 'react-native';
 import {MoreHeader} from '../../ui/BackHeader';
-import {SIZES, COLORS, FONTS} from '../../constants';
+import {SIZES, COLORS, FONTS, assets} from '../../constants';
 import {MESSAGES} from '../../constants/dummy';
 import Icon from 'react-native-ionicons';
 
@@ -20,6 +20,32 @@ export const ChatHeader = ({navigation, handlePresentModalPress}) => {
         navigation={navigation}
         handlePresentModalPress={handlePresentModalPress}
       />
+    </View>
+  );
+};
+
+export const ChatProductInfo = () => {
+  return (
+    <View style={styles.productContainer}>
+      <Pressable>
+        <Image
+          source={{
+            uri: 'https://dnvefa72aowie.cloudfront.net/origin/article/202304/a57a1ca73e29c26b6b680e9874ba24c8f8c0d7c17fb26087e8489efd40107d0b.jpg?q=95&s=1440x1440&t=inside',
+          }}
+          style={styles.productImage}
+        />
+      </Pressable>
+      <View style={styles.infoContainer}>
+        <Text numberOfLines={1} ellipsizeMode="tail" style={styles.productName}>
+          상품명
+        </Text>
+        <Text
+          numberOfLines={1}
+          ellipsizeMode="tail"
+          style={styles.productDescription}>
+          상품 설명asdasdadasdskldjaskldasjasjasdjjkladkljakldjaskldjakldjak
+        </Text>
+      </View>
     </View>
   );
 };
@@ -96,6 +122,7 @@ export const MessagesList = () => {
       onContentChange={() => {
         scrollView.current.scrollToEnd({animated: true});
       }}>
+      <ChatProductInfo />
       {messages.map((message, index) => (
         <Message
           key={index}
@@ -107,8 +134,6 @@ export const MessagesList = () => {
     </ScrollView>
   );
 };
-
-export const ProductInfo = () => {};
 
 const styles = StyleSheet.create({
   inputContainer: {
@@ -198,5 +223,37 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end',
     fontFamily: FONTS.light,
     fontSize: SIZES.base * 1.2,
+  },
+  productContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderTopWidth: 1,
+    borderBottomWidth: 1,
+    borderBottomColor: COLORS.lightGray,
+    borderTopColor: COLORS.lightGray,
+  },
+  productImage: {
+    width: 50,
+    height: 50,
+    borderRadius: SIZES.base,
+    marginLeft: SIZES.base,
+  },
+  infoContainer: {
+    width: '100%',
+    height: 60,
+    justifyContent: 'center',
+    paddingHorizontal: 10,
+  },
+  productName: {
+    fontFamily: FONTS.medium,
+    width: '80%',
+    color: COLORS.primary,
+    fontSize: SIZES.font,
+  },
+  productDescription: {
+    color: COLORS.primary,
+    fontFamily: FONTS.light,
+    width: '80%',
+    fontSize: SIZES.font - 3,
   },
 });
