@@ -1,6 +1,7 @@
 import React, {useCallback, useRef, useMemo} from 'react';
-import {KeyboardAvoidingView, Pressable, SafeAreaView} from 'react-native';
+import {SafeAreaView} from 'react-native';
 import {ChatHeader, ChatInput, MessagesList} from './ChatInfo';
+import {ChatOptions} from './ChatOptions';
 import {COLORS} from '../../constants';
 import {
   BottomSheetBackdrop,
@@ -26,7 +27,7 @@ const ChatDetail = ({navigation}) => {
     return (
       <BottomSheetBackdrop
         {...props}
-        appearsOnIndex={1}
+        appearsOnIndex={0}
         disappearsOnIndex={-1}
         enableTouchThrough={true}
         pressBehavior="close"
@@ -47,10 +48,11 @@ const ChatDetail = ({navigation}) => {
         </SafeAreaView>
         <BottomSheetModal
           ref={bottomSheetModalRef}
-          index={1}
+          index={0}
           snapPoints={snapPoints}
-          backdropComponent={renderBackDrop}
-        />
+          backdropComponent={renderBackDrop}>
+          <ChatOptions />
+        </BottomSheetModal>
       </BottomSheetModalProvider>
     </GestureHandlerRootView>
   );
