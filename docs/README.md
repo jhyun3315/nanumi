@@ -33,30 +33,9 @@
 
 ## 시작하기
 
-1. 원격 repository를 clone 합니다.
-
-2. 프로젝트의 root에서 docker compose실행
-
-```sh
-docker compose up -d
-```
-
-3. 서비스 실행 확인
-
-- ec2 도메인으로 접속
-
-4. 서비스 종료
-
-```sh
-docker compose down
-```
-
-6. 자세한것은 EXEC폴더 확인
-
-
 # 기획
 
-## 선! 착! 순! 무료나눔 서비스
+## 선! 착! 순! 무료나눔 서비스 !
 
 ### 선착순 무료나눔 서비스란?
 
@@ -101,17 +80,15 @@ docker compose down
   - 스토리는 개발, 테스크는 회의로 지정하였습니다.
 
 
-### GANT CHART
-<H2> 간트 차트 : https://docs.google.com/spreadsheets/d/1NHoydTWg1ADMseU1uPcPble51ckV7ikH/edit?usp=sharing&ouid=117122534063776026733&rtpof=true&sd=true  
+## GANT CHART
+<H3> 간트 차트 : https://docs.google.com/spreadsheets/d/1NHoydTWg1ADMseU1uPcPble51ckV7ikH/edit?usp=sharing&ouid=117122534063776026733&rtpof=true&sd=true  
 
 
 ## 문서
-<H2> 노션 : https://www.notion.so/SSAFY-2-a2891226509543cd8f5b97f5d9211ccb?pvs=4  
+<H3> 노션 : https://www.notion.so/SSAFY-2-a2891226509543cd8f5b97f5d9211ccb?pvs=4  
 
 
 ### 회의록
-
-![image](https://user-images.githubusercontent.com/76441040/230306624-37b4cc26-654e-4752-bd66-0f4163cb2898.png)
 
 - 주 단위로 회의록을 작성, 스프린트 회의, 회고, 팀미팅을 기록
 
@@ -151,25 +128,23 @@ docker compose down
   - Nginx
     - 1.23.3
 
-  ![image](https://user-images.githubusercontent.com/76441040/230309669-ad9642d4-f416-4ead-8a53-c399dbf7baf8.png)
 
-- 네이밍 룰이나, 개발하는데 있어 변수명, 폴더 구조들을 미리 정해서 최대한 통일성 있도록 노력함
 
 ### 기능명세
 
-<H2> 기능 명세서 : https://raspy-slicer-570.notion.site/bad6048352d24845a799f5ce77677002  
+<H3> 기능 명세서 : https://raspy-slicer-570.notion.site/bad6048352d24845a799f5ce77677002  
 
 - 세부적으로 기능을 명시하며 우선순위를 지정하여 확인하도록 하였음
 
 ### api명세
 
-<H2> API 명세서 : https://raspy-slicer-570.notion.site/BE-API-de404cf20d6a43cfac442d5e7e577f74  
+<H3> API 명세서 : https://raspy-slicer-570.notion.site/BE-API-de404cf20d6a43cfac442d5e7e577f74  
 
 - api에 대해 각 담당자가 api의 주소와 요청과 응답의 흐름을 정리하였음
 
 ### ERD
 
-  <H2> ERD Cloud : https://raspy-slicer-570.notion.site/DB-ERD-077339d19d2847018dc1aa196873fbfd  
+  <H3> ERD Cloud : https://raspy-slicer-570.notion.site/DB-ERD-077339d19d2847018dc1aa196873fbfd  
 
   - ERD CLOUD를 이용해 작성
 
