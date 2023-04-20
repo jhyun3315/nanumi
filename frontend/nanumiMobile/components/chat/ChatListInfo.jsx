@@ -38,13 +38,20 @@ export const ChatListItem = ({data, navigation}) => {
               flexDirection: 'row',
               justifyContent: 'space-between',
             }}>
-            <Text numberOfLine={1} style={[styles.text, styles.username]}>
+            <Text numberOfLines={1} style={[styles.text, styles.username]}>
               {data?.username}
             </Text>
             <Text style={[styles.text, styles.time]}>{data?.time}</Text>
           </View>
-          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-            <Text style={[styles.text, styles.message]}>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+            }}>
+            <Text
+              numberOfLines={1}
+              ellipsizeMode="tail"
+              style={[styles.text, styles.message]}>
               {data?.lastMessage}
             </Text>
             {showNotification('number')}
@@ -87,6 +94,7 @@ const styles = StyleSheet.create({
     width: 210,
   },
   message: {
+    width: 210,
     fontSize: SIZES.extraLarge / 2,
     color: COLORS.gray,
   },

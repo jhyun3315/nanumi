@@ -43,7 +43,7 @@ export const CloseHeader = ({setModalVisible}) => {
   );
 };
 
-export const MoreHeader = ({navigation}) => {
+export const MoreHeader = ({navigation, handlePresentModalPress}) => {
   return (
     <View style={styles.header}>
       <CircleButton
@@ -56,7 +56,7 @@ export const MoreHeader = ({navigation}) => {
       />
       <MoreButton
         minWidth={48}
-        handlePress={() => console.log('모달띄우기')}
+        handlePress={handlePresentModalPress}
         position={'absolute'}
         right={16}
         top={StatusBar.currentHeight - 12}

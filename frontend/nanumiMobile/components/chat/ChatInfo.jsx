@@ -14,16 +14,21 @@ import {MESSAGES} from '../../constants/dummy';
 import Icon from 'react-native-ionicons';
 const {height} = Dimensions.get('window');
 
-export const ChatHeader = ({navigation}) => {
+export const ChatHeader = ({navigation, handlePresentModalPress}) => {
   return (
-    <>
-      <MoreHeader navigation={navigation} />
-    </>
+    <MoreHeader
+      navigation={navigation}
+      handlePresentModalPress={handlePresentModalPress}
+    />
   );
 };
 
 export const ChatInput = () => {
   const [message, setMessage] = useState('');
+
+  const handleMessage = () => {
+    setMessage('');
+  };
   return (
     <View style={styles.inputContainer}>
       <View style={styles.innerContainer}>
@@ -32,14 +37,15 @@ export const ChatInput = () => {
             multiline
             placeholder="메시지를 입력해주세요..."
             style={styles.input}
+            value={message}
             onChangeText={text => {
               setMessage(text);
             }}
           />
-          <Pressable style={styles.rightIconButtonStyle}>
-            <Icon name="flame" color={COLORS.gray} size={SIZES.extraLarge} />
-          </Pressable>
-          <Pressable style={styles.rightIconButtonStyle}>
+
+          <Pressable
+            style={styles.rightIconButtonStyle}
+            onPress={message ? handleMessage : ''}>
             <Icon
               name={message ? 'send' : 'camera'}
               color={COLORS.gray}
@@ -78,6 +84,7 @@ export const Message = ({time, isLeft, message}) => {
     </View>
   );
 };
+
 export const MessagesList = () => {
   const [messages, setMessages] = useState(MESSAGES);
   const user = useRef(0);
@@ -99,6 +106,8 @@ export const MessagesList = () => {
     </ScrollView>
   );
 };
+
+export const ProductInfo = () => {};
 
 const styles = StyleSheet.create({
   inputContainer: {
@@ -154,6 +163,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   messageOuterContainer: {
+    flexWrap: 'wrap',
     paddingVertical: SIZES.base,
     marginVertical: SIZES.small,
   },
