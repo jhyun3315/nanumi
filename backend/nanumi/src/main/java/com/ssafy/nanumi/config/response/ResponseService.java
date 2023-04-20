@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class ResponseService {
 
+    /* 요청 성공 응답 - 응답 데이터가 없는 경우 */
     public CustomResponse getSuccessResponse() {
         return CustomResponse.builder()
                 .isSuccess(true)
@@ -15,6 +16,7 @@ public class ResponseService {
                 .build();
     }
 
+    /* 요청 응답 - 응답 데이터가 있는 경우 */
     public <T> CustomDataResponse<T> getDataResponse(T data, CustomSuccessStatus status) {
         CustomDataResponse<T> response = new CustomDataResponse<>();
 
@@ -26,6 +28,7 @@ public class ResponseService {
         return response;
     }
 
+    /* 예외 응답 */
     public CustomResponse getExceptionResponse(CustomExceptionStatus status) {
         return CustomResponse.builder()
                 .isSuccess(status.isSuccess())

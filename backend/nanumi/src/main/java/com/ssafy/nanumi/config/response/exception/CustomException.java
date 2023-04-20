@@ -1,10 +1,11 @@
 package com.ssafy.nanumi.config.response.exception;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor
-public class CustomException {
+@AllArgsConstructor
+public class CustomException extends RuntimeException {
 
+    CustomExceptionStatus customExceptionStatus;
 }
