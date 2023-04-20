@@ -81,11 +81,13 @@
 
 
 ## GANT CHART
-<H3> 간트 차트 : https://docs.google.com/spreadsheets/d/1NHoydTWg1ADMseU1uPcPble51ckV7ikH/edit?usp=sharing&ouid=117122534063776026733&rtpof=true&sd=true  
+
+![간트차트](https://user-images.githubusercontent.com/77334903/233376264-6886f7b1-0a3b-4b7d-9c9f-3c76398d89e6.png)
+간트 차트 : https://docs.google.com/spreadsheets/d/1NHoydTWg1ADMseU1uPcPble51ckV7ikH/edit?usp=sharing&ouid=117122534063776026733&rtpof=true&sd=true  
 
 
 ## 문서
-<H3> 노션 : https://www.notion.so/SSAFY-2-a2891226509543cd8f5b97f5d9211ccb?pvs=4  
+노션 : https://www.notion.so/SSAFY-2-a2891226509543cd8f5b97f5d9211ccb?pvs=4  
 
 
 ### 회의록
@@ -131,20 +133,26 @@
 
 
 ### 기능명세
+![기능명세서](https://user-images.githubusercontent.com/77334903/233376949-1b35d945-76b8-4e9e-9586-178605d6e087.png)
 
-<H3> 기능 명세서 : https://raspy-slicer-570.notion.site/bad6048352d24845a799f5ce77677002  
+
+기능 명세서 : https://raspy-slicer-570.notion.site/bad6048352d24845a799f5ce77677002  
 
 - 세부적으로 기능을 명시하며 우선순위를 지정하여 확인하도록 하였음
 
 ### api명세
 
-<H3> API 명세서 : https://raspy-slicer-570.notion.site/BE-API-de404cf20d6a43cfac442d5e7e577f74  
+![API](https://user-images.githubusercontent.com/77334903/233377179-9d3511dd-430c-4bbf-949f-bc5abba94bc1.png)
+
+API 명세서 : https://raspy-slicer-570.notion.site/BE-API-de404cf20d6a43cfac442d5e7e577f74  
 
 - api에 대해 각 담당자가 api의 주소와 요청과 응답의 흐름을 정리하였음
 
 ### ERD
 
-  <H3> ERD Cloud : https://raspy-slicer-570.notion.site/DB-ERD-077339d19d2847018dc1aa196873fbfd  
+  ![image](https://user-images.githubusercontent.com/77334903/233377494-ce20d87d-ae93-4deb-bcd0-14260caacf1b.png)
+
+  ERD Cloud : https://raspy-slicer-570.notion.site/DB-ERD-077339d19d2847018dc1aa196873fbfd  
 
   - ERD CLOUD를 이용해 작성
 
