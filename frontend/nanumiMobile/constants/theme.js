@@ -9,6 +9,7 @@ export const COLORS = {
   lightBlue: '#f1f4ff',
   blue: '#1F41BB',
   lightGray: '#f0f0f0',
+  red: '#f87171',
 };
 
 export const SIZES = {

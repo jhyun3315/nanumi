@@ -6,10 +6,15 @@ export const ChatOptions = () => {
   return (
     <View style={styles.optionContainer}>
       <Pressable style={styles.option}>
-        <Text style={styles.optionText}>신고하기</Text>
+        <Text style={styles.optionText}>거래시작</Text>
       </Pressable>
       <Pressable style={styles.option}>
         <Text style={styles.optionText}>차단하기</Text>
+      </Pressable>
+      <Pressable style={styles.option}>
+        <Text style={[styles.optionText, styles.reportButtonText]}>
+          신고하기
+        </Text>
       </Pressable>
       <Pressable style={[styles.option, styles.exitButton]}>
         <Text style={[styles.optionText, styles.exitButtonText]}>
@@ -42,6 +47,9 @@ const styles = StyleSheet.create({
     fontSize: SIZES.font,
     color: COLORS.primary,
     textAlign: 'center',
+  },
+  reportButtonText: {
+    color: COLORS.red,
   },
   exitButton: {
     borderBottomWidth: 0,

@@ -78,16 +78,17 @@ export const CategoryButton = ({minWidth, handlePress}) => {
   );
 };
 
-export const MoreButton = ({minWidth, handlePress, ...props}) => {
+export const MoreButton = ({minWidth, minHeight, handlePress, ...props}) => {
   return (
     <Pressable
       style={{
         minWidth: minWidth,
+        minHeight: minHeight,
         backgroundColor: COLORS.violet,
-        borderRadius: SIZES.extraLarge,
-        padding: SIZES.small,
+        borderRadius: minWidth / 2,
         position: 'absolute',
         alignItems: 'center',
+        justifyContent: 'center',
         ...props,
       }}
       onPress={handlePress}>

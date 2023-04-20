@@ -12,14 +12,15 @@ import {MoreHeader} from '../../ui/BackHeader';
 import {SIZES, COLORS, FONTS} from '../../constants';
 import {MESSAGES} from '../../constants/dummy';
 import Icon from 'react-native-ionicons';
-const {height} = Dimensions.get('window');
 
 export const ChatHeader = ({navigation, handlePresentModalPress}) => {
   return (
-    <MoreHeader
-      navigation={navigation}
-      handlePresentModalPress={handlePresentModalPress}
-    />
+    <View style={{flexDirection: 'row', justifyContent: 'center'}}>
+      <MoreHeader
+        navigation={navigation}
+        handlePresentModalPress={handlePresentModalPress}
+      />
+    </View>
   );
 };
 
@@ -163,7 +164,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   messageOuterContainer: {
-    flexWrap: 'wrap',
     paddingVertical: SIZES.base,
     marginVertical: SIZES.small,
   },
