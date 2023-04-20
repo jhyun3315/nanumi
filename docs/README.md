@@ -1,3 +1,4 @@
+![Mockup](https://user-images.githubusercontent.com/57563053/233238293-7b20c1dd-4e19-44c3-8efa-278f8066fef1.jpg)
 
 <h1>📚 STACKS</h1>
 
@@ -78,6 +79,10 @@ docker compose down
 ### 클라이언트
 
 - 피그마를 이용한 와이어 프레임을 제작
+- recoil, react-query를 이용한 상태관리
+- client 데이터와 server 데이터의 분리
+- view와 비즈니스 로직 분리를 위한 custom hook 디자인 패턴 적용
+- suspense를 이용한 waterfall 현상 제거
 
 ### 백엔드
 
