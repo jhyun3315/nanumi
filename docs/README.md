@@ -23,7 +23,7 @@
 
 | 소채린                                                                                                                                         | 김우진                                                                                                                                          | 이지현                                                                                                                                          | 조용관                                                                                                                                         | 양연호                                                                                                                                         | 한상준                                                                                                                                          |
 | ---------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
-| <img src="https://user-images.githubusercontent.com/77334903/233312605-d4148bb4-accf-45e0-804f-42a5e4c34777.jpg" width = "100" height = "100"> | <img src="https://user-images.githubusercontent.com/77334903/233312704-db455c8f-2f22-47fd-a8ca-c37cc18dd548.jpg" width = "100" height = "100"> | <img src="https://user-images.githubusercontent.com/77334903/233312827-6a249d55-dd73-4c2f-a923-3bd0a5aeea1e.jpg" width = "100" height = "100"> | <img src="https://user-images.githubusercontent.com/76441040/230282379-2200be8a-c334-41f8-b5aa-8391792d7945.png" width = "100" height = "100"> | <img src="https://user-images.githubusercontent.com/77334903/233312215-46012df9-0b9e-4ad3-8e3d-25a2384ac4ab.jpg" width = "100" height = "100"> | <img src="https://user-images.githubusercontent.com/76441040/230365805-59c474cf-f9c0-4199-a89e-fd0d3cec1183.png" width = "100" height = "100"> |
+| <img src="https://user-images.githubusercontent.com/77334903/233312605-d4148bb4-accf-45e0-804f-42a5e4c34777.jpg" width = "100" height = "100"> | <img src="https://user-images.githubusercontent.com/77334903/233312704-db455c8f-2f22-47fd-a8ca-c37cc18dd548.jpg" width = "100" height = "100"> | <img src="https://user-images.githubusercontent.com/77334903/233312827-6a249d55-dd73-4c2f-a923-3bd0a5aeea1e.jpg" width = "100" height = "100"> | <img src="https://user-images.githubusercontent.com/77334903/233373805-7d17b4fc-1abd-4126-801d-94b3bf165105.jpg" width = "100" height = "100"> | <img src="https://user-images.githubusercontent.com/77334903/233312215-46012df9-0b9e-4ad3-8e3d-25a2384ac4ab.jpg" width = "100" height = "100"> | <img src="https://user-images.githubusercontent.com/77334903/233373797-c69a915f-1c1f-420c-90d7-d7a3855390f4.jpg" width = "100" height = "100"> |
 | <p>팀장</p>클라이언트 <br> Unity <br> 레벨디자인                                                                                               | 클라이언트 <br> Unity <br>   멀티플레이 <br> UI/UX                                                                                                                   | <br> 인프라 CI/CD <br> 머신러닝                                                                                                                 | 클라이언트<br>Unity<br>캐릭터<br> 아이템 <br> UI/UX                                                                                            | 백엔드 <br>랭킹 시스템<br> 대기열 시스템 <br> 회원 관리                                                                                        | 클라이언트 <br> Unity <br> 레벨 디자인                                                                                                          |
 |                                                                                                                                                | [🏠 블로그](https://deokisys.github.io/)<br>[💻 github](https://github.com/deokisys)                                                            | [💻 github](https://github.com/noobsoda)                                                                                                        |                                                                                                                                                |                                                                                                                                                |                                                                                                                                                 |
 
@@ -102,11 +102,11 @@ docker compose down
 
 
 ### GANT CHART
-
+<H2> 간트 차트 : https://docs.google.com/spreadsheets/d/1NHoydTWg1ADMseU1uPcPble51ckV7ikH/edit?usp=sharing&ouid=117122534063776026733&rtpof=true&sd=true  
 
 
 ## 문서
-
+<H2> 노션 : https://www.notion.so/SSAFY-2-a2891226509543cd8f5b97f5d9211ccb?pvs=4  
 
 
 ### 회의록
@@ -157,17 +157,19 @@ docker compose down
 
 ### 기능명세
 
-![image](https://user-images.githubusercontent.com/76441040/230311072-9608fe6c-628b-47b2-9d36-fd6414434245.png)
+<H2> 기능 명세서 : https://raspy-slicer-570.notion.site/bad6048352d24845a799f5ce77677002  
 
 - 세부적으로 기능을 명시하며 우선순위를 지정하여 확인하도록 하였음
 
 ### api명세
 
-
+<H2> API 명세서 : https://raspy-slicer-570.notion.site/BE-API-de404cf20d6a43cfac442d5e7e577f74  
 
 - api에 대해 각 담당자가 api의 주소와 요청과 응답의 흐름을 정리하였음
 
 ### ERD
+
+  <H2> ERD Cloud : https://raspy-slicer-570.notion.site/DB-ERD-077339d19d2847018dc1aa196873fbfd  
 
   - ERD CLOUD를 이용해 작성
 
