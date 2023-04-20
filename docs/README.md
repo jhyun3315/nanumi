@@ -29,8 +29,7 @@
 
 ## 기술 스택
 
-![Runtopia_기술스택](https://user-images.githubusercontent.com/76441040/231096772-daad7f73-9db1-4dd9-bd66-0b6dc4bf60d6.png)
-
+(comming...soon !)
 
 ## 시작하기
 
@@ -102,22 +101,13 @@ docker compose down
   - 스토리는 개발, 테스크는 회의로 지정하였습니다.
 
 
-![image](https://user-images.githubusercontent.com/76441040/230305746-5d0ba457-2f08-4e9b-b433-c99e73475f1c.png)
-
-### burn down chart
-
-![image](https://user-images.githubusercontent.com/76441040/230306244-c69a89d5-b57c-48d1-96a5-6e1c53698728.png)
-
-- 주 단위로 이슈를 해결하고 계획하며 진행하였음
-
 ### GANT CHART
 
 
 
 ## 문서
 
-- 노션을 통해 문서화를 진행
-  - [노션 보러가기](https://www.notion.so/Just-Run-0bf298da35a6419799403bd881558dd8?pvs=4)
+
 
 ### 회의록
 
@@ -173,45 +163,22 @@ docker compose down
 
 ### api명세
 
-![image](https://user-images.githubusercontent.com/76441040/230311295-9839837f-9877-4134-86a1-7053f64058de.png)
 
-![image](https://user-images.githubusercontent.com/76441040/230311377-b4ebe2d5-3dcb-4d8c-b446-5777123132a5.png)
 
 - api에 대해 각 담당자가 api의 주소와 요청과 응답의 흐름을 정리하였음
 
 ### ERD
 
-![ERD](https://user-images.githubusercontent.com/76441040/230313583-7938a438-daa1-429a-9068-be45345fee1f.png)
-
-- [erd cloud로 이동](https://www.erdcloud.com/d/c7SKEmDKAddcTREpF)
   - ERD CLOUD를 이용해 작성
 
 ### 피그마(와이어 프레임)
 
-![피그마](https://user-images.githubusercontent.com/76441040/230313275-6181feae-8883-4b22-b4b8-b6d2e156e05c.png)
 
 ## CI/CD
 
 ### Jenkins
 
-![image](https://user-images.githubusercontent.com/76441040/230314502-46289963-6943-4853-ba02-7f86391b8c44.png)
-
-멀티 브랜치 파이프라인을 통하여 브랜치별로 빌드하여 안전하게 관리
-
-![image](https://user-images.githubusercontent.com/76441040/230316059-41e54d3a-d569-4fa8-a83b-e36269602ff6.png)
-
-Jenkins 파이프라인 및 SonarQube Quality Gate로 Pass, Fail 확인
-
 ### MatterMost
 
-![image](https://user-images.githubusercontent.com/76441040/230315296-c2bdaeae-800d-4eb7-962a-b111c9dd8df4.png)
+
 Jenkins 파이프라인으로 빌드 시작, 성공, 실패 시 MatterMost로 알림을 보내서 개발자에게 알림 연결
-
-### SonarQube
->Jenkins 파이프라인으로 빌드시 자동으로 SonarQube 컨테이너로 전송하여 정적 분석 실시
-
-- FrontEnd
-  ![image](https://user-images.githubusercontent.com/76441040/230312451-d78a0589-89e8-4c07-80b9-d939bf79f7d6.png)
-
-- BackEnd
-  ![image](https://user-images.githubusercontent.com/76441040/230312363-e3886c79-9fa3-4e10-aeab-844ab71fa884.png)
