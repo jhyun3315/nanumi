@@ -2,43 +2,12 @@ import React, {useEffect, useState} from 'react';
 import {Dimensions, StyleSheet, Alert, PermissionsAndroid} from 'react-native';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import Geolocation from 'react-native-geolocation-service';
+import useLocationPermission from '../../hooks/useLocationPermission';
 
 const {width, height} = Dimensions.get('window');
-const INITIAL_COORINATE = {
-  latitude: 37.78825,
-  longitude: -122.4324,
-};
 
 const Map = () => {
-  const [coordinate, setCoordinate] = useState({});
-
-  const requestPermissions = async () => {
-    const granted = await PermissionsAndroid.request(
-      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-    );
-    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-      Geolocation.getCurrentPosition(
-        position => {
-          console.log(position.coords);
-          setCoordinate({
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421,
-          });
-        },
-        error => {
-          Alert.alert('위치정보를 얻어오는데 실패했습니다.');
-          console.log(error);
-        },
-        {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
-      );
-    }
-  };
-
-  useEffect(() => {
-    requestPermissions();
-  }, []);
+  const {coordinate} = useLocationPermission();
 
   return (
     <>
