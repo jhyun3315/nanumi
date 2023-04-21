@@ -1,6 +1,6 @@
-import React, {useCallback, useRef, useMemo} from 'react';
+import React, {useState, useCallback, useRef, useMemo} from 'react';
 import {SafeAreaView} from 'react-native';
-import {ChatHeader, ChatInput, MessagesList} from './ChatInfo';
+import {ChatHeader} from './ChatInfo';
 import {ChatOptions} from './ChatOptions';
 import {COLORS} from '../../constants';
 import {
@@ -9,6 +9,7 @@ import {
   BottomSheetModalProvider,
 } from '@gorhom/bottom-sheet';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import {GiftedChat} from 'react-native-gifted-chat';
 
 const ChatDetail = ({navigation}) => {
   const bottomSheetModalRef = useRef(null);
@@ -16,6 +17,28 @@ const ChatDetail = ({navigation}) => {
   const handlePresentModalPress = useCallback(() => {
     bottomSheetModalRef.current?.present();
   }, []);
+
+  const [messages, setMessages] = useState([
+    {
+      _id: 0,
+      text: 'New room created.',
+      createdAt: new Date().getTime(),
+      system: true,
+    },
+    {
+      _id: 1,
+      text: 'Henlo!',
+      createdAt: new Date().getTime(),
+      user: {
+        _id: 2,
+        name: 'Test User',
+      },
+    },
+  ]);
+
+  const handleSend = newMessage => {
+    setMessages(GiftedChat.append(messages, newMessage));
+  };
 
   // bottomModal이 움직일 떄 동작하는 함수 필요시 사용할듯
 
@@ -43,8 +66,11 @@ const ChatDetail = ({navigation}) => {
             navigation={navigation}
             handlePresentModalPress={handlePresentModalPress}
           />
-          <MessagesList />
-          <ChatInput />
+          <GiftedChat
+            messages={messages}
+            onSend={newMessage => handleSend(newMessage)}
+            user={{_id: 1}}
+          />
         </SafeAreaView>
         <BottomSheetModal
           isBackDropDismisByPress={true}
