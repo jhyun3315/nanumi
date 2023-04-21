@@ -1,18 +1,14 @@
 import React, {useCallback, useRef, useMemo} from 'react';
-import {Keyboard, SafeAreaView} from 'react-native';
+import {SafeAreaView} from 'react-native';
 import {ChatHeader, ChatInput, MessagesList} from './ChatInfo';
 import {ChatOptions} from './ChatOptions';
 import {COLORS} from '../../constants';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {
   BottomSheetBackdrop,
   BottomSheetModal,
   BottomSheetModalProvider,
 } from '@gorhom/bottom-sheet';
-import {
-  GestureHandlerRootView,
-  TouchableWithoutFeedback,
-} from 'react-native-gesture-handler';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
 const ChatDetail = ({navigation}) => {
   const bottomSheetModalRef = useRef(null);
@@ -47,12 +43,8 @@ const ChatDetail = ({navigation}) => {
             navigation={navigation}
             handlePresentModalPress={handlePresentModalPress}
           />
-          <KeyboardAwareScrollView>
-            <MessagesList />
-            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-              <ChatInput />
-            </TouchableWithoutFeedback>
-          </KeyboardAwareScrollView>
+          <MessagesList />
+          <ChatInput />
         </SafeAreaView>
         <BottomSheetModal
           isBackDropDismisByPress={true}
