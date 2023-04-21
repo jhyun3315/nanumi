@@ -158,6 +158,10 @@ API 명세서 : https://raspy-slicer-570.notion.site/BE-API-de404cf20d6a43cfac44
 
 ### 피그마(와이어 프레임)
 
+### 발표자료
+
+  PPT : https://www.canva.com/design/DAFggPwAGSc/4kjRHflZhm1FwIw7DgqVdA/view?utm_content=DAFggPwAGSc&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink
+
 
 ## CI/CD
 
