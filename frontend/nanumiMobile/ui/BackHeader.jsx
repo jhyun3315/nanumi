@@ -3,14 +3,26 @@ import {View, StatusBar, StyleSheet, Text} from 'react-native';
 import {CircleButton, MoreButton} from './Button';
 import {COLORS, FONTS, SIZES, assets} from '../constants';
 
-export const BackHeader = ({navigation}) => {
+export const BackHeader = ({navigation, children}) => {
   return (
     <View
       style={{
         width: '100%',
         height: 60,
         backgroundColor: COLORS.white,
+        justifyContent: 'center',
+        alignItems: 'center',
       }}>
+      <View>
+        <Text
+          style={{
+            fontFamily: FONTS.bold,
+            fontSize: SIZES.large,
+            color: COLORS.primary,
+          }}>
+          {children}
+        </Text>
+      </View>
       <CircleButton
         imgUrl={assets.left}
         handlePress={() => {
