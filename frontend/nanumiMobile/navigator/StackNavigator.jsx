@@ -9,6 +9,7 @@ import PostCreateFormScreen from '../screens/PostCreateFormScreen';
 import ChatDetailScreen from '../screens/ChatDetailScreen';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {NavigationContainer} from '@react-navigation/native';
+import MapScreen from '../screens/MapScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -26,6 +27,7 @@ const StackNavigator = () => {
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Register" component={RegisterScreen} />
         <Stack.Screen name="ChatDetail" component={ChatDetailScreen} />
+        <Stack.Screen name="Map" component={MapScreen} />
         <Stack.Screen
           name="PostCreateForm"
           component={PostCreateFormScreen}
