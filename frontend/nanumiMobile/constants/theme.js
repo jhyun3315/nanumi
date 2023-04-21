@@ -4,9 +4,12 @@ export const COLORS = {
   white: '#FFF',
   gray: '#74858C',
   violet: '#8B5CF6',
+  lightViolet: '#c4b5fd',
   disable: '#D1BEFB',
   lightBlue: '#f1f4ff',
   blue: '#1F41BB',
+  lightGray: '#f0f0f0',
+  red: '#f87171',
 };
 
 export const SIZES = {

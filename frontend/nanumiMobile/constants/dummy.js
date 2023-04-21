@@ -84,4 +84,56 @@ const Data = [
   },
 ];
 
-export {Data};
+const MESSAGES = [
+  {
+    user: 0,
+    time: '12:00',
+    content: '안녕하세요 아직 물건 있나요',
+  },
+  {
+    user: 1,
+    time: '12:05',
+    content: '예 아직 있어요',
+  },
+  {
+    user: 1,
+    time: '12:07',
+    content: '내일 역삼역 앞으로 7시까지 와줄수있나요? 퇴근하고 ㄱㄱ',
+  },
+  {
+    user: 0,
+    time: '12:09',
+    content: '네',
+  },
+  {
+    user: 0,
+    time: '12:00',
+    content: 'Good :)',
+  },
+  {
+    user: 1,
+    time: '14:05',
+    content: '내일 안될듯 이틀뒤에 가능할까요?',
+  },
+  {
+    user: 0,
+    time: '12:07',
+    content: 'Sure',
+  },
+  {
+    user: 1,
+    time: '12:09',
+    content: 'Great',
+  },
+  {
+    user: 0,
+    time: '12:07',
+    content: "7 o'clock?",
+  },
+  {
+    user: 1,
+    time: '12:09',
+    content: 'Sounds good',
+  },
+];
+export {Data, MESSAGES};
