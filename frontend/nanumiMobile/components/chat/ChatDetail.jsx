@@ -1,6 +1,12 @@
 import React, {useState, useCallback, useRef, useMemo} from 'react';
 import {SafeAreaView} from 'react-native';
-import {ChatHeader} from './ChatInfo';
+import {
+  ChatHeader,
+  ChatProductInfo,
+  renderBubble,
+  renderLoading,
+  renderSend,
+} from './ChatInfo';
 import {ChatOptions} from './ChatOptions';
 import {COLORS} from '../../constants';
 import {
@@ -39,7 +45,6 @@ const ChatDetail = ({navigation}) => {
   const handleSend = newMessage => {
     setMessages(GiftedChat.append(messages, newMessage));
   };
-
   // bottomModal이 움직일 떄 동작하는 함수 필요시 사용할듯
 
   // const handleSheetChanges = useCallback(index => {
@@ -66,10 +71,16 @@ const ChatDetail = ({navigation}) => {
             navigation={navigation}
             handlePresentModalPress={handlePresentModalPress}
           />
+          <ChatProductInfo />
           <GiftedChat
             messages={messages}
             onSend={newMessage => handleSend(newMessage)}
+            placeholder="메시지를 입력해주세요..."
             user={{_id: 1}}
+            renderBubble={renderBubble}
+            renderSend={renderSend}
+            scrollToBottom
+            renderLoading={renderLoading}
           />
         </SafeAreaView>
         <BottomSheetModal
