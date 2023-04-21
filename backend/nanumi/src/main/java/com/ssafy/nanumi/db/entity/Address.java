@@ -6,10 +6,11 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+
 @Entity
-@Table(name="address")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name="address")
 public class Address {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)

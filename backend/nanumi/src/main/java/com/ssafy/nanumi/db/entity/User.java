@@ -15,8 +15,11 @@ import javax.persistence.*;
 public class User extends BaseTimeEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id",nullable = false)
+    @Column(name = "id", nullable = false)
     private long id;
+
+    @Column(name = "email", columnDefinition = "VARCHAR(50)", nullable = false)
+    private String email;
 
     @Column(name="nickname", columnDefinition="VARCHAR(20)", nullable = false)
     private String nickname;
@@ -27,7 +30,7 @@ public class User extends BaseTimeEntity {
     @Column(name ="password", columnDefinition = "VARCHAR(64)", nullable = false)
     private String password;
 
-    @Column(name="is_deleted", columnDefinition = "TINYINT(1)", nullable = false)
+    @Column(name="is_deleted", columnDefinition = "TINYINT", nullable = false)
     private boolean isDeleted;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -39,8 +42,9 @@ public class User extends BaseTimeEntity {
     private LoginProvider loginProvider;
 
     @Builder
-    public User(Long id, String nickname, String profileUrl, String password, boolean isDeleted, Address address, LoginProvider loginProvider) {
+    public User(long id, String email, String nickname, String profileUrl, String password, boolean isDeleted, Address address, LoginProvider loginProvider) {
         this.id = id;
+        this.email = email;
         this.nickname = nickname;
         this.profileUrl = profileUrl;
         this.password = password;

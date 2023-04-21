@@ -10,22 +10,22 @@ import javax.persistence.*;
 
 @Entity
 @Getter
-@Table(name="reviews")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name="reviews")
 public class Review extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id",nullable = false)
+    @Column(name = "id", nullable = false)
     private long id;
 
-    @Column(name="content", nullable = false)
+    @Column(name="content", columnDefinition = "TEXT", nullable = false)
     private String content;
 
     @Column(name = "star_point", nullable = false)
-    private Long starPoint;
+    private int starPoint;
 
     @Column(name = "rating", nullable = false)
-    private Long rating;
+    private int rating;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="writer_id")
@@ -40,7 +40,7 @@ public class Review extends BaseTimeEntity {
     private Match match;
 
     @Builder
-    public Review(long id, String content, Long starPoint, Long rating, User writer, User receiver, Match match) {
+    public Review(long id, String content, int starPoint, int rating, User writer, User receiver, Match match) {
         this.id = id;
         this.content = content;
         this.starPoint = starPoint;

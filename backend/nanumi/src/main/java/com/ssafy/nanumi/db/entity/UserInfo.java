@@ -12,51 +12,51 @@ import java.time.LocalDateTime;
 
 @Getter
 @Entity
-@Table(name="user_info")
 @DynamicUpdate
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name="user_info")
 public class UserInfo {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     private long id;
 
     @ColumnDefault("0")
-    @Column(name = "star_point")
+    @Column(name = "star_point", columnDefinition = "DOUBLE", nullable = false)
     private double starPoint;
 
     @ColumnDefault("0")
-    @Column(name="rating", nullable = false)
+    @Column(name = "rating", columnDefinition = "DOUBLE", nullable = false)
     private double rating;
 
     @ColumnDefault("'브론즈'")
-    @Column(name="tier", nullable = false)
+    @Column(name = "tier", columnDefinition = "VARCHAR(20)", nullable = false)
     private String tier;
 
     @ColumnDefault("0")
-    @Column(name="temperature", nullable = false)
+    @Column(name = "temperature", columnDefinition = "DOUBLE", nullable = false)
     private double temperature;
 
     @ColumnDefault("0")
-    @Column(name="visit_count", nullable = false)
+    @Column(name = "visit_count", columnDefinition = "BIGINT", nullable = false)
     private long visitCount;
 
     @ColumnDefault("0")
-    @Column(name = "give_count", nullable = false)
-    private long giveCount;
+    @Column(name = "give_count", columnDefinition = "INT", nullable = false)
+    private int giveCount;
 
     @ColumnDefault("0")
-    @Column(name="given_count", nullable = false)
-    private long givenCount;
+    @Column(name = "given_count", columnDefinition = "INT", nullable = false)
+    private int givenCount;
 
     @ColumnDefault("0")
-    @Column(name = "reported_total_count")
-    private long reportedTotalCount;
+    @Column(name = "reported_total_count", columnDefinition = "INT")
+    private int reportedTotalCount;
 
     @Column(name = "stop_date")
     private LocalDateTime stopDate;
 
-    @Column(name = "refresh_token")
+    @Column(name = "refresh_token", columnDefinition = "VARCHAR(255)")
     private String refreshToken;
 
     @OneToOne
@@ -64,7 +64,7 @@ public class UserInfo {
     private User user;
 
     @Builder
-    public UserInfo(long id, double starPoint, double rating, String tier, double temperature, long visitCount, long giveCount, long givenCount, long reportedTotalCount, LocalDateTime stopDate, String refreshToken, User user) {
+    public UserInfo(long id, double starPoint, double rating, String tier, double temperature, long visitCount, int giveCount, int givenCount, int reportedTotalCount, LocalDateTime stopDate, String refreshToken, User user) {
         this.id = id;
         this.starPoint = starPoint;
         this.rating = rating;

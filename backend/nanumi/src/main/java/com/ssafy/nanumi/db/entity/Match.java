@@ -9,16 +9,17 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 @Entity
 @Getter
-@Table(name="matches")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name="matches")
 public class Match extends BaseTimeEntity{
+
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
-        @Column(name = "id",nullable = false)
+        @Column(name = "id", nullable = false)
         private long id;
 
-        @Column(name="is_matching", nullable = false)
-        private Boolean isMatching;
+        @Column(name="is_matching", columnDefinition = "TINYINT", nullable = false)
+        private boolean isMatching;
 
         @ManyToOne(fetch = FetchType.LAZY)
         @JoinColumn(name="product_id")
@@ -29,7 +30,7 @@ public class Match extends BaseTimeEntity{
         private User user;
 
         @Builder
-        public Match(long id, Boolean isMatching, Product product, User user) {
+        public Match(long id, boolean isMatching, Product product, User user) {
                 this.id = id;
                 this.isMatching = isMatching;
                 this.product = product;
