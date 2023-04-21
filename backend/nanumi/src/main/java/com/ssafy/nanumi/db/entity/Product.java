@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -27,6 +29,9 @@ public class Product extends BaseTimeEntity {
     @Column(name="is_closed", columnDefinition = "TINYINT", nullable = false)
     private boolean isClosed;
 
+    @Column(name = "deleted", columnDefinition = "TINYINT", nullable = false)
+    private boolean deleted;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="address_id")
     private Address address;
@@ -38,6 +43,9 @@ public class Product extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="category_id")
     private Category category;
+
+    @OneToMany(mappedBy = "product")
+    private List<ProductImage> productImages = new ArrayList<>();
 
     @Builder
     public Product(long id, String name, String content, boolean isClosed, Address address, User user, Category category) {
