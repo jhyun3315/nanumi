@@ -18,6 +18,10 @@ const {width, height} = Dimensions.get('window');
 const Map = ({navigation}) => {
   const {coordinate, code, addressName} = useLocationPermission();
 
+  // 회원가입
+  const handlePress = () => {
+    navigation.navigate('BottomTabs');
+  };
   // Suspense를 사용 못하므로 직접 구현
   if (!coordinate.latitude || !coordinate.longitude) return <Fallback />;
 
@@ -34,7 +38,11 @@ const Map = ({navigation}) => {
         <Text style={styles.bottomText}>
           {addressName ? addressName : '동네 인증중...'}
         </Text>
-        <RectButton minWidth={120} fontSize={SIZES.font} {...SHADOWS.dark}>
+        <RectButton
+          minWidth={120}
+          fontSize={SIZES.font}
+          {...SHADOWS.dark}
+          handlePress={handlePress}>
           회원가입
         </RectButton>
       </View>

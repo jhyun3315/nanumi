@@ -22,6 +22,12 @@ const useLocationPermission = () => {
   const [code, setCode] = useState('');
   const [addressName, setAddressName] = useState('');
 
+  const getCityNameFromCoordinate = async () => {
+    const {dongCode, address} = await getCityName(coordinate);
+    setCode(dongCode);
+    setAddressName(address);
+  };
+
   const requestPermissions = async () => {
     const granted = await PermissionsAndroid.request(
       PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
@@ -35,9 +41,6 @@ const useLocationPermission = () => {
             latitudeDelta: 0.01,
             longitudeDelta: 0.01,
           });
-          console.log(coordinate);
-          const {dongCode, address} = await getCityName(coordinate);
-          setCode(dongCode), setAddressName(address);
         },
 
         error => {
@@ -45,8 +48,16 @@ const useLocationPermission = () => {
         },
         {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
       );
+    } else {
+      Alert.alert('위치정보를 허용해야 회원가입이 완료됩니다.');
     }
   };
+
+  useEffect(() => {
+    if (coordinate.latitude && coordinate.longitude) {
+      getCityNameFromCoordinate();
+    }
+  }, [coordinate]);
 
   useEffect(() => {
     requestPermissions();
