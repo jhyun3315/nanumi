@@ -18,6 +18,7 @@ const {width, height} = Dimensions.get('window');
 const Map = ({navigation}) => {
   const {coordinate, code, addressName} = useLocationPermission();
 
+  console.log(code);
   // 회원가입
   const handlePress = () => {
     navigation.navigate('BottomTabs');
