@@ -3,10 +3,11 @@ package com.ssafy.nanumi.api.response;
 import com.ssafy.nanumi.db.entity.Product;
 import jdk.jfr.Category;
 import lombok.Builder;
+import lombok.Getter;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
+@Getter
 public class ProductDetailResponse {
     private final Long id;
     private final String name;
@@ -18,7 +19,6 @@ public class ProductDetailResponse {
     private final Long userId;
     private final String userNickname;
     private final String userProfileUrl;
-
 
     public ProductDetailResponse(Product product){
         id = product.getId();

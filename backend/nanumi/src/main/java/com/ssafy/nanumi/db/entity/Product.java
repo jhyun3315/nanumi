@@ -1,5 +1,6 @@
 package com.ssafy.nanumi.db.entity;
 
+import com.ssafy.nanumi.api.request.ProductInsertRequest;
 import com.ssafy.nanumi.config.entity.BaseTimeEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -47,12 +48,19 @@ public class Product extends BaseTimeEntity {
     @OneToMany(mappedBy = "product")
     private List<ProductImage> productImages = new ArrayList<>();
 
+    public void delete(){
+        this.deleted = true;
+    }
+    public void close(){
+        this.isClosed = true;
+    }
     @Builder
-    public Product(long id, String name, String content, boolean isClosed, Address address, User user, Category category) {
+    public Product(long id, String name, String content, boolean isClosed, boolean deleted, Address address, User user, Category category) {
         this.id = id;
         this.name = name;
         this.content = content;
         this.isClosed = isClosed;
+        this.deleted = deleted;
         this.address = address;
         this.user = user;
         this.category = category;

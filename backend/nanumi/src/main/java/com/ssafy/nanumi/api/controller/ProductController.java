@@ -1,5 +1,6 @@
 package com.ssafy.nanumi.api.controller;
 
+import com.ssafy.nanumi.api.request.ProductInsertRequest;
 import com.ssafy.nanumi.api.response.ProductAllResponse;
 import com.ssafy.nanumi.api.response.ProductDetailResponse;
 import com.ssafy.nanumi.api.service.ProductService;
@@ -30,23 +31,25 @@ public class ProductController {
     public ResponseEntity<ProductDetailResponse> getProductOne(@PathVariable("product_id") Long id) {
         return new ResponseEntity<>(productService.findByProductId(id), HttpStatus.OK);
     }
-
-//    @GetMapping("/categories/{categorie_id}")
-//    public ResponseEntity<List<ProductAllResponse>> getCateProductAll(@PathVariable("product_id") Long id){
-//        return new ResponseEntity<>(productService.findCateProductAll(id), HttpStatus.OK);
-//    }
-
-
+    // 카테고리별 조회
+    @GetMapping("/categories/{categorie_id}")
+    public ResponseEntity<List<ProductAllResponse>> getCateProductAll(@PathVariable("categorie_id") Long id){
+        return new ResponseEntity<>(productService.findCateProductAll(id), HttpStatus.OK);
+    }
     // 상품 등록
-//    @PostMapping("")
-//    public ResponseEntity<?> createProduct(@ResponseBody) {
-//        return new ResponseEntity<>(productService.
+    @PostMapping("")
+    public ResponseEntity<ProductDetailResponse> createProduct(@RequestBody ProductInsertRequest request) {
+        User user = userRepository.findById(1L).get();
+        return new ResponseEntity<>(productService.createProduct(request, user), HttpStatus.CREATED);
+    }
+    // 상품 수정
+//    @PatchMapping("/{product_id}")
+//    public ResponseEntity<?> updateProduct(@PathVariable("product_id") Long id) {
+//        return new ResponseEntity<>(productService.updateProduct(id), HttpStatus.OK);
 //    }
-//
-//    @PatchMapping("")
-//    public ResponseEntity<> updateProduct() {
-//
-//    }
-
-
+    // 상품 삭제
+    @DeleteMapping("/{product_id}")
+    public ResponseEntity<ProductDetailResponse> deleteproduct(@PathVariable("product_id") Long id, @RequestBody ProductInsertRequest request) {
+        return new ResponseEntity<>(productService.deleteProduct(request, id), HttpStatus.OK);
+    }
 }
