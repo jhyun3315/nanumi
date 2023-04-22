@@ -8,8 +8,9 @@ import CategoryScreen from '../screens/CategoryScreen';
 import PostCreateFormScreen from '../screens/PostCreateFormScreen';
 import ChatDetailScreen from '../screens/ChatDetailScreen';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {NavigationContainer} from '@react-navigation/native';
 import MapScreen from '../screens/MapScreen';
+import ProfileToChatScreen from '../screens/ProfileToChatScreen';
+import {NavigationContainer} from '@react-navigation/native';
 
 const Stack = createNativeStackNavigator();
 
@@ -28,6 +29,7 @@ const StackNavigator = () => {
         <Stack.Screen name="Register" component={RegisterScreen} />
         <Stack.Screen name="ChatDetail" component={ChatDetailScreen} />
         <Stack.Screen name="Map" component={MapScreen} />
+        <Stack.Screen name="ProfileToChat" component={ProfileToChatScreen} />
         <Stack.Screen
           name="PostCreateForm"
           component={PostCreateFormScreen}

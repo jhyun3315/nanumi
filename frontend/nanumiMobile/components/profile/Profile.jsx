@@ -1,11 +1,18 @@
 import React from 'react';
-import {View, Text, SafeAreaView, StyleSheet, Image} from 'react-native';
+import {
+  View,
+  Text,
+  SafeAreaView,
+  StyleSheet,
+  Image,
+  Pressable,
+} from 'react-native';
 import {COLORS, FONTS, SIZES, assets} from '../../constants';
 import Icon from 'react-native-ionicons';
 
 const Profile = ({navigation}) => {
   return (
-    <View
+    <SafeAreaView
       style={{
         flex: 1,
         backgroundColor: COLORS.white,
@@ -58,22 +65,24 @@ const Profile = ({navigation}) => {
         <Text style={styles.text}>매칭목록</Text>
       </View>
 
-      <View style={styles.list}>
+      <Pressable
+        style={styles.list}
+        onPress={() => navigation.navigate('ProfileToChat')}>
         <Text style={styles.text}>채팅목록</Text>
-      </View>
-      <View style={styles.list}>
+      </Pressable>
+      <Pressable style={styles.list}>
         <Text style={styles.text}>내 동네 설정정</Text>
-      </View>
-      <View style={styles.list}>
+      </Pressable>
+      <Pressable style={styles.list}>
         <Text style={styles.text}>차단 사용자 관리</Text>
-      </View>
-      <View style={styles.list}>
+      </Pressable>
+      <Pressable style={styles.list}>
         <Text style={styles.text}>로그아웃</Text>
-      </View>
-      <View style={styles.list}>
+      </Pressable>
+      <Pressable style={styles.list}>
         <Text style={styles.text}>탈퇴하기</Text>
-      </View>
-    </View>
+      </Pressable>
+    </SafeAreaView>
   );
 };
 
