@@ -33,13 +33,16 @@ const Profile = ({navigation}) => {
         <Text style={[styles.text, styles.nickname]}>닉네임</Text>
       </View>
 
-      <View style={styles.statusContainer}>
+      <Pressable
+        style={styles.statusContainer}
+        onPress={() => navigation.navigate('DivideProduct')}>
         <View style={styles.statusBox}>
           <Text style={[styles.text, styles.count]}>483</Text>
           <Text style={[styles.text, styles.subText]}>나눔한 물건</Text>
         </View>
 
-        <View
+        <Pressable
+          onPress={() => navigation.navigate('DivideProduct')}
           style={[
             styles.statusBox,
             {
@@ -50,13 +53,15 @@ const Profile = ({navigation}) => {
           ]}>
           <Text style={[styles.text, styles.count]}>483</Text>
           <Text style={[styles.text, styles.subText]}>나눔중인 물건</Text>
-        </View>
+        </Pressable>
 
-        <View style={styles.statusBox}>
+        <Pressable
+          style={styles.statusBox}
+          onPress={() => navigation.navigate('DivideProduct')}>
           <Text style={[styles.text, styles.count]}>483</Text>
           <Text style={[styles.text, styles.subText]}>나눔받은 물건</Text>
-        </View>
-      </View>
+        </Pressable>
+      </Pressable>
       <Pressable
         onPress={() => navigation.navigate('MatchingProduct')}
         style={[
