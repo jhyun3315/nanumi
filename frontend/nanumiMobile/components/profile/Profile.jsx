@@ -73,7 +73,9 @@ const Profile = ({navigation}) => {
       <Pressable style={styles.list}>
         <Text style={styles.text}>내 동네 설정</Text>
       </Pressable>
-      <Pressable style={styles.list}>
+      <Pressable
+        style={styles.list}
+        onPress={() => navigation.navigate('BlockUser')}>
         <Text style={styles.text}>차단 사용자 관리</Text>
       </Pressable>
       <Pressable style={styles.list}>

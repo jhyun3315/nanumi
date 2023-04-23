@@ -11,6 +11,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import MapScreen from '../screens/MapScreen';
 import ProfileToChatScreen from '../screens/ProfileToChatScreen';
 import {NavigationContainer} from '@react-navigation/native';
+import BlockUserScreen from '../screens/BlockUserScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -30,6 +31,7 @@ const StackNavigator = () => {
         <Stack.Screen name="ChatDetail" component={ChatDetailScreen} />
         <Stack.Screen name="Map" component={MapScreen} />
         <Stack.Screen name="ProfileToChat" component={ProfileToChatScreen} />
+        <Stack.Screen name="BlockUser" component={BlockUserScreen} />
         <Stack.Screen
           name="PostCreateForm"
           component={PostCreateFormScreen}
