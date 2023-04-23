@@ -39,7 +39,7 @@ const USER = [
     profileImage: assets.person03,
   },
 ];
-const renderItem = ({item}) => {
+const renderItem = ({item, desc}) => {
   return (
     <View
       style={{
@@ -57,19 +57,19 @@ const renderItem = ({item}) => {
         <Text style={styles.text}>{item.name}</Text>
       </View>
       <RectButton minWidth={48} fontSize={SIZES.small}>
-        차단해제
+        {desc}
       </RectButton>
     </View>
   );
 };
 
-const UserList = ({navigation}) => {
+const UserList = ({navigation, desc}) => {
   return (
     <SafeAreaView style={styles.container}>
       <BackHeader navigation={navigation} />
       <FlatList
         data={USER}
-        renderItem={renderItem}
+        renderItem={({item}) => renderItem({item, desc: desc})}
         keyExtractor={item => item.id}
       />
     </SafeAreaView>

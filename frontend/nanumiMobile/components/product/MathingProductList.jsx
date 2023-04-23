@@ -7,7 +7,7 @@ import {useRecoilValue} from 'recoil';
 import {RectButton} from '../../ui/Button';
 import {BackHeader} from '../../ui/BackHeader';
 
-const MatchingProductListItem = ({data}) => {
+const MatchingProductListItem = ({data, navigation}) => {
   return (
     <View
       style={{
@@ -32,7 +32,7 @@ const MatchingProductListItem = ({data}) => {
           <RectButton
             minWidth={64}
             fontSize={SIZES.font}
-            handlePress={() => console.log('이동')}>
+            handlePress={() => navigation.navigate('MatchingUser')}>
             매칭인원
           </RectButton>
         </View>
@@ -50,7 +50,9 @@ const MatchingProductList = ({navigation}) => {
       <View style={styles.flatListWrapper}>
         <FlatList
           data={data}
-          renderItem={({item}) => <MatchingProductListItem data={item} />}
+          renderItem={({item}) => (
+            <MatchingProductListItem data={item} navigation={navigation} />
+          )}
           keyExtractor={item => item.id.toString()}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.contentContainerStyle}
