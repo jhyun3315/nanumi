@@ -1,9 +1,25 @@
-package com.ssafy.nanumi.api.request;
+package com.ssafy.nanumi.common;
 
-public class ChatMessageRequest {
+
+import java.sql.Timestamp;
+
+public class ChatMessageDTO {
+    public enum MessageType {
+        TALK, QUIT
+    }
+
+    private MessageType type;
     private long roomId;
     private long sender;
     private String message;
+
+    public MessageType getType() {
+        return type;
+    }
+
+    public void setType(MessageType type) {
+        this.type = type;
+    }
 
     public long getRoomId() {
         return roomId;
