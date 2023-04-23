@@ -57,13 +57,14 @@ const Profile = ({navigation}) => {
           <Text style={[styles.text, styles.subText]}>나눔받은 물건</Text>
         </View>
       </View>
-      <View
+      <Pressable
+        onPress={() => navigation.navigate('MatchingProduct')}
         style={[
           styles.list,
           {borderTopWidth: 1, borderTopColor: COLORS.lightGray},
         ]}>
         <Text style={styles.text}>매칭목록</Text>
-      </View>
+      </Pressable>
 
       <Pressable
         style={styles.list}
@@ -78,7 +79,9 @@ const Profile = ({navigation}) => {
         onPress={() => navigation.navigate('BlockUser')}>
         <Text style={styles.text}>차단 사용자 관리</Text>
       </Pressable>
-      <Pressable style={styles.list}>
+      <Pressable
+        style={styles.list}
+        onPress={() => navigation.navigate('Login')}>
         <Text style={styles.text}>로그아웃</Text>
       </Pressable>
       <Pressable style={styles.list}>

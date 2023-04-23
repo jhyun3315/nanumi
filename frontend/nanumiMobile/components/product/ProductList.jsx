@@ -52,14 +52,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: COLORS.white,
   },
-  noDataWrapper: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  noDataText: {
-    color: COLORS.gray,
-  },
 });
 
 export default ProductList;

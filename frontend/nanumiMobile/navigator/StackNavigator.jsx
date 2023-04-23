@@ -7,11 +7,12 @@ import RegisterScreen from '../screens/RegisterScreen';
 import CategoryScreen from '../screens/CategoryScreen';
 import PostCreateFormScreen from '../screens/PostCreateFormScreen';
 import ChatDetailScreen from '../screens/ChatDetailScreen';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import MapScreen from '../screens/MapScreen';
 import ProfileToChatScreen from '../screens/ProfileToChatScreen';
-import {NavigationContainer} from '@react-navigation/native';
 import BlockUserScreen from '../screens/BlockUserScreen';
+import MatchingProductScreen from '../screens/MatchingProductScreen';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {NavigationContainer} from '@react-navigation/native';
 
 const Stack = createNativeStackNavigator();
 
@@ -32,6 +33,10 @@ const StackNavigator = () => {
         <Stack.Screen name="Map" component={MapScreen} />
         <Stack.Screen name="ProfileToChat" component={ProfileToChatScreen} />
         <Stack.Screen name="BlockUser" component={BlockUserScreen} />
+        <Stack.Screen
+          name="MatchingProduct"
+          component={MatchingProductScreen}
+        />
         <Stack.Screen
           name="PostCreateForm"
           component={PostCreateFormScreen}

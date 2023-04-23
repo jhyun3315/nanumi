@@ -104,7 +104,7 @@ export const EndDate = () => {
   );
 };
 
-export const SubInfo = () => {
+export const SubInfo = props => {
   return (
     <View
       style={{
@@ -115,7 +115,7 @@ export const SubInfo = () => {
         justifyContent: 'space-between',
       }}>
       <People />
-      <EndDate />
+      {!props.isMatching && <EndDate />}
     </View>
   );
 };
