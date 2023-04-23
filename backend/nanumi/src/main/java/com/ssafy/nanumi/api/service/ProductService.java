@@ -1,8 +1,8 @@
 package com.ssafy.nanumi.api.service;
 
-import com.ssafy.nanumi.api.request.ProductInsertRequest;
-import com.ssafy.nanumi.api.response.ProductAllResponse;
-import com.ssafy.nanumi.api.response.ProductDetailResponse;
+import com.ssafy.nanumi.api.request.ProductInsertDTO;
+import com.ssafy.nanumi.api.response.ProductAllDTO;
+import com.ssafy.nanumi.api.response.ProductDetailDTO;
 import com.ssafy.nanumi.db.entity.*;
 import com.ssafy.nanumi.db.repository.AddressRepository;
 import com.ssafy.nanumi.db.repository.CategoryRepository;
@@ -23,16 +23,24 @@ public class ProductService {
     private final CategoryRepository categoryRepository;
     private final AddressRepository addressRepository;
     private final ProductImageRepository productImageRepository;
-    public List<ProductAllResponse> findProductAll() {
-        return productRepository.findAllByDeletedFalse().stream().filter(product -> product.getAddress().getId() == 1).map(ProductAllResponse::new).collect(Collectors.toList());
+    public List<ProductAllDTO> findProductAll() {
+        return productRepository.findAllByDeletedFalse()
+                .stream()
+                .filter(product -> product.getAddress().getId() == 1)
+                .map(ProductAllDTO::new)
+                .collect(Collectors.toList());
     }
-    public ProductDetailResponse findByProductId(Long id) {
-        return productRepository.findById(id).map(ProductDetailResponse::new).get();
+    public ProductDetailDTO findByProductId(Long id) {
+        return productRepository.findById(id)
+                .map(ProductDetailDTO::new).get();
     }
-    public List<ProductAllResponse> findCateProductAll(Long id) {
-        return productRepository.findAllByDeletedFalse().stream().filter(product -> product.getAddress().getId() == 1 && product.getCategory().getId() == id).map(ProductAllResponse::new).collect(Collectors.toList());
+    public List<ProductAllDTO> findCateProductAll(Long id) {
+        return productRepository.findAllByDeletedFalse()
+                .stream()
+                .filter(product -> product.getAddress().getId() == 1 && product.getCategory().getId() == id)
+                .map(ProductAllDTO::new).collect(Collectors.toList());
     }
-    public ProductDetailResponse createProduct(ProductInsertRequest request, User user){
+    public ProductDetailDTO createProduct(ProductInsertDTO request, User user){
         Category category = categoryRepository.findById(request.getCategoryId()).get();
         Address address = addressRepository.findById(request.getAddressCode()).get();
         Product product = Product.builder()
@@ -53,15 +61,15 @@ public class ProductService {
                     .build();
             productImageRepository.save(productImage);
         }
-        return new ProductDetailResponse(createProduct);
+        return new ProductDetailDTO(createProduct);
     }
 //    public ProductDetailResponse updateProduct(ProductInsertRequest request, Long id) {
 //        Product product = productRepository.findById(id).get();
 //
 //    }
-    public ProductDetailResponse deleteProduct(ProductInsertRequest request, Long id){
+    public ProductDetailDTO deleteProduct(Long id){
         Product product = productRepository.findById(id).get();
         product.delete();
-        return new ProductDetailResponse(product);
+        return new ProductDetailDTO(product);
     }
 }

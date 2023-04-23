@@ -1,6 +1,5 @@
 package com.ssafy.nanumi.db.repository;
 
-import com.ssafy.nanumi.api.response.ProductAllResponse;
 import com.ssafy.nanumi.db.entity.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 

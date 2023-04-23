@@ -1,6 +1,9 @@
 package com.ssafy.nanumi.api.service;
 
 import com.ssafy.nanumi.api.request.UserJoinDTO;
+import com.ssafy.nanumi.api.response.ProductAllDTO;
+import com.ssafy.nanumi.api.response.ReviewReadDTO;
+import com.ssafy.nanumi.api.response.UserReadDTO;
 import com.ssafy.nanumi.common.provider.Provider;
 import com.ssafy.nanumi.config.response.exception.CustomException;
 import com.ssafy.nanumi.db.entity.LoginProvider;
@@ -13,6 +16,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.ssafy.nanumi.config.response.exception.CustomExceptionStatus.NOT_FOUND_LOGIN_PROVIDER;
 
@@ -49,5 +55,30 @@ public class UserService {
                 .build();
 
         userInfoRepository.save(userInfo);
+    }
+    public UserReadDTO getUser(User user){
+        return new UserReadDTO(user);
+    }
+    public void deleteUser(User user){
+        user.delete();
+    }
+    public List<ReviewReadDTO> getAllReview(User user){
+        return user.getReviews()
+                .stream()
+                .map(ReviewReadDTO::new).collect(Collectors.toList());
+    }
+    public List<ProductAllDTO> getAllReceiveProduct(User user){
+        return user.getProducts()
+                .stream()
+                .filter(product -> !product.isDeleted())
+                .map(ProductAllDTO::new)
+                .collect(Collectors.toList());
+    }
+    public List<ProductAllDTO> getMatchingProduct(User user){
+        return user.getProducts()
+                .stream()
+                .filter(product -> !product.isDeleted() && !product.isClosed())
+                .map(ProductAllDTO::new)
+                .collect(Collectors.toList());
     }
 }

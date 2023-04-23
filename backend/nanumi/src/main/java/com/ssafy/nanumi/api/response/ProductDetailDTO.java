@@ -1,14 +1,12 @@
 package com.ssafy.nanumi.api.response;
 
 import com.ssafy.nanumi.db.entity.Product;
-import jdk.jfr.Category;
-import lombok.Builder;
 import lombok.Getter;
 
 import java.util.List;
 import java.util.stream.Collectors;
 @Getter
-public class ProductDetailResponse {
+public class ProductDetailDTO {
     private final Long id;
     private final String name;
     private final String content;
@@ -20,7 +18,7 @@ public class ProductDetailResponse {
     private final String userNickname;
     private final String userProfileUrl;
 
-    public ProductDetailResponse(Product product){
+    public ProductDetailDTO(Product product){
         id = product.getId();
         name = product.getName();
         content = product.getContent();

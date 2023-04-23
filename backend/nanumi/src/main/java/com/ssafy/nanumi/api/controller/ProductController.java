@@ -1,8 +1,8 @@
 package com.ssafy.nanumi.api.controller;
 
-import com.ssafy.nanumi.api.request.ProductInsertRequest;
-import com.ssafy.nanumi.api.response.ProductAllResponse;
-import com.ssafy.nanumi.api.response.ProductDetailResponse;
+import com.ssafy.nanumi.api.request.ProductInsertDTO;
+import com.ssafy.nanumi.api.response.ProductAllDTO;
+import com.ssafy.nanumi.api.response.ProductDetailDTO;
 import com.ssafy.nanumi.api.service.ProductService;
 import com.ssafy.nanumi.db.entity.User;
 import com.ssafy.nanumi.db.repository.UserRepository;
@@ -21,24 +21,25 @@ public class ProductController {
     public final UserRepository userRepository;
 
 
-    // 전체 조회
+
+    /* 상품 전체 조회 */
     @GetMapping("")
-    public ResponseEntity<List<ProductAllResponse>> getProductAll(){
+    public ResponseEntity<List<ProductAllDTO>> getProductAll(){
         return new ResponseEntity<>(productService.findProductAll(), HttpStatus.OK);
     }
-    // 상세 페이지 조회
+    /* 상세 페이지 조회 */
     @GetMapping("/{product_id}")
-    public ResponseEntity<ProductDetailResponse> getProductOne(@PathVariable("product_id") Long id) {
+    public ResponseEntity<ProductDetailDTO> getProductOne(@PathVariable("product_id") Long id) {
         return new ResponseEntity<>(productService.findByProductId(id), HttpStatus.OK);
     }
-    // 카테고리별 조회
+    /* 카테고리별 조회 */
     @GetMapping("/categories/{categorie_id}")
-    public ResponseEntity<List<ProductAllResponse>> getCateProductAll(@PathVariable("categorie_id") Long id){
+    public ResponseEntity<List<ProductAllDTO>> getCateProductAll(@PathVariable("categorie_id") Long id){
         return new ResponseEntity<>(productService.findCateProductAll(id), HttpStatus.OK);
     }
-    // 상품 등록
+    /* 상품 등록 */
     @PostMapping("")
-    public ResponseEntity<ProductDetailResponse> createProduct(@RequestBody ProductInsertRequest request) {
+    public ResponseEntity<ProductDetailDTO> createProduct(@RequestBody ProductInsertDTO request) {
         User user = userRepository.findById(1L).get();
         return new ResponseEntity<>(productService.createProduct(request, user), HttpStatus.CREATED);
     }
@@ -47,9 +48,9 @@ public class ProductController {
 //    public ResponseEntity<?> updateProduct(@PathVariable("product_id") Long id) {
 //        return new ResponseEntity<>(productService.updateProduct(id), HttpStatus.OK);
 //    }
-    // 상품 삭제
+    /* 상품 삭제 */
     @DeleteMapping("/{product_id}")
-    public ResponseEntity<ProductDetailResponse> deleteproduct(@PathVariable("product_id") Long id, @RequestBody ProductInsertRequest request) {
-        return new ResponseEntity<>(productService.deleteProduct(request, id), HttpStatus.OK);
+    public ResponseEntity<ProductDetailDTO> deleteproduct(@PathVariable("product_id") Long id) {
+        return new ResponseEntity<>(productService.deleteProduct(id), HttpStatus.OK);
     }
 }

@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -41,8 +43,21 @@ public class User extends BaseTimeEntity {
     @JoinColumn(name="login_provider")
     private LoginProvider loginProvider;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_info_id", referencedColumnName = "id")
+    private UserInfo userInfo;
+
+    @OneToMany(mappedBy = "receiver")
+    private List<Review> reviews = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<Product> products = new ArrayList<>();
+
+    public void delete(){
+        this.isDeleted = true;
+    }
     @Builder
-    public User(long id, String email, String nickname, String profileUrl, String password, boolean isDeleted, Address address, LoginProvider loginProvider) {
+    public User(long id, String email, String nickname, String profileUrl, String password, boolean isDeleted, Address address, LoginProvider loginProvider, UserInfo userInfo) {
         this.id = id;
         this.email = email;
         this.nickname = nickname;
@@ -51,5 +66,6 @@ public class User extends BaseTimeEntity {
         this.isDeleted = isDeleted;
         this.address = address;
         this.loginProvider = loginProvider;
+        this.userInfo = userInfo;
     }
 }

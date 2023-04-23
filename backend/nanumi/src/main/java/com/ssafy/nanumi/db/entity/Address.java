@@ -1,6 +1,7 @@
 package com.ssafy.nanumi.db.entity;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -25,4 +26,6 @@ public class Address {
 
     @Column(name="dong", columnDefinition="VARCHAR(20)", nullable = false)
     private String dong;
+
+
 }

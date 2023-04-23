@@ -1,6 +1,5 @@
 package com.ssafy.nanumi.db.entity;
 
-import com.ssafy.nanumi.api.request.ProductInsertRequest;
 import com.ssafy.nanumi.config.entity.BaseTimeEntity;
 import lombok.AccessLevel;
 import lombok.Builder;

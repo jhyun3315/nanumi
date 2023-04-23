@@ -8,7 +8,7 @@ import java.util.List;
 
 @Getter
 @NoArgsConstructor
-public class ProductInsertRequest {
+public class ProductInsertDTO {
     private String name;
     private String content;
     private List<String> postImage;

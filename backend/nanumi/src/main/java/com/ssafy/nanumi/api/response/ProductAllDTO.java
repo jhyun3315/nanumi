@@ -6,12 +6,12 @@ import lombok.Getter;
 
 
 @Getter
-public class ProductAllResponse {
+public class ProductAllDTO {
     private final Long id;
     private final String name;
     private final String userProfileUrl;
     private final String productImageUrl;
-    public ProductAllResponse(Product product){
+    public ProductAllDTO(Product product){
         id = product.getId();
         name = product.getName();
         userProfileUrl = product.getUser().getProfileUrl();
