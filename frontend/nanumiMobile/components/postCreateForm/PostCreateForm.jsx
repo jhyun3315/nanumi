@@ -5,7 +5,7 @@ import {useNavigation} from '@react-navigation/native';
 import {AddImageButton, ImageContainer} from './Image';
 import {ProductCategory, ProductDesc, ProductTitle} from './ProductInfo';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {CreateHeader} from '../../ui/CreateHeader';
+import {CreateHeader} from '../../ui/BackHeader';
 import {openPicker} from '@baronha/react-native-multiple-image-picker';
 import {generateUniqueKey} from '../../util/uniqueId';
 

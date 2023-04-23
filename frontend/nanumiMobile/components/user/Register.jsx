@@ -73,6 +73,7 @@ const Register = () => {
         </View>
 
         <Pressable
+          onPress={() => navigation.navigate('Map')}
           style={{
             padding: SIZES.base * 2,
             backgroundColor: COLORS.blue,
@@ -94,7 +95,7 @@ const Register = () => {
               textAlign: 'center',
               fontSize: SIZES.font,
             }}>
-            회원가입
+            다음
           </Text>
         </Pressable>
 

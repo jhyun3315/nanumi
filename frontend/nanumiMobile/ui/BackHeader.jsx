@@ -1,16 +1,28 @@
 import React from 'react';
 import {View, StatusBar, StyleSheet, Text} from 'react-native';
-import {CircleButton, MoreButton} from './Button';
+import {CircleButton, MoreButton, RectButton} from './Button';
 import {COLORS, FONTS, SIZES, assets} from '../constants';
 
-export const BackHeader = ({navigation}) => {
+export const BackHeader = ({navigation, children}) => {
   return (
     <View
       style={{
         width: '100%',
         height: 60,
         backgroundColor: COLORS.white,
+        justifyContent: 'center',
+        alignItems: 'center',
       }}>
+      <View>
+        <Text
+          style={{
+            fontFamily: FONTS.bold,
+            fontSize: SIZES.large,
+            color: COLORS.primary,
+          }}>
+          {children}
+        </Text>
+      </View>
       <CircleButton
         imgUrl={assets.left}
         handlePress={() => {
@@ -42,6 +54,33 @@ export const CloseHeader = ({setModalVisible}) => {
     </View>
   );
 };
+
+export const CreateHeader = ({navigation}) => (
+  <View
+    style={{
+      width: '100%',
+      height: 60,
+      flexDirection: 'row',
+      marginBottom: SIZES.base * 2,
+    }}>
+    <CircleButton
+      imgUrl={assets.left}
+      handlePress={() => {
+        navigation.goBack();
+      }}
+      left={16}
+      top={StatusBar.currentHeight - 12}
+    />
+    <RectButton
+      minWidth={64}
+      handlePress={() => console.log('등록')}
+      position={'absolute'}
+      right={16}
+      top={StatusBar.currentHeight - 12}>
+      등록
+    </RectButton>
+  </View>
+);
 
 export const MoreHeader = ({navigation, handlePresentModalPress}) => {
   return (

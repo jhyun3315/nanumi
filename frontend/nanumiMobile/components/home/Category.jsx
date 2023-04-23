@@ -101,7 +101,7 @@ const Category = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <BackHeader navigation={navigation} />
+      <BackHeader navigation={navigation}>카테고리</BackHeader>
       <View style={styles.categoryContainer}>
         <FlatList
           data={CATEGORIES}

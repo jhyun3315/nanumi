@@ -1,19 +1,22 @@
 import React from 'react';
 import ProductCard from './ProductCard';
-import Header from '../../ui/Header';
 import {COLORS} from '../../constants';
 import {View, FlatList, StyleSheet} from 'react-native';
+import {useRecoilValue} from 'recoil';
+import {productState} from '../../state/product';
+import {BackHeader} from '../../ui/BackHeader';
 
-const ProductList = ({isSearch, data}) => {
+const DivideProduct = ({navigation}) => {
+  const data = useRecoilValue(productState);
   return (
     <View style={styles.container}>
+      <BackHeader navigation={navigation} />
       <View style={styles.flatListWrapper}>
         <FlatList
           data={data}
           renderItem={({item}) => <ProductCard data={item} />}
           keyExtractor={item => item.id.toString()}
           showsVerticalScrollIndicator={false}
-          ListHeaderComponent={isSearch ? '' : <Header />}
           contentContainerStyle={styles.contentContainerStyle}
         />
       </View>
@@ -24,6 +27,8 @@ const ProductList = ({isSearch, data}) => {
     </View>
   );
 };
+
+export default DivideProduct;
 
 const styles = StyleSheet.create({
   container: {
@@ -53,5 +58,3 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
   },
 });
-
-export default ProductList;
