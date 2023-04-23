@@ -1,11 +1,10 @@
 package com.ssafy.nanumi.api.request;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class UserJoinDTO {
 
     private String email;
