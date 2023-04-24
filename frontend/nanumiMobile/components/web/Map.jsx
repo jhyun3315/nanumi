@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
-import useLocationPermission from '../../hooks/useLocationPermission';
+import {useLocationPermission} from '../../hooks/useLocationPermission';
 import {
   Dimensions,
   SafeAreaView,
@@ -18,7 +18,6 @@ const {width, height} = Dimensions.get('window');
 const Map = ({navigation}) => {
   const {coordinate, code, addressName} = useLocationPermission();
 
-  console.log(code);
   // 회원가입
   const handlePress = () => {
     navigation.navigate('BottomTabs');

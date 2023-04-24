@@ -15,6 +15,7 @@ import MatchingUserScreen from '../screens/MatchingUserScreen';
 import DivideProductScreen from '../screens/DivideProductScreen';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {NavigationContainer} from '@react-navigation/native';
+import MapUpdateScreen from '../screens/MapUpdateScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -37,6 +38,7 @@ const StackNavigator = () => {
         <Stack.Screen name="BlockUser" component={BlockUserScreen} />
         <Stack.Screen name="MatchingUser" component={MatchingUserScreen} />
         <Stack.Screen name="DivideProduct" component={DivideProductScreen} />
+        <Stack.Screen name="MapUpdate" component={MapUpdateScreen} />
         <Stack.Screen
           name="MatchingProduct"
           component={MatchingProductScreen}

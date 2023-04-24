@@ -1,6 +1,7 @@
 import {useEffect, useState} from 'react';
 import {PermissionsAndroid, Alert} from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
+import {useNavigation} from '@react-navigation/native';
 import axios from 'axios';
 
 const getCityName = async coordinate => {
@@ -17,7 +18,8 @@ const getCityName = async coordinate => {
   return {dongCode, address};
 };
 
-const useLocationPermission = () => {
+export const useLocationPermission = () => {
+  const navigation = useNavigation();
   const [coordinate, setCoordinate] = useState({});
   const [code, setCode] = useState('');
   const [addressName, setAddressName] = useState('');
@@ -49,7 +51,15 @@ const useLocationPermission = () => {
         {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
       );
     } else {
-      Alert.alert('위치정보를 허용해야 회원가입이 완료됩니다.');
+      Alert.alert('위치정보', '위치정보를 허용해야 이용할 수 있습니다.', [
+        {
+          text: '확인',
+          onPress: () => {
+            navigation.goBack();
+          },
+          style: 'cancel',
+        },
+      ]);
     }
   };
 
@@ -65,5 +75,3 @@ const useLocationPermission = () => {
 
   return {coordinate, code, addressName};
 };
-
-export default useLocationPermission;
