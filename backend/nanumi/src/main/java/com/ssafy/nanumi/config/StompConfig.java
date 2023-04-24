@@ -29,7 +29,10 @@ public class StompConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         // 웹 소켓 서버에 연결할 수 있는 엔드 포인트 설정
-        registry.addEndpoint("/ws-stomp").setAllowedOrigins("http://localhost:3000").withSockJS();
+        registry.addEndpoint("/ws-stomp")
+                .setAllowedOrigins("http://localhost:8080", "http://127.0.0.1:5500")
+                .withSockJS();
+
     }
 
 
@@ -54,19 +57,4 @@ public class StompConfig implements WebSocketMessageBrokerConfigurer {
         //GPS 정보 삭제
         //gpsRepository.dropUser(gpsKey, sessionId);
     }
-
-//    @EventListener
-//    public void test(DefaultSimpUserRegistry u) {
-//        System.out.println("DefaultSimpUserRegistry: " + u);
-//    }
-//
-//    @EventListener
-//    public void test2(SubProtocolWebSocketHandler u) {
-//        System.out.println("SubProtocolWebSocketHandler: " + u);
-//    }
-//
-//    @EventListener
-//    public void test3(AbstractSubProtocolEvent u) {
-//        System.out.println("AbstractSubProtocolEvent: " + u);
-//    }
 }
