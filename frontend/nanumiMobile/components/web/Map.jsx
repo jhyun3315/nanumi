@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
-import useLocationPermission from '../../hooks/useLocationPermission';
+import {useLocationPermission} from '../../hooks/useLocationPermission';
 import {
   Dimensions,
   SafeAreaView,
