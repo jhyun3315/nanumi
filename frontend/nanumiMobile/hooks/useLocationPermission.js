@@ -51,12 +51,13 @@ export const useLocationPermission = () => {
         {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
       );
     } else {
-      Alert.alert('위치정보를 허용해야 이용할 수 있습니다.', '', [
+      Alert.alert('위치정보', '위치정보를 허용해야 이용할 수 있습니다.', [
         {
           text: '확인',
           onPress: () => {
             navigation.goBack();
           },
+          style: 'cancel',
         },
       ]);
     }
