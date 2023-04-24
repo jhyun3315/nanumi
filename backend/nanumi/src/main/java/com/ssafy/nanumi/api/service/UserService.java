@@ -3,6 +3,7 @@ package com.ssafy.nanumi.api.service;
 import com.ssafy.nanumi.api.request.UserJoinDTO;
 import com.ssafy.nanumi.api.response.ProductAllDTO;
 import com.ssafy.nanumi.api.response.ReviewReadDTO;
+import com.ssafy.nanumi.api.response.UserDetailDTO;
 import com.ssafy.nanumi.api.response.UserReadDTO;
 import com.ssafy.nanumi.common.provider.Provider;
 import com.ssafy.nanumi.config.response.exception.CustomException;
@@ -10,6 +11,7 @@ import com.ssafy.nanumi.db.entity.LoginProvider;
 import com.ssafy.nanumi.db.entity.User;
 import com.ssafy.nanumi.db.entity.UserInfo;
 import com.ssafy.nanumi.db.repository.LoginProviderRepository;
+import com.ssafy.nanumi.db.repository.ProductRepository;
 import com.ssafy.nanumi.db.repository.UserInfoRepository;
 import com.ssafy.nanumi.db.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,16 +22,16 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.ssafy.nanumi.config.response.exception.CustomExceptionStatus.NOT_FOUND_LOGIN_PROVIDER;
+import static com.ssafy.nanumi.config.response.exception.CustomExceptionStatus.*;
 
 @Slf4j
 @Service
 @Transactional(readOnly = false)
 @RequiredArgsConstructor
 public class UserService {
-
     private final UserRepository userRepository;
     private final UserInfoRepository userInfoRepository;
+    private final ProductRepository productRepository;
     private final LoginProviderRepository loginProviderRepository;
 
     public void join(UserJoinDTO userJoinDTO) {
@@ -56,8 +58,37 @@ public class UserService {
 
         userInfoRepository.save(userInfo);
     }
+
+    public UserDetailDTO findDetailUser(long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new CustomException(NOT_FOUND_USER));
+
+        UserInfo userInfo = userInfoRepository.findById(user.getId())
+                .orElseThrow(() -> new CustomException(NOT_FOUND_USER_INFO));
+
+        int givingCount = productRepository.findGivingCount(userId)
+                .orElseThrow(() -> new CustomException(REQUEST_ERROR));
+
+        return UserDetailDTO.builder()
+                .id(user.getId())
+                .nickname(user.getNickname())
+                .profileUrl(user.getProfileUrl())
+                .isDeleted(user.isDeleted())
+                .giveCount(userInfo.getGiveCount())
+                .givingCount(givingCount)
+                .givenCount(userInfo.getGivenCount())
+                .tier(userInfo.getTier())
+                .temperature(userInfo.getTemperature())
+                .build();
+    }
+
     public UserReadDTO getUser(User user){
         return new UserReadDTO(user);
+    }
+    public void updateUser(User user, UserJoinDTO userJoinDTO) {
+        user.setEmail(userJoinDTO.getEmail());
+        user.setNickname(userJoinDTO.getNickname());
+        user.setPassword(userJoinDTO.getPassword());
     }
     public void deleteUser(User user){
         user.delete();

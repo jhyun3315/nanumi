@@ -3,10 +3,13 @@ package com.ssafy.nanumi.api.controller;
 import com.ssafy.nanumi.api.request.UserJoinDTO;
 import com.ssafy.nanumi.api.response.ProductAllDTO;
 import com.ssafy.nanumi.api.response.ReviewReadDTO;
+import com.ssafy.nanumi.api.response.UserDetailDTO;
 import com.ssafy.nanumi.api.response.UserReadDTO;
 import com.ssafy.nanumi.api.service.UserService;
+import com.ssafy.nanumi.config.response.CustomDataResponse;
 import com.ssafy.nanumi.config.response.CustomResponse;
 import com.ssafy.nanumi.config.response.ResponseService;
+import com.ssafy.nanumi.config.response.exception.CustomSuccessStatus;
 import com.ssafy.nanumi.db.entity.User;
 import com.ssafy.nanumi.db.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +18,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+
+import static com.ssafy.nanumi.config.response.exception.CustomSuccessStatus.*;
 
 @Slf4j
 @RestController
@@ -35,6 +40,16 @@ public class UserController {
     }
 
     /* 회원 정보 조회 */
+    @GetMapping("users/detail")
+    public CustomDataResponse<UserDetailDTO> findDetailUser() {
+        // TODO : end-point임의로 바꿧음!, OAuth로 userId 받아와야 함
+        
+        long userId = 1L;
+
+        return responseService.getDataResponse(userService.findDetailUser(userId), RESPONSE_SUCCESS);
+    }
+
+    /* 회원 정보 조회 */
     @GetMapping("/users")
     public ResponseEntity<UserReadDTO> getUser(){
         User user = userRepository.findById(1L).get();
@@ -42,12 +57,19 @@ public class UserController {
     }
 
     /* 회원 정보 수정 */
+    @PatchMapping("/users")
+    public CustomResponse updateUser(@RequestBody UserJoinDTO userJoinDTO) {
+        User user = userRepository.findById(1L).get();
+        userService.updateUser(user, userJoinDTO);
+        return responseService.getSuccessResponse();
+    }
 
     /* 회원 정보 탈퇴 */
     @DeleteMapping("/users")
-    public void deleteUser(){
+    public CustomResponse deleteUser(){
         User user = userRepository.findById(1L).get();
         userService.deleteUser(user);
+        return responseService.getSuccessResponse();
     }
 
     /* 거래 후기 조회 (남이 나에게) */

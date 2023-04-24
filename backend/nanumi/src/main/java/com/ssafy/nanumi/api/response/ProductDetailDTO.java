@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 @Getter
 public class ProductDetailDTO {
-    private final Long id;
+    private final long id;
     private final String name;
     private final String content;
     private final  boolean isClosed;

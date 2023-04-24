@@ -7,7 +7,7 @@ import lombok.Getter;
 
 @Getter
 public class ProductAllDTO {
-    private final Long id;
+    private final long id;
     private final String name;
     private final String userProfileUrl;
     private final String productImageUrl;
