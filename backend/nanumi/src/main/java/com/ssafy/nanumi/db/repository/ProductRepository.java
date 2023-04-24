@@ -12,6 +12,6 @@ public interface ProductRepository extends JpaRepository<Product,Long> {
 
     @Query(value = "select count(p) " +
             "from Product p " +
-            "where p.user.id = :userId and p.deleted = false and p.isClosed = false")
+            "where p.user.id = :userId and p.isDeleted = false and p.isClosed = false")
     Optional<Integer> findGivingCount(long userId);
 }
