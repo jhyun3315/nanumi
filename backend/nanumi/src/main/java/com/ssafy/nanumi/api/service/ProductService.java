@@ -3,6 +3,8 @@ package com.ssafy.nanumi.api.service;
 import com.ssafy.nanumi.api.request.ProductInsertDTO;
 import com.ssafy.nanumi.api.response.ProductAllDTO;
 import com.ssafy.nanumi.api.response.ProductDetailDTO;
+import com.ssafy.nanumi.config.response.exception.CustomException;
+import com.ssafy.nanumi.config.response.exception.CustomExceptionStatus;
 import com.ssafy.nanumi.db.entity.*;
 import com.ssafy.nanumi.db.repository.AddressRepository;
 import com.ssafy.nanumi.db.repository.CategoryRepository;
@@ -23,31 +25,33 @@ public class ProductService {
     private final CategoryRepository categoryRepository;
     private final AddressRepository addressRepository;
     private final ProductImageRepository productImageRepository;
-    public List<ProductAllDTO> findProductAll() {
-        return productRepository.findAllByDeletedFalse()
+    public List<ProductAllDTO> findProductAll(User user) {
+        return productRepository.findAllByIsDeletedFalse()
                 .stream()
-                .filter(product -> product.getAddress().getId() == 1)
+                .filter(product -> product.getAddress().getId() == user.getAddress().getId())
                 .map(ProductAllDTO::new)
                 .collect(Collectors.toList());
     }
     public ProductDetailDTO findByProductId(Long id) {
         return productRepository.findById(id)
-                .map(ProductDetailDTO::new).get();
+                .map(ProductDetailDTO::new)
+                .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_PRODUCT));
     }
-    public List<ProductAllDTO> findCateProductAll(Long id) {
-        return productRepository.findAllByDeletedFalse()
+    public List<ProductAllDTO> findCateProductAll(Long id, User user) {
+        return productRepository.findAllByIsDeletedFalse()
                 .stream()
-                .filter(product -> product.getAddress().getId() == 1 && product.getCategory().getId() == id)
+                .filter(product -> product.getAddress().getId() == user.getAddress().getId() && product.getCategory().getId() == id)
                 .map(ProductAllDTO::new).collect(Collectors.toList());
     }
-    public ProductDetailDTO createProduct(ProductInsertDTO request, User user){
-        Category category = categoryRepository.findById(request.getCategoryId()).get();
-        Address address = addressRepository.findById(request.getAddressCode()).get();
+    public void createProduct(ProductInsertDTO request, User user){
+        Category category = categoryRepository.findById(request.getCategoryId())
+                .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_CATEGORY));
+        Address address = user.getAddress();
         Product product = Product.builder()
                 .name(request.getName())
                 .content(request.getContent())
                 .isClosed(false)
-                .deleted(false)
+                .isDeleted(false)
                 .user(user)
                 .category(category)
                 .address(address)
@@ -61,15 +65,19 @@ public class ProductService {
                     .build();
             productImageRepository.save(productImage);
         }
-        return new ProductDetailDTO(createProduct);
     }
-//    public ProductDetailResponse updateProduct(ProductInsertRequest request, Long id) {
-//        Product product = productRepository.findById(id).get();
-//
-//    }
-    public ProductDetailDTO deleteProduct(Long id){
-        Product product = productRepository.findById(id).get();
+    public void updateProduct(ProductInsertDTO request, Long id) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_PRODUCT));
+        Category category = categoryRepository.findById(request.getCategoryId())
+                .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_CATEGORY));
+        product.setName(request.getName());
+        product.setContent(request.getContent());
+        product.setCategory(category);
+    }
+    public void deleteProduct(Long id){
+        Product product = productRepository.findById(id)
+                .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_PRODUCT));
         product.delete();
-        return new ProductDetailDTO(product);
     }
 }

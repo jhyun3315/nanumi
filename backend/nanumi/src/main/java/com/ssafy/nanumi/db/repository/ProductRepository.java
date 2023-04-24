@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ProductRepository extends JpaRepository<Product,Long> {
-    List<Product> findAllByDeletedFalse();
+    List<Product> findAllByIsDeletedFalse();
 
     @Query(value = "select count(p) " +
             "from Product p " +
