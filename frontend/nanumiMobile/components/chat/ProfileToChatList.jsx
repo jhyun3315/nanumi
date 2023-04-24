@@ -50,7 +50,7 @@ const USER = [
 const ProfileToChatList = ({navigation}) => {
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: COLORS.white}}>
-      <BackHeader navigation={navigation} />
+      <BackHeader navigation={navigation}>채팅목록</BackHeader>
       <View style={{marginTop: SIZES.base}}></View>
       <FlatList
         data={USER}

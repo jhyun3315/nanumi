@@ -10,7 +10,7 @@ const DivideProduct = ({navigation}) => {
   const data = useRecoilValue(productState);
   return (
     <View style={styles.container}>
-      <BackHeader navigation={navigation} />
+      <BackHeader navigation={navigation}>나눔 상품</BackHeader>
       <View style={styles.flatListWrapper}>
         <FlatList
           data={data}

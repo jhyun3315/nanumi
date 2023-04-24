@@ -46,7 +46,7 @@ const MatchingProductList = ({navigation}) => {
 
   return (
     <View style={styles.container}>
-      <BackHeader navigation={navigation} />
+      <BackHeader navigation={navigation}>매칭 상품</BackHeader>
       <View style={styles.flatListWrapper}>
         <FlatList
           data={data}

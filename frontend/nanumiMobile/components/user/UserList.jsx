@@ -64,9 +64,10 @@ const renderItem = ({item, desc}) => {
 };
 
 const UserList = ({navigation, desc}) => {
+  const title = desc === '차단해제' ? '차단목록' : '이전채팅목록';
   return (
     <SafeAreaView style={styles.container}>
-      <BackHeader navigation={navigation} />
+      <BackHeader navigation={navigation}>{title}</BackHeader>
       <FlatList
         data={USER}
         renderItem={({item}) => renderItem({item, desc: desc})}
