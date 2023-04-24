@@ -1,11 +1,9 @@
 package com.ssafy.nanumi.api.service;
 
 import com.ssafy.nanumi.api.request.UserJoinDTO;
-import com.ssafy.nanumi.api.response.ProductAllDTO;
-import com.ssafy.nanumi.api.response.ReviewReadDTO;
-import com.ssafy.nanumi.api.response.UserDetailDTO;
-import com.ssafy.nanumi.api.response.UserReadDTO;
+import com.ssafy.nanumi.api.response.*;
 import com.ssafy.nanumi.common.provider.Provider;
+import com.ssafy.nanumi.config.response.CustomDataResponse;
 import com.ssafy.nanumi.config.response.exception.CustomException;
 import com.ssafy.nanumi.db.entity.LoginProvider;
 import com.ssafy.nanumi.db.entity.User;
@@ -19,6 +17,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.mail.MessagingException;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,6 +33,7 @@ public class UserService {
     private final UserInfoRepository userInfoRepository;
     private final ProductRepository productRepository;
     private final LoginProviderRepository loginProviderRepository;
+    private final EmailService emailService;
 
     public void join(UserJoinDTO userJoinDTO) {
         LoginProvider loginProvider = loginProviderRepository.findByProvider(Provider.local)
@@ -58,6 +59,20 @@ public class UserService {
 
         userInfoRepository.save(userInfo);
     }
+
+    public EmailCheckDTO checkEmail(String email) throws MessagingException, UnsupportedEncodingException {
+
+        String code = "";
+
+        if( userRepository.findByEmail(email).isPresent() ){
+            throw new CustomException(RESPONSE_EMAIL_EXISTED);
+        }else{
+            code = emailService.sendEmail(email);
+        }
+
+        return new EmailCheckDTO(code);
+    }
+
 
     public UserDetailDTO findDetailUser(long userId) {
         User user = userRepository.findById(userId)

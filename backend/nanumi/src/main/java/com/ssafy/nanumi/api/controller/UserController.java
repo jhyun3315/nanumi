@@ -1,6 +1,7 @@
 package com.ssafy.nanumi.api.controller;
 
 import com.ssafy.nanumi.api.request.UserJoinDTO;
+import com.ssafy.nanumi.api.response.EmailCheckDTO;
 import com.ssafy.nanumi.api.response.ProductAllDTO;
 import com.ssafy.nanumi.api.response.ReviewReadDTO;
 import com.ssafy.nanumi.api.response.UserDetailDTO;
@@ -17,6 +18,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.mail.MessagingException;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 import static com.ssafy.nanumi.config.response.exception.CustomSuccessStatus.*;
@@ -24,6 +28,7 @@ import static com.ssafy.nanumi.config.response.exception.CustomSuccessStatus.*;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
+@CrossOrigin(origins = {"http://localhost:3000", "https://k8b103.p.ssafy.io"})
 public class UserController {
 
     private final UserService userService;
@@ -39,11 +44,18 @@ public class UserController {
         return responseService.getSuccessResponse();
     }
 
+    @GetMapping("/users/check/{email}")
+    public CustomDataResponse emailCheck(@PathVariable("email") String email) throws MessagingException, UnsupportedEncodingException {
+        // 이메일 중복 처리, 인증 처리
+        EmailCheckDTO emailCheckDTO = userService.checkEmail(email);
+        return responseService.getDataResponse(emailCheckDTO, RESPONSE_SUCCESS);
+    }
+
     /* 회원 정보 조회 */
     @GetMapping("users/detail")
     public CustomDataResponse<UserDetailDTO> findDetailUser() {
         // TODO : end-point임의로 바꿧음!, OAuth로 userId 받아와야 함
-        
+
         long userId = 1L;
 
         return responseService.getDataResponse(userService.findDetailUser(userId), RESPONSE_SUCCESS);
