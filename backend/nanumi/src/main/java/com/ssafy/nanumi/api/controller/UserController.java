@@ -42,6 +42,12 @@ public class UserController {
     }
 
     /* 회원 정보 수정 */
+    @PatchMapping("/users")
+    public CustomResponse updateUser(@RequestBody UserJoinDTO userJoinDTO) {
+        User user = userRepository.findById(1L).get();
+        userService.updateUser(user, userJoinDTO);
+        return responseService.getSuccessResponse();
+    }
 
     /* 회원 정보 탈퇴 */
     @DeleteMapping("/users")

@@ -27,7 +27,6 @@ import static com.ssafy.nanumi.config.response.exception.CustomExceptionStatus.N
 @Transactional(readOnly = false)
 @RequiredArgsConstructor
 public class UserService {
-
     private final UserRepository userRepository;
     private final UserInfoRepository userInfoRepository;
     private final LoginProviderRepository loginProviderRepository;
@@ -58,6 +57,11 @@ public class UserService {
     }
     public UserReadDTO getUser(User user){
         return new UserReadDTO(user);
+    }
+    public void updateUser(User user, UserJoinDTO userJoinDTO) {
+        user.setEmail(userJoinDTO.getEmail());
+        user.setNickname(userJoinDTO.getNickname());
+        user.setPassword(userJoinDTO.getPassword());
     }
     public void deleteUser(User user){
         user.delete();
