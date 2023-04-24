@@ -4,6 +4,7 @@ import com.ssafy.nanumi.api.request.ProductInsertDTO;
 import com.ssafy.nanumi.api.response.ProductAllDTO;
 import com.ssafy.nanumi.api.response.ProductDetailDTO;
 import com.ssafy.nanumi.api.service.ProductService;
+import com.ssafy.nanumi.config.response.ResponseService;
 import com.ssafy.nanumi.db.entity.User;
 import com.ssafy.nanumi.db.repository.UserRepository;
 import lombok.AllArgsConstructor;
@@ -19,8 +20,7 @@ import java.util.List;
 public class ProductController {
     public final ProductService productService;
     public final UserRepository userRepository;
-
-
+    private final ResponseService responseService;
 
     /* 상품 전체 조회 */
     @GetMapping("")

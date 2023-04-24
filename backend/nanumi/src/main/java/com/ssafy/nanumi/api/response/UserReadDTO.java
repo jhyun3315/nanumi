@@ -7,13 +7,11 @@ import lombok.Getter;
 
 @Getter
 public class UserReadDTO {
-    private final Long id;
+    private final long id;
     private final String email;
     private final String nickname;
     private final String profileUrl;
-    private final String addressSi;
-    private final String addressGuGun;
-    private final String addressDong;
+    private final String address;
 
     /* 나눔 한 물건 개수 */
     private final int giveCount;
@@ -29,9 +27,7 @@ public class UserReadDTO {
         email = user.getEmail();
         nickname = user.getNickname();
         profileUrl = user.getProfileUrl();
-        addressSi = user.getAddress().getSi();
-        addressGuGun = user.getAddress().getGuGun();
-        addressDong = user.getAddress().getDong();
+        address = user.getAddress().getSi() + user.getAddress().getGuGun() + user.getAddress().getDong();
         giveCount = user.getUserInfo().getGiveCount();
         givenCount = user.getUserInfo().getGivenCount();
         givingCount = user.getProducts()
