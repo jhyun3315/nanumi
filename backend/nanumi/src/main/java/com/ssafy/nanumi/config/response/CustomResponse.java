@@ -1,5 +1,6 @@
 package com.ssafy.nanumi.config.response;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,6 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CustomResponse {
 
+    @JsonProperty(value = "isSuccess")
     public boolean isSuccess;
     public int code;
     public String message;

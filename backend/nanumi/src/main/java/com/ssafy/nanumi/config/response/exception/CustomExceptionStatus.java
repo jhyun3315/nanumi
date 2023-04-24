@@ -10,7 +10,8 @@ public enum CustomExceptionStatus {
     /* common error */
     REQUEST_ERROR(false, 400, "잘못된 요청입니다."),
     NOT_FOUND_LOGIN_PROVIDER(false, 404, "올바르지 않은 로그인 제공자 유형입니다."),
-
+    NOT_FOUND_USER(false, 400, "해당 유저가 존재하지 않습니다."),
+    NOT_FOUND_USER_INFO(false, 400, "해당 유저 정보가 존재하지 않습니다."),
     ;
 
     private final boolean isSuccess;
