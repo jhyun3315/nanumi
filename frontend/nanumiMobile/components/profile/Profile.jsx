@@ -6,6 +6,8 @@ import {
   StyleSheet,
   Image,
   Pressable,
+  ScrollView,
+  StatusBar,
 } from 'react-native';
 import {COLORS, FONTS, SIZES, assets} from '../../constants';
 import Icon from 'react-native-ionicons';
@@ -16,84 +18,91 @@ const Profile = ({navigation}) => {
       style={{
         flex: 1,
         backgroundColor: COLORS.white,
-        alignItems: 'center',
+        paddingTop: StatusBar.currentHeight,
       }}>
-      <View style={styles.profileImage}>
-        <Image
-          source={assets.person01}
-          style={styles.image}
-          resizeMode="contain"
-        />
-        <View style={styles.add}>
-          <Icon name="add" size={SIZES.extraLarge} color={COLORS.primary} />
+      <ScrollView>
+        <View style={{flex: 1, alignItems: 'center'}}>
+          <View style={styles.profileImage}>
+            <Image
+              source={assets.person01}
+              style={styles.image}
+              resizeMode="contain"
+            />
+            <View style={styles.add}>
+              <Icon name="add" size={SIZES.extraLarge} color={COLORS.primary} />
+            </View>
+          </View>
+
+          <View style={styles.infoContainer}>
+            <Text style={[styles.text, styles.nickname]}>닉네임</Text>
+          </View>
+
+          <Pressable
+            style={styles.statusContainer}
+            onPress={() => navigation.navigate('DivideProduct')}>
+            <View style={styles.statusBox}>
+              <Text style={[styles.text, styles.count]}>483</Text>
+              <Text style={[styles.text, styles.subText]}>나눔한 물건</Text>
+            </View>
+
+            <Pressable
+              onPress={() => navigation.navigate('DivideProduct')}
+              style={[
+                styles.statusBox,
+                {
+                  borderColor: '#DFD8C8',
+                  borderLeftWidth: 1,
+                  borderRightWidth: 1,
+                },
+              ]}>
+              <Text style={[styles.text, styles.count]}>483</Text>
+              <Text style={[styles.text, styles.subText]}>나눔중인 물건</Text>
+            </Pressable>
+
+            <Pressable
+              style={styles.statusBox}
+              onPress={() => navigation.navigate('DivideProduct')}>
+              <Text style={[styles.text, styles.count]}>483</Text>
+              <Text style={[styles.text, styles.subText]}>나눔받은 물건</Text>
+            </Pressable>
+          </Pressable>
+          <Pressable
+            onPress={() => navigation.navigate('MatchingProduct')}
+            style={[
+              styles.list,
+              {borderTopWidth: 1, borderTopColor: COLORS.lightGray},
+            ]}>
+            <Text style={styles.text}>매칭목록</Text>
+          </Pressable>
+
+          <Pressable
+            style={styles.list}
+            onPress={() => navigation.navigate('ProfileToChat')}>
+            <Text style={styles.text}>이전채팅목록</Text>
+          </Pressable>
+          <Pressable style={styles.list} onPress={() => {}}>
+            <Text style={styles.text}>리뷰 목록</Text>
+          </Pressable>
+          <Pressable
+            style={styles.list}
+            onPress={() => navigation.navigate('MapUpdate')}>
+            <Text style={styles.text}>내 동네 설정</Text>
+          </Pressable>
+          <Pressable
+            style={styles.list}
+            onPress={() => navigation.navigate('BlockUser')}>
+            <Text style={styles.text}>차단 사용자 관리</Text>
+          </Pressable>
+          <Pressable
+            style={styles.list}
+            onPress={() => navigation.navigate('Login')}>
+            <Text style={styles.text}>로그아웃</Text>
+          </Pressable>
+          <Pressable style={styles.list}>
+            <Text style={styles.text}>탈퇴하기</Text>
+          </Pressable>
         </View>
-      </View>
-
-      <View style={styles.infoContainer}>
-        <Text style={[styles.text, styles.nickname]}>닉네임</Text>
-      </View>
-
-      <Pressable
-        style={styles.statusContainer}
-        onPress={() => navigation.navigate('DivideProduct')}>
-        <View style={styles.statusBox}>
-          <Text style={[styles.text, styles.count]}>483</Text>
-          <Text style={[styles.text, styles.subText]}>나눔한 물건</Text>
-        </View>
-
-        <Pressable
-          onPress={() => navigation.navigate('DivideProduct')}
-          style={[
-            styles.statusBox,
-            {
-              borderColor: '#DFD8C8',
-              borderLeftWidth: 1,
-              borderRightWidth: 1,
-            },
-          ]}>
-          <Text style={[styles.text, styles.count]}>483</Text>
-          <Text style={[styles.text, styles.subText]}>나눔중인 물건</Text>
-        </Pressable>
-
-        <Pressable
-          style={styles.statusBox}
-          onPress={() => navigation.navigate('DivideProduct')}>
-          <Text style={[styles.text, styles.count]}>483</Text>
-          <Text style={[styles.text, styles.subText]}>나눔받은 물건</Text>
-        </Pressable>
-      </Pressable>
-      <Pressable
-        onPress={() => navigation.navigate('MatchingProduct')}
-        style={[
-          styles.list,
-          {borderTopWidth: 1, borderTopColor: COLORS.lightGray},
-        ]}>
-        <Text style={styles.text}>매칭목록</Text>
-      </Pressable>
-
-      <Pressable
-        style={styles.list}
-        onPress={() => navigation.navigate('ProfileToChat')}>
-        <Text style={styles.text}>이전채팅목록</Text>
-      </Pressable>
-      <Pressable
-        style={styles.list}
-        onPress={() => navigation.navigate('MapUpdate')}>
-        <Text style={styles.text}>내 동네 설정</Text>
-      </Pressable>
-      <Pressable
-        style={styles.list}
-        onPress={() => navigation.navigate('BlockUser')}>
-        <Text style={styles.text}>차단 사용자 관리</Text>
-      </Pressable>
-      <Pressable
-        style={styles.list}
-        onPress={() => navigation.navigate('Login')}>
-        <Text style={styles.text}>로그아웃</Text>
-      </Pressable>
-      <Pressable style={styles.list}>
-        <Text style={styles.text}>탈퇴하기</Text>
-      </Pressable>
+      </ScrollView>
     </SafeAreaView>
   );
 };
