@@ -40,7 +40,6 @@ public class UserController {
     public CustomResponse join(@RequestBody UserJoinDTO userJoinDTO) {
 
         userService.join(userJoinDTO);
-
         return responseService.getSuccessResponse();
     }
 

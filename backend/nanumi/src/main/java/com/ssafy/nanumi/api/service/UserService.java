@@ -14,6 +14,8 @@ import com.ssafy.nanumi.db.repository.UserInfoRepository;
 import com.ssafy.nanumi.db.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,25 +41,33 @@ public class UserService {
         LoginProvider loginProvider = loginProviderRepository.findByProvider(Provider.local)
                 .orElseThrow(() -> new CustomException(NOT_FOUND_LOGIN_PROVIDER));
 
-        User user = User.builder()
-                .email(userJoinDTO.getEmail())
-                .nickname(userJoinDTO.getNickname())
-                .password(userJoinDTO.getPassword())
-                .profileUrl("url")
-                .isDeleted(false)
-                .loginProvider(loginProvider)
-                .address(null)
-                .build();
+        String email = userJoinDTO.getEmail();
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-        userRepository.save(user);
+        if( userRepository.findByEmail(email).isPresent() ){
+            throw new CustomException(RESPONSE_EMAIL_EXISTED);
+        }else{
+            User user = User.builder()
+                    .email(userJoinDTO.getEmail())
+                    .nickname(userJoinDTO.getNickname())
+                    .password(passwordEncoder.encode(userJoinDTO.getPassword()))
+                    .profileUrl("url")
+                    .isDeleted(false)
+                    .loginProvider(loginProvider)
+                    .address(null)
+                    .build();
 
-        UserInfo userInfo = UserInfo.builder()
-                .user(user)
-                .stopDate(null)
-                .refreshToken(null)
-                .build();
+            userRepository.save(user);
 
-        userInfoRepository.save(userInfo);
+            UserInfo userInfo = UserInfo.builder()
+                    .user(user)
+                    .stopDate(null)
+                    .refreshToken(null)
+                    .build();
+
+            userInfoRepository.save(userInfo);
+        }
+
     }
 
     public EmailCheckDTO checkEmail(String email) throws MessagingException, UnsupportedEncodingException {
