@@ -18,6 +18,9 @@ public class AdminService {
     private final UserRepository userRepository;
 
     public void adminLogin(String email, String password) {
+
+        // TODO : OAuth, JWT, PasswordEncoder 적용해야함.
+
         User adminUser = userRepository.findByEmail(email)
                 .orElseThrow(() -> new CustomException(REQUEST_ERROR));
 
