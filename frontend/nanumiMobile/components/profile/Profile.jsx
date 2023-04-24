@@ -74,7 +74,7 @@ const Profile = ({navigation}) => {
       <Pressable
         style={styles.list}
         onPress={() => navigation.navigate('ProfileToChat')}>
-        <Text style={styles.text}>채팅목록</Text>
+        <Text style={styles.text}>이전채팅목록</Text>
       </Pressable>
       <Pressable
         style={styles.list}
