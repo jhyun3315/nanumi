@@ -26,7 +26,7 @@ public class ProductService {
     private final AddressRepository addressRepository;
     private final ProductImageRepository productImageRepository;
     public List<ProductAllDTO> findProductAll(User user) {
-        return productRepository.findAllByDeletedFalse()
+        return productRepository.findAllByIsDeletedFalse()
                 .stream()
                 .filter(product -> product.getAddress().getId() == user.getAddress().getId())
                 .map(ProductAllDTO::new)
@@ -38,7 +38,7 @@ public class ProductService {
                 .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_PRODUCT));
     }
     public List<ProductAllDTO> findCateProductAll(Long id, User user) {
-        return productRepository.findAllByDeletedFalse()
+        return productRepository.findAllByIsDeletedFalse()
                 .stream()
                 .filter(product -> product.getAddress().getId() == user.getAddress().getId() && product.getCategory().getId() == id)
                 .map(ProductAllDTO::new).collect(Collectors.toList());
@@ -51,7 +51,7 @@ public class ProductService {
                 .name(request.getName())
                 .content(request.getContent())
                 .isClosed(false)
-                .deleted(false)
+                .isDeleted(false)
                 .user(user)
                 .category(category)
                 .address(address)
@@ -75,10 +75,9 @@ public class ProductService {
         product.setContent(request.getContent());
         product.setCategory(category);
     }
-    public ProductDetailDTO deleteProduct(Long id){
+    public void deleteProduct(Long id){
         Product product = productRepository.findById(id)
                 .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_PRODUCT));
         product.delete();
-        return new ProductDetailDTO(product);
     }
 }

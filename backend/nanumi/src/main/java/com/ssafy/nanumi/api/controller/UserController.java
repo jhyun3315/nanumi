@@ -51,9 +51,10 @@ public class UserController {
 
     /* 회원 정보 탈퇴 */
     @DeleteMapping("/users")
-    public void deleteUser(){
+    public CustomResponse deleteUser(){
         User user = userRepository.findById(1L).get();
         userService.deleteUser(user);
+        return responseService.getSuccessResponse();
     }
 
     /* 거래 후기 조회 (남이 나에게) */

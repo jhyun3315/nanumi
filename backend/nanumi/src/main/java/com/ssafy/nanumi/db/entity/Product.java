@@ -27,8 +27,8 @@ public class Product extends BaseTimeEntity {
     @Column(name="is_closed", columnDefinition = "TINYINT", nullable = false)
     private boolean isClosed;
 
-    @Column(name = "deleted", columnDefinition = "TINYINT", nullable = false)
-    private boolean deleted;
+    @Column(name = "is_deleted", columnDefinition = "TINYINT", nullable = false)
+    private boolean isDeleted;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="address_id")
@@ -46,18 +46,18 @@ public class Product extends BaseTimeEntity {
     private List<ProductImage> productImages = new ArrayList<>();
 
     public void delete(){
-        this.deleted = true;
+        this.isDeleted = true;
     }
     public void close(){
         this.isClosed = true;
     }
     @Builder
-    public Product(long id, String name, String content, boolean isClosed, boolean deleted, Address address, User user, Category category) {
+    public Product(long id, String name, String content, boolean isClosed, boolean isDeleted, Address address, User user, Category category) {
         this.id = id;
         this.name = name;
         this.content = content;
         this.isClosed = isClosed;
-        this.deleted = deleted;
+        this.isDeleted = isDeleted;
         this.address = address;
         this.user = user;
         this.category = category;
