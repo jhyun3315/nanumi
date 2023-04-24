@@ -24,9 +24,16 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 //	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+
+	// swagger
+	implementation group: 'io.springfox', name: 'springfox-boot-starter', version: '3.0.0'
+	// email auth
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
+
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'com.mysql:mysql-connector-j'
 	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
+
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
@@ -36,8 +43,6 @@ dependencies {
 
 	// Socket
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
-
-
 }
 
 tasks.named('test') {

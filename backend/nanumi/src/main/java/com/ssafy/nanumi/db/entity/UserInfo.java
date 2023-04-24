@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
@@ -13,6 +14,7 @@ import java.time.LocalDateTime;
 @Getter
 @Entity
 @DynamicUpdate
+@DynamicInsert
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name="user_info")
 public class UserInfo {
@@ -30,7 +32,7 @@ public class UserInfo {
     private double rating;
 
     @ColumnDefault("'브론즈'")
-    @Column(name = "tier", columnDefinition = "VARCHAR(20)", nullable = false)
+    @Column(name = "tier", columnDefinition = "VARCHAR(20)")
     private String tier;
 
     @ColumnDefault("0")
@@ -50,16 +52,16 @@ public class UserInfo {
     private int givenCount;
 
     @ColumnDefault("0")
-    @Column(name = "reported_total_count", columnDefinition = "INT")
+    @Column(name = "reported_total_count", columnDefinition = "INT", nullable = false)
     private int reportedTotalCount;
 
-    @Column(name = "stop_date")
+    @Column(name = "stop_date", nullable = true)
     private LocalDateTime stopDate;
 
     @Column(name = "refresh_token", columnDefinition = "VARCHAR(255)")
     private String refreshToken;
 
-    @OneToOne
+    @OneToOne(mappedBy = "userInfo")
     @JoinColumn(name = "user_id")
     private User user;
 

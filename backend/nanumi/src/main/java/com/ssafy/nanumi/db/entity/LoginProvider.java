@@ -1,6 +1,8 @@
 package com.ssafy.nanumi.db.entity;
 
+import com.ssafy.nanumi.common.provider.Provider;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -16,8 +18,13 @@ public class LoginProvider {
     @Column(name = "id")
     private int id;
 
-//    @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.STRING)
     @Column(name = "name")
-    private String name; // 나중에 AuthProvider name으로 바꿔야함!
+    private Provider provider;
 
+    @Builder
+    public LoginProvider(int id, Provider provider) {
+        this.id = id;
+        this.provider = provider;
+    }
 }
