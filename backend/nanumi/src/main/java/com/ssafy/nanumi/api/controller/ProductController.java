@@ -4,6 +4,7 @@ import com.ssafy.nanumi.api.request.ProductInsertDTO;
 import com.ssafy.nanumi.api.response.ProductAllDTO;
 import com.ssafy.nanumi.api.response.ProductDetailDTO;
 import com.ssafy.nanumi.api.service.ProductService;
+import com.ssafy.nanumi.config.response.CustomDataResponse;
 import com.ssafy.nanumi.config.response.CustomResponse;
 import com.ssafy.nanumi.config.response.ResponseService;
 import com.ssafy.nanumi.db.entity.User;
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static com.ssafy.nanumi.config.response.exception.CustomSuccessStatus.RESPONSE_SUCCESS;
+
 @RestController
 @AllArgsConstructor
 @RequestMapping(value = "/products")
@@ -25,20 +28,20 @@ public class ProductController {
 
     /* 상품 전체 조회 */
     @GetMapping("")
-    public ResponseEntity<List<ProductAllDTO>> getProductAll(){
+    public CustomDataResponse<List<ProductAllDTO>> getProductAll(){
         User user = userRepository.findById(1L).get();
-        return new ResponseEntity<>(productService.findProductAll(user), HttpStatus.OK);
+        return responseService.getDataResponse(productService.findProductAll(user), RESPONSE_SUCCESS);
     }
     /* 상세 페이지 조회 */
     @GetMapping("/{product_id}")
-    public ResponseEntity<ProductDetailDTO> getProductOne(@PathVariable("product_id") Long id) {
-        return new ResponseEntity<>(productService.findByProductId(id), HttpStatus.OK);
+    public CustomDataResponse<ProductDetailDTO> getProductOne(@PathVariable("product_id") Long id) {
+        return responseService.getDataResponse(productService.findByProductId(id), RESPONSE_SUCCESS);
     }
     /* 카테고리별 조회 */
     @GetMapping("/categories/{categorie_id}")
-    public ResponseEntity<List<ProductAllDTO>> getCateProductAll(@PathVariable("categorie_id") Long id){
+    public CustomDataResponse<List<ProductAllDTO>> getCateProductAll(@PathVariable("categorie_id") Long id){
         User user = userRepository.findById(1L).get();
-        return new ResponseEntity<>(productService.findCateProductAll(id, user), HttpStatus.OK);
+        return  responseService.getDataResponse(productService.findCateProductAll(id, user), RESPONSE_SUCCESS);
     }
     /* 상품 등록 */
     @PostMapping("")
