@@ -23,22 +23,23 @@ public class ChatController {
     @MessageMapping("chat/message")
     public void message(ChatMessageDTO message) {
         switch (message.getType()) {
-            case TALK:
+            case TALK: // 일반 채팅 메시지의 경우
                 chatService.CreateChat(message);
                 break;
-            case QUIT:
-                chatService.CreateChat(message);
-                chatRoomService.reportByRoomSeq(message.getRoomId());
+            case QUIT: // 채팅방에서 나갈 때 메시지의 경우
+                chatService.CreateChat(message); // 채팅을 생성
+                chatRoomService.reportByRoomSeq(message.getRoomId()); // 채팅방의 정보 생신
                 break;
             default:
                 break;
         }
     }
 
+    //TODO "chat/chatlog"로 매핑된 HTTP GET 요청을 처리하도록 설정한다.
     @GetMapping("chat/chatlog")
     public ResponseEntity<List<ChatEntity>> ChatLog(@RequestParam long roomSeq) {
+
+        // 해당 채팅방의 최근 20개의 채팅 로그를 반환한다.
         return new ResponseEntity<>(chatService.GetChatLogLimit20(roomSeq), HttpStatus.OK);
     }
-
-
 }

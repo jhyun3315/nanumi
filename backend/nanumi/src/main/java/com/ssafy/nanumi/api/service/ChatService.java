@@ -16,13 +16,19 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class ChatService {
+    // 웹 소켓 메시지를 전송하는데 사용되는 인터페이스
     private final SimpMessageSendingOperations messageTemplate;
+
     private final ChatRepository chatRepository;
 
+    // TODO DTO 객체를 입력으로 받아서, 채팅 메시지를 저장하고 해당 채팅방에 전송한다.
     @Transactional
     public void CreateChat(ChatMessageDTO DTO) {
+        // 날짜 형식 및 포멧터를 직접 설정 
         String pattern = "yyyy-MM-dd a KK:mm ss:SSS";
         DateFormat df = new SimpleDateFormat(pattern);
+
+        // chatEntiy 객체를 데이터 베이스에 저장
         ChatEntity chatEntity = ChatEntity.builder()
                 .type(DTO.getType())
                 .roomId(DTO.getRoomId())
@@ -31,11 +37,16 @@ public class ChatService {
                 .sendTime(df.format(new Date()))
                 .build();
         chatRepository.save(chatEntity);
+
+        // 채팅방의 구독자들에게 채팅 메시지를 전송한다.
         messageTemplate.convertAndSend("/sub/chat/room/" + DTO.getRoomId(), chatEntity);
     }
 
+
+    // TODO roomSeq를 입력으로 받아서 해당 채팅방의 최근 20개의 채팅 로그를 반환한다.
     @Transactional
     public List<ChatEntity> GetChatLogLimit20(long roomSeq) {
+        // 데이터베이스에서 최근 20개의 채팅 로그를 가져온다.
         return chatRepository.findTop20ByRoomIdOrderBySendTimeDesc(roomSeq);
     }
 }
