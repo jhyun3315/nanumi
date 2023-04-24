@@ -10,13 +10,10 @@ import com.ssafy.nanumi.api.service.UserService;
 import com.ssafy.nanumi.config.response.CustomDataResponse;
 import com.ssafy.nanumi.config.response.CustomResponse;
 import com.ssafy.nanumi.config.response.ResponseService;
-import com.ssafy.nanumi.config.response.exception.CustomSuccessStatus;
 import com.ssafy.nanumi.db.entity.User;
 import com.ssafy.nanumi.db.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
@@ -63,9 +60,9 @@ public class UserController {
 
     /* 회원 정보 조회 */
     @GetMapping("/users")
-    public ResponseEntity<UserReadDTO> getUser(){
+    public CustomDataResponse<UserReadDTO> getUser(){
         User user = userRepository.findById(1L).get();
-        return new ResponseEntity<>(userService.getUser(user), HttpStatus.OK);
+        return responseService.getDataResponse(userService.getUser(user), RESPONSE_SUCCESS);
     }
 
     /* 회원 정보 수정 */
@@ -86,22 +83,22 @@ public class UserController {
 
     /* 거래 후기 조회 (남이 나에게) */
     @GetMapping("/users/reviews")
-    public ResponseEntity<List<ReviewReadDTO>> getAllReview(){
+    public CustomDataResponse<List<ReviewReadDTO>> getAllReview(){
         User user = userRepository.findById(1L).get();
-        return new ResponseEntity<>(userService.getAllReview(user),HttpStatus.OK);
+        return responseService.getDataResponse(userService.getAllReview(user), RESPONSE_SUCCESS);
     }
 
     /* 나눔 상품 목록 조회 (모든 거래) */
     @GetMapping("/users/products")
-    public ResponseEntity<List<ProductAllDTO>> getAllReceiveProduct(){
+    public CustomDataResponse<List<ProductAllDTO>> getAllReceiveProduct(){
         User user = userRepository.findById(1L).get();
-        return new ResponseEntity<>(userService.getAllReceiveProduct(user), HttpStatus.OK);
+        return responseService.getDataResponse(userService.getAllReceiveProduct(user), RESPONSE_SUCCESS);
     }
 
     /* 매칭 목록 (현재 진행중 "나눔" 목록) */
     @GetMapping("/users/matches")
-    public ResponseEntity<List<ProductAllDTO>> getMatchingProduct(){
+    public CustomDataResponse<List<ProductAllDTO>> getMatchingProduct(){
         User user = userRepository.findById(1L).get();
-        return new ResponseEntity<>(userService.getMatchingProduct(user), HttpStatus.OK);
+        return responseService.getDataResponse(userService.getMatchingProduct(user), RESPONSE_SUCCESS);
     }
 }
