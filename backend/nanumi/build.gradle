@@ -27,7 +27,8 @@ dependencies {
 	// swagger
 	implementation group: 'io.springfox', name: 'springfox-boot-starter', version: '3.0.0'
 	// email auth
-	implementation 'org.springframework.boot:spring-boot-starter-mail'
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: '2.6.3'
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'com.mysql:mysql-connector-j'
