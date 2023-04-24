@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useReducer} from 'react';
 import axios from 'axios';
 import Geolocation from 'react-native-geolocation-service';
 import MapView, {Circle, Marker, PROVIDER_GOOGLE} from 'react-native-maps';
@@ -20,24 +20,52 @@ import {getDisntace} from '../../util/distance';
 const {width, height} = Dimensions.get('window');
 const MAX_DISTANCE = 5000;
 
+const initialState = {
+  newCoordinate: {},
+  newAddressName: '',
+  newCode: '',
+};
+
+const reducer = (state, action) => {
+  switch (action.type) {
+    case 'SET_NEW_COORDINATE':
+      return {...state, newCoordinate: action.payload};
+    case 'SET_NEW_ADDRESS_NAME':
+      return {...state, newAddressName: action.payload};
+    case 'SET_NEW_CODE':
+      return {...state, newCode: action.payload};
+    case 'SET_ALL_DATA':
+      return {
+        ...state,
+        newCoordinate: action.payload.coordinate,
+        newCode: action.payload.code,
+        newAddressName: action.payload.addressName,
+      };
+    default:
+      return state;
+  }
+};
 const MapUpdate = ({navigation}) => {
+  console.log('렌더링');
   const {coordinate, code, addressName} = useLocationPermission();
-  const [newCoordinate, setNewCoordinate] = useState({});
-  const [newAddressName, setNewAddressName] = useState('');
-  const [newCode, setNewCode] = useState('');
+  const [state, dispatch] = useReducer(reducer, initialState);
 
   const getCityName = async coordinate => {
-    const response = await axios.get(
-      `https://dapi.kakao.com/v2/local/geo/coord2regioncode.json?x=${coordinate.longitude}&y=${coordinate.latitude}`,
-      {
-        headers: {
-          Authorization: `KakaoAK c22bf545a0b497a95ef7e5417534f704`,
+    try {
+      const response = await axios.get(
+        `https://dapi.kakao.com/v2/local/geo/coord2regioncode.json?x=${coordinate.longitude}&y=${coordinate.latitude}`,
+        {
+          headers: {
+            Authorization: `KakaoAK c22bf545a0b497a95ef7e5417534f704`,
+          },
         },
-      },
-    );
-    const dongCode = response.data.documents[0].code;
-    const address = response.data.documents[0].address_name;
-    return {dongCode, address};
+      );
+      const dongCode = response.data.documents[0].code;
+      const address = response.data.documents[0].address_name;
+      return {dongCode, address};
+    } catch (error) {
+      Alert.alert('도시 정보를 얻어오는데 실패했습니다.');
+    }
   };
 
   const handleMarkerDragEnd = async event => {
@@ -54,10 +82,10 @@ const MapUpdate = ({navigation}) => {
         {
           text: '확인',
           onPress: () => {
-            setNewCoordinate(region);
-            setNewCoordinate(coordinate);
-            setNewAddressName(addressName);
-            setNewCode(code);
+            dispatch({type: 'SET_NEW_COORDINATE', payload: region});
+            dispatch({type: 'SET_NEW_COORDINATE', payload: coordinate});
+            dispatch({type: 'SET_NEW_ADDRESS_NAME', payload: addressName});
+            dispatch({type: 'SET_NEW_CODE', payload: code});
           },
           style: 'cancel',
         },
@@ -68,10 +96,13 @@ const MapUpdate = ({navigation}) => {
   };
 
   const handleRegion = async region => {
-    const {dongCode, address} = await getCityName(region);
-    setNewAddressName(address);
-    setNewCoordinate(region);
-    setNewCode(dongCode);
+    const result = await getCityName(region);
+    if (result) {
+      const {dongCode, address} = result;
+      dispatch({type: 'SET_NEW_COORDINATE', payload: region});
+      dispatch({type: 'SET_NEW_ADDRESS_NAME', payload: address});
+      dispatch({type: 'SET_NEW_CODE', payload: dongCode});
+    }
   };
 
   const handlePress = () => {
@@ -79,12 +110,11 @@ const MapUpdate = ({navigation}) => {
   };
 
   useEffect(() => {
-    setNewCoordinate(coordinate);
-    setNewAddressName(addressName);
-    setNewCode(code);
+    dispatch({type: 'SET_ALL_DATA', payload: {coordinate, code, addressName}});
   }, [coordinate, addressName, code]);
 
-  if (!newCoordinate.latitude || !newCoordinate.longitude) return <Fallback />;
+  if (!state.newCoordinate.latitude || !state.newCoordinate.longitude)
+    return <Fallback />;
 
   return (
     <SafeAreaView style={styles.container}>
@@ -92,7 +122,7 @@ const MapUpdate = ({navigation}) => {
       <MapView
         provider={PROVIDER_GOOGLE}
         style={styles.mapView}
-        region={newCoordinate}
+        region={state.newCoordinate}
         minZoomLevel={12}
         maxZoomLevel={18}>
         <Circle
@@ -104,14 +134,14 @@ const MapUpdate = ({navigation}) => {
         />
         <Marker
           key={1}
-          coordinate={newCoordinate}
+          coordinate={state.newCoordinate}
           draggable
           onDragEnd={handleMarkerDragEnd}
         />
       </MapView>
       <View style={styles.bottomContainer}>
         <Text style={styles.bottomText}>
-          {newAddressName ? newAddressName : '동네 인증중...'}
+          {state.newAddressName ? state.newAddressName : '동네 인증중...'}
         </Text>
         <RectButton
           minWidth={64}
