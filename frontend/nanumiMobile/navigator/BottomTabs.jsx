@@ -70,6 +70,7 @@ const BottomTabs = ({navigation}) => {
         component={ProfileScreen}
         options={({}) => ({
           title: '프로필',
+          headerShown: false,
           tabBarIcon: ({color, size}) => (
             <Icon name="person" color={color} size={size} />
           ),
