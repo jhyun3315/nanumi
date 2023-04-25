@@ -83,8 +83,8 @@ const ChatDetail = ({navigation}) => {
             scrollToBottom
             renderLoading={renderLoading}
           />
-          <AccuseModal visible={true} />
         </SafeAreaView>
+        <AccuseModal visible={false} />
         <BottomSheetModal
           isBackDropDismisByPress={true}
           ref={bottomSheetModalRef}
