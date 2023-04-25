@@ -66,4 +66,8 @@ public class User extends BaseTimeEntity {
         this.loginProvider = loginProvider;
         this.userInfo = userInfo;
     }
+
+    public void updateAddress(Address address){
+        this.address = address;
+    }
 }
