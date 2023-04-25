@@ -1,5 +1,6 @@
 import React from 'react';
-import {Modal, Text, TouchableOpacity, View, Dimensions} from 'react-native';
+import {Modal, Text, Pressable, View, Dimensions} from 'react-native';
+import {COLORS, FONTS, SIZES} from '../../constants';
 const {width, height} = Dimensions.get('window');
 
 const AccuseModal = ({visible}) => {
@@ -8,24 +9,24 @@ const AccuseModal = ({visible}) => {
       <View style={styles.modalContainer}>
         <View style={styles.modal}>
           <Text style={styles.modalTitle}>신고하기</Text>
-          <TouchableOpacity style={styles.modalButton}>
+          <Pressable style={styles.modalButton}>
             <Text style={styles.modalButtonText}>신고 종류1</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.modalButton}>
+          </Pressable>
+          <Pressable style={styles.modalButton}>
             <Text style={styles.modalButtonText}>신고 종류2</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.modalButton}>
+          </Pressable>
+          <Pressable style={styles.modalButton}>
             <Text style={styles.modalButtonText}>신고 종류3</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.modalButton}>
+          </Pressable>
+          <Pressable style={styles.modalButton}>
             <Text style={styles.modalButtonText}>신고 종류4</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.modalButton}>
+          </Pressable>
+          <Pressable style={styles.modalButton}>
             <Text style={styles.modalButtonText}>신고 종류5</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.modalButton}>
+          </Pressable>
+          <Pressable style={styles.modalButton}>
             <Text style={styles.modalButtonText}>취소</Text>
-          </TouchableOpacity>
+          </Pressable>
         </View>
       </View>
     </Modal>
@@ -42,9 +43,9 @@ const styles = {
   },
   modal: {
     width: '80%',
-    backgroundColor: 'white',
-    borderRadius: 10,
-    padding: 20,
+    backgroundColor: COLORS.white,
+    borderRadius: SIZES.base,
+    padding: SIZES.extraLarge,
     position: 'absolute',
     zIndex: 1,
     top: '50%',
@@ -52,16 +53,18 @@ const styles = {
     transform: [{translateX: -0.4 * width}, {translateY: -0.25 * height}],
   },
   modalTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 10,
+    color: COLORS.primary,
+    fontSize: SIZES.large,
+    marginBottom: SIZES.base,
+    fontFamily: FONTS.bold,
   },
   modalButton: {
-    paddingVertical: 10,
+    paddingVertical: SIZES.base * 2,
     alignItems: 'center',
   },
   modalButtonText: {
-    fontSize: 16,
-    color: 'blue',
+    fontSize: SIZES.font,
+    color: COLORS.primary,
+    fontFamily: FONTS.medium,
   },
 };
