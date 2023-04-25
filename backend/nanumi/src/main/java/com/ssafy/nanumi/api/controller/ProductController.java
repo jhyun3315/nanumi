@@ -39,9 +39,9 @@ public class ProductController {
     }
     /* 카테고리별 조회 */
     @GetMapping("/categories/{categorie_id}")
-    public  CustomDataResponse<List<ProductAllDTO>> getCateProductAll(@PathVariable("categorie_id") Long id){
+    public CustomDataResponse<List<ProductAllDTO>> getCateProductAll(@PathVariable("categorie_id") Long id){
         User user = userRepository.findById(1L).get();
-        return responseService.getDataResponse(productService.findCateProductAll(id, user), RESPONSE_SUCCESS);
+        return  responseService.getDataResponse(productService.findCateProductAll(id, user), RESPONSE_SUCCESS);
     }
     /* 상품 등록 */
     @PostMapping("")

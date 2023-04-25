@@ -10,10 +10,13 @@ import com.ssafy.nanumi.api.service.UserService;
 import com.ssafy.nanumi.config.response.CustomDataResponse;
 import com.ssafy.nanumi.config.response.CustomResponse;
 import com.ssafy.nanumi.config.response.ResponseService;
+import com.ssafy.nanumi.config.response.exception.CustomSuccessStatus;
 import com.ssafy.nanumi.db.entity.User;
 import com.ssafy.nanumi.db.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
@@ -37,7 +40,6 @@ public class UserController {
     public CustomResponse join(@RequestBody UserJoinDTO userJoinDTO) {
 
         userService.join(userJoinDTO);
-
         return responseService.getSuccessResponse();
     }
 
@@ -85,7 +87,7 @@ public class UserController {
     @GetMapping("/users/reviews")
     public CustomDataResponse<List<ReviewReadDTO>> getAllReview(){
         User user = userRepository.findById(1L).get();
-        return responseService.getDataResponse(userService.getAllReview(user), RESPONSE_SUCCESS);
+        return responseService.getDataResponse(userService.getAllReview(user),RESPONSE_SUCCESS);
     }
 
     /* 나눔 상품 목록 조회 (모든 거래) */
@@ -99,6 +101,6 @@ public class UserController {
     @GetMapping("/users/matches")
     public CustomDataResponse<List<ProductAllDTO>> getMatchingProduct(){
         User user = userRepository.findById(1L).get();
-        return responseService.getDataResponse(userService.getMatchingProduct(user), RESPONSE_SUCCESS);
+        return responseService.getDataResponse(userService.getMatchingProduct(user),RESPONSE_SUCCESS);
     }
 }
