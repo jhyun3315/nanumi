@@ -16,7 +16,7 @@ import {
 } from '@gorhom/bottom-sheet';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {GiftedChat} from 'react-native-gifted-chat';
-import AccuseModal from '../modal/AccuseModal';
+import BlockModal from '../modal/BlockModal';
 
 const ChatDetail = ({navigation}) => {
   const bottomSheetModalRef = useRef(null);
@@ -24,6 +24,19 @@ const ChatDetail = ({navigation}) => {
   const handlePresentModalPress = useCallback(() => {
     bottomSheetModalRef.current?.present();
   }, []);
+
+  const [visible, setVisible] = useState(false);
+
+  const openModal = () => {
+    bottomSheetModalRef.current?.close();
+    setTimeout(() => {
+      setVisible(true);
+    }, 300);
+  };
+
+  const closeModal = () => {
+    setVisible(false);
+  };
 
   const [messages, setMessages] = useState([
     {
@@ -66,6 +79,7 @@ const ChatDetail = ({navigation}) => {
 
   return (
     <GestureHandlerRootView style={{flex: 1}}>
+      <BlockModal visible={visible} closeModal={closeModal} />
       <BottomSheetModalProvider>
         <SafeAreaView style={{flex: 1, backgroundColor: COLORS.white}}>
           <ChatHeader
@@ -84,7 +98,6 @@ const ChatDetail = ({navigation}) => {
             renderLoading={renderLoading}
           />
         </SafeAreaView>
-        <AccuseModal visible={false} />
         <BottomSheetModal
           isBackDropDismisByPress={true}
           ref={bottomSheetModalRef}
@@ -94,7 +107,7 @@ const ChatDetail = ({navigation}) => {
           animationConfigs={{
             duration: 200,
           }}>
-          <ChatOptions />
+          <ChatOptions openModal={openModal} />
         </BottomSheetModal>
       </BottomSheetModalProvider>
     </GestureHandlerRootView>

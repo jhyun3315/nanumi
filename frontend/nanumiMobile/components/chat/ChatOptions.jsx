@@ -2,13 +2,13 @@ import React from 'react';
 import {View, Text, StyleSheet, Pressable} from 'react-native';
 import {FONTS, SIZES, COLORS} from '../../constants';
 
-export const ChatOptions = () => {
+export const ChatOptions = ({openModal}) => {
   return (
     <View style={styles.optionContainer}>
       <Pressable style={styles.option}>
         <Text style={styles.optionText}>거래시작</Text>
       </Pressable>
-      <Pressable style={styles.option}>
+      <Pressable style={styles.option} onPress={openModal}>
         <Text style={styles.optionText}>차단하기</Text>
       </Pressable>
       <Pressable style={styles.option}>
