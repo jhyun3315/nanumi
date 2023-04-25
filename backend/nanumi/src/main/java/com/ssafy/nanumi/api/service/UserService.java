@@ -3,19 +3,15 @@ package com.ssafy.nanumi.api.service;
 import com.ssafy.nanumi.api.request.UserJoinDTO;
 import com.ssafy.nanumi.api.response.*;
 import com.ssafy.nanumi.common.provider.Provider;
-import com.ssafy.nanumi.config.response.CustomDataResponse;
 import com.ssafy.nanumi.config.response.exception.CustomException;
+import com.ssafy.nanumi.db.entity.Address;
 import com.ssafy.nanumi.db.entity.LoginProvider;
 import com.ssafy.nanumi.db.entity.User;
 import com.ssafy.nanumi.db.entity.UserInfo;
-import com.ssafy.nanumi.db.repository.LoginProviderRepository;
-import com.ssafy.nanumi.db.repository.ProductRepository;
-import com.ssafy.nanumi.db.repository.UserInfoRepository;
-import com.ssafy.nanumi.db.repository.UserRepository;
+import com.ssafy.nanumi.db.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,6 +29,7 @@ import static com.ssafy.nanumi.config.response.exception.CustomExceptionStatus.*
 public class UserService {
     private final UserRepository userRepository;
     private final UserInfoRepository userInfoRepository;
+    private final AddressRepository addressRepository;
     private final ProductRepository productRepository;
     private final LoginProviderRepository loginProviderRepository;
     private final EmailService emailService;
@@ -47,6 +44,13 @@ public class UserService {
         if( userRepository.findByEmail(email).isPresent() ){
             throw new CustomException(RESPONSE_EMAIL_EXISTED);
         }else{
+            UserInfo userInfo = UserInfo.builder()
+                    .stopDate(null)
+                    .refreshToken(null)
+                    .build();
+
+            UserInfo userInfoSaved  = userInfoRepository.save(userInfo);
+
             User user = User.builder()
                     .email(userJoinDTO.getEmail())
                     .nickname(userJoinDTO.getNickname())
@@ -55,23 +59,14 @@ public class UserService {
                     .isDeleted(false)
                     .loginProvider(loginProvider)
                     .address(null)
+                    .userInfo(userInfoSaved)
                     .build();
 
             userRepository.save(user);
-
-            UserInfo userInfo = UserInfo.builder()
-                    .user(user)
-                    .stopDate(null)
-                    .refreshToken(null)
-                    .build();
-
-            userInfoRepository.save(userInfo);
         }
-
     }
 
     public EmailCheckDTO checkEmail(String email) throws MessagingException, UnsupportedEncodingException {
-
         String code = "";
 
         if( userRepository.findByEmail(email).isPresent() ){
@@ -79,10 +74,37 @@ public class UserService {
         }else{
             code = emailService.sendEmail(email);
         }
-
         return new EmailCheckDTO(code);
     }
 
+    public void updateUserAddress(long addressCode, long userId){
+       if(addressRepository.findById(addressCode).isEmpty()){
+           throw new CustomException(NOT_FOUND_ADDRESS_CODE);
+       }else{
+           User user = userRepository.findById(userId).orElseThrow(
+                   () -> new CustomException(NOT_FOUND_USER_INFO)
+           );
+           user.updateAddress(addressRepository.getById(addressCode));
+       }
+    }
+
+    public AddressResDTO getUserAddress(long user_id){
+        if(userRepository.findById(user_id).isEmpty()){
+            throw new CustomException(NOT_FOUND_USER_INFO);
+        }else{
+            User user = userRepository.getById(user_id);
+            long addressCode = user.getAddress().getId();
+
+            if(addressRepository.findById(addressCode).isEmpty()){
+                throw new CustomException(NOT_FOUND_ADDRESS_CODE);
+            }else{
+                Address address = addressRepository.getById(addressCode);
+                String addressName = address.getSi()+" "+address.getGuGun()+" "+address.getDong();
+                return new AddressResDTO(address.getId(), addressName);
+            }
+
+        }
+    }
 
     public UserDetailDTO findDetailUser(long userId) {
         User user = userRepository.findById(userId)
