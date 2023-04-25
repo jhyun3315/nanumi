@@ -16,6 +16,7 @@ import {
 } from '@gorhom/bottom-sheet';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {GiftedChat} from 'react-native-gifted-chat';
+import AccuseModal from '../modal/AccuseModal';
 
 const ChatDetail = ({navigation}) => {
   const bottomSheetModalRef = useRef(null);
@@ -82,6 +83,7 @@ const ChatDetail = ({navigation}) => {
             scrollToBottom
             renderLoading={renderLoading}
           />
+          <AccuseModal visible={false} />
         </SafeAreaView>
         <BottomSheetModal
           isBackDropDismisByPress={true}
