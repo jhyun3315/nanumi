@@ -133,9 +133,8 @@ public class UserService {
         return new UserReadDTO(user);
     }
     public void updateUser(User user, UserJoinDTO userJoinDTO) {
-        user.setEmail(userJoinDTO.getEmail());
         user.setNickname(userJoinDTO.getNickname());
-        user.setPassword(userJoinDTO.getPassword());
+        user.setProfileUrl(userJoinDTO.getProfileImage());
     }
     public void deleteUser(User user){
         user.delete();

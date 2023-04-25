@@ -1,8 +1,6 @@
 package com.ssafy.nanumi.api.response;
 
-import com.ssafy.nanumi.db.entity.Address;
 import com.ssafy.nanumi.db.entity.User;
-import com.ssafy.nanumi.db.entity.UserInfo;
 import lombok.Getter;
 
 @Getter
@@ -21,6 +19,8 @@ public class UserReadDTO {
 
     /* 나눔 받은 물건 개수 */
     private final int givenCount;
+    private final String tier;
+    private final double temperature;
 
     public UserReadDTO(User user){
         id = user.getId();
@@ -34,5 +34,7 @@ public class UserReadDTO {
                 .stream()
                 .filter(product -> !product.isDeleted() && !product.isClosed())
                 .count();
+        tier = user.getUserInfo().getTier();
+        temperature = user.getUserInfo().getTemperature();
     }
 }
