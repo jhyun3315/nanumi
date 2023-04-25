@@ -1,6 +1,7 @@
 package com.ssafy.nanumi.api.controller;
 
 import com.ssafy.nanumi.api.request.AdminLoginDTO;
+import com.ssafy.nanumi.api.response.ReportAllDTO;
 import com.ssafy.nanumi.api.service.AdminService;
 import com.ssafy.nanumi.config.response.CustomDataResponse;
 import com.ssafy.nanumi.config.response.CustomResponse;
@@ -11,6 +12,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+
+import static com.ssafy.nanumi.config.response.exception.CustomSuccessStatus.RESPONSE_SUCCESS;
 
 @Slf4j
 @RestController
@@ -31,12 +36,12 @@ public class AdminController {
         return responseService.getSuccessResponse();
     }
 
-    /* 신고 기록 조회 */
+    /* 신고 목록 조회 */
     @GetMapping("/admin")
-    public CustomResponse findReportList() {
+    public CustomDataResponse<List<ReportAllDTO>> findReportList() {
 
+        List<ReportAllDTO> reportAllDTOS = adminService.findReportAll();
 
-
-        return responseService.getSuccessResponse();
+        return responseService.getDataResponse(reportAllDTOS, RESPONSE_SUCCESS);
     }
 }

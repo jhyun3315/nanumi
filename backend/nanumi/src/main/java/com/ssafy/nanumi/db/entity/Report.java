@@ -28,20 +28,20 @@ public class Report extends BaseTimeEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "reporter_id")
-    private User reporterId;
+    private User reporter;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "reported_id")
-    private User reportedId;
+    private User reported;
 
     @Builder
-    public Report(long id, String content, boolean status, int stopDate, User reporterId, User reportedId) {
+    public Report(long id, String content, boolean status, int stopDate, User reporter, User reported) {
         this.id = id;
         this.content = content;
         this.status = status;
         this.stopDate = stopDate;
-        this.reporterId = reporterId;
-        this.reportedId = reportedId;
+        this.reporter = reporter;
+        this.reported = reported;
     }
 }
 
