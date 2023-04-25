@@ -1,5 +1,5 @@
 import React, {useState, useCallback, useRef, useMemo} from 'react';
-import {SafeAreaView} from 'react-native';
+import {Button, SafeAreaView} from 'react-native';
 import {
   ChatHeader,
   ChatProductInfo,
@@ -17,8 +17,11 @@ import {
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {GiftedChat} from 'react-native-gifted-chat';
 import BlockModal from '../modal/BlockModal';
+import {useModal} from '../../hooks/useModal';
 
 const ChatDetail = ({navigation}) => {
+  const {showModal} = useModal();
+
   const bottomSheetModalRef = useRef(null);
   const snapPoints = useMemo(() => ['33%'], []);
   const handlePresentModalPress = useCallback(() => {
@@ -65,6 +68,11 @@ const ChatDetail = ({navigation}) => {
   //   console.log('handleSheetChanges', index);
   // }, []);
 
+  const handleClickedBlockModal = () => {
+    showModal({
+      modalType: 'BlockModal',
+    });
+  };
   const renderBackDrop = useCallback(props => {
     return (
       <BottomSheetBackdrop
@@ -79,8 +87,9 @@ const ChatDetail = ({navigation}) => {
 
   return (
     <GestureHandlerRootView style={{flex: 1}}>
-      <BlockModal visible={visible} closeModal={closeModal} />
-      <BottomSheetModalProvider>
+      <Button onPress={handleClickedBlockModal} title="SHOW"></Button>
+      {/* <BlockModal visible={visible} closeModal={closeModal} /> */}
+      {/* <BottomSheetModalProvider>
         <SafeAreaView style={{flex: 1, backgroundColor: COLORS.white}}>
           <ChatHeader
             navigation={navigation}
@@ -109,7 +118,7 @@ const ChatDetail = ({navigation}) => {
           }}>
           <ChatOptions openModal={openModal} />
         </BottomSheetModal>
-      </BottomSheetModalProvider>
+      </BottomSheetModalProvider> */}
     </GestureHandlerRootView>
   );
 };

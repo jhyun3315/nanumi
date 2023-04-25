@@ -7,7 +7,7 @@ const {width, height} = Dimensions.get('window');
 
 const BlockModal = ({visible, closeModal}) => {
   return (
-    <Modal visible={visible} transparent={true}>
+    <Modal visible={true} transparent={true}>
       <View style={styles.modalContainer}>
         <View style={styles.modal}>
           <View style={styles.blockContainer}>
