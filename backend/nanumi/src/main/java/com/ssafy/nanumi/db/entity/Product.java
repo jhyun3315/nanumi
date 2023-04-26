@@ -45,6 +45,9 @@ public class Product extends BaseTimeEntity {
     @OneToMany(mappedBy = "product")
     private List<ProductImage> productImages = new ArrayList<>();
 
+    @OneToMany(mappedBy = "product")
+    private List<Match> Matches  = new ArrayList<>();
+
     public void delete(){
         this.isDeleted = true;
     }
