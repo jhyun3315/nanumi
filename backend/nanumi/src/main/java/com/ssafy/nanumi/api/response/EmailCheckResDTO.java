@@ -4,11 +4,11 @@ import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-public class EmailCheckDTO {
+public class EmailCheckResDTO {
     private String code;
 
     @Builder
-    public EmailCheckDTO(String code) {
+    public EmailCheckResDTO(String code) {
         this.code = code;
     }
 }
