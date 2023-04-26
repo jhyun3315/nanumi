@@ -9,6 +9,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class UserBanDTO {
 
+    private long reporterId;
     private long reportedId;
     private int stopDate;
 }

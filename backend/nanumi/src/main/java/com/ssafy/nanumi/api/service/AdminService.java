@@ -6,11 +6,14 @@ import com.ssafy.nanumi.config.response.exception.CustomException;
 import com.ssafy.nanumi.config.response.exception.CustomExceptionStatus;
 import com.ssafy.nanumi.db.entity.Report;
 import com.ssafy.nanumi.db.entity.User;
+import com.ssafy.nanumi.db.entity.UserInfo;
 import com.ssafy.nanumi.db.repository.ReportRepository;
+import com.ssafy.nanumi.db.repository.UserInfoRepository;
 import com.ssafy.nanumi.db.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -21,9 +24,11 @@ import static com.ssafy.nanumi.config.response.exception.CustomExceptionStatus.*
 @Slf4j
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = false)
 public class AdminService {
 
     private final UserRepository userRepository;
+    private final UserInfoRepository userInfoRepository;
     private final ReportRepository reportRepository;
 
     /* 관리자 로그인 */
@@ -41,6 +46,7 @@ public class AdminService {
     }
 
     /* 신고 목록 조회 */
+    @Transactional(readOnly = true)
     public List<ReportAllDTO> findReportAll() {
 
         List<Report> reportList = reportRepository.findAll();
@@ -65,12 +71,28 @@ public class AdminService {
         return reportAllDTOS;
     }
 
+    /* 유저 제재 */
     public void banUser(UserBanDTO userBanDTO) {
 
         // TODO : 예외처리 수정
 
         User user = userRepository.findById(userBanDTO.getReportedId())
+                .orElseThrow(() -> new CustomException(NOT_FOUND_USER));
+
+        UserInfo userInfo = userInfoRepository.findById(user.getUserInfo().getId())
+                .orElseThrow(() -> new CustomException(NOT_FOUND_USER_INFO));
+
+        // 현재 시간에서 stopDate만큼 더한 날짜
+        LocalDateTime banDate = LocalDateTime.now();
+        banDate = banDate.plusDays(userBanDTO.getStopDate());
+
+        // 신고 누적 횟수, 제재 기간 갱신
+        userInfo.updateBanUser(banDate);
+
+        Report report = reportRepository.findByReportedIdAndReporterId(userBanDTO.getReportedId(), userBanDTO.getReporterId())
                 .orElseThrow(() -> new CustomException(REQUEST_ERROR));
 
+        // 신고 처리 완료, 제제일수 갱신
+        report.updateStatus(userBanDTO.getStopDate());
     }
 }

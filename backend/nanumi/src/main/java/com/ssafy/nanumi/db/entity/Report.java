@@ -43,5 +43,10 @@ public class Report extends BaseTimeEntity {
         this.reporter = reporter;
         this.reported = reported;
     }
+
+    public void updateStatus(int stopDate) {
+        this.status = true;
+        this.stopDate = stopDate;
+    }
 }
 

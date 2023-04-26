@@ -44,7 +44,7 @@ public class AdminController {
     }
 
     /* 유저 제재 */
-    @PatchMapping
+    @PatchMapping("/admin")
     public CustomResponse banUser(@RequestBody UserBanDTO userBanDTO) {
 
         adminService.banUser(userBanDTO);
