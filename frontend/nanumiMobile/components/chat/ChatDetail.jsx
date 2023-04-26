@@ -1,5 +1,5 @@
 import React, {useState, useCallback, useRef, useMemo} from 'react';
-import {Button, SafeAreaView} from 'react-native';
+import {SafeAreaView} from 'react-native';
 import {
   ChatHeader,
   ChatProductInfo,
@@ -17,29 +17,26 @@ import {
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {GiftedChat} from 'react-native-gifted-chat';
 import BlockModal from '../modal/BlockModal';
+import {modalState} from '../../state/modal';
 import {useModal} from '../../hooks/useModal';
 
 const ChatDetail = ({navigation}) => {
-  const {showModal} = useModal();
+  const {modal, showModal} = useModal();
+
+  const handleOpenBlockModal = () => {
+    bottomSheetModalRef.current?.close();
+    setTimeout(() => {
+      showModal({
+        modalType: 'BlockModal',
+      });
+    }, 300);
+  };
 
   const bottomSheetModalRef = useRef(null);
   const snapPoints = useMemo(() => ['33%'], []);
   const handlePresentModalPress = useCallback(() => {
     bottomSheetModalRef.current?.present();
   }, []);
-
-  const [visible, setVisible] = useState(false);
-
-  const openModal = () => {
-    bottomSheetModalRef.current?.close();
-    setTimeout(() => {
-      setVisible(true);
-    }, 300);
-  };
-
-  const closeModal = () => {
-    setVisible(false);
-  };
 
   const [messages, setMessages] = useState([
     {
@@ -62,17 +59,7 @@ const ChatDetail = ({navigation}) => {
   const handleSend = newMessage => {
     setMessages(GiftedChat.append(messages, newMessage));
   };
-  // bottomModal이 움직일 떄 동작하는 함수 필요시 사용할듯
 
-  // const handleSheetChanges = useCallback(index => {
-  //   console.log('handleSheetChanges', index);
-  // }, []);
-
-  const handleClickedBlockModal = () => {
-    showModal({
-      modalType: 'BlockModal',
-    });
-  };
   const renderBackDrop = useCallback(props => {
     return (
       <BottomSheetBackdrop
@@ -87,9 +74,7 @@ const ChatDetail = ({navigation}) => {
 
   return (
     <GestureHandlerRootView style={{flex: 1}}>
-      <Button onPress={handleClickedBlockModal} title="SHOW"></Button>
-      {/* <BlockModal visible={visible} closeModal={closeModal} /> */}
-      {/* <BottomSheetModalProvider>
+      <BottomSheetModalProvider>
         <SafeAreaView style={{flex: 1, backgroundColor: COLORS.white}}>
           <ChatHeader
             navigation={navigation}
@@ -107,6 +92,7 @@ const ChatDetail = ({navigation}) => {
             renderLoading={renderLoading}
           />
         </SafeAreaView>
+        {modal?.modalType === 'BlockModal' && <BlockModal />}
         <BottomSheetModal
           isBackDropDismisByPress={true}
           ref={bottomSheetModalRef}
@@ -116,9 +102,9 @@ const ChatDetail = ({navigation}) => {
           animationConfigs={{
             duration: 200,
           }}>
-          <ChatOptions openModal={openModal} />
+          <ChatOptions handleOpenBlockModal={handleOpenBlockModal} />
         </BottomSheetModal>
-      </BottomSheetModalProvider> */}
+      </BottomSheetModalProvider>
     </GestureHandlerRootView>
   );
 };

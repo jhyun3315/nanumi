@@ -3,7 +3,6 @@ import {modalState} from './../state/modal';
 
 export const useModal = () => {
   const [modal, setModal] = useRecoilState(modalState);
-
   const showModal = ({modalType, modalProps}) => {
     setModal({modalType, modalProps});
   };

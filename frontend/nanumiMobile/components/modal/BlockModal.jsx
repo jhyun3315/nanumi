@@ -2,10 +2,13 @@ import React, {useState} from 'react';
 import {Modal, View, Dimensions, Text, Pressable} from 'react-native';
 import {COLORS, FONTS, SIZES} from '../../constants';
 import {RectButton} from '../../ui/Button';
+import {useModal} from '../../hooks/useModal';
 
 const {width, height} = Dimensions.get('window');
 
-const BlockModal = ({visible, closeModal}) => {
+const BlockModal = () => {
+  const {hideModal} = useModal();
+
   return (
     <Modal visible={true} transparent={true}>
       <View style={styles.modalContainer}>
@@ -24,13 +27,13 @@ const BlockModal = ({visible, closeModal}) => {
               alignItems: 'center',
             }}>
             <RectButton
-              minWidth={120}
+              minWidth={96}
               fontSize={FONTS.font}
               backgroundColor={COLORS.primary}
-              handlePress={closeModal}>
+              handlePress={hideModal}>
               취소
             </RectButton>
-            <RectButton minWidth={120} fontSize={FONTS.font}>
+            <RectButton minWidth={96} fontSize={FONTS.font}>
               차단하기
             </RectButton>
           </View>
