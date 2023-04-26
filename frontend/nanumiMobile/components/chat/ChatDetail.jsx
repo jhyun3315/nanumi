@@ -18,6 +18,7 @@ import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {GiftedChat} from 'react-native-gifted-chat';
 import {useModal} from '../../hooks/useModal';
 import BlockModal from '../modal/BlockModal';
+import ChatExitModal from '../modal/ChatExitModal';
 
 const ChatDetail = ({navigation}) => {
   const {modal, showModal} = useModal();
@@ -31,6 +32,14 @@ const ChatDetail = ({navigation}) => {
     }, 300);
   };
 
+  const handleOpenChatExitModal = () => {
+    bottomSheetModalRef.current?.close();
+    setTimeout(() => {
+      showModal({
+        modalType: 'ChatExitModal',
+      });
+    }, 300);
+  };
   const bottomSheetModalRef = useRef(null);
   const snapPoints = useMemo(() => ['33%'], []);
   const handlePresentModalPress = useCallback(() => {
@@ -92,6 +101,7 @@ const ChatDetail = ({navigation}) => {
           />
         </SafeAreaView>
         {modal?.modalType === 'BlockModal' && <BlockModal />}
+        {modal?.modalType === 'ChatExitModal' && <ChatExitModal />}
         <BottomSheetModal
           isBackDropDismisByPress={true}
           ref={bottomSheetModalRef}
@@ -101,7 +111,10 @@ const ChatDetail = ({navigation}) => {
           animationConfigs={{
             duration: 200,
           }}>
-          <ChatOptions handleOpenBlockModal={handleOpenBlockModal} />
+          <ChatOptions
+            handleOpenBlockModal={handleOpenBlockModal}
+            handleOpenChatExitModal={handleOpenChatExitModal}
+          />
         </BottomSheetModal>
       </BottomSheetModalProvider>
     </GestureHandlerRootView>

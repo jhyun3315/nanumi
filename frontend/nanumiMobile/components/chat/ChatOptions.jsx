@@ -2,7 +2,10 @@ import React from 'react';
 import {View, Text, StyleSheet, Pressable} from 'react-native';
 import {FONTS, SIZES, COLORS} from '../../constants';
 
-export const ChatOptions = ({handleOpenBlockModal}) => {
+export const ChatOptions = ({
+  handleOpenBlockModal,
+  handleOpenChatExitModal,
+}) => {
   return (
     <View style={styles.optionContainer}>
       <Pressable style={styles.option}>
@@ -16,7 +19,9 @@ export const ChatOptions = ({handleOpenBlockModal}) => {
           신고하기
         </Text>
       </Pressable>
-      <Pressable style={[styles.option, styles.exitButton]}>
+      <Pressable
+        style={[styles.option, styles.exitButton]}
+        onPress={handleOpenChatExitModal}>
         <Text style={[styles.optionText, styles.exitButtonText]}>
           채팅방 나가기
         </Text>

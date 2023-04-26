@@ -6,19 +6,19 @@ import {useModal} from '../../hooks/useModal';
 
 const {width, height} = Dimensions.get('window');
 
-const BlockModal = () => {
+const ChatExitModal = () => {
   const {hideModal} = useModal();
 
   return (
     <Modal visible={true} transparent={true}>
       <View style={styles.modalContainer}>
         <View style={styles.modal}>
-          <View style={styles.blockContainer}>
-            <Text style={styles.text}>차단하기</Text>
+          <View style={styles.chatContainer}>
+            <Text style={styles.text}>채팅방 나가기</Text>
           </View>
           <Text style={styles.subText}>
-            차단시 상대방과의 거래가 취소되고 서로의 게시글을 확인하거나 채팅을
-            할 수 없어요. 차단하실래요?
+            채팅방을 나가면 채팅 목록 및 대화 내용이 삭제되고 복구할 수 없어요.
+            채팅방에서 나가시겠어요?
           </Text>
           <View
             style={{
@@ -37,7 +37,7 @@ const BlockModal = () => {
               minWidth={96}
               fontSize={FONTS.font}
               handlePress={hideModal}>
-              차단하기
+              네, 나갈래요
             </RectButton>
           </View>
         </View>
@@ -45,7 +45,7 @@ const BlockModal = () => {
     </Modal>
   );
 };
-export default BlockModal;
+export default ChatExitModal;
 
 const styles = {
   closeIcon: {
@@ -76,7 +76,7 @@ const styles = {
     transform: [{translateX: -0.4 * width}, {translateY: -0.15 * height}],
     justifyContent: 'space-between',
   },
-  blockContainer: {
+  chatContainer: {
     justifyContent: 'center',
   },
 
