@@ -1,5 +1,6 @@
 package com.ssafy.nanumi.api.service;
 
+import com.ssafy.nanumi.api.request.UserBanDTO;
 import com.ssafy.nanumi.api.response.ReportAllDTO;
 import com.ssafy.nanumi.config.response.exception.CustomException;
 import com.ssafy.nanumi.config.response.exception.CustomExceptionStatus;
@@ -11,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +30,7 @@ public class AdminService {
     public void adminLogin(String email, String password) {
 
         // TODO : OAuth, JWT, PasswordEncoder 적용해야함.
+        // TODO : 예외처리 수정
 
         User adminUser = userRepository.findByEmail(email)
                 .orElseThrow(() -> new CustomException(REQUEST_ERROR));
@@ -60,5 +63,14 @@ public class AdminService {
         }
 
         return reportAllDTOS;
+    }
+
+    public void banUser(UserBanDTO userBanDTO) {
+
+        // TODO : 예외처리 수정
+
+        User user = userRepository.findById(userBanDTO.getReportedId())
+                .orElseThrow(() -> new CustomException(REQUEST_ERROR));
+
     }
 }
