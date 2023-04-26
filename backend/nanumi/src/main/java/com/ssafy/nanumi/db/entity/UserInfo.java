@@ -80,4 +80,9 @@ public class UserInfo {
         this.refreshToken = refreshToken;
         this.user = user;
     }
+
+    public void updateBanUser(LocalDateTime banDate) {
+        this.reportedTotalCount += 1;
+        this.stopDate = banDate;
+    }
 }
