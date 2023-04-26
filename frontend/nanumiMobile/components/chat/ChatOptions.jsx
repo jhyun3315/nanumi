@@ -3,9 +3,17 @@ import {View, Text, StyleSheet, Pressable} from 'react-native';
 import {FONTS, SIZES, COLORS} from '../../constants';
 
 export const ChatOptions = ({
+  navigation,
+  handleCloseBottomModal,
   handleOpenBlockModal,
   handleOpenChatExitModal,
 }) => {
+  const handleCloseAndNavigateChatOptionsModal = () => {
+    handleCloseBottomModal();
+    setTimeout(() => {
+      navigation.navigate('Report');
+    }, 300);
+  };
   return (
     <View style={styles.optionContainer}>
       <Pressable style={styles.option}>
@@ -14,7 +22,9 @@ export const ChatOptions = ({
       <Pressable style={styles.option} onPress={handleOpenBlockModal}>
         <Text style={styles.optionText}>차단하기</Text>
       </Pressable>
-      <Pressable style={styles.option}>
+      <Pressable
+        style={styles.option}
+        onPress={handleCloseAndNavigateChatOptionsModal}>
         <Text style={[styles.optionText, styles.reportButtonText]}>
           신고하기
         </Text>

@@ -23,8 +23,12 @@ import ChatExitModal from '../modal/ChatExitModal';
 const ChatDetail = ({navigation}) => {
   const {modal, showModal} = useModal();
 
-  const handleOpenBlockModal = () => {
+  const handleCloseBottomModal = () => {
     bottomSheetModalRef.current?.close();
+  };
+
+  const handleOpenBlockModal = () => {
+    handleCloseBottomModal();
     setTimeout(() => {
       showModal({
         modalType: 'BlockModal',
@@ -33,7 +37,7 @@ const ChatDetail = ({navigation}) => {
   };
 
   const handleOpenChatExitModal = () => {
-    bottomSheetModalRef.current?.close();
+    handleCloseBottomModal();
     setTimeout(() => {
       showModal({
         modalType: 'ChatExitModal',
@@ -112,6 +116,8 @@ const ChatDetail = ({navigation}) => {
             duration: 200,
           }}>
           <ChatOptions
+            navigation={navigation}
+            handleCloseBottomModal={handleCloseBottomModal}
             handleOpenBlockModal={handleOpenBlockModal}
             handleOpenChatExitModal={handleOpenChatExitModal}
           />
