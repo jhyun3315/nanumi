@@ -16,9 +16,8 @@ import {
 } from '@gorhom/bottom-sheet';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {GiftedChat} from 'react-native-gifted-chat';
-import BlockModal from '../modal/BlockModal';
-import {modalState} from '../../state/modal';
 import {useModal} from '../../hooks/useModal';
+import BlockModal from '../modal/BlockModal';
 
 const ChatDetail = ({navigation}) => {
   const {modal, showModal} = useModal();
