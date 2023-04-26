@@ -66,7 +66,7 @@ public class UserService {
         }
     }
 
-    public EmailCheckDTO checkEmail(String email) throws MessagingException, UnsupportedEncodingException {
+    public EmailCheckResDTO checkEmail(String email) throws MessagingException, UnsupportedEncodingException {
         String code = "";
 
         if( userRepository.findByEmail(email).isPresent() ){
@@ -74,7 +74,7 @@ public class UserService {
         }else{
             code = emailService.sendEmail(email);
         }
-        return new EmailCheckDTO(code);
+        return new EmailCheckResDTO(code);
     }
 
     public void updateUserAddress(long addressCode, long userId){
@@ -82,7 +82,7 @@ public class UserService {
            throw new CustomException(NOT_FOUND_ADDRESS_CODE);
        }else{
            User user = userRepository.findById(userId).orElseThrow(
-                   () -> new CustomException(NOT_FOUND_USER_INFO)
+                   () -> new CustomException(NOT_FOUND_USER)
            );
            user.updateAddress(addressRepository.getById(addressCode));
        }

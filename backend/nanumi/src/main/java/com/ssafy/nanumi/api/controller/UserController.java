@@ -7,13 +7,10 @@ import com.ssafy.nanumi.api.service.UserService;
 import com.ssafy.nanumi.config.response.CustomDataResponse;
 import com.ssafy.nanumi.config.response.CustomResponse;
 import com.ssafy.nanumi.config.response.ResponseService;
-import com.ssafy.nanumi.config.response.exception.CustomSuccessStatus;
 import com.ssafy.nanumi.db.entity.User;
 import com.ssafy.nanumi.db.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
@@ -42,8 +39,8 @@ public class UserController {
     @GetMapping("/users/check/{email}")
     public CustomDataResponse emailCheck(@PathVariable("email") String email) throws MessagingException, UnsupportedEncodingException {
         // 이메일 중복 처리, 인증 처리
-        EmailCheckDTO emailCheckDTO = userService.checkEmail(email);
-        return responseService.getDataResponse(emailCheckDTO, RESPONSE_SUCCESS);
+        EmailCheckResDTO emailCheckResDTO = userService.checkEmail(email);
+        return responseService.getDataResponse(emailCheckResDTO, RESPONSE_SUCCESS);
     }
 
     /*사용자 장소 정보 등록 수정*/
