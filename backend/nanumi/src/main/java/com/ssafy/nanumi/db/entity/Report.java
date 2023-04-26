@@ -5,12 +5,18 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 
 @Getter
 @Entity
+@DynamicUpdate
+@DynamicInsert
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name = "reports")
 public class Report extends BaseTimeEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,6 +29,7 @@ public class Report extends BaseTimeEntity {
     @Column(name = "status", columnDefinition = "TINYINT", nullable = false)
     private boolean status;
 
+    @ColumnDefault("0")
     @Column(name = "stop_date", columnDefinition = "INT", nullable = false)
     private int stopDate;
 

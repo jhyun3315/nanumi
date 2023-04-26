@@ -1,5 +1,6 @@
 package com.ssafy.nanumi.api.service;
 
+import com.ssafy.nanumi.api.request.ReportUserDTO;
 import com.ssafy.nanumi.api.request.UserBanDTO;
 import com.ssafy.nanumi.api.response.ReportAllDTO;
 import com.ssafy.nanumi.config.response.exception.CustomException;
@@ -92,7 +93,26 @@ public class AdminService {
         Report report = reportRepository.findByReportedIdAndReporterId(userBanDTO.getReportedId(), userBanDTO.getReporterId())
                 .orElseThrow(() -> new CustomException(REQUEST_ERROR));
 
-        // 신고 처리 완료, 제제일수 갱신
+        // 신고 처리 완료, 제재 일수 갱신
+        // TODO : 제재기간 갱신은 다시 고민
         report.updateStatus(userBanDTO.getStopDate());
+    }
+
+    /* 사용자 신고 */
+    public void reportUser(long reporterId, ReportUserDTO reportUserDTO) {
+        User reported = userRepository.findById(reportUserDTO.getReportedId())
+                .orElseThrow(() -> new CustomException(NOT_FOUND_USER));
+
+        User reporter = userRepository.findById(reporterId)
+                .orElseThrow(() -> new CustomException(NOT_FOUND_USER));
+
+        Report report = Report.builder()
+                .content(reportUserDTO.getContent())
+                .status(false)
+                .reported(reported)
+                .reporter(reporter)
+                .build();
+
+        reportRepository.save(report);
     }
 }

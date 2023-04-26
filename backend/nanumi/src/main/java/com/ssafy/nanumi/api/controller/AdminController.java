@@ -1,6 +1,7 @@
 package com.ssafy.nanumi.api.controller;
 
 import com.ssafy.nanumi.api.request.AdminLoginDTO;
+import com.ssafy.nanumi.api.request.ReportUserDTO;
 import com.ssafy.nanumi.api.request.UserBanDTO;
 import com.ssafy.nanumi.api.response.ReportAllDTO;
 import com.ssafy.nanumi.api.service.AdminService;
@@ -27,8 +28,6 @@ public class AdminController {
     @PostMapping("/admin")
     public CustomResponse adminLogin(@RequestBody AdminLoginDTO adminLoginDTO) {
 
-        // TODO : 이렇게 간단하게 해도 되나...
-
         adminService.adminLogin(adminLoginDTO.getEmail(), adminLoginDTO.getPassword());
 
         return responseService.getSuccessResponse();
@@ -48,6 +47,19 @@ public class AdminController {
     public CustomResponse banUser(@RequestBody UserBanDTO userBanDTO) {
 
         adminService.banUser(userBanDTO);
+
+        return responseService.getSuccessResponse();
+    }
+
+    /* 사용자 신고 */
+    @PostMapping("/reports")
+    public CustomResponse reportUser(@RequestBody ReportUserDTO reportUserDTO) {
+
+        // TODO : OAuth에서 userId(reporterId) 받아와야 함.
+
+        long reporterId = 2L;
+
+        adminService.reportUser(reporterId, reportUserDTO);
 
         return responseService.getSuccessResponse();
     }
