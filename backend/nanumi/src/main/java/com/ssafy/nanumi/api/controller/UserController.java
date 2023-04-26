@@ -1,22 +1,16 @@
 package com.ssafy.nanumi.api.controller;
 
+import com.ssafy.nanumi.api.request.AddressDTO;
 import com.ssafy.nanumi.api.request.UserJoinDTO;
-import com.ssafy.nanumi.api.response.EmailCheckDTO;
-import com.ssafy.nanumi.api.response.ProductAllDTO;
-import com.ssafy.nanumi.api.response.ReviewReadDTO;
-import com.ssafy.nanumi.api.response.UserDetailDTO;
-import com.ssafy.nanumi.api.response.UserReadDTO;
+import com.ssafy.nanumi.api.response.*;
 import com.ssafy.nanumi.api.service.UserService;
 import com.ssafy.nanumi.config.response.CustomDataResponse;
 import com.ssafy.nanumi.config.response.CustomResponse;
 import com.ssafy.nanumi.config.response.ResponseService;
-import com.ssafy.nanumi.config.response.exception.CustomSuccessStatus;
 import com.ssafy.nanumi.db.entity.User;
 import com.ssafy.nanumi.db.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
@@ -32,24 +26,37 @@ import static com.ssafy.nanumi.config.response.exception.CustomSuccessStatus.*;
 public class UserController {
 
     private final UserService userService;
-    private  final UserRepository userRepository;
+    private final UserRepository userRepository;
     private final ResponseService responseService;
 
     /* 로컬 회원가입 */
     @PostMapping("/users/join")
     public CustomResponse join(@RequestBody UserJoinDTO userJoinDTO) {
-
         userService.join(userJoinDTO);
-
         return responseService.getSuccessResponse();
     }
 
     @GetMapping("/users/check/{email}")
     public CustomDataResponse emailCheck(@PathVariable("email") String email) throws MessagingException, UnsupportedEncodingException {
         // 이메일 중복 처리, 인증 처리
-        EmailCheckDTO emailCheckDTO = userService.checkEmail(email);
-        return responseService.getDataResponse(emailCheckDTO, RESPONSE_SUCCESS);
+        EmailCheckResDTO emailCheckResDTO = userService.checkEmail(email);
+        return responseService.getDataResponse(emailCheckResDTO, RESPONSE_SUCCESS);
     }
+
+    /*사용자 장소 정보 등록 수정*/
+    @PatchMapping("/users/address")
+    public CustomResponse saveUserAddress(@RequestBody AddressDTO addressDTO){
+        userService.updateUserAddress(addressDTO.getAddress_id(),addressDTO.getUser_id());
+        return responseService.getSuccessResponse();
+    }
+
+    @GetMapping("/users/address/{user_id}")
+    public CustomDataResponse findUserAddress(@PathVariable("user_id") long user_id){
+        System.out.println(user_id);
+       AddressResDTO addressResDTO =  userService.getUserAddress(user_id);
+       return responseService.getDataResponse(addressResDTO, RESPONSE_SUCCESS);
+    }
+
 
     /* 회원 정보 조회 */
     @GetMapping("users/detail")

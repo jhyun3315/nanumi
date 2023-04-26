@@ -1,6 +1,7 @@
 package com.ssafy.nanumi.api.controller;
 
 import com.ssafy.nanumi.api.request.ProductInsertDTO;
+import com.ssafy.nanumi.api.response.MatchSuccessDto;
 import com.ssafy.nanumi.api.response.ProductAllDTO;
 import com.ssafy.nanumi.api.response.ProductDetailDTO;
 import com.ssafy.nanumi.api.service.ProductService;
@@ -10,8 +11,6 @@ import com.ssafy.nanumi.config.response.ResponseService;
 import com.ssafy.nanumi.db.entity.User;
 import com.ssafy.nanumi.db.repository.UserRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -59,6 +58,13 @@ public class ProductController {
     /* 상품 삭제 */
     @DeleteMapping("/{product_id}")
     public CustomResponse deleteProduct(@PathVariable("product_id") Long id) {
+        productService.deleteProduct(id);
         return responseService.getSuccessResponse();
+    }
+    /* 상품 신청 - 매칭 */
+    @GetMapping("/application/{product_id}")
+    public CustomDataResponse<MatchSuccessDto> applicationProduct(@PathVariable("product_id") Long id) {
+        User user = userRepository.findById(1L).get();
+        return responseService.getDataResponse(productService.applicationProduct(id, user),RESPONSE_SUCCESS);
     }
 }
