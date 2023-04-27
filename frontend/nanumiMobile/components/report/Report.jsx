@@ -67,12 +67,13 @@ const Report = ({navigation}) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    // flex: 1,
     padding: SIZES.large,
   },
   optionsContainer: {
     paddingVertical: SIZES.base,
     backgroundColor: COLORS.white,
+    marginBottom: SIZES.large,
   },
   option: {
     paddingVertical: SIZES.base,
@@ -80,7 +81,7 @@ const styles = StyleSheet.create({
     borderBottomColor: COLORS.lightGray,
   },
   selectedOption: {
-    backgroundColor: COLORS.violet,
+    backgroundColor: COLORS.red,
   },
   optionText: {
     fontFamily: FONTS.light,

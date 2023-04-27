@@ -12,6 +12,8 @@ import {BackHeader} from '../../ui/BackHeader';
 import {Fallback} from '../../ui/Fallback';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import axios from 'axios';
+import {COLORS, FONTS, SIZES} from '../../constants';
+import {getAddressFromCoords} from '../../api/kakao';
 
 const {width, height} = Dimensions.get('window');
 
@@ -21,19 +23,12 @@ const LocationPicker = ({navigation}) => {
 
   const handleRegion = useCallback(
     async region => {
-      try {
-        const response = await axios.get(
-          `https://dapi.kakao.com/v2/local/geo/coord2regioncode.json?x=${region.longitude}&y=${region.latitude}`,
-          {
-            headers: {
-              Authorization: `KakaoAK c22bf545a0b497a95ef7e5417534f704`,
-            },
-          },
-        );
-        const address = response.data.documents[0].address_name;
+      const address = await getAddressFromCoords(region);
+      console.log(address);
+      if (address) {
         setCoordinate(region);
         setAddressName(address);
-      } catch (error) {
+      } else {
         Alert.alert('도시 정보를 얻어오는데 실패했습니다.');
         navigation.goBack();
       }
@@ -73,7 +68,11 @@ const LocationPicker = ({navigation}) => {
           onDragEnd={handleMarkerDragEnd}
         />
       </MapView>
-      <Text>{addressName}</Text>
+      <View style={styles.bottomContainer}>
+        <Text style={styles.bottomText}>
+          {addressName ? addressName : '동네 찾는중...'}
+        </Text>
+      </View>
     </SafeAreaView>
   );
 };
@@ -87,5 +86,19 @@ const styles = StyleSheet.create({
   mapView: {
     width: width,
     height: height / 2,
+  },
+  bottomContainer: {
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: 20,
+  },
+  bottomText: {
+    width: '100%',
+    fontFamily: FONTS.medium,
+    fontSize: SIZES.font,
+    borderBottomWidth: 1,
+    borderBottomColor: COLORS.gray,
+    textAlign: 'center',
+    marginBottom: SIZES.large * 3,
   },
 });
