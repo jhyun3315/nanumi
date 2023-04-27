@@ -7,6 +7,7 @@ export const ChatOptions = ({
   handleCloseBottomModal,
   handleOpenBlockUserModal,
   handleOpenChatExitModal,
+  handleOpenTransactionCompleteModal,
 }) => {
   const handleCloseAndNavigateChatOptionsModal = () => {
     handleCloseBottomModal();
@@ -31,6 +32,11 @@ export const ChatOptions = ({
       </Pressable>
       <Pressable style={styles.option} onPress={handleOpenBlockUserModal}>
         <Text style={styles.optionText}>차단하기</Text>
+      </Pressable>
+      <Pressable
+        style={styles.option}
+        onPress={handleOpenTransactionCompleteModal}>
+        <Text style={styles.optionText}>거래완료</Text>
       </Pressable>
       <Pressable
         style={styles.option}

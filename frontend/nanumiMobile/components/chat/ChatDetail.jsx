@@ -43,8 +43,18 @@ const ChatDetail = ({navigation}) => {
       });
     }, 300);
   };
+
+  const handleOpenTransactionCompleteModal = () => {
+    handleCloseBottomModal();
+    setTimeout(() => {
+      showModal({
+        modalType: 'TransactionCompleteModal',
+      });
+    }, 300);
+  };
+
   const bottomSheetModalRef = useRef(null);
-  const snapPoints = useMemo(() => ['33%'], []);
+  const snapPoints = useMemo(() => ['40%'], []);
   const handlePresentModalPress = useCallback(() => {
     bottomSheetModalRef.current?.present();
   }, []);
@@ -118,6 +128,9 @@ const ChatDetail = ({navigation}) => {
             handleCloseBottomModal={handleCloseBottomModal}
             handleOpenBlockUserModal={handleOpenBlockUserModal}
             handleOpenChatExitModal={handleOpenChatExitModal}
+            handleOpenTransactionCompleteModal={
+              handleOpenTransactionCompleteModal
+            }
           />
         </BottomSheetModal>
       </BottomSheetModalProvider>
