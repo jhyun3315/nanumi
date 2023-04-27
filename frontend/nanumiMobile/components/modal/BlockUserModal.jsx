@@ -5,7 +5,7 @@ import {RectButton} from '../../ui/Button';
 import {useModal} from '../../hooks/useModal';
 const {width, height} = Dimensions.get('window');
 
-const BlockModal = () => {
+const BlockUserModal = () => {
   const {hideModal} = useModal();
 
   return (
@@ -44,7 +44,7 @@ const BlockModal = () => {
     </Modal>
   );
 };
-export default BlockModal;
+export default BlockUserModal;
 
 const styles = {
   closeIcon: {

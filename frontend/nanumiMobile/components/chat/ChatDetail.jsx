@@ -26,11 +26,11 @@ const ChatDetail = ({navigation}) => {
     bottomSheetModalRef.current?.close();
   };
 
-  const handleOpenBlockModal = () => {
+  const handleOpenBlockUserModal = () => {
     handleCloseBottomModal();
     setTimeout(() => {
       showModal({
-        modalType: 'BlockModal',
+        modalType: 'BlockUserModal',
       });
     }, 300);
   };
@@ -116,7 +116,7 @@ const ChatDetail = ({navigation}) => {
           <ChatOptions
             navigation={navigation}
             handleCloseBottomModal={handleCloseBottomModal}
-            handleOpenBlockModal={handleOpenBlockModal}
+            handleOpenBlockUserModal={handleOpenBlockUserModal}
             handleOpenChatExitModal={handleOpenChatExitModal}
           />
         </BottomSheetModal>

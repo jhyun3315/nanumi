@@ -1,16 +1,16 @@
 import React from 'react';
 import {useRecoilState} from 'recoil';
 import {modalState} from '../../state/modal';
-import BlockModal from './BlockModal';
+import BlockUserModal from './BlockUserModal';
 import ChatExitModal from './ChatExitModal';
 
 const MODAL_TYPES = {
-  BlockModal: 'BlockModal',
+  BlockUserModal: 'BlockUserModal',
   ChatExitModal: 'ChatExitModal',
 };
 
 const MODAL_COMPONENTS = {
-  [MODAL_TYPES.BlockModal]: BlockModal,
+  [MODAL_TYPES.BlockUserModal]: BlockUserModal,
   [MODAL_TYPES.ChatExitModal]: ChatExitModal,
 };
 

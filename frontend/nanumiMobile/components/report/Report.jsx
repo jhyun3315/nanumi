@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import {BackHeader} from '../../ui/BackHeader';
 import {COLORS, FONTS, SIZES} from '../../constants';
+import {RectButton} from '../../ui/Button';
 
 const options = [
   '비매너 사용자예요',
@@ -21,6 +22,7 @@ const options = [
 const Report = ({navigation}) => {
   const [selectedOption, setSelectedOption] = useState(null);
 
+  console.log(selectedOption);
   const handleOptionPress = option => {
     setSelectedOption(option);
     // 신고 처리 로직
@@ -57,6 +59,7 @@ const Report = ({navigation}) => {
           keyExtractor={item => item}
           contentContainerStyle={styles.optionsContainer}
         />
+        <RectButton>신고하기</RectButton>
       </View>
     </SafeAreaView>
   );
