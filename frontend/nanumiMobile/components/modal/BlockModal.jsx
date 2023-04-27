@@ -1,9 +1,8 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {Modal, View, Dimensions, Text} from 'react-native';
 import {COLORS, FONTS, SIZES} from '../../constants';
 import {RectButton} from '../../ui/Button';
 import {useModal} from '../../hooks/useModal';
-
 const {width, height} = Dimensions.get('window');
 
 const BlockModal = () => {

@@ -17,11 +17,10 @@ import {
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {GiftedChat} from 'react-native-gifted-chat';
 import {useModal} from '../../hooks/useModal';
-import BlockModal from '../modal/BlockModal';
-import ChatExitModal from '../modal/ChatExitModal';
+import GlobalModal from '../modal/GlobalModal';
 
 const ChatDetail = ({navigation}) => {
-  const {modal, showModal} = useModal();
+  const {showModal} = useModal();
 
   const handleCloseBottomModal = () => {
     bottomSheetModalRef.current?.close();
@@ -104,8 +103,7 @@ const ChatDetail = ({navigation}) => {
             renderLoading={renderLoading}
           />
         </SafeAreaView>
-        {modal?.modalType === 'BlockModal' && <BlockModal />}
-        {modal?.modalType === 'ChatExitModal' && <ChatExitModal />}
+        <GlobalModal />
         <BottomSheetModal
           isBackDropDismisByPress={true}
           ref={bottomSheetModalRef}
