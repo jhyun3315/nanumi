@@ -2,21 +2,46 @@ import React from 'react';
 import {View, Text, StyleSheet, Pressable} from 'react-native';
 import {FONTS, SIZES, COLORS} from '../../constants';
 
-export const ChatOptions = () => {
+export const ChatOptions = ({
+  navigation,
+  handleCloseBottomModal,
+  handleOpenBlockUserModal,
+  handleOpenChatExitModal,
+}) => {
+  const handleCloseAndNavigateChatOptionsModal = () => {
+    handleCloseBottomModal();
+    setTimeout(() => {
+      navigation.navigate('Report');
+    }, 300);
+  };
+
+  const handleCloseAndNavigateLocationPickerModal = () => {
+    handleCloseBottomModal();
+    setTimeout(() => {
+      navigation.navigate('LocationPicker');
+    }, 300);
+  };
+
   return (
     <View style={styles.optionContainer}>
-      <Pressable style={styles.option}>
+      <Pressable
+        style={styles.option}
+        onPress={handleCloseAndNavigateLocationPickerModal}>
         <Text style={styles.optionText}>거래시작</Text>
       </Pressable>
-      <Pressable style={styles.option}>
+      <Pressable style={styles.option} onPress={handleOpenBlockUserModal}>
         <Text style={styles.optionText}>차단하기</Text>
       </Pressable>
-      <Pressable style={styles.option}>
+      <Pressable
+        style={styles.option}
+        onPress={handleCloseAndNavigateChatOptionsModal}>
         <Text style={[styles.optionText, styles.reportButtonText]}>
           신고하기
         </Text>
       </Pressable>
-      <Pressable style={[styles.option, styles.exitButton]}>
+      <Pressable
+        style={[styles.option, styles.exitButton]}
+        onPress={handleOpenChatExitModal}>
         <Text style={[styles.optionText, styles.exitButtonText]}>
           채팅방 나가기
         </Text>

@@ -1,6 +1,5 @@
-import React, {useState, useEffect, useReducer} from 'react';
+import React, {useEffect, useReducer} from 'react';
 import axios from 'axios';
-import Geolocation from 'react-native-geolocation-service';
 import MapView, {Circle, Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import {useLocationPermission} from '../../hooks/useLocationPermission';
 import {
@@ -16,6 +15,7 @@ import {SIZES, SHADOWS, COLORS, FONTS} from '../../constants';
 import {BackHeader} from '../../ui/BackHeader';
 import {RectButton} from '../../ui/Button';
 import {getDisntace} from '../../util/distance';
+import {showErrorAlert} from '../../ui/Alert';
 
 const {width, height} = Dimensions.get('window');
 const MAX_DISTANCE = 5000;
@@ -46,7 +46,6 @@ const reducer = (state, action) => {
   }
 };
 const MapUpdate = ({navigation}) => {
-  console.log('렌더링');
   const {coordinate, code, addressName} = useLocationPermission();
   const [state, dispatch] = useReducer(reducer, initialState);
 
@@ -78,18 +77,12 @@ const MapUpdate = ({navigation}) => {
     const distance = getDisntace(coordinate, region);
 
     if (distance > MAX_DISTANCE) {
-      Alert.alert('변경 실패', '반경5KM 이내만 가능합니다. ', [
-        {
-          text: '확인',
-          onPress: () => {
-            dispatch({type: 'SET_NEW_COORDINATE', payload: region});
-            dispatch({type: 'SET_NEW_COORDINATE', payload: coordinate});
-            dispatch({type: 'SET_NEW_ADDRESS_NAME', payload: addressName});
-            dispatch({type: 'SET_NEW_CODE', payload: code});
-          },
-          style: 'cancel',
-        },
-      ]);
+      showErrorAlert('반경5KM 이내만 가능합니다.', navigation, () => {
+        dispatch({type: 'SET_NEW_COORDINATE', payload: region});
+        dispatch({type: 'SET_NEW_COORDINATE', payload: coordinate});
+        dispatch({type: 'SET_NEW_ADDRESS_NAME', payload: addressName});
+        dispatch({type: 'SET_NEW_CODE', payload: code});
+      });
     } else {
       await handleRegion(region);
     }

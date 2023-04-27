@@ -64,7 +64,7 @@ const renderItem = ({item, desc}) => {
 };
 
 const UserList = ({navigation, desc}) => {
-  const title = desc === '차단해제' ? '차단목록' : '채팅목록';
+  const title = desc === '차단해제' ? '차단목록' : '매칭인원';
   return (
     <SafeAreaView style={styles.container}>
       <BackHeader navigation={navigation}>{title}</BackHeader>

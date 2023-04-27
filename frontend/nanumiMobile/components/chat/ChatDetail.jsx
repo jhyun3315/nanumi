@@ -16,9 +16,33 @@ import {
 } from '@gorhom/bottom-sheet';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {GiftedChat} from 'react-native-gifted-chat';
-import AccuseModal from '../modal/AccuseModal';
+import {useModal} from '../../hooks/useModal';
+import GlobalModal from '../modal/GlobalModal';
 
 const ChatDetail = ({navigation}) => {
+  const {showModal} = useModal();
+
+  const handleCloseBottomModal = () => {
+    bottomSheetModalRef.current?.close();
+  };
+
+  const handleOpenBlockUserModal = () => {
+    handleCloseBottomModal();
+    setTimeout(() => {
+      showModal({
+        modalType: 'BlockUserModal',
+      });
+    }, 300);
+  };
+
+  const handleOpenChatExitModal = () => {
+    handleCloseBottomModal();
+    setTimeout(() => {
+      showModal({
+        modalType: 'ChatExitModal',
+      });
+    }, 300);
+  };
   const bottomSheetModalRef = useRef(null);
   const snapPoints = useMemo(() => ['33%'], []);
   const handlePresentModalPress = useCallback(() => {
@@ -46,11 +70,6 @@ const ChatDetail = ({navigation}) => {
   const handleSend = newMessage => {
     setMessages(GiftedChat.append(messages, newMessage));
   };
-  // bottomModal이 움직일 떄 동작하는 함수 필요시 사용할듯
-
-  // const handleSheetChanges = useCallback(index => {
-  //   console.log('handleSheetChanges', index);
-  // }, []);
 
   const renderBackDrop = useCallback(props => {
     return (
@@ -83,8 +102,8 @@ const ChatDetail = ({navigation}) => {
             scrollToBottom
             renderLoading={renderLoading}
           />
-          <AccuseModal visible={true} />
         </SafeAreaView>
+        <GlobalModal />
         <BottomSheetModal
           isBackDropDismisByPress={true}
           ref={bottomSheetModalRef}
@@ -94,7 +113,12 @@ const ChatDetail = ({navigation}) => {
           animationConfigs={{
             duration: 200,
           }}>
-          <ChatOptions />
+          <ChatOptions
+            navigation={navigation}
+            handleCloseBottomModal={handleCloseBottomModal}
+            handleOpenBlockUserModal={handleOpenBlockUserModal}
+            handleOpenChatExitModal={handleOpenChatExitModal}
+          />
         </BottomSheetModal>
       </BottomSheetModalProvider>
     </GestureHandlerRootView>

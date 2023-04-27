@@ -13,9 +13,11 @@ import BlockUserScreen from '../screens/BlockUserScreen';
 import MatchingProductScreen from '../screens/MatchingProductScreen';
 import MatchingUserScreen from '../screens/MatchingUserScreen';
 import DivideProductScreen from '../screens/DivideProductScreen';
+import MapUpdateScreen from '../screens/MapUpdateScreen';
+import ReportScreen from '../screens/ReportScreen';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {NavigationContainer} from '@react-navigation/native';
-import MapUpdateScreen from '../screens/MapUpdateScreen';
+import LocationPickerScreen from '../screens/LocationPickerScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -54,6 +56,22 @@ const StackNavigator = () => {
         <Stack.Screen
           name="Category"
           component={CategoryScreen}
+          options={{
+            presentation: 'modal',
+            animation: 'slide_from_bottom',
+          }}
+        />
+        <Stack.Screen
+          name="Report"
+          component={ReportScreen}
+          options={{
+            presentation: 'modal',
+            animation: 'slide_from_bottom',
+          }}
+        />
+        <Stack.Screen
+          name="LocationPicker"
+          component={LocationPickerScreen}
           options={{
             presentation: 'modal',
             animation: 'slide_from_bottom',
