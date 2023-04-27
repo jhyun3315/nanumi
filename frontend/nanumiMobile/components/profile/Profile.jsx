@@ -32,8 +32,11 @@ const Profile = ({navigation}) => {
               style={styles.image}
               resizeMode="contain"
             />
-            <View style={styles.add}>
-              <Icon name="add" size={SIZES.extraLarge} color={COLORS.primary} />
+            <View style={styles.tier}>
+              <Image
+                source={assets.badge}
+                style={{width: SIZES.extraLarge, height: SIZES.extraLarge}}
+              />
             </View>
           </View>
           <Text style={[styles.text, styles.nickname]}>닉네임</Text>
@@ -42,7 +45,7 @@ const Profile = ({navigation}) => {
           <RectButton
             minWidth={width / 1.1}
             fontSize={SIZES.font}
-            backgroundColor={COLORS.gray}
+            backgroundColor={COLORS.secondary}
             borderRadius={SIZES.base}
             {...SHADOWS.dark}
             handlePress={() => {}}>
@@ -60,8 +63,7 @@ const Profile = ({navigation}) => {
               alignItems: 'center',
             }}>
             <Text style={styles.smallText}>매너온도</Text>
-
-            <Text>36.5</Text>
+            <Text style={styles.smallText}>36.5°C</Text>
           </View>
           <ProgressBar value={36.5} />
         </View>
@@ -109,7 +111,11 @@ const Profile = ({navigation}) => {
           onPress={() => navigation.navigate('ProfileToChat')}>
           <Text style={styles.text}>이전채팅목록</Text>
         </Pressable>
-        <Pressable style={styles.list} onPress={() => {}}>
+        <Pressable
+          style={styles.list}
+          onPress={() => {
+            navigation.navigate('Review');
+          }}>
           <Text style={styles.text}>리뷰 목록</Text>
         </Pressable>
         <Pressable
@@ -169,8 +175,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
   },
-  add: {
-    backgroundColor: COLORS.disable,
+  tier: {
     position: 'absolute',
     bottom: 0,
     right: 0,

@@ -15,9 +15,10 @@ import MatchingUserScreen from '../screens/MatchingUserScreen';
 import DivideProductScreen from '../screens/DivideProductScreen';
 import MapUpdateScreen from '../screens/MapUpdateScreen';
 import ReportScreen from '../screens/ReportScreen';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {NavigationContainer} from '@react-navigation/native';
 import LocationPickerScreen from '../screens/LocationPickerScreen';
+import ReviewScreen from '../screens/ReviewScreen';
+import {NavigationContainer} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 const Stack = createNativeStackNavigator();
 
@@ -38,6 +39,7 @@ const StackNavigator = () => {
         <Stack.Screen name="Map" component={MapScreen} />
         <Stack.Screen name="ProfileToChat" component={ProfileToChatScreen} />
         <Stack.Screen name="BlockUser" component={BlockUserScreen} />
+        <Stack.Screen name="Review" component={ReviewScreen} />
         <Stack.Screen name="MatchingUser" component={MatchingUserScreen} />
         <Stack.Screen name="DivideProduct" component={DivideProductScreen} />
         <Stack.Screen name="MapUpdate" component={MapUpdateScreen} />
