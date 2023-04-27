@@ -12,6 +12,7 @@ import com.ssafy.nanumi.db.repository.MatchRepository;
 import com.ssafy.nanumi.db.repository.ProductImageRepository;
 import com.ssafy.nanumi.db.repository.ProductRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,24 +27,25 @@ public class ProductService {
     private final CategoryRepository categoryRepository;
     private final ProductImageRepository productImageRepository;
     private final MatchRepository matchRepository;
-    public List<ProductAllDTO> findProductAll(User user) {
-        return productRepository.findAllByIsDeletedFalse()
-                .stream()
-                .filter(product -> product.getAddress().getId() == user.getAddress().getId())
-                .map(ProductAllDTO::new)
-                .collect(Collectors.toList());
+
+    public Page<ProductAllDTO> findProductAll(User user, PageRequest pageRequest) {
+        Long addressId = user.getAddress().getId();
+        return productRepository.findAllProduct(addressId, pageRequest);
     }
+
     public ProductDetailDTO findByProductId(Long id) {
         return productRepository.findById(id)
                 .map(ProductDetailDTO::new)
                 .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_PRODUCT));
     }
-    public List<ProductAllDTO> findCateProductAll(Long id, User user) {
-        return productRepository.findAllByIsDeletedFalse()
-                .stream()
-                .filter(product -> product.getAddress().getId() == user.getAddress().getId() && product.getCategory().getId() == id)
-                .map(ProductAllDTO::new).collect(Collectors.toList());
-    }
+
+    public Page<ProductAllDTO> findCateProductAll(Long categoryId, User user, Pageable pageRequest) {
+        categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new CustomException(CustomExceptionStatus.NOT_FOUND_CATEGORY));
+        Long addressId = user.getAddress().getId();
+        return productRepository.findAllCategoryProuduct(addressId,categoryId, pageRequest);
+}
+
     public void createProduct(ProductInsertDTO request, User user){
         Category category = categoryRepository.findById(request.getCategoryId())
                 .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_CATEGORY));

@@ -85,4 +85,7 @@ public class UserInfo {
         this.reportedTotalCount += 1;
         this.stopDate = banDate;
     }
+    public void plusGiveCount(){
+        this.giveCount += 1;
+    }
 }

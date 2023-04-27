@@ -11,11 +11,12 @@ import com.ssafy.nanumi.db.entity.User;
 import com.ssafy.nanumi.db.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
 import java.io.UnsupportedEncodingException;
-import java.util.List;
 
 import static com.ssafy.nanumi.config.response.exception.CustomSuccessStatus.*;
 
@@ -59,7 +60,7 @@ public class UserController {
 
 
     /* 회원 정보 조회 */
-    @GetMapping("users/detail")
+    @GetMapping("users")
     public CustomDataResponse<UserDetailDTO> findDetailUser() {
         // TODO : end-point임의로 바꿧음!, OAuth로 userId 받아와야 함
 
@@ -68,12 +69,6 @@ public class UserController {
         return responseService.getDataResponse(userService.findDetailUser(userId), RESPONSE_SUCCESS);
     }
 
-    /* 회원 정보 조회 */
-    @GetMapping("/users")
-    public CustomDataResponse<UserReadDTO> getUser(){
-        User user = userRepository.findById(1L).get();
-        return responseService.getDataResponse(userService.getUser(user), RESPONSE_SUCCESS);
-    }
 
     /* 회원 정보 수정 */
     @PatchMapping("/users")
@@ -93,22 +88,25 @@ public class UserController {
 
     /* 거래 후기 조회 (남이 나에게) */
     @GetMapping("/users/reviews")
-    public CustomDataResponse<List<ReviewReadDTO>> getAllReview(){
+    public CustomDataResponse<Page<ReviewReadDTO>> getAllReview(@RequestParam("page") Integer page){
         User user = userRepository.findById(1L).get();
-        return responseService.getDataResponse(userService.getAllReview(user),RESPONSE_SUCCESS);
+        PageRequest pageRequest = PageRequest.of(page, 6);
+        return responseService.getDataResponse(userService.getAllReview(user, pageRequest),RESPONSE_SUCCESS);
     }
 
     /* 나눔 상품 목록 조회 (모든 거래) */
     @GetMapping("/users/products")
-    public CustomDataResponse<List<ProductAllDTO>> getAllReceiveProduct(){
+    public CustomDataResponse<Page<ProductAllDTO>> getAllReceiveProduct(@RequestParam("page") Integer page){
         User user = userRepository.findById(1L).get();
-        return responseService.getDataResponse(userService.getAllReceiveProduct(user), RESPONSE_SUCCESS);
+        PageRequest pageRequest = PageRequest.of(page, 6);
+        return responseService.getDataResponse(userService.getAllReceiveProduct(user, pageRequest), RESPONSE_SUCCESS);
     }
 
     /* 매칭 목록 (현재 진행중 "나눔" 목록) */
     @GetMapping("/users/matches")
-    public CustomDataResponse<List<ProductAllDTO>> getMatchingProduct(){
+    public CustomDataResponse<Page<ProductAllDTO>> getMatchingProduct(@RequestParam("page") Integer page){
         User user = userRepository.findById(1L).get();
-        return responseService.getDataResponse(userService.getMatchingProduct(user),RESPONSE_SUCCESS);
+        PageRequest pageRequest = PageRequest.of(page, 6);
+        return responseService.getDataResponse(userService.getMatchingProduct(user, pageRequest),RESPONSE_SUCCESS);
     }
 }

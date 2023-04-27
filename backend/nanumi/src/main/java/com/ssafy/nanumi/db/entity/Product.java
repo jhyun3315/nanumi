@@ -30,6 +30,9 @@ public class Product extends BaseTimeEntity {
     @Column(name = "is_deleted", columnDefinition = "TINYINT", nullable = false)
     private boolean isDeleted;
 
+    @Column(name = "is_matched", columnDefinition = "TINYINT", nullable = false)
+    private boolean isMatched;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="address_id")
     private Address address;

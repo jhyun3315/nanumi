@@ -11,6 +11,9 @@ import com.ssafy.nanumi.db.entity.UserInfo;
 import com.ssafy.nanumi.db.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -129,9 +132,6 @@ public class UserService {
                 .build();
     }
 
-    public UserReadDTO getUser(User user){
-        return new UserReadDTO(user);
-    }
     public void updateUser(User user, UserJoinDTO userJoinDTO) {
         user.setNickname(userJoinDTO.getNickname());
         user.setProfileUrl(userJoinDTO.getProfileImage());
@@ -139,23 +139,13 @@ public class UserService {
     public void deleteUser(User user){
         user.delete();
     }
-    public List<ReviewReadDTO> getAllReview(User user){
-        return user.getReviews()
-                .stream()
-                .map(ReviewReadDTO::new).collect(Collectors.toList());
+    public Page<ReviewReadDTO> getAllReview(User user, PageRequest pageRequest){
+        return userRepository.getAllReview(user.getId(), pageRequest);
     }
-    public List<ProductAllDTO> getAllReceiveProduct(User user){
-        return user.getProducts()
-                .stream()
-                .filter(product -> !product.isDeleted())
-                .map(ProductAllDTO::new)
-                .collect(Collectors.toList());
+    public Page<ProductAllDTO> getAllReceiveProduct(User user, PageRequest pageRequest){
+        return userRepository.getAllReceiveProduct(user.getId(), pageRequest);
     }
-    public List<ProductAllDTO> getMatchingProduct(User user){
-        return user.getProducts()
-                .stream()
-                .filter(product -> !product.isDeleted() && !product.isClosed())
-                .map(ProductAllDTO::new)
-                .collect(Collectors.toList());
+    public Page<ProductAllDTO> getMatchingProduct(User user, PageRequest pageRequest){
+        return userRepository.getAllMatchingProduct(user.getId(), pageRequest);
     }
 }

@@ -11,6 +11,7 @@ public class ProductDetailDTO {
     private final String name;
     private final String content;
     private final  boolean isClosed;
+    private final  boolean isMatched;
     private final Long categoryId;
     private final String categoryName;
     private final List<String> productImageUrls;
@@ -23,6 +24,7 @@ public class ProductDetailDTO {
         name = product.getName();
         content = product.getContent();
         isClosed = product.isClosed();
+        isMatched  = product.isMatched();
         categoryId = product.getCategory().getId();
         categoryName = product.getCategory().getName();
         productImageUrls = product.getProductImages().stream().map(h->h.getImageUrl()).collect(Collectors.toList());
