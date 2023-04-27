@@ -1,19 +1,12 @@
-import React, {useMemo, useCallback} from 'react';
-import {
-  View,
-  Text,
-  SafeAreaView,
-  Dimensions,
-  StyleSheet,
-  Alert,
-} from 'react-native';
+import React, {useCallback} from 'react';
+import {View, Text, SafeAreaView, Dimensions, StyleSheet} from 'react-native';
 import {useLocationPermission} from '../../hooks/useLocationPermission';
 import {BackHeader} from '../../ui/BackHeader';
 import {Fallback} from '../../ui/Fallback';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
-import axios from 'axios';
 import {COLORS, FONTS, SIZES} from '../../constants';
 import {getAddressFromCoords} from '../../api/kakao';
+import {showErrorAlert} from '../../ui/Alert';
 
 const {width, height} = Dimensions.get('window');
 
@@ -23,14 +16,12 @@ const LocationPicker = ({navigation}) => {
 
   const handleRegion = useCallback(
     async region => {
-      const address = await getAddressFromCoords(region);
-      console.log(address);
+      const {address} = await getAddressFromCoords(region);
       if (address) {
         setCoordinate(region);
         setAddressName(address);
       } else {
-        Alert.alert('도시 정보를 얻어오는데 실패했습니다.');
-        navigation.goBack();
+        showErrorAlert('도시정보를 얻어오는데 실패했습니다.', navigation);
       }
     },
     [navigation],

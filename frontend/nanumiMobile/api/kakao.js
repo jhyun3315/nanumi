@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 export const getAddressFromCoords = async coordinate => {
   try {
     const response = await axios.get(
@@ -8,9 +10,10 @@ export const getAddressFromCoords = async coordinate => {
         },
       },
     );
-    console.log('object', response);
     const address = response.data.documents[0].address_name;
-    return {address};
+    const dongCode = response.data.documents[0].code;
+
+    return {dongCode, address};
   } catch (error) {
     return false;
   }
