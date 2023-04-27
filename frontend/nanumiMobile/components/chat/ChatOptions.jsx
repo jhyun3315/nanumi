@@ -14,9 +14,19 @@ export const ChatOptions = ({
       navigation.navigate('Report');
     }, 300);
   };
+
+  const handleCloseAndNavigateLocationPickerModal = () => {
+    handleCloseBottomModal();
+    setTimeout(() => {
+      navigation.navigate('LocationPicker');
+    }, 300);
+  };
+
   return (
     <View style={styles.optionContainer}>
-      <Pressable style={styles.option}>
+      <Pressable
+        style={styles.option}
+        onPress={handleCloseAndNavigateLocationPickerModal}>
         <Text style={styles.optionText}>거래시작</Text>
       </Pressable>
       <Pressable style={styles.option} onPress={handleOpenBlockUserModal}>

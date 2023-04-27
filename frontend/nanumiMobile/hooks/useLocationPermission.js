@@ -1,7 +1,7 @@
-import {useEffect, useState} from 'react';
+import {useEffect, useState, useCallback} from 'react';
 import {PermissionsAndroid, Alert} from 'react-native';
-import Geolocation from 'react-native-geolocation-service';
 import {useNavigation} from '@react-navigation/native';
+import Geolocation from 'react-native-geolocation-service';
 import axios from 'axios';
 
 const getCityName = async coordinate => {
@@ -23,14 +23,13 @@ export const useLocationPermission = () => {
   const [coordinate, setCoordinate] = useState({});
   const [code, setCode] = useState('');
   const [addressName, setAddressName] = useState('');
-
-  const getCityNameFromCoordinate = async () => {
+  const getCityNameFromCoordinate = useCallback(async () => {
     const {dongCode, address} = await getCityName(coordinate);
     setCode(dongCode);
     setAddressName(address);
-  };
+  }, [coordinate, getCityName]);
 
-  const requestPermissions = async () => {
+  const requestPermissions = useCallback(async () => {
     const granted = await PermissionsAndroid.request(
       PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
     );
@@ -44,7 +43,6 @@ export const useLocationPermission = () => {
             longitudeDelta: 0.01,
           });
         },
-
         error => {
           Alert.alert('위치정보를 얻어오는데 실패했습니다.');
         },
@@ -61,17 +59,24 @@ export const useLocationPermission = () => {
         },
       ]);
     }
-  };
+  }, [navigation]);
 
   useEffect(() => {
     if (coordinate.latitude && coordinate.longitude) {
       getCityNameFromCoordinate();
     }
-  }, [coordinate]);
+  }, [coordinate.latitude, coordinate.longitude, getCityNameFromCoordinate]);
 
   useEffect(() => {
     requestPermissions();
-  }, []);
+  }, [requestPermissions]);
 
-  return {coordinate, code, addressName};
+  return {
+    coordinate,
+    setCoordinate,
+    code,
+    setCode,
+    addressName,
+    setAddressName,
+  };
 };

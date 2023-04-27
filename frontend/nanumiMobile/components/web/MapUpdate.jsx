@@ -1,6 +1,5 @@
 import React, {useState, useEffect, useReducer} from 'react';
 import axios from 'axios';
-import Geolocation from 'react-native-geolocation-service';
 import MapView, {Circle, Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import {useLocationPermission} from '../../hooks/useLocationPermission';
 import {
@@ -46,7 +45,6 @@ const reducer = (state, action) => {
   }
 };
 const MapUpdate = ({navigation}) => {
-  console.log('렌더링');
   const {coordinate, code, addressName} = useLocationPermission();
   const [state, dispatch] = useReducer(reducer, initialState);
 
