@@ -4,9 +4,10 @@ import {useLocationPermission} from '../../hooks/useLocationPermission';
 import {BackHeader} from '../../ui/BackHeader';
 import {Fallback} from '../../ui/Fallback';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
-import {COLORS, FONTS, SIZES} from '../../constants';
+import {COLORS, FONTS, SHADOWS, SIZES} from '../../constants';
 import {getAddressFromCoords} from '../../api/kakao';
 import {showErrorAlert} from '../../ui/Alert';
+import {RectButton} from '../../ui/Button';
 
 const {width, height} = Dimensions.get('window');
 
@@ -63,6 +64,14 @@ const LocationPicker = ({navigation}) => {
         <Text style={styles.bottomText}>
           {addressName ? addressName : '동네 찾는중...'}
         </Text>
+        <RectButton
+          minWidth={96}
+          fontSize={SIZES.font}
+          {...SHADOWS.dark}
+          isDisable={false}
+          handlePress={() => {}}>
+          거래시작
+        </RectButton>
       </View>
     </SafeAreaView>
   );

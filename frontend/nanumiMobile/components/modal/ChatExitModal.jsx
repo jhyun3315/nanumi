@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {Modal, View, Dimensions, Text} from 'react-native';
+import React from 'react';
+import {Modal, View, Dimensions, Text, Pressable} from 'react-native';
 import {COLORS, FONTS, SIZES} from '../../constants';
 import {RectButton} from '../../ui/Button';
 import {useModal} from '../../hooks/useModal';
@@ -10,7 +10,7 @@ const ChatExitModal = () => {
 
   return (
     <Modal visible={true} transparent={true}>
-      <View style={styles.modalContainer}>
+      <Pressable style={styles.modalContainer} onPress={hideModal}>
         <View style={styles.modal}>
           <View style={styles.chatContainer}>
             <Text style={styles.text}>채팅방 나가기</Text>
@@ -40,7 +40,7 @@ const ChatExitModal = () => {
             </RectButton>
           </View>
         </View>
-      </View>
+      </Pressable>
     </Modal>
   );
 };

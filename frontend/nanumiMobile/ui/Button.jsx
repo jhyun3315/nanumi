@@ -35,18 +35,20 @@ export const RectButton = ({
   fontSize,
   handlePress,
   children,
+  isDisable,
   ...props
 }) => {
   return (
     <Pressable
       style={{
         minWidth: minWidth,
-        backgroundColor: COLORS.violet,
+        backgroundColor: isDisable ? COLORS.disable : COLORS.violet,
         borderRadius: SIZES.extraLarge,
         padding: SIZES.small,
         ...props,
       }}
-      onPress={handlePress}>
+      onPress={handlePress}
+      disabled={isDisable}>
       <Text
         style={{
           fontFamily: FONTS.medium,
