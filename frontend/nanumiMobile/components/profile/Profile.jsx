@@ -7,11 +7,9 @@ import {
   Image,
   Pressable,
   ScrollView,
-  StatusBar,
   Dimensions,
 } from 'react-native';
 import {COLORS, FONTS, SIZES, SHADOWS, assets} from '../../constants';
-import Icon from 'react-native-ionicons';
 import ProgressBar from './ProgressBar';
 import {RectButton} from '../../ui/Button';
 const {width} = Dimensions.get('window');
@@ -22,7 +20,6 @@ const Profile = ({navigation}) => {
       style={{
         flex: 1,
         backgroundColor: COLORS.white,
-        paddingTop: StatusBar.currentHeight,
       }}>
       <ScrollView>
         <View style={styles.profileContainer}>
