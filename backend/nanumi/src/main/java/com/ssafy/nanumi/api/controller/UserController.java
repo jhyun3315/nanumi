@@ -53,10 +53,10 @@ public class UserController {
         return responseService.getSuccessResponse();
     }
 
-    @GetMapping("/users/address/{user_id}")
-    public CustomDataResponse findUserAddress(@PathVariable("user_id") long user_id){
-        System.out.println(user_id);
-       AddressResDTO addressResDTO =  userService.getUserAddress(user_id);
+    /*사용자 주소 보회*/
+    @GetMapping("/users/address")
+    public CustomDataResponse findUserAddress(){
+       AddressResDTO addressResDTO =  userService.getUserAddress(1L);
        return responseService.getDataResponse(addressResDTO, RESPONSE_SUCCESS);
     }
 
