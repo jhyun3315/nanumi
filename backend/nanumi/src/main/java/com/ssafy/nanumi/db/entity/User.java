@@ -5,8 +5,10 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+@Data
 @Entity
 @Getter
 @Setter
@@ -32,6 +34,9 @@ public class User extends BaseTimeEntity {
 
     @Column(name="is_deleted", columnDefinition = "TINYINT", nullable = false)
     private boolean isDeleted;
+
+    @Column(name="roles", columnDefinition = "VARCHAR(50)", nullable=false)
+    private String roles;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="address_id")
@@ -67,7 +72,10 @@ public class User extends BaseTimeEntity {
         this.userInfo = userInfo;
     }
 
-    public void updateAddress(Address address){
-        this.address = address;
+    public List<String> getRoleList(){
+        if(this.roles.length() > 0){
+            return Arrays.asList(this.roles.split(","));
+        }
+        return new ArrayList<>();
     }
 }
