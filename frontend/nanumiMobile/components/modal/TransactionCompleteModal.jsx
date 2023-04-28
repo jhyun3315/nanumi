@@ -7,6 +7,7 @@ import {
   Pressable,
   Animated,
   Easing,
+  TouchableWithoutFeedback,
 } from 'react-native';
 import {COLORS, FONTS, SIZES} from '../../constants';
 import {RectButton} from '../../ui/Button';
@@ -21,7 +22,7 @@ const Star = props => {
     <Icon
       name={props.filled === true ? 'star' : 'star-outline'}
       color="blue"
-      size={32}
+      size={48}
       style={{marginHorizontal: 6}}
     />
   );
@@ -87,32 +88,34 @@ const TransactionCompleteModal = () => {
   return (
     <Modal visible={true} transparent={true}>
       <Pressable style={styles.modalContainer} onPress={hideModal}>
-        <View style={styles.modal}>
-          <View style={styles.transactionContainer}>
-            <Text style={styles.text}>거래완료</Text>
+        <TouchableWithoutFeedback onPress={event => event.stopPropagation()}>
+          <View style={styles.modal}>
+            <View style={styles.transactionContainer}>
+              <Text style={styles.text}>거래완료</Text>
+            </View>
+            <View style={{flexDirection: 'row'}}>{stars}</View>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-around',
+                alignItems: 'center',
+              }}>
+              <RectButton
+                minWidth={96}
+                fontSize={FONTS.font}
+                backgroundColor={COLORS.primary}
+                handlePress={hideModal}>
+                다음에 할게요
+              </RectButton>
+              <RectButton
+                minWidth={96}
+                fontSize={FONTS.font}
+                handlePress={hideModal}>
+                완료
+              </RectButton>
+            </View>
           </View>
-          <View style={{flexDirection: 'row'}}>{stars}</View>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-around',
-              alignItems: 'center',
-            }}>
-            <RectButton
-              minWidth={96}
-              fontSize={FONTS.font}
-              backgroundColor={COLORS.primary}
-              handlePress={hideModal}>
-              다음에 할게요
-            </RectButton>
-            <RectButton
-              minWidth={96}
-              fontSize={FONTS.font}
-              handlePress={hideModal}>
-              완료
-            </RectButton>
-          </View>
-        </View>
+        </TouchableWithoutFeedback>
       </Pressable>
     </Modal>
   );

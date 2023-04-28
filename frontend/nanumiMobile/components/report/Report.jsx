@@ -22,7 +22,6 @@ const options = [
 const Report = ({navigation}) => {
   const [selectedOption, setSelectedOption] = useState(null);
 
-  console.log(selectedOption);
   const handleOptionPress = option => {
     setSelectedOption(option);
     // 신고 처리 로직

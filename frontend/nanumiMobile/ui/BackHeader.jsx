@@ -3,7 +3,7 @@ import {View, StatusBar, StyleSheet, Text} from 'react-native';
 import {CircleButton, MoreButton, RectButton} from './Button';
 import {COLORS, FONTS, SIZES, assets} from '../constants';
 
-export const BackHeader = ({navigation, children}) => {
+export const BackHeader = ({navigation, children, ...props}) => {
   return (
     <View
       style={{
@@ -30,6 +30,7 @@ export const BackHeader = ({navigation, children}) => {
         }}
         left={16}
         top={StatusBar.currentHeight - 12}
+        {...props}
       />
     </View>
   );
