@@ -2,7 +2,6 @@ package com.ssafy.nanumi.api.request;
 
 import lombok.*;
 
-
 @Getter
 @Setter
 @NoArgsConstructor
