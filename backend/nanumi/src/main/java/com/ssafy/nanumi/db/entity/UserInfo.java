@@ -24,12 +24,8 @@ public class UserInfo {
     private long id;
 
     @ColumnDefault("0")
-    @Column(name = "star_total", columnDefinition = "INT", nullable = false)
-    private int starTotal;
-
-    @ColumnDefault("0")
-    @Column(name = "star_count", columnDefinition = "INT", nullable = false)
-    private int starCount;
+    @Column(name = "star_point", columnDefinition = "DOUBLE", nullable = false)
+    private double starPoint;
 
     @ColumnDefault("0")
     @Column(name = "rating", columnDefinition = "DOUBLE", nullable = false)
@@ -70,10 +66,9 @@ public class UserInfo {
     private User user;
 
     @Builder
-    public UserInfo(long id, int starTotal, int starCount, double rating, String tier, double temperature, long visitCount, int giveCount, int givenCount, int reportedTotalCount, LocalDateTime stopDate, String refreshToken, User user) {
+    public UserInfo(long id, double starPoint, double rating, String tier, double temperature, long visitCount, int giveCount, int givenCount, int reportedTotalCount, LocalDateTime stopDate, String refreshToken, User user) {
         this.id = id;
-        this.starTotal = starTotal;
-        this.starCount = starCount;
+        this.starPoint = starPoint;
         this.rating = rating;
         this.tier = tier;
         this.temperature = temperature;
@@ -84,13 +79,5 @@ public class UserInfo {
         this.stopDate = stopDate;
         this.refreshToken = refreshToken;
         this.user = user;
-    }
-
-    public void updateBanUser(LocalDateTime banDate) {
-        this.reportedTotalCount += 1;
-        this.stopDate = banDate;
-    }
-    public void plusGiveCount(){
-        this.giveCount += 1;
     }
 }
