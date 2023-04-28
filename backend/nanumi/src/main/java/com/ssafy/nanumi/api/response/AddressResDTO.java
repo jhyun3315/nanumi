@@ -9,14 +9,14 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class AddressResDTO {
-    @JsonProperty("address_code")
-    private long addressCode;
+    @JsonProperty("address_id")
+    private long addressId;
     @JsonProperty("address_name")
     private String addressName;
 
     @Builder
-    public AddressResDTO(long addressCode, String addressName) {
-        this.addressCode = addressCode;
+    public AddressResDTO(long addressId, String addressName) {
+        this.addressId = addressId;
         this.addressName = addressName;
     }
 }

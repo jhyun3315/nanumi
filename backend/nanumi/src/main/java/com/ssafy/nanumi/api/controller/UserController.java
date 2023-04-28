@@ -49,14 +49,14 @@ public class UserController {
     /*사용자 장소 정보 등록 수정*/
     @PatchMapping("/users/address")
     public CustomResponse saveUserAddress(@RequestBody AddressDTO addressDTO){
-        userService.updateUserAddress(addressDTO.getAddress_id(),addressDTO.getUser_id());
+        userService.updateUserAddress(addressDTO.getAddress_id(),1L);
         return responseService.getSuccessResponse();
     }
 
-    @GetMapping("/users/address/{user_id}")
-    public CustomDataResponse findUserAddress(@PathVariable("user_id") long user_id){
-        System.out.println(user_id);
-       AddressResDTO addressResDTO =  userService.getUserAddress(user_id);
+    /*사용자 주소 조회*/
+    @GetMapping("/users/address")
+    public CustomDataResponse findUserAddress(){
+       AddressResDTO addressResDTO =  userService.getUserAddress(1L);
        return responseService.getDataResponse(addressResDTO, RESPONSE_SUCCESS);
     }
 
