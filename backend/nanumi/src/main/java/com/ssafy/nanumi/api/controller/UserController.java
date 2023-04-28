@@ -53,7 +53,7 @@ public class UserController {
         return responseService.getSuccessResponse();
     }
 
-    /*사용자 주소 보회*/
+    /*사용자 주소 조회*/
     @GetMapping("/users/address")
     public CustomDataResponse findUserAddress(){
        AddressResDTO addressResDTO =  userService.getUserAddress(1L);
