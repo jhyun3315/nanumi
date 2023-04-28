@@ -1,4 +1,4 @@
-import React, {useState, useRef} from 'react';
+import React, {useState, useRef, useMemo} from 'react';
 import {
   Modal,
   View,
@@ -13,43 +13,19 @@ import {COLORS, FONTS, SIZES} from '../../constants';
 import {RectButton} from '../../ui/Button';
 import {useModal} from '../../hooks/useModal';
 import Icon from 'react-native-ionicons';
+
 const {width, height} = Dimensions.get('window');
 
-const numStars = 5;
-
-const Star = props => {
-  return (
-    <Icon
-      name={props.filled === true ? 'star' : 'star-outline'}
-      color="blue"
-      size={48}
-      style={{marginHorizontal: 6}}
-    />
-  );
-};
+const STARS = 5;
 
 const TransactionCompleteModal = () => {
   const {hideModal} = useModal();
-  const [comment, setComment] = useState('');
-  const [rating, setRating] = useState(1);
+  const [rating, setRating] = useState(5);
   const animation = useRef(new Animated.Value(1)).current;
 
   const handleRate = star => {
     setRating(star);
   };
-
-  const handleAnimate = () => {
-    Animated.timing(animation, {
-      toValue: 2,
-      duration: 400,
-      easing: Easing.ease,
-      useNativeDriver: true,
-    }).start(() => {
-      animation.setValue(1);
-    });
-  };
-
-  let stars = [];
 
   const animateScale = animation.interpolate({
     inputRange: [1, 1.5, 2],
@@ -71,19 +47,35 @@ const TransactionCompleteModal = () => {
     opacity: animateOpacity,
   };
 
-  for (let x = 1; x <= numStars; x++) {
-    stars.push(
+  const handleAnimate = () => {
+    Animated.timing(animation, {
+      toValue: 2,
+      duration: 400,
+      easing: Easing.ease,
+      useNativeDriver: true,
+    }).start(() => {
+      animation.setValue(1);
+    });
+  };
+
+  const stars = useMemo(() => {
+    return Array.from({length: STARS}, (_, i) => (
       <Pressable
-        key={x}
+        key={i + 1}
         onPress={() => {
-          handleRate(x), handleAnimate();
+          handleRate(i + 1), handleAnimate();
         }}>
-        <Animated.View style={x <= rating ? animationStyle : ''}>
-          <Star filled={x <= rating ? true : false} />
+        <Animated.View style={i + 1 <= rating ? animationStyle : null}>
+          <Icon
+            name={i + 1 <= rating ? 'star' : 'star-outline'}
+            color={COLORS.yellow}
+            size={48}
+            style={{marginHorizontal: 6}}
+          />
         </Animated.View>
-      </Pressable>,
-    );
-  }
+      </Pressable>
+    ));
+  }, [rating, handleAnimate]);
 
   return (
     <Modal visible={true} transparent={true}>
