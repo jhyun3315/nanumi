@@ -54,7 +54,7 @@ const ChatDetail = ({navigation}) => {
   };
 
   const bottomSheetModalRef = useRef(null);
-  const snapPoints = useMemo(() => ['40%'], []);
+  const snapPoints = useMemo(() => ['40%', '55%'], []);
   const handlePresentModalPress = useCallback(() => {
     bottomSheetModalRef.current?.present();
   }, []);

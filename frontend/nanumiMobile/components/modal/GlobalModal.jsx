@@ -25,7 +25,7 @@ const GlobalModal = () => {
   if (!modal?.modalType) return null;
 
   const ModalComponent = MODAL_COMPONENTS[modal.modalType];
-  return ModalComponent ? <ModalComponent /> : null;
+  return ModalComponent ? <ModalComponent {...modal?.modalProps} /> : null;
 };
 
 export default GlobalModal;
