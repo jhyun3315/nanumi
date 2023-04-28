@@ -7,6 +7,8 @@ import com.ssafy.nanumi.api.service.UserService;
 import com.ssafy.nanumi.config.response.CustomDataResponse;
 import com.ssafy.nanumi.config.response.CustomResponse;
 import com.ssafy.nanumi.config.response.ResponseService;
+import com.ssafy.nanumi.config.response.exception.CustomException;
+import com.ssafy.nanumi.config.response.exception.CustomExceptionStatus;
 import com.ssafy.nanumi.db.entity.User;
 import com.ssafy.nanumi.db.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -73,7 +75,8 @@ public class UserController {
     /* 회원 정보 수정 */
     @PatchMapping("/users")
     public CustomResponse updateUser(@RequestBody UserJoinDTO userJoinDTO) {
-        User user = userRepository.findById(1L).get();
+        User user = userRepository.findById(1L)
+                .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_USER));
         userService.updateUser(user, userJoinDTO);
         return responseService.getSuccessResponse();
     }
@@ -81,7 +84,8 @@ public class UserController {
     /* 회원 정보 탈퇴 */
     @DeleteMapping("/users")
     public CustomResponse deleteUser(){
-        User user = userRepository.findById(1L).get();
+        User user = userRepository.findById(1L)
+                .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_USER));
         userService.deleteUser(user);
         return responseService.getSuccessResponse();
     }
@@ -89,7 +93,8 @@ public class UserController {
     /* 거래 후기 조회 (남이 나에게) */
     @GetMapping("/users/reviews")
     public CustomDataResponse<Page<ReviewReadDTO>> getAllReview(@RequestParam("page") Integer page){
-        User user = userRepository.findById(1L).get();
+        User user = userRepository.findById(1L)
+                .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_USER));
         PageRequest pageRequest = PageRequest.of(page, 6);
         return responseService.getDataResponse(userService.getAllReview(user, pageRequest),RESPONSE_SUCCESS);
     }
@@ -97,7 +102,8 @@ public class UserController {
     /* 나눔 상품 목록 조회 (모든 거래) */
     @GetMapping("/users/products")
     public CustomDataResponse<Page<ProductAllDTO>> getAllReceiveProduct(@RequestParam("page") Integer page){
-        User user = userRepository.findById(1L).get();
+        User user = userRepository.findById(1L)
+                .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_USER));
         PageRequest pageRequest = PageRequest.of(page, 6);
         return responseService.getDataResponse(userService.getAllReceiveProduct(user, pageRequest), RESPONSE_SUCCESS);
     }
@@ -105,7 +111,8 @@ public class UserController {
     /* 매칭 목록 (현재 진행중 "나눔" 목록) */
     @GetMapping("/users/matches")
     public CustomDataResponse<Page<ProductAllDTO>> getMatchingProduct(@RequestParam("page") Integer page){
-        User user = userRepository.findById(1L).get();
+        User user = userRepository.findById(1L)
+                .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_USER));
         PageRequest pageRequest = PageRequest.of(page, 6);
         return responseService.getDataResponse(userService.getMatchingProduct(user, pageRequest),RESPONSE_SUCCESS);
     }

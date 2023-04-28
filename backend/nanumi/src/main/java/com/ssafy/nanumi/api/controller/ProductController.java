@@ -8,6 +8,8 @@ import com.ssafy.nanumi.api.service.ProductService;
 import com.ssafy.nanumi.config.response.CustomDataResponse;
 import com.ssafy.nanumi.config.response.CustomResponse;
 import com.ssafy.nanumi.config.response.ResponseService;
+import com.ssafy.nanumi.config.response.exception.CustomException;
+import com.ssafy.nanumi.config.response.exception.CustomExceptionStatus;
 import com.ssafy.nanumi.db.entity.User;
 import com.ssafy.nanumi.db.repository.UserRepository;
 import lombok.AllArgsConstructor;
@@ -30,7 +32,8 @@ public class ProductController {
     /* 상품 전체 조회 */
     @GetMapping("")
     public CustomDataResponse<Page<ProductAllDTO>> getProductAll(@RequestParam("page") Integer page){
-        User user = userRepository.findById(1L).get();
+        User user = userRepository.findById(1L)
+                .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_USER));
         PageRequest pageRequest = PageRequest.of(page, 6);
         return responseService.getDataResponse(productService.findProductAll(user, pageRequest), RESPONSE_SUCCESS);
     }
@@ -42,14 +45,16 @@ public class ProductController {
     /* 카테고리별 조회 */
     @GetMapping("/categories/{category_id}")
     public CustomDataResponse<Page<ProductAllDTO>> getCateProductAll(@PathVariable("category_id") Long categoryId, @RequestParam("page") Integer page){
-        User user = userRepository.findById(1L).get();
+        User user = userRepository.findById(1L)
+                .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_USER));
         PageRequest pageRequest = PageRequest.of(page, 6);
         return responseService.getDataResponse(productService.findCateProductAll(categoryId, user, pageRequest), RESPONSE_SUCCESS);
     }
     /* 상품 등록 */
     @PostMapping("")
     public CustomResponse createProduct(@RequestBody ProductInsertDTO request) {
-        User user = userRepository.findById(1L).get();
+        User user = userRepository.findById(1L)
+                .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_USER));
         productService.createProduct(request, user);
         return responseService.getSuccessResponse();
     }
@@ -68,7 +73,8 @@ public class ProductController {
     /* 상품 신청 - 매칭 */
     @GetMapping("/application/{product_id}")
     public CustomDataResponse<MatchSuccessDto> applicationProduct(@PathVariable("product_id") Long id) {
-        User user = userRepository.findById(1L).get();
+        User user = userRepository.findById(1L)
+                .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_USER));
         return responseService.getDataResponse(productService.applicationProduct(id, user),RESPONSE_SUCCESS);
     }
 }
