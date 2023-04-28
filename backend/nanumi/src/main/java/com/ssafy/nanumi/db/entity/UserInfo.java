@@ -90,7 +90,13 @@ public class UserInfo {
         this.reportedTotalCount += 1;
         this.stopDate = banDate;
     }
+
     public void plusGiveCount(){
         this.giveCount += 1;
+    }
+
+    public void updateStar(int starPoint) {
+        this.starCount += 1;
+        this.starTotal += starPoint;
     }
 }
