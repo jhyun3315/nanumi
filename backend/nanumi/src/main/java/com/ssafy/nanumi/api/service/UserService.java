@@ -50,19 +50,24 @@ public class UserService {
                     .build();
 
             UserInfo userInfoSaved  = userInfoRepository.save(userInfo);
+            if(addressRepository.findById(userJoinDTO.getAddressCode()).isEmpty()){
+                throw new CustomException(NOT_FOUND_ADDRESS_CODE);
+            }else{
+                User user = User.builder()
+                        .email(userJoinDTO.getEmail())
+                        .nickname(userJoinDTO.getNickname())
+                        .password(passwordEncoder.encode(userJoinDTO.getPassword()))
+                        .profileUrl("url")
+                        .isDeleted(false)
+                        .loginProvider(loginProvider)
+                        .address(addressRepository.getById(userJoinDTO.getAddressCode()))
+                        .userInfo(userInfoSaved)
+                        .build();
 
-            User user = User.builder()
-                    .email(userJoinDTO.getEmail())
-                    .nickname(userJoinDTO.getNickname())
-                    .password(passwordEncoder.encode(userJoinDTO.getPassword()))
-                    .profileUrl("url")
-                    .isDeleted(false)
-                    .loginProvider(loginProvider)
-                    .address(null)
-                    .userInfo(userInfoSaved)
-                    .build();
+                userRepository.save(user);
+            }
 
-            userRepository.save(user);
+
         }
     }
 
