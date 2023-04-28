@@ -50,7 +50,7 @@ public class UserService {
                     .build();
 
             UserInfo userInfoSaved  = userInfoRepository.save(userInfo);
-            if(addressRepository.findById(userJoinDTO.getAddressCode()).isEmpty()){
+            if(addressRepository.findById(userJoinDTO.getAddress_id()).isEmpty()){
                 throw new CustomException(NOT_FOUND_ADDRESS_CODE);
             }else{
                 User user = User.builder()
@@ -60,7 +60,7 @@ public class UserService {
                         .profileUrl("url")
                         .isDeleted(false)
                         .loginProvider(loginProvider)
-                        .address(addressRepository.getById(userJoinDTO.getAddressCode()))
+                        .address(addressRepository.getById(userJoinDTO.getAddress_id()))
                         .userInfo(userInfoSaved)
                         .build();
 
