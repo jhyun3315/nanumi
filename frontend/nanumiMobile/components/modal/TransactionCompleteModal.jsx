@@ -62,6 +62,7 @@ const TransactionCompleteModal = () => {
         style={{
           alignItems: 'center',
           justifyContent: 'center',
+          marginRight: SIZES.large,
         }}>
         <Pressable
           style={[styles.badgeButton, {backgroundColor: buttonColor}]}
@@ -213,7 +214,7 @@ const styles = StyleSheet.create({
   badgeContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-around',
+    justifyContent: 'center',
     width: '100%',
     flexWrap: 'wrap',
     marginBottom: SIZES.large,
