@@ -9,7 +9,6 @@ import {
   StyleSheet,
   Dimensions,
   Animated,
-  Text,
 } from 'react-native';
 import {SIZES, SHADOWS, assets, COLORS} from '../../constants';
 import {CircleButton, MoreButton, RectButton} from './../../ui/Button';
@@ -21,7 +20,7 @@ import {
   BottomSheetModalProvider,
   BottomSheetBackdrop,
 } from '@gorhom/bottom-sheet';
-import {ChatOptions} from '../chat/ChatOptions';
+import ProductOptions from './ProductOptions';
 
 const {width} = Dimensions.get('window');
 
@@ -91,7 +90,7 @@ const DetailHeader = ({data, navigation, handlePresentModalPress}) => {
 const ProductDetail = ({route, navigation}) => {
   const {data} = route.params;
   const bottomSheetModalRef = useRef(null);
-  const snapPoints = useMemo(() => ['25%'], []);
+  const snapPoints = useMemo(() => ['20%'], []);
   const handlePresentModalPress = useCallback(() => {
     bottomSheetModalRef.current?.present();
   });
@@ -148,7 +147,9 @@ const ProductDetail = ({route, navigation}) => {
             backdropComponent={renderBackDrop}
             animationConfigs={{
               duration: 200,
-            }}></BottomSheetModal>
+            }}>
+            <ProductOptions />
+          </BottomSheetModal>
         </SafeAreaView>
       </BottomSheetModalProvider>
     </GestureHandlerRootView>
