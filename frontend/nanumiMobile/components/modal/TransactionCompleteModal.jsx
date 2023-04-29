@@ -12,6 +12,7 @@ import {
   TextInput,
   TouchableWithoutFeedback,
   KeyboardAvoidingView,
+  ScrollView,
 } from 'react-native';
 import {COLORS, FONTS, SIZES, assets} from '../../constants';
 import {RectButton} from '../../ui/Button';
@@ -62,9 +63,10 @@ const TransactionCompleteModal = () => {
         style={{
           alignItems: 'center',
           justifyContent: 'center',
-          marginRight: SIZES.large,
+          marginHorizontal: SIZES.small,
         }}>
         <Pressable
+          key={grade.id}
           style={[styles.badgeButton, {backgroundColor: buttonColor}]}
           onPress={() => handleRate(grade.id)}>
           <Image source={grade.badge} style={styles.badgeImage} />
@@ -129,37 +131,41 @@ const TransactionCompleteModal = () => {
       <Pressable style={styles.modalContainer}>
         <TouchableWithoutFeedback onPress={event => event.stopPropagation()}>
           <KeyboardAvoidingView style={styles.modal}>
-            <View style={styles.transactionContainer}>
-              <Text style={styles.text}>거래평가</Text>
-            </View>
+            <ScrollView style={{width: width}}>
+              <View style={{alignItems: 'center'}}>
+                <View style={styles.transactionContainer}>
+                  <Text style={styles.text}>거래평가</Text>
+                </View>
 
-            <View style={styles.starsContainer}>{stars}</View>
-            <View style={styles.badgeContainer}>
-              {GRADE.map(grade => renderGradeButton(grade))}
-            </View>
-            <View style={styles.textAreaContainer}>
-              <TextInput
-                placeholder="내용을 입력해주세요"
-                placeholderTextColor={COLORS.primary}
-                multiline={true}
-                style={styles.textArea}
-              />
-            </View>
-            <View style={styles.buttonContainer}>
-              <RectButton
-                minWidth={120}
-                fontSize={FONTS.font}
-                handlePress={hideModal}>
-                완료
-              </RectButton>
-              <RectButton
-                minWidth={120}
-                fontSize={FONTS.font}
-                backgroundColor={COLORS.primary}
-                handlePress={hideModal}>
-                다음에 할게요
-              </RectButton>
-            </View>
+                <View style={styles.starsContainer}>{stars}</View>
+                <View style={styles.badgeContainer}>
+                  {GRADE.map(grade => renderGradeButton(grade))}
+                </View>
+                <View style={styles.textAreaContainer}>
+                  <TextInput
+                    placeholder="내용을 입력해주세요"
+                    placeholderTextColor={COLORS.primary}
+                    multiline={true}
+                    style={styles.textArea}
+                  />
+                </View>
+                <View style={styles.buttonContainer}>
+                  <RectButton
+                    minWidth={120}
+                    fontSize={FONTS.font}
+                    handlePress={hideModal}>
+                    완료
+                  </RectButton>
+                  <RectButton
+                    minWidth={120}
+                    fontSize={FONTS.font}
+                    backgroundColor={COLORS.primary}
+                    handlePress={hideModal}>
+                    다음에 할게요
+                  </RectButton>
+                </View>
+              </View>
+            </ScrollView>
           </KeyboardAvoidingView>
         </TouchableWithoutFeedback>
       </Pressable>
@@ -171,7 +177,7 @@ export default TransactionCompleteModal;
 const styles = StyleSheet.create({
   modalContainer: {
     flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.5)',
+    width: width,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -181,11 +187,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     borderRadius: SIZES.base,
     padding: SIZES.extraLarge,
-    position: 'absolute',
-    zIndex: 1,
-    top: '50%',
-    left: '50%',
-    transform: [{translateX: -0.5 * width}, {translateY: -0.5 * height}],
+    alignItems: 'center',
   },
   transactionContainer: {
     justifyContent: 'center',
@@ -215,7 +217,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    width: '100%',
+    width: width,
     flexWrap: 'wrap',
     marginBottom: SIZES.large,
   },
@@ -239,18 +241,18 @@ const styles = StyleSheet.create({
     fontSize: SIZES.font,
   },
   buttonContainer: {
+    width: width,
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
   },
   textAreaContainer: {
+    width: width / 1.1,
     backgroundColor: COLORS.white,
     borderWidth: 1,
     borderColor: COLORS.lightGray,
     borderRadius: SIZES.small,
-    width: '100%',
     height: height / 6.5,
-    justifyContent: 'flex-start',
     marginBottom: SIZES.base * 2,
   },
   textArea: {
