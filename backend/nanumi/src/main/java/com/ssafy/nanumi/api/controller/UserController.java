@@ -2,6 +2,7 @@ package com.ssafy.nanumi.api.controller;
 
 import com.ssafy.nanumi.api.request.AddressDTO;
 import com.ssafy.nanumi.api.request.UserJoinDTO;
+import com.ssafy.nanumi.api.request.UserUpdateDTO;
 import com.ssafy.nanumi.api.response.*;
 import com.ssafy.nanumi.api.service.UserService;
 import com.ssafy.nanumi.config.response.CustomDataResponse;
@@ -74,10 +75,10 @@ public class UserController {
 
     /* 회원 정보 수정 */
     @PatchMapping("/users")
-    public CustomResponse updateUser(@RequestBody UserJoinDTO userJoinDTO) {
+    public CustomResponse updateUser(@RequestBody UserUpdateDTO userUpdateDTO) {
         User user = userRepository.findById(1L)
                 .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_USER));
-        userService.updateUser(user, userJoinDTO);
+        userService.updateUser(user, userUpdateDTO);
         return responseService.getSuccessResponse();
     }
 
