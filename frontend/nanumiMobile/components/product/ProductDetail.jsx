@@ -21,6 +21,8 @@ import {
   BottomSheetBackdrop,
 } from '@gorhom/bottom-sheet';
 import ProductOptions from './ProductOptions';
+import GlobalModal from '../modal/GlobalModal';
+import {useModal} from '../../hooks/useModal';
 
 const {width} = Dimensions.get('window');
 
@@ -89,12 +91,26 @@ const DetailHeader = ({data, navigation, handlePresentModalPress}) => {
 
 const ProductDetail = ({route, navigation}) => {
   const {data} = route.params;
+  const {showModal} = useModal();
+
   const bottomSheetModalRef = useRef(null);
   const snapPoints = useMemo(() => ['20%'], []);
   const handlePresentModalPress = useCallback(() => {
     bottomSheetModalRef.current?.present();
   });
 
+  const handleCloseBottomModal = () => {
+    bottomSheetModalRef.current?.close();
+  };
+
+  const handleOpenProductDeleteModal = () => {
+    handleCloseBottomModal();
+    setTimeout(() => {
+      showModal({
+        modalType: 'ProductDeleteModal',
+      });
+    }, 300);
+  };
   const renderBackDrop = useCallback(props => {
     return (
       <BottomSheetBackdrop
@@ -148,8 +164,11 @@ const ProductDetail = ({route, navigation}) => {
             animationConfigs={{
               duration: 200,
             }}>
-            <ProductOptions />
+            <ProductOptions
+              handleOpenProductDeleteModal={handleOpenProductDeleteModal}
+            />
           </BottomSheetModal>
+          <GlobalModal />
         </SafeAreaView>
       </BottomSheetModalProvider>
     </GestureHandlerRootView>

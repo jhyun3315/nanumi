@@ -7,6 +7,7 @@ import TransactionCompleteModal from './TransactionCompleteModal';
 import MatchingUserModal from './MatchingUserModal';
 import LogoutModal from './LogoutModal';
 import WithdrawalModal from './WithdrawalModal';
+import ProductDeleteModal from './ProductDeleteModal';
 
 const MODAL_TYPES = {
   BlockUserModal: 'BlockUserModal',
@@ -15,6 +16,7 @@ const MODAL_TYPES = {
   MatchingUserModal: 'MatchingUserModal',
   LogoutModal: 'LogoutModal',
   WithdrawalModal: 'WithdrawalModal',
+  ProductDeleteModal: 'ProductDeleteModal',
 };
 
 const MODAL_COMPONENTS = {
@@ -24,6 +26,7 @@ const MODAL_COMPONENTS = {
   [MODAL_TYPES.MatchingUserModal]: MatchingUserModal,
   [MODAL_TYPES.LogoutModal]: LogoutModal,
   [MODAL_TYPES.WithdrawalModal]: WithdrawalModal,
+  [MODAL_TYPES.ProductDeleteModal]: ProductDeleteModal,
 };
 
 const GlobalModal = () => {
