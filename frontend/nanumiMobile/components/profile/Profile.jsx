@@ -10,11 +10,28 @@ import {
   Dimensions,
 } from 'react-native';
 import {COLORS, FONTS, SIZES, SHADOWS, assets} from '../../constants';
-import ProgressBar from './ProgressBar';
 import {RectButton} from '../../ui/Button';
+import {useModal} from '../../hooks/useModal';
+import ProgressBar from './ProgressBar';
+import GlobalModal from '../modal/GlobalModal';
+
 const {width} = Dimensions.get('window');
 
 const Profile = ({navigation}) => {
+  const {showModal} = useModal();
+
+  const handleOpenLogoutModal = () => {
+    showModal({
+      modalType: 'LogoutModal',
+    });
+  };
+
+  const handleOpenWithdrawalModal = () => {
+    showModal({
+      modalType: 'WithdrawalModal',
+    });
+  };
+
   return (
     <SafeAreaView
       style={{
@@ -22,6 +39,7 @@ const Profile = ({navigation}) => {
         backgroundColor: COLORS.white,
       }}>
       <ScrollView>
+        <GlobalModal />
         <View style={styles.profileContainer}>
           <View style={styles.profileImage}>
             <Image
@@ -125,12 +143,10 @@ const Profile = ({navigation}) => {
           onPress={() => navigation.navigate('BlockUser')}>
           <Text style={styles.text}>차단 사용자 관리</Text>
         </Pressable>
-        <Pressable
-          style={styles.list}
-          onPress={() => navigation.navigate('Login')}>
+        <Pressable style={styles.list} onPress={handleOpenLogoutModal}>
           <Text style={styles.text}>로그아웃</Text>
         </Pressable>
-        <Pressable style={styles.list}>
+        <Pressable style={styles.list} onPress={handleOpenWithdrawalModal}>
           <Text style={styles.text}>탈퇴하기</Text>
         </Pressable>
       </ScrollView>
