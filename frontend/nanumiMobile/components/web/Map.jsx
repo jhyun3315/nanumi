@@ -5,23 +5,40 @@ import {
   Dimensions,
   SafeAreaView,
   StyleSheet,
-  TextInput,
   View,
   Text,
+  Alert,
 } from 'react-native';
 import {Fallback} from '../../ui/Fallback';
 import {SIZES, SHADOWS, COLORS, FONTS} from '../../constants';
 import {BackHeader} from '../../ui/BackHeader';
 import {RectButton} from '../../ui/Button';
+import {requestSignup} from '../../api/user';
 
 const {width, height} = Dimensions.get('window');
-const Map = ({navigation}) => {
+const Map = ({navigation, userInfo}) => {
+  const {email, nickname, password} = userInfo;
+  console.log(userInfo);
   const {coordinate, code, addressName} = useLocationPermission();
 
   // 회원가입
-  const handlePress = () => {
-    navigation.navigate('BottomTabs');
+  const handlePress = async () => {
+    const data = {
+      email: email,
+      nickname: nickname,
+      password: password,
+      address_id: '4167033027',
+    };
+    console.log(data);
+
+    const response = await requestSignup(data);
+    if (response.code === 200) {
+      navigation.navigation('bottomTabs');
+    } else {
+      Alert.alert('회원가입에 실패했습니다');
+    }
   };
+
   // Suspense를 사용 못하므로 직접 구현
   if (!coordinate.latitude || !coordinate.longitude) return <Fallback />;
 
