@@ -10,6 +10,13 @@ import person02 from '../assets/images/person02.png';
 import person03 from '../assets/images/person03.png';
 import person04 from '../assets/images/person04.png';
 
+import fast from '../assets/icons/fast.png';
+import again from '../assets/icons/again.png';
+import good from '../assets/icons/good.png';
+import kindness from '../assets/icons/kindness.png';
+import manner from '../assets/icons/manner.png';
+import time from '../assets/icons/time.png';
+
 export default {
   badge,
   eth,
@@ -22,4 +29,11 @@ export default {
   person02,
   person03,
   person04,
+
+  fast,
+  again,
+  good,
+  kindness,
+  manner,
+  time,
 };

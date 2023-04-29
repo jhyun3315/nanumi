@@ -1,5 +1,12 @@
 import React from 'react';
-import {Modal, View, Dimensions, Text, Pressable} from 'react-native';
+import {
+  Modal,
+  View,
+  Dimensions,
+  Text,
+  Pressable,
+  TouchableWithoutFeedback,
+} from 'react-native';
 import {COLORS, FONTS, SIZES} from '../../constants';
 import {RectButton} from '../../ui/Button';
 import {useModal} from '../../hooks/useModal';
@@ -11,35 +18,37 @@ const ChatExitModal = () => {
   return (
     <Modal visible={true} transparent={true}>
       <Pressable style={styles.modalContainer} onPress={hideModal}>
-        <View style={styles.modal}>
-          <View style={styles.chatContainer}>
-            <Text style={styles.text}>채팅방 나가기</Text>
+        <TouchableWithoutFeedback onPress={event => event.stopPropagation()}>
+          <View style={styles.modal}>
+            <View style={styles.chatContainer}>
+              <Text style={styles.text}>채팅방 나가기</Text>
+            </View>
+            <Text style={styles.subText}>
+              채팅방을 나가면 채팅 목록 및 대화 내용이 삭제되고 복구할 수
+              없어요. 채팅방에서 나가시겠어요?
+            </Text>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-around',
+                alignItems: 'center',
+              }}>
+              <RectButton
+                minWidth={96}
+                fontSize={FONTS.font}
+                backgroundColor={COLORS.primary}
+                handlePress={hideModal}>
+                취소
+              </RectButton>
+              <RectButton
+                minWidth={96}
+                fontSize={FONTS.font}
+                handlePress={hideModal}>
+                네, 나갈래요
+              </RectButton>
+            </View>
           </View>
-          <Text style={styles.subText}>
-            채팅방을 나가면 채팅 목록 및 대화 내용이 삭제되고 복구할 수 없어요.
-            채팅방에서 나가시겠어요?
-          </Text>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-around',
-              alignItems: 'center',
-            }}>
-            <RectButton
-              minWidth={96}
-              fontSize={FONTS.font}
-              backgroundColor={COLORS.primary}
-              handlePress={hideModal}>
-              취소
-            </RectButton>
-            <RectButton
-              minWidth={96}
-              fontSize={FONTS.font}
-              handlePress={hideModal}>
-              네, 나갈래요
-            </RectButton>
-          </View>
-        </View>
+        </TouchableWithoutFeedback>
       </Pressable>
     </Modal>
   );

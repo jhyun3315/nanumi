@@ -1,5 +1,12 @@
 import React from 'react';
-import {Modal, View, Dimensions, Text, Pressable} from 'react-native';
+import {
+  Modal,
+  View,
+  Dimensions,
+  Text,
+  Pressable,
+  TouchableWithoutFeedback,
+} from 'react-native';
 import {COLORS, FONTS, SIZES} from '../../constants';
 import {RectButton} from '../../ui/Button';
 import {useModal} from '../../hooks/useModal';
@@ -11,35 +18,37 @@ const BlockUserModal = () => {
   return (
     <Modal visible={true} transparent={true}>
       <Pressable style={styles.modalContainer} onPress={hideModal}>
-        <View style={styles.modal}>
-          <View style={styles.blockContainer}>
-            <Text style={styles.text}>차단하기</Text>
+        <TouchableWithoutFeedback onPress={event => event.stopPropagation()}>
+          <View style={styles.modal}>
+            <View style={styles.blockContainer}>
+              <Text style={styles.text}>차단하기</Text>
+            </View>
+            <Text style={styles.subText}>
+              차단시 상대방과의 거래가 취소되고 서로의 게시글을 확인하거나
+              채팅을 할 수 없어요. 차단하실래요?
+            </Text>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-around',
+                alignItems: 'center',
+              }}>
+              <RectButton
+                minWidth={96}
+                fontSize={FONTS.font}
+                backgroundColor={COLORS.primary}
+                handlePress={hideModal}>
+                취소
+              </RectButton>
+              <RectButton
+                minWidth={96}
+                fontSize={FONTS.font}
+                handlePress={hideModal}>
+                차단하기
+              </RectButton>
+            </View>
           </View>
-          <Text style={styles.subText}>
-            차단시 상대방과의 거래가 취소되고 서로의 게시글을 확인하거나 채팅을
-            할 수 없어요. 차단하실래요?
-          </Text>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-around',
-              alignItems: 'center',
-            }}>
-            <RectButton
-              minWidth={96}
-              fontSize={FONTS.font}
-              backgroundColor={COLORS.primary}
-              handlePress={hideModal}>
-              취소
-            </RectButton>
-            <RectButton
-              minWidth={96}
-              fontSize={FONTS.font}
-              handlePress={hideModal}>
-              차단하기
-            </RectButton>
-          </View>
-        </View>
+        </TouchableWithoutFeedback>
       </Pressable>
     </Modal>
   );

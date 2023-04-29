@@ -32,32 +32,32 @@ const reviews = [
   },
 ];
 
-const Review = () => {
-  const renderReview = ({item}) => (
-    <View style={styles.reviewContainer}>
-      <View style={styles.profileContainer}>
-        <Image source={item.profileImage} style={styles.profileImage} />
-      </View>
-      <View style={styles.reviewContent}>
-        <Text style={styles.reviewText}>{item.content}</Text>
-        <View style={styles.starContainer}>
-          {[...Array(item.stars)].map((_, i) => (
-            <Icon
-              key={i}
-              name="star"
-              size={SIZES.large}
-              color={COLORS.yellow}
-              style={{marginRight: SIZES.small / 2}}
-            />
-          ))}
-        </View>
+const renderReview = ({item}) => (
+  <View style={styles.reviewContainer}>
+    <View style={styles.profileContainer}>
+      <Image source={item.profileImage} style={styles.profileImage} />
+    </View>
+    <View style={styles.reviewContent}>
+      <Text style={styles.reviewText}>{item.content}</Text>
+      <View style={styles.starContainer}>
+        {[...Array(item.stars)].map((_, i) => (
+          <Icon
+            key={i}
+            name="star"
+            size={SIZES.large}
+            color={COLORS.yellow}
+            style={{marginRight: SIZES.small / 2}}
+          />
+        ))}
       </View>
     </View>
-  );
+  </View>
+);
 
+const Review = ({navigation}) => {
   return (
     <SafeAreaView style={styles.container}>
-      <BackHeader>리뷰목록</BackHeader>
+      <BackHeader navigation={navigation}>리뷰목록</BackHeader>
       <FlatList
         data={reviews}
         renderItem={renderReview}

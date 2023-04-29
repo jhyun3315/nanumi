@@ -6,8 +6,14 @@ import {COLORS, SHADOWS, SIZES} from '../../constants';
 import {useRecoilValue} from 'recoil';
 import {RectButton} from '../../ui/Button';
 import {BackHeader} from '../../ui/BackHeader';
+import GlobalModal from '../modal/GlobalModal';
+import {useModal} from '../../hooks/useModal';
 
-const MatchingProductListItem = ({data, navigation}) => {
+const MatchingProductListItem = ({
+  data,
+  navigation,
+  handleOpenMatchingUserModal,
+}) => {
   return (
     <View
       style={{
@@ -32,7 +38,7 @@ const MatchingProductListItem = ({data, navigation}) => {
           <RectButton
             minWidth={64}
             fontSize={SIZES.font}
-            handlePress={() => navigation.navigate('MatchingUser')}>
+            handlePress={handleOpenMatchingUserModal}>
             매칭인원
           </RectButton>
         </View>
@@ -44,6 +50,13 @@ const MatchingProductListItem = ({data, navigation}) => {
 const MatchingProductList = ({navigation}) => {
   const data = useRecoilValue(productState);
 
+  const {showModal} = useModal();
+
+  const handleOpenMatchingUserModal = () => {
+    showModal({
+      modalType: 'MatchingUserModal',
+    });
+  };
   return (
     <View style={styles.container}>
       <BackHeader navigation={navigation}>매칭 상품</BackHeader>
@@ -51,13 +64,18 @@ const MatchingProductList = ({navigation}) => {
         <FlatList
           data={data}
           renderItem={({item}) => (
-            <MatchingProductListItem data={item} navigation={navigation} />
+            <MatchingProductListItem
+              data={item}
+              navigation={navigation}
+              handleOpenMatchingUserModal={handleOpenMatchingUserModal}
+            />
           )}
           keyExtractor={item => item.id.toString()}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.contentContainerStyle}
         />
       </View>
+      <GlobalModal />
       <View style={styles.backgroundWrapper}>
         <View style={styles.backgroundTop} />
         <View style={styles.backgroundBottom} />
