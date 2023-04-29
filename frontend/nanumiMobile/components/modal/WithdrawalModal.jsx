@@ -12,7 +12,7 @@ import {RectButton} from '../../ui/Button';
 import {useModal} from '../../hooks/useModal';
 const {width, height} = Dimensions.get('window');
 
-const LogoutModal = () => {
+const WithdrawalModal = () => {
   const {hideModal} = useModal();
 
   return (
@@ -20,10 +20,10 @@ const LogoutModal = () => {
       <Pressable style={styles.modalContainer} onPress={hideModal}>
         <TouchableWithoutFeedback onPress={event => event.stopPropagation()}>
           <View style={styles.modal}>
-            <View style={styles.logoutContainer}>
-              <Text style={styles.text}>로그아웃</Text>
+            <View style={styles.withdrawalContainer}>
+              <Text style={styles.text}>회원탈퇴</Text>
             </View>
-            <Text style={styles.subText}>정말 로그아웃 하시겠어요?</Text>
+            <Text style={styles.subText}>정말 탈퇴하시겠어요?</Text>
             <View
               style={{
                 flexDirection: 'row',
@@ -50,7 +50,7 @@ const LogoutModal = () => {
     </Modal>
   );
 };
-export default LogoutModal;
+export default WithdrawalModal;
 
 const styles = {
   closeIcon: {
@@ -81,7 +81,7 @@ const styles = {
     transform: [{translateX: -0.4 * width}, {translateY: -0.15 * height}],
     justifyContent: 'space-between',
   },
-  logoutContainer: {
+  withdrawalContainer: {
     justifyContent: 'center',
   },
   text: {

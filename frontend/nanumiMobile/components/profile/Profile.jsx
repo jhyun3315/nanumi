@@ -19,9 +19,16 @@ const {width} = Dimensions.get('window');
 
 const Profile = ({navigation}) => {
   const {showModal} = useModal();
+
   const handleOpenLogoutModal = () => {
     showModal({
       modalType: 'LogoutModal',
+    });
+  };
+
+  const handleOpenWithdrawalModal = () => {
+    showModal({
+      modalType: 'WithdrawalModal',
     });
   };
 
@@ -139,7 +146,7 @@ const Profile = ({navigation}) => {
         <Pressable style={styles.list} onPress={handleOpenLogoutModal}>
           <Text style={styles.text}>로그아웃</Text>
         </Pressable>
-        <Pressable style={styles.list}>
+        <Pressable style={styles.list} onPress={handleOpenWithdrawalModal}>
           <Text style={styles.text}>탈퇴하기</Text>
         </Pressable>
       </ScrollView>
