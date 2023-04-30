@@ -21,6 +21,7 @@ const Register = () => {
   const [isNextButtonDisable, setIsNextButtonDisable] = useState(true);
 
   const handleInputChange = (key, value) => {
+    console.log(userInfo);
     setUserInfo({
       ...userInfo,
       [key]: value,
@@ -54,12 +55,15 @@ const Register = () => {
   const checkEmailDuplicate = async email => {
     try {
       const response = await requestEmailDuplicateCheck(email);
+      console.log(email);
+      console.log(response);
       if (response.code === 200) {
         setValidCode(response.result.code);
       } else if (response.code === 400) {
         Alert.alert('이미 존재하는 이메일입니다.');
       }
-    } catch {
+    } catch (error) {
+      console.log(error);
       Alert.alert('이메일 인증에 문제가 발생했습니다.');
     }
   };

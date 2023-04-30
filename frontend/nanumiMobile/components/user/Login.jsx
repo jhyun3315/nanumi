@@ -20,18 +20,22 @@ const Login = () => {
     });
   };
 
-  const handleLogin = async () => {
-    const data = {
-      username: userInfo.username,
-      password: userInfo.password,
-    };
-    const response = await requestLogin(data);
-    if (response.status === 200) {
-      navigation.navigate('BottomTabs');
-    } else {
-      Alert.alert('아이디와 비밀번호를 다시 확인해주세요');
-    }
-  };
+  // console.log(userInfo);
+  // const handleLogin = async () => {
+  //   console.table(userInfo);
+  //   const data = {
+  //     username: userInfo.username,
+  //     password: userInfo.password,
+  //   };
+  //   const response = await requestLogin(data);
+  //   console.log('data', data);
+  //   console.log('response', response);
+  //   if (response.status === 200) {
+  //     navigation.navigate('BottomTabs');
+  //   } else {
+  //     Alert.alert('아이디와 비밀번호를 다시 확인해주세요');
+  //   }
+  // };
   return (
     <SafeAreaView>
       <View
@@ -90,7 +94,8 @@ const Login = () => {
 
             elevation: 5,
           }}
-          onPress={handleLogin}>
+          // onPress={handleLogin}
+          onPress={() => navigation.navigate('BottomTabs')}>
           <Text
             style={{
               fontFamily: FONTS.bold,
