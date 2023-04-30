@@ -54,10 +54,8 @@ const Register = () => {
   const checkEmailDuplicate = async email => {
     try {
       const response = await requestEmailDuplicateCheck(email);
-      console.log(response);
       if (response.code === 200) {
         setValidCode(response.result.code);
-        console.log(userInfo);
       } else if (response.code === 400) {
         Alert.alert('이미 존재하는 이메일입니다.');
       }
