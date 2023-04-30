@@ -15,21 +15,21 @@ import {showErrorAlert} from '../../ui/Alert';
 
 const Home = () => {
   const navigation = useNavigation();
-  // const data = useRecoilValue(productState);
+  const data = useRecoilValue(productState);
 
-  const {data, isLoading, error} = useQuery(
-    ['allProduct'],
-    requestGetAllProduct,
-  );
+  // const {data, isLoading, error} = useQuery(
+  //   ['allProduct'],
+  //   requestGetAllProduct,
+  // );
 
-  console.log('data', data);
-  console.log('isLoading', isLoading);
-  console.log('error', error);
+  // console.log('data', data);
+  // console.log('isLoading', isLoading);
+  // console.log('error', error);
 
-  if (isLoading) return <Fallback />;
-  if (error) {
-    showErrorAlert('데이터를 가져오는데 문제가생겼습니다.', navigation);
-  }
+  // if (isLoading) return <Fallback />;
+  // if (error) {
+  //   showErrorAlert('데이터를 가져오는데 문제가생겼습니다.', navigation);
+  // }
   return (
     <SafeAreaView style={styles.container}>
       <FocusedStatusBar background={COLORS.secondary} />

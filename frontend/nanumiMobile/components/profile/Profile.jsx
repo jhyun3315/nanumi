@@ -63,7 +63,9 @@ const Profile = ({navigation}) => {
             backgroundColor={COLORS.secondary}
             borderRadius={SIZES.base}
             {...SHADOWS.dark}
-            handlePress={() => {}}>
+            handlePress={() => {
+              navigation.navigate('ProfileUpdate');
+            }}>
             수정하기
           </RectButton>
         </View>

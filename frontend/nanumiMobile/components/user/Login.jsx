@@ -95,7 +95,7 @@ const Login = () => {
             elevation: 5,
           }}
           // onPress={handleLogin}
-          onPress={() => navigation.navigate('Home')}>
+          onPress={() => navigation.navigate('BottomTabs')}>
           <Text
             style={{
               fontFamily: FONTS.bold,

@@ -16,6 +16,8 @@ import ReportScreen from '../screens/ReportScreen';
 import LocationPickerScreen from '../screens/LocationPickerScreen';
 import ReviewScreen from '../screens/ReviewScreen';
 import HomeScreen from '../screens/HomeScreen';
+import BottomTabs from './BottomTabs';
+import ProfileUpdateScreen from '../screens/ProfileUpdateScreen';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
@@ -29,6 +31,7 @@ const StackNavigator = () => {
           headerShown: false,
         }}
         initialRouteName="Login">
+        <Stack.Screen name="BottomTabs" component={BottomTabs} />
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="Detail" component={ProductDetailScreen} />
         <Stack.Screen name="Search" component={SearchScreen} />
@@ -42,6 +45,7 @@ const StackNavigator = () => {
 
         <Stack.Screen name="DivideProduct" component={DivideProductScreen} />
         <Stack.Screen name="MapUpdate" component={MapUpdateScreen} />
+        <Stack.Screen name="ProfileUpdate" component={ProfileUpdateScreen} />
         <Stack.Screen
           name="MatchingProduct"
           component={MatchingProductScreen}
