@@ -13,18 +13,16 @@ import com.ssafy.nanumi.config.response.exception.CustomException;
 import com.ssafy.nanumi.config.response.exception.CustomExceptionStatus;
 import com.ssafy.nanumi.db.entity.User;
 import com.ssafy.nanumi.db.repository.UserRepository;
-import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.security.core.parameters.P;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 import static com.ssafy.nanumi.config.response.exception.CustomSuccessStatus.RESPONSE_SUCCESS;
 
 @RestController
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RequestMapping(value = "/products")
 public class ProductController {
     public final ProductService productService;
