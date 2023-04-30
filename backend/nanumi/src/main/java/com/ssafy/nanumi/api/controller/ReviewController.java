@@ -6,6 +6,7 @@ import com.ssafy.nanumi.config.response.CustomResponse;
 import com.ssafy.nanumi.config.response.ResponseService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,7 +23,15 @@ public class ReviewController {
     @PostMapping("/reviews")
     public CustomResponse saveUserReview(@RequestBody UserReviewDTO userReviewDTO) {
 
-        reviewService.saveUserReview(userReviewDTO);
+        // TODO : writerId는 JWT에서, receiverId는 products table에서, matchId는 Pathvariable에서
+
+        long writerId = 1L;
+        long matchId = 1L;
+
+        // 별점을 남겼을 경우에만 (후기를 남겼을 경우에만)
+        if (userReviewDTO.getStarPoint() != 0) {
+            reviewService.saveUserReview(userReviewDTO, writerId, matchId);
+        }
 
         return responseService.getSuccessResponse();
     }

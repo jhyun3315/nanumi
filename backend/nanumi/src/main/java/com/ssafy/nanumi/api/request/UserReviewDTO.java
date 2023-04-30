@@ -12,8 +12,6 @@ import java.util.List;
 @NoArgsConstructor
 public class UserReviewDTO {
 
-    private long writerId;
-    private long readerId;
     private int starPoint;
     private List<Integer> rating;
     private String content;

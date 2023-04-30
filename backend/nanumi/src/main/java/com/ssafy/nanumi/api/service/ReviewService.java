@@ -3,8 +3,12 @@ package com.ssafy.nanumi.api.service;
 import com.ssafy.nanumi.api.request.UserReviewDTO;
 import com.ssafy.nanumi.config.response.exception.CustomException;
 import com.ssafy.nanumi.config.response.exception.CustomExceptionStatus;
+import com.ssafy.nanumi.db.entity.Match;
+import com.ssafy.nanumi.db.entity.Review;
 import com.ssafy.nanumi.db.entity.User;
 import com.ssafy.nanumi.db.entity.UserInfo;
+import com.ssafy.nanumi.db.repository.MatchRepository;
+import com.ssafy.nanumi.db.repository.ReviewRepository;
 import com.ssafy.nanumi.db.repository.UserInfoRepository;
 import com.ssafy.nanumi.db.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,29 +26,57 @@ public class ReviewService {
 
     private final UserRepository userRepository;
     private final UserInfoRepository userInfoRepository;
+    private final ReviewRepository reviewRepository;
+    private final MatchRepository matchRepository;
 
     /* 거래한 상대방 평가 */
-    public void saveUserReview(UserReviewDTO userReviewDTO) {
+    public void saveUserReview(UserReviewDTO userReviewDTO, long writerId, long matchId) {
 
         // TODO : rating 계산로직 수정
+        // TODO : writerId는 JWT에서, receiverId는 products table에서, matchId는 Pathvariable에서
 
-        User user = userRepository.findById(userReviewDTO.getReaderId())
+        // 리뷰 작성자 유저 검증
+        User writer = userRepository.findById(writerId)
                 .orElseThrow(() -> new CustomException(NOT_FOUND_USER));
 
-        UserInfo userInfo = userInfoRepository.findById(user.getUserInfo().getId())
-                .orElseThrow(() -> new CustomException(NOT_FOUND_USER_INFO));
+        Match match = matchRepository.findById(matchId)
+                .orElseThrow(() -> new CustomException(REQUEST_ERROR)); // 예외처리 필요
 
+        // Product 테이블에서 나누미(리뷰 대상자) id 조회 (query 테스트 필요)
+        long receiverId = reviewRepository.findReceiverIdByMatchId(match.getId())
+                .orElseThrow(() -> new CustomException(REQUEST_ERROR)); // 예외처리 필요
+
+        // 리뷰 대상자 유저 검증
+        User receiver = userRepository.findById(receiverId)
+                .orElseThrow(() -> new CustomException(NOT_FOUND_USER));
+
+        // rating 계산 로직
         List<Integer> rating = userReviewDTO.getRating();
         int totalRating = 0;
         for (int r : rating) {
-            totalRating += r; // 수정해야함
+            totalRating += r * 10; // 수정해야함
         }
 
-        
+        // 리뷰 저장, starPoint가 0이 아닐때만 저장해야하나?
+        Review review = Review.builder()
+                .writer(writer)
+                .receiver(receiver)
+                .match(match)
+                .starPoint(userReviewDTO.getStarPoint())
+                .rating(totalRating)
+                .content(userReviewDTO.getContent())
+                .build();
 
-        int starPoint = userReviewDTO.getStarPoint();
-        if (starPoint != 0) { // 별점을 남겼을 경우에만 업데이트
-            userInfo.updateStar(userReviewDTO.getStarPoint());
-        }
+        reviewRepository.save(review);
+
+        // 리뷰 대상자 유저 정보 조회
+        UserInfo receiverInfo = userInfoRepository.findById(receiver.getUserInfo().getId())
+                .orElseThrow(() -> new CustomException(NOT_FOUND_USER_INFO));
+
+        // 리뷰 대상자 유저 별점, 평가 정보 업데이트
+        receiverInfo.updateStar(userReviewDTO.getStarPoint());
+        receiverInfo.updateRating(totalRating);
+
+        // 온도 계산
     }
 }
