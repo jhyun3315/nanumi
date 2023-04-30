@@ -20,12 +20,16 @@ const Login = () => {
     });
   };
 
+  console.log(userInfo);
   const handleLogin = async () => {
+    console.table(userInfo);
     const data = {
       username: userInfo.username,
       password: userInfo.password,
     };
     const response = await requestLogin(data);
+    console.log('data', data);
+    console.log('response', response);
     if (response.status === 200) {
       navigation.navigate('BottomTabs');
     } else {
