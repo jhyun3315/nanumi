@@ -2,9 +2,11 @@ package com.ssafy.nanumi.db.entity;
 
 import com.ssafy.nanumi.config.entity.BaseTimeEntity;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Entity
@@ -24,14 +26,18 @@ public class User extends BaseTimeEntity {
     @Column(name="nickname", columnDefinition="VARCHAR(20)", nullable = false)
     private String nickname;
 
-    @Column(name="profile_url", columnDefinition="VARCHAR(150)", nullable = false)
+    @Column(name="profile_url", columnDefinition="VARCHAR(150)")
     private String profileUrl;
 
     @Column(name ="password", columnDefinition = "VARCHAR(64)", nullable = false)
     private String password;
 
+    @ColumnDefault("0")
     @Column(name="is_deleted", columnDefinition = "TINYINT", nullable = false)
     private boolean isDeleted;
+
+    @Column(name="roles", columnDefinition = "VARCHAR(50)", nullable=false)
+    private String roles;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="address_id")
@@ -69,5 +75,16 @@ public class User extends BaseTimeEntity {
 
     public void updateAddress(Address address){
         this.address = address;
+    }
+    public void updateUserInfo(String nickname, String profileUrl){
+        this.profileUrl = profileUrl;
+        this.nickname = nickname;
+    }
+
+    public List<String> getRoleList(){
+        if(this.roles.length() > 0){
+            return Arrays.asList(this.roles.split(","));
+        }
+        return new ArrayList<>();
     }
 }

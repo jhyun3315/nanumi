@@ -10,15 +10,13 @@ public class UserJoinDTO {
     private String email;
     private String nickname;
     private String password;
-    private String profileImage;
-    private long addressCode;
+    private long address_id;
 
     @Builder
-    public UserJoinDTO(String email, String nickname, String password, String profileImage,long addressCode) {
+    public UserJoinDTO(String email, String nickname, String password, long address_id) {
         this.email = email;
         this.nickname = nickname;
         this.password = password;
-        this.profileImage = profileImage;
-        this.addressCode = addressCode;
+        this.address_id = address_id;
     }
 }

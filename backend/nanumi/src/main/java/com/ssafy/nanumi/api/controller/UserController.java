@@ -2,6 +2,7 @@ package com.ssafy.nanumi.api.controller;
 
 import com.ssafy.nanumi.api.request.AddressDTO;
 import com.ssafy.nanumi.api.request.UserJoinDTO;
+import com.ssafy.nanumi.api.request.UserUpdateDTO;
 import com.ssafy.nanumi.api.response.*;
 import com.ssafy.nanumi.api.service.UserService;
 import com.ssafy.nanumi.config.response.CustomDataResponse;
@@ -9,12 +10,14 @@ import com.ssafy.nanumi.config.response.CustomResponse;
 import com.ssafy.nanumi.config.response.ResponseService;
 import com.ssafy.nanumi.config.response.exception.CustomException;
 import com.ssafy.nanumi.config.response.exception.CustomExceptionStatus;
+
 import com.ssafy.nanumi.db.entity.User;
 import com.ssafy.nanumi.db.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
@@ -31,11 +34,16 @@ public class UserController {
     private final UserService userService;
     private final UserRepository userRepository;
     private final ResponseService responseService;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     /* 로컬 회원가입 */
     @PostMapping("/users/join")
-    public CustomResponse join(@RequestBody UserJoinDTO userJoinDTO) {
-        userService.join(userJoinDTO);
+    @CrossOrigin(origins = "*")
+    public CustomResponse join(@RequestBody User user) {
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        user.setRoles("ROLE_USER");
+//        userService.join(userJoinDTO);
+        userRepository.save(user);
         return responseService.getSuccessResponse();
     }
 
@@ -74,10 +82,10 @@ public class UserController {
 
     /* 회원 정보 수정 */
     @PatchMapping("/users")
-    public CustomResponse updateUser(@RequestBody UserJoinDTO userJoinDTO) {
+    public CustomResponse updateUser(@RequestBody UserUpdateDTO userUpdateDTO) {
         User user = userRepository.findById(1L)
                 .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_USER));
-        userService.updateUser(user, userJoinDTO);
+        userService.updateUser(user, userUpdateDTO);
         return responseService.getSuccessResponse();
     }
 

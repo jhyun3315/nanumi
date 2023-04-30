@@ -1,7 +1,9 @@
 package com.ssafy.nanumi.api.service;
 
 import com.ssafy.nanumi.api.request.UserJoinDTO;
+import com.ssafy.nanumi.api.request.UserUpdateDTO;
 import com.ssafy.nanumi.api.response.*;
+import com.ssafy.nanumi.common.Image;
 import com.ssafy.nanumi.common.provider.Provider;
 import com.ssafy.nanumi.config.response.exception.CustomException;
 import com.ssafy.nanumi.db.entity.Address;
@@ -50,17 +52,16 @@ public class UserService {
                     .build();
 
             UserInfo userInfoSaved  = userInfoRepository.save(userInfo);
-            if(addressRepository.findById(userJoinDTO.getAddressCode()).isEmpty()){
+            if(addressRepository.findById(userJoinDTO.getAddress_id()).isEmpty()){
                 throw new CustomException(NOT_FOUND_ADDRESS_CODE);
             }else{
                 User user = User.builder()
                         .email(userJoinDTO.getEmail())
                         .nickname(userJoinDTO.getNickname())
+                        .profileUrl(Image.DefaultImage.getValue())
                         .password(passwordEncoder.encode(userJoinDTO.getPassword()))
-                        .profileUrl("url")
-                        .isDeleted(false)
                         .loginProvider(loginProvider)
-                        .address(addressRepository.getById(userJoinDTO.getAddressCode()))
+                        .address(addressRepository.getById(userJoinDTO.getAddress_id()))
                         .userInfo(userInfoSaved)
                         .build();
 
@@ -134,9 +135,13 @@ public class UserService {
                 .build();
     }
 
-    public void updateUser(User user, UserJoinDTO userJoinDTO) {
-        user.setNickname(userJoinDTO.getNickname());
-        user.setProfileUrl(userJoinDTO.getProfileImage());
+    public void updateUser(User user, UserUpdateDTO userUpdateDTO) {
+        String userNickname = userUpdateDTO.getNickname();
+        String userProfile = userUpdateDTO.getProfileUrl();
+
+        if(userNickname.equals("")) userNickname = user.getNickname();
+        else if(userProfile.equals("")) userProfile = Image.DefaultImage.getValue();
+        user.updateUserInfo(userNickname, userProfile);
     }
     public void deleteUser(User user){
         user.delete();
