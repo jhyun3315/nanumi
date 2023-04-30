@@ -4,6 +4,7 @@ import com.ssafy.nanumi.api.request.ProductInsertDTO;
 import com.ssafy.nanumi.api.response.MatchSuccessDto;
 import com.ssafy.nanumi.api.response.ProductAllDTO;
 import com.ssafy.nanumi.api.response.ProductDetailDTO;
+import com.ssafy.nanumi.api.response.ProductSearchResDTO;
 import com.ssafy.nanumi.api.service.ProductService;
 import com.ssafy.nanumi.config.response.CustomDataResponse;
 import com.ssafy.nanumi.config.response.CustomResponse;
@@ -15,6 +16,7 @@ import com.ssafy.nanumi.db.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,6 +30,15 @@ public class ProductController {
     public final ProductService productService;
     public final UserRepository userRepository;
     private final ResponseService responseService;
+
+    @GetMapping("/search")
+    public CustomDataResponse<ProductSearchResDTO> search(@RequestParam ("name") String name, @RequestParam("page")int page){
+        User user = userRepository.findById(1L)
+                .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_USER));
+        PageRequest pageRequest = PageRequest.of(page, 6);
+        ProductSearchResDTO productSearchResDTO = productService.searchProductByWords(user, name, pageRequest);
+        return responseService.getDataResponse(productSearchResDTO, RESPONSE_SUCCESS);
+    }
 
     /* 상품 전체 조회 */
     @GetMapping("")
