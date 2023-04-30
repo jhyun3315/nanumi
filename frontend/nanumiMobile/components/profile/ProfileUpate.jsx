@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
   nickname: {
     fontFamily: FONTS.bold,
     fontSize: SIZES.font,
-    borderWidth: 1,
+    borderBottomWidth: 1,
     width: '75%',
     borderColor: COLORS.gray,
     padding: 0,
