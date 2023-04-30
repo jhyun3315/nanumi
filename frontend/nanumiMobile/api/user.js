@@ -11,3 +11,8 @@ export const requestSignup = async data => {
   const response = await axios.post(`${API_END_POINT}/users/join`, data);
   return response.data;
 };
+
+export const requestLogin = async data => {
+  const response = await axios.post(`${API_END_POINT}/login`, data);
+  return response;
+};

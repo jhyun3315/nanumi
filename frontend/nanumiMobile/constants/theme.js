@@ -6,7 +6,7 @@ export const COLORS = {
   violet: '#8B5CF6',
   lightViolet: '#C4B5FD',
   disable: '#D1BEFB',
-  lightBlue: '#F1F4FF',
+  lightBlue: '#eff6ff',
   blue: '#1F41BB',
   lightGray: '#F0F0F0',
   red: '#F87171',

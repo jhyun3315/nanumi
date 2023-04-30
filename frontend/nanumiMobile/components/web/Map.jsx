@@ -14,11 +14,11 @@ import {SIZES, SHADOWS, COLORS, FONTS} from '../../constants';
 import {BackHeader} from '../../ui/BackHeader';
 import {RectButton} from '../../ui/Button';
 import {requestSignup} from '../../api/user';
+import {showErrorAlert} from '../../ui/Alert';
 
 const {width, height} = Dimensions.get('window');
 const Map = ({navigation, userInfo}) => {
   const {email, nickname, password} = userInfo;
-  console.log(userInfo);
   const {coordinate, code, addressName} = useLocationPermission();
 
   // 회원가입
@@ -27,20 +27,20 @@ const Map = ({navigation, userInfo}) => {
       email: email,
       nickname: nickname,
       password: password,
-      address_id: '4167033027',
+      address_id: code,
     };
-    console.log(data);
 
     const response = await requestSignup(data);
     if (response.code === 200) {
-      navigation.navigation('bottomTabs');
+      navigation.navigate('Home');
     } else {
-      Alert.alert('회원가입에 실패했습니다');
+      showErrorAlert('회원가입에 실패했습니다.', navigation);
     }
   };
 
   // Suspense를 사용 못하므로 직접 구현
-  if (!coordinate.latitude || !coordinate.longitude) return <Fallback />;
+  if (!coordinate.latitude || !coordinate.longitude || !code)
+    return <Fallback />;
 
   return (
     <SafeAreaView style={styles.container}>

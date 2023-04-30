@@ -1,14 +1,15 @@
 import React, {useState} from 'react';
-import {Text, SafeAreaView, View, Pressable, Image} from 'react-native';
+import {Text, SafeAreaView, View, Pressable, Image, Alert} from 'react-native';
 import {COLORS, SIZES, FONTS} from '../../constants';
 import {useNavigation} from '@react-navigation/native';
 import UserTextInput from './UserTextInput';
+import {requestLogin} from '../../api/user';
 
 const Login = () => {
   const navigation = useNavigation();
 
   const [userInfo, setUserInfo] = useState({
-    email: '',
+    username: '',
     password: '',
   });
 
@@ -19,6 +20,18 @@ const Login = () => {
     });
   };
 
+  const handleLogin = async () => {
+    const data = {
+      username: userInfo.username,
+      password: userInfo.password,
+    };
+    const response = await requestLogin(data);
+    if (response.status === 200) {
+      navigation.navigate('BottomTabs');
+    } else {
+      Alert.alert('아이디와 비밀번호를 다시 확인해주세요');
+    }
+  };
   return (
     <SafeAreaView>
       <View
@@ -48,8 +61,8 @@ const Login = () => {
         </View>
         <View style={{marginVertical: SIZES.base * 3}}>
           <UserTextInput
-            placeholder="이메일"
-            onChangeText={value => handleInputChange('email', value)}
+            placeholder="닉네임"
+            onChangeText={value => handleInputChange('username', value)}
           />
           <UserTextInput
             placeholder="비밀번호"
@@ -77,7 +90,7 @@ const Login = () => {
 
             elevation: 5,
           }}
-          onPress={() => navigation.navigate('BottomTabs')}>
+          onPress={handleLogin}>
           <Text
             style={{
               fontFamily: FONTS.bold,

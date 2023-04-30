@@ -28,7 +28,16 @@ const Register = () => {
   };
 
   useEffect(() => {
-    console.log('isNEx', isNextButtonDisable);
+    setUserInfo({
+      email: '',
+      validCode: '',
+      nickname: '',
+      password: '',
+      confirmPassword: '',
+    });
+  }, []);
+
+  useEffect(() => {
     // 유효성 검사를 통해 다음 버튼 활성화 여부를 결정
     if (
       userInfo.validCode === validCode &&
@@ -76,7 +85,12 @@ const Register = () => {
         </View>
         <View style={{marginVertical: SIZES.base * 3}}>
           <View
-            style={{flexDirection: 'row', alignItems: 'center', width: '100%'}}>
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              width: '100%',
+              justifyContent: 'space-between',
+            }}>
             <UserTextInput
               placeholder="이메일"
               value={userInfo.email}
@@ -123,11 +137,11 @@ const Register = () => {
           style={{
             padding: SIZES.base * 2,
             backgroundColor: isNextButtonDisable
-              ? COLORS.disable
-              : COLORS.violet,
+              ? COLORS.lightBlue
+              : COLORS.blue,
             marginVertical: SIZES.base * 3,
             borderRadius: SIZES.base,
-            shadowColor: COLORS.blue,
+            shadowColor: COLORS.primary,
             shadowOffset: {
               width: 0,
               height: SIZES.base,
