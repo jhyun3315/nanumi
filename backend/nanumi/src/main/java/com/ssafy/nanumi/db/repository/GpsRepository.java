@@ -6,4 +6,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 public interface GpsRepository extends MongoRepository<GpsUser, String> {
     GpsUser findBySessionId(String sessionId);
+
+    void deleteBySessionId(String sessionId);
+
 }

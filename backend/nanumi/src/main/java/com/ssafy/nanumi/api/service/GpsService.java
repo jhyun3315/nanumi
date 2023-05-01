@@ -1,6 +1,7 @@
 package com.ssafy.nanumi.api.service;
 
 import com.ssafy.nanumi.common.SectorDTO;
+import com.ssafy.nanumi.db.entity.GpsUser;
 import com.ssafy.nanumi.db.repository.GpsRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,7 +14,7 @@ public class GpsService {
 
     // TODO 세션 아이디를 기반으로 사용자를 제거하는 메소드
     public void dropUser(String sessionId) {
-        gpsRepository.deleteUser(sessionId);
+        gpsRepository.deleteBySessionId(sessionId);
     }
 
 
@@ -35,18 +36,23 @@ public class GpsService {
     }
 
     // TODO 사용자가 위치를 변환할 때 사용하는 메서드
-    public void changeUserSector(String beforeLatitude, String beforeLongitude, String nowLatitude, String nowLongitude, String sessionId) {
-        SectorDTO dto = new SectorDTO();
-        dto.setBeforeLatitude(beforeLatitude);
-        dto.setBeforeLongitude(beforeLongitude);
-        dto.setNowLatitude(nowLatitude);
-        dto.setNowLongitude(nowLongitude);
+    public void changeUserSector(Double beforeLatitude, Double beforeLongitude, Double nowLatitude, Double nowLongitude, String sessionId) {
+        GpsUser gpsUser = gpsRepository.findBySessionId(sessionId);
 
-        // 사용자가 저장소에 없는 경우, 사용자를 추가
-        if (gpsRepository.getUser(sessionId) == null) {
-            gpsRepository.addUser(sessionId, dto);
-        } else {// 사용자가 저장소에 있는 경우, 사용자 정보를 업데이트`
-            gpsRepository.updateUser(sessionId, dto);
+        if (gpsUser == null) {
+            gpsUser = new GpsUser();
+            gpsUser.setSessionId(sessionId);
+            gpsUser.setBeforeLatitude(beforeLatitude);
+            gpsUser.setBeforeLongitude(beforeLongitude);
+            gpsUser.setNowLatitude(nowLatitude);
+            gpsUser.setNowLongitude(nowLongitude);
+            gpsRepository.save(gpsUser);
+        } else {
+            gpsUser.setBeforeLatitude(beforeLatitude);
+            gpsUser.setBeforeLongitude(beforeLongitude);
+            gpsUser.setNowLatitude(nowLatitude);
+            gpsUser.setNowLongitude(nowLongitude);
+            gpsRepository.save(gpsUser);
         }
     }
 }

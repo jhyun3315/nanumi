@@ -6,12 +6,12 @@ import lombok.Setter;
 @Getter
 @Setter
 public class SectorDTO {
-    private String BeforeLatitude;
+    private Double BeforeLatitude;
 
-    private String BeforeLongitude;
+    private Double BeforeLongitude;
 
-    private String nowLatitude;
-    private String nowLongitude;
+    private Double nowLatitude;
+    private Double nowLongitude;
 
     private String MatchingId;
 
