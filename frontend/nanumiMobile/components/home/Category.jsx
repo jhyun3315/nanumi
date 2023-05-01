@@ -9,29 +9,15 @@ import {
   Image,
   StyleSheet,
 } from 'react-native';
-import {COLORS, Data, SIZES} from '../../constants';
-import {productState} from '../../state/product';
-import {useRecoilState} from 'recoil';
+import {COLORS, SIZES} from '../../constants';
 import {BackHeader} from '../../ui/BackHeader';
 import {CATEGORIES} from '../../constants/theme';
-import {useInfiniteQuery} from '@tanstack/react-query';
-import {requestGetCategoryProduct} from '../../api/product';
-import {userState} from '../../state/user';
 
 const Category = () => {
   const navigation = useNavigation();
-  const [user] = useRecoilState(userState);
-  const [productList, setProductList] = useRecoilState(productState);
 
-  const handleCategoryClick = async categoryKey => {
-    const response = await requestGetCategoryProduct(
-      categoryKey,
-      user.userId,
-      categoryKey,
-    );
-    console.log(response.result.content);
-    setProductList(response.result.content);
-    navigation.goBack();
+  const handleCategoryClick = categoryKey => {
+    navigation.navigate('CategoryProduct', {categoryKey: categoryKey});
   };
 
   const renderCategory = ({item}) => (

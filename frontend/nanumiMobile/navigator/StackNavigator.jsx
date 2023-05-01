@@ -20,6 +20,7 @@ import BottomTabs from './BottomTabs';
 import ProfileUpdateScreen from '../screens/ProfileUpdateScreen';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import CategoryProductScreen from '../screens/CategoryProductScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -33,6 +34,10 @@ const StackNavigator = () => {
         initialRouteName="Login">
         <Stack.Screen name="BottomTabs" component={BottomTabs} />
         <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen
+          name="CategoryProduct"
+          component={CategoryProductScreen}
+        />
         <Stack.Screen name="Detail" component={ProductDetailScreen} />
         <Stack.Screen name="Search" component={SearchScreen} />
         <Stack.Screen name="Login" component={LoginScreen} />
