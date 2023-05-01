@@ -11,7 +11,6 @@ import com.ssafy.nanumi.db.entity.*;
 import com.ssafy.nanumi.db.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,22 +30,18 @@ public class ProductService {
     private final MatchRepository matchRepository;
     private final UserRepository userRepository;
 
-    public ProductSearchResDTO searchProductByWords(User user, String words, PageRequest pageRequest){
-        userRepository.findById(user.getId()).orElseThrow( () -> new CustomException(NOT_FOUND_USER));
+    public ProductSearchResDTO searchProductByWords(User user, String name, PageRequest pageRequest){
+        if(userRepository.findById(user.getId()).isEmpty()) throw new CustomException(NOT_FOUND_USER);
         long addressId = user.getAddress().getId();
 
         if(addressRepository.findById(addressId).isEmpty()) throw new CustomException(NOT_FOUND_ADDRESS_CODE);
         else{
-            Page<ProductAllDTO> pages = productRepository.searchAll(addressId, words, pageRequest);
-            ArrayList<ProductAllDTO> data = new ArrayList<>();
-            List<ProductAllDTO> products = pages.getContent();
+            Page<Product> pages = productRepository.searchAll(addressId, name, pageRequest);
+            List<ProductAllDTO> data = new ArrayList<>();
 
-            for(ProductAllDTO p : products){
-                System.out.println(p.getId());
-                data.add(p);
+            for(Product p : pages.getContent()){
+                data.add(new ProductAllDTO(p));
             }
-
-            System.out.println("됐냐ㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑ");
 
             ProductSearchResDTO productSearchResDTO = new ProductSearchResDTO(data, pages.getTotalPages(), pageRequest.getPageNumber());
             return productSearchResDTO;

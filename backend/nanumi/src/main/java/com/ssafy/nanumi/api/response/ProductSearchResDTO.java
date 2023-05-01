@@ -4,7 +4,6 @@ import com.ssafy.nanumi.db.entity.Product;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.domain.Page;
 
 import java.util.List;
 @Getter

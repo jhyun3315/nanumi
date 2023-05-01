@@ -24,6 +24,7 @@ import static com.ssafy.nanumi.config.response.exception.CustomSuccessStatus.RES
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "/products")
+@CrossOrigin(origins = {"http://localhost:3000", "https://k8b103.p.ssafy.io"})
 public class ProductController {
     public final ProductService productService;
     public final UserRepository userRepository;
