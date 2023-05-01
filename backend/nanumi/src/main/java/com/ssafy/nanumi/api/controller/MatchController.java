@@ -18,8 +18,8 @@ public class MatchController {
     private final MatchService matchService;
     private final ResponseService responseService;
 
-    @GetMapping("/matches/{product_id}")
-    public CustomDataResponse getMatchList(@PathVariable("product_id") long match_id){
-        return responseService.getDataResponse(matchService.getMatchList(match_id),RESPONSE_SUCCESS);
+    @GetMapping("/matches/{product-id}/{user-id}")
+    public CustomDataResponse getMatchList(@PathVariable("product-id") long productId, @PathVariable("user-id") long userId){
+        return responseService.getDataResponse(matchService.getMatchList(productId, userId),RESPONSE_SUCCESS);
     }
 }
