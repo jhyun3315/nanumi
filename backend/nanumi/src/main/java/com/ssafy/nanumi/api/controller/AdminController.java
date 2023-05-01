@@ -52,12 +52,12 @@ public class AdminController {
     }
 
     /* 사용자 신고 */
-    @PostMapping("/reports")
-    public CustomResponse reportUser(@RequestBody ReportUserDTO reportUserDTO) {
+    @PostMapping("/reports/{user-id}")
+    public CustomResponse reportUser(@PathVariable("user-id") long userId, @RequestBody ReportUserDTO reportUserDTO) {
 
         // TODO : OAuth에서 userId(reporterId) 받아와야 함.
 
-        long reporterId = 2L;
+        long reporterId = userId;
 
         adminService.reportUser(reporterId, reportUserDTO);
 

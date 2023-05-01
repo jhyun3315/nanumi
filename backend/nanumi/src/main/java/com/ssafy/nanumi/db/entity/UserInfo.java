@@ -32,8 +32,12 @@ public class UserInfo {
     private int starCount;
 
     @ColumnDefault("0")
-    @Column(name = "rating", columnDefinition = "DOUBLE", nullable = false)
-    private double rating;
+    @Column(name = "rating_total", columnDefinition = "INT", nullable = false)
+    private int ratingTotal;
+
+    @ColumnDefault("0")
+    @Column(name = "rating_count", columnDefinition = "INT", nullable = false)
+    private int ratingCount;
 
     @ColumnDefault("'브론즈'")
     @Column(name = "tier", columnDefinition = "VARCHAR(20)")
@@ -70,11 +74,12 @@ public class UserInfo {
     private User user;
 
     @Builder
-    public UserInfo(long id, int starTotal, int starCount, double rating, String tier, double temperature, long visitCount, int giveCount, int givenCount, int reportedTotalCount, LocalDateTime stopDate, String refreshToken, User user) {
+    public UserInfo(long id, int starTotal, int starCount, int ratingTotal, int ratingCount, String tier, double temperature, long visitCount, int giveCount, int givenCount, int reportedTotalCount, LocalDateTime stopDate, String refreshToken, User user) {
         this.id = id;
         this.starTotal = starTotal;
         this.starCount = starCount;
-        this.rating = rating;
+        this.ratingTotal = ratingTotal;
+        this.ratingCount = ratingCount;
         this.tier = tier;
         this.temperature = temperature;
         this.visitCount = visitCount;
@@ -90,7 +95,18 @@ public class UserInfo {
         this.reportedTotalCount += 1;
         this.stopDate = banDate;
     }
+
     public void plusGiveCount(){
         this.giveCount += 1;
+    }
+
+    public void updateStar(int starPoint) {
+        this.starCount += 1;
+        this.starTotal += starPoint;
+    }
+
+    public void updateRating(int ratingCount) {
+        this.ratingCount += 1;
+        this.ratingTotal += ratingCount;
     }
 }

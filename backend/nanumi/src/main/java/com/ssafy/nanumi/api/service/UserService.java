@@ -131,7 +131,7 @@ public class UserService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(NOT_FOUND_USER));
 
-        UserInfo userInfo = userInfoRepository.findById(user.getId())
+        UserInfo userInfo = userInfoRepository.findById(user.getUserInfo().getId())
                 .orElseThrow(() -> new CustomException(NOT_FOUND_USER_INFO));
 
         int givingCount = productRepository.findGivingCount(userId)
