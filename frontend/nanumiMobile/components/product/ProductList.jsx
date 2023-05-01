@@ -10,11 +10,11 @@ import {requestGetAllProduct} from './../../api/product';
 import {Fallback} from '../../ui/Fallback';
 import {useRecoilState} from 'recoil';
 import {userState} from '../../state/user';
+import {productState} from '../../state/product';
 
 const ProductList = ({isSearch}) => {
   const [user] = useRecoilState(userState);
-
-  console.log(user);
+  const [productList, setProductList] = useRecoilState(productState);
   const {
     data,
     error,
@@ -28,10 +28,11 @@ const ProductList = ({isSearch}) => {
     {
       getNextPageParam: (lastPage, pages) => {
         if (
-          pages &&
-          pages.length > 0 &&
-          pages[pages.length - 1].result &&
-          pages[pages.length - 1].result.last
+          !lastPage?.result?.content?.length ||
+          (pages &&
+            pages.length > 0 &&
+            pages[pages.length - 1].result &&
+            pages[pages.length - 1].result.last)
         ) {
           return undefined;
         }
@@ -41,8 +42,25 @@ const ProductList = ({isSearch}) => {
   );
 
   const handleLoadMore = () => {
-    if (hasNextPage && !isFetchingNextPage) fetchNextPage();
+    if (!isLoading && hasNextPage) fetchNextPage();
   };
+
+  useEffect(() => {
+    setProductList(prev => ({
+      ...prev,
+      isFetchingNextPage: isFetchingNextPage,
+    }));
+  }, [isFetchingNextPage]);
+
+  useEffect(() => {
+    setProductList(prev => ({
+      ...prev,
+      data: data,
+      error: error,
+      isLoading: isLoading,
+      hasNextPage: hasNextPage,
+    }));
+  }, [data, error, isLoading, hasNextPage]);
 
   const content = data?.pages.flatMap(page => page.result.content) ?? [];
 

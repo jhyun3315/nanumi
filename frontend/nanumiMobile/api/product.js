@@ -14,3 +14,10 @@ export const requestGetDetailProduct = async productId => {
   );
   return response.data;
 };
+
+export const requestGetCategoryProduct = async (categoryId, userId, page) => {
+  const response = await axios.get(
+    `${API_END_POINT}/products/categories/${categoryId}/${userId}?page=${page}`,
+  );
+  return response.data;
+};
