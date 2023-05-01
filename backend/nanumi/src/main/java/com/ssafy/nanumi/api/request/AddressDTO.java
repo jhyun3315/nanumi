@@ -7,12 +7,10 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class AddressDTO {
-    private long address_id;
-    private long user_id;
+    private long addressId;
 
     @Builder
-    public AddressDTO(long address_id, long user_id) {
-        this.address_id = address_id;
-        this.user_id = user_id;
+    public AddressDTO(long addressId) {
+        this.addressId = addressId;
     }
 }
