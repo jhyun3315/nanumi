@@ -10,14 +10,12 @@ import com.ssafy.nanumi.config.response.CustomResponse;
 import com.ssafy.nanumi.config.response.ResponseService;
 import com.ssafy.nanumi.config.response.exception.CustomException;
 import com.ssafy.nanumi.config.response.exception.CustomExceptionStatus;
-
 import com.ssafy.nanumi.db.entity.User;
 import com.ssafy.nanumi.db.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
@@ -34,16 +32,11 @@ public class UserController {
     private final UserService userService;
     private final UserRepository userRepository;
     private final ResponseService responseService;
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     /* 로컬 회원가입 */
     @PostMapping("/users/join")
-    @CrossOrigin(origins = "*")
-    public CustomResponse join(@RequestBody User user) {
-        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        user.setRoles("ROLE_USER");
-//        userService.join(userJoinDTO);
-        userRepository.save(user);
+    public CustomResponse join(@RequestBody UserJoinDTO userJoinDTO) {
+        userService.join(userJoinDTO);
         return responseService.getSuccessResponse();
     }
 
