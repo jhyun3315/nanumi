@@ -20,9 +20,6 @@ public class Category {
     @Column(name="name", columnDefinition="VARCHAR(20)", nullable = false)
     private String name;
 
-    @Column(name="image_url", columnDefinition="VARCHAR(150)", nullable = false)
-    private String imageUrl;
-
     @OneToMany(mappedBy = "category")
     private List<Product>  products = new ArrayList<>();
 }

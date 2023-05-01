@@ -32,8 +32,8 @@ public class ProductService {
         return productRepository.findAllProduct(addressId, pageRequest);
     }
 
-    public ProductDetailDTO findByProductId(Long id) {
-        return productRepository.findById(id)
+    public ProductDetailDTO findByProductId(Long productId) {
+        return productRepository.findById(productId)
                 .map(ProductDetailDTO::new)
                 .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_PRODUCT));
     }
@@ -68,8 +68,8 @@ public class ProductService {
             productImageRepository.save(productImage);
         }
     }
-    public void updateProduct(ProductInsertDTO request, Long id) {
-        Product product = productRepository.findById(id)
+    public void updateProduct(ProductInsertDTO request, Long productId) {
+        Product product = productRepository.findById(productId)
                 .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_PRODUCT));
         Category category = categoryRepository.findById(request.getCategoryId())
                 .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_CATEGORY));
@@ -77,13 +77,13 @@ public class ProductService {
         product.setContent(request.getContent());
         product.setCategory(category);
     }
-    public void deleteProduct(Long id){
-        Product product = productRepository.findById(id)
+    public void deleteProduct(Long productId){
+        Product product = productRepository.findById(productId)
                 .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_PRODUCT));
         product.delete();
     }
-    public MatchSuccessDto applicationProduct(Long id, User user) {
-        Product product = productRepository.findById(id)
+    public MatchSuccessDto applicationProduct(Long productId, User user) {
+        Product product = productRepository.findById(productId)
                 .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_PRODUCT));
         if ((long) product.getMatches().size() < 3){
             Match match = Match.builder()

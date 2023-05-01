@@ -121,8 +121,7 @@ public class UserService {
                 throw new CustomException(NOT_FOUND_ADDRESS_CODE);
             }else{
                 Address address = addressRepository.getById(addressCode);
-                String addressName = address.getSi()+" "+address.getGuGun()+" "+address.getDong();
-                return new AddressResDTO(address.getId(), addressName);
+                return new AddressResDTO(address);
             }
 
         }
