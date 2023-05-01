@@ -14,8 +14,8 @@ export const requestSignup = async data => {
 
 export const requestLogin = async data => {
   try {
-    const response = await axios.post(`${API_END_POINT}/login`, data);
-    return response;
+    const response = await axios.post(`${API_END_POINT}/users/login`, data);
+    return response.data;
   } catch (error) {
     console.log('catch', error);
   }

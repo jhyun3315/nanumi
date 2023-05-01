@@ -8,8 +8,12 @@ import {View, FlatList, StyleSheet} from 'react-native';
 import {useInfiniteQuery} from '@tanstack/react-query';
 import {requestGetAllProduct} from './../../api/product';
 import {Fallback} from '../../ui/Fallback';
+import {useRecoilState} from 'recoil';
+import {userState} from '../../state/user';
 
 const ProductList = ({isSearch}) => {
+  const [user] = useRecoilState(userState);
+
   const {
     data,
     error,
@@ -20,7 +24,7 @@ const ProductList = ({isSearch}) => {
     refetch,
   } = useInfiniteQuery(
     ['products'],
-    ({pageParam = 0}) => requestGetAllProduct(pageParam),
+    ({pageParam = 0}) => requestGetAllProduct(pageParam, user.userId),
     {
       getNextPageParam: (lastPage, pages) => {
         if (
@@ -44,11 +48,8 @@ const ProductList = ({isSearch}) => {
 
   if (error) return <ErrorModal handlePress={fetchNextPage} />;
   if (isLoading) return <Fallback />;
-  if (content.length === 0) return <EmptyState />;
+  if (!data?.pages?.content) return <EmptyState />;
 
-  useEffect(() => {
-    refetch();
-  }, []);
   return (
     <View style={styles.container}>
       <View style={styles.flatListWrapper}>

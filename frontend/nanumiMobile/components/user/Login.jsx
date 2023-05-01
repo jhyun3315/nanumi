@@ -2,12 +2,15 @@ import React, {useState} from 'react';
 import {Text, SafeAreaView, View, Pressable, Image, Alert} from 'react-native';
 import {COLORS, SIZES, FONTS} from '../../constants';
 import {useNavigation} from '@react-navigation/native';
-import UserTextInput from './UserTextInput';
 import {requestLogin} from '../../api/user';
+import {useSetRecoilState} from 'recoil';
+import {userState} from '../../state/user';
+import UserTextInput from './UserTextInput';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Login = () => {
   const navigation = useNavigation();
-
+  const setUser = useSetRecoilState(userState);
   const [userInfo, setUserInfo] = useState({
     username: '',
     password: '',
@@ -22,18 +25,20 @@ const Login = () => {
 
   console.log(userInfo);
   const handleLogin = async () => {
-    console.table(userInfo);
     const data = {
-      username: userInfo.username,
+      id: userInfo.username,
       password: userInfo.password,
     };
     const response = await requestLogin(data);
     console.log('data', data);
     console.log('response', response);
-    if (response.status === 200) {
+    if (response.code === 200) {
+      // 로그인에 성공했을 경우
+      await AsyncStorage.setItem('user', JSON.stringify(response.result));
+      setUser(response.result);
       navigation.navigate('BottomTabs');
     } else {
-      Alert.alert('아이디와 비밀번호를 다시 확인해주세요');
+      Alert.alert(response.message);
     }
   };
   return (
@@ -65,7 +70,7 @@ const Login = () => {
         </View>
         <View style={{marginVertical: SIZES.base * 3}}>
           <UserTextInput
-            placeholder="닉네임"
+            placeholder="이메일"
             onChangeText={value => handleInputChange('username', value)}
           />
           <UserTextInput
@@ -94,10 +99,7 @@ const Login = () => {
 
             elevation: 5,
           }}
-          // onPress={handleLogin}
-          onPress={() => {
-            navigation.navigate('BottomTabs');
-          }}>
+          onPress={handleLogin}>
           <Text
             style={{
               fontFamily: FONTS.bold,
