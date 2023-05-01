@@ -49,6 +49,7 @@ public class UserController {
     @GetMapping("/users/check/{email}")
     public CustomDataResponse emailCheck(@PathVariable("email") String email) throws MessagingException, UnsupportedEncodingException {
         // 이메일 중복 처리, 인증 처리
+        System.out.println(email);
         EmailCheckResDTO emailCheckResDTO = userService.checkEmail(email);
         return responseService.getDataResponse(emailCheckResDTO, RESPONSE_SUCCESS);
     }
