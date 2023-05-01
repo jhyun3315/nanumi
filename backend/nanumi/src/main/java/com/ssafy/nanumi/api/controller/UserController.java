@@ -56,16 +56,16 @@ public class UserController {
     }
 
     /*사용자 장소 정보 등록 수정*/
-    @PatchMapping("/users/address")
-    public CustomResponse saveUserAddress(@RequestBody AddressDTO addressDTO){
-        userService.updateUserAddress(addressDTO.getAddress_id(),1L);
+    @PatchMapping("/users/address/{user-id}")
+    public CustomResponse saveUserAddress(@PathVariable("user-id")long userId, @RequestBody AddressDTO addressDTO){
+        userService.updateUserAddress(addressDTO.getAddressId(),userId);
         return responseService.getSuccessResponse();
     }
 
     /*사용자 주소 조회*/
-    @GetMapping("/users/address")
-    public CustomDataResponse findUserAddress(){
-       AddressResDTO addressResDTO =  userService.getUserAddress(1L);
+    @GetMapping("/users/address/{user-id}")
+    public CustomDataResponse findUserAddress(@PathVariable("user-id")long userId){
+       AddressResDTO addressResDTO =  userService.getUserAddress(userId);
        return responseService.getDataResponse(addressResDTO, RESPONSE_SUCCESS);
     }
 
