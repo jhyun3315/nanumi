@@ -4,30 +4,48 @@ import com.ssafy.nanumi.api.request.ProductInsertDTO;
 import com.ssafy.nanumi.api.response.MatchSuccessDto;
 import com.ssafy.nanumi.api.response.ProductAllDTO;
 import com.ssafy.nanumi.api.response.ProductDetailDTO;
+import com.ssafy.nanumi.api.response.ProductSearchResDTO;
 import com.ssafy.nanumi.config.response.exception.CustomException;
 import com.ssafy.nanumi.config.response.exception.CustomExceptionStatus;
 import com.ssafy.nanumi.db.entity.*;
-import com.ssafy.nanumi.db.repository.CategoryRepository;
-import com.ssafy.nanumi.db.repository.MatchRepository;
-import com.ssafy.nanumi.db.repository.ProductImageRepository;
-import com.ssafy.nanumi.db.repository.ProductRepository;
-import lombok.AllArgsConstructor;
+import com.ssafy.nanumi.db.repository.*;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import static com.ssafy.nanumi.config.response.exception.CustomExceptionStatus.*;
 
 @Service
 @Transactional
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ProductService {
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
+    private final AddressRepository addressRepository;
     private final ProductImageRepository productImageRepository;
     private final MatchRepository matchRepository;
+    private final UserRepository userRepository;
+
+    public ProductSearchResDTO searchProductByWords(long userId, String words, PageRequest pageRequest){
+        User user = userRepository.findById(userId).orElseThrow(() ->  new CustomException(NOT_FOUND_USER));
+        Address address = addressRepository.findById(user.getAddress().getId()).orElseThrow( () ->  new CustomException(NOT_FOUND_ADDRESS_CODE));
+
+        Page<Product> pages = productRepository.searchAll(address.getId(), words, pageRequest);
+        List<ProductAllDTO> data = new ArrayList<>();
+
+        for (Product p : pages.getContent()) {
+            data.add(new ProductAllDTO(p));
+        }
+
+        return new ProductSearchResDTO(data, pages.getTotalPages(), pageRequest.getPageNumber());
+    }
 
     public Page<ProductAllDTO> findProductAll(User user, PageRequest pageRequest) {
+        userRepository.findById(user.getId()).orElseThrow( () -> new CustomException(NOT_FOUND_USER));
         Long addressId = user.getAddress().getId();
         return productRepository.findAllProduct(addressId, pageRequest);
     }
