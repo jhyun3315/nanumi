@@ -13,6 +13,7 @@ public enum CustomExceptionStatus {
     NOT_MATCHED_PASSWORD(false, 400,"비밀번호가 올바르지 않습니다."),
     NOT_FOUND_LOGIN_PROVIDER(false, 404, "올바르지 않은 로그인 제공자 유형입니다."),
     NOT_FOUND_USER(false, 400, "해당 유저가 존재하지 않습니다."),
+    INVALID_USER(false, 400, "상품 작성자와 일치하지 않습니다."),
     NOT_FOUND_MATCH(false, 400, "해당 매칭이 존재하지 않습니다."),
     NOT_FOUND_ADDRESS_CODE(false, 400, "해당 주소가 존재하지 않습니다."),
     CAN_NOT_UPDATE_ADDRESS(false, 400, "해당 주소로 수정할수 없습니다."),
