@@ -1,22 +1,21 @@
 package com.ssafy.nanumi.api.response;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Builder;
+import com.ssafy.nanumi.db.entity.Address;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
 public class AddressResDTO {
-    @JsonProperty("address_id")
     private long addressId;
-    @JsonProperty("address_name")
-    private String addressName;
+    private String si;
+    private String gugun;
+    private String dong;
 
-    @Builder
-    public AddressResDTO(long addressId, String addressName) {
-        this.addressId = addressId;
-        this.addressName = addressName;
+    public AddressResDTO(Address address) {
+        this.addressId = address.getId();
+        this.si = address.getSi();
+        this.gugun = address.getGuGun();
+        this.dong = address.getDong();
     }
 }
