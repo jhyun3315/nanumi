@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 
 import {Alert, SafeAreaView, StyleSheet} from 'react-native';
 import {COLORS} from '../../constants';
@@ -16,7 +16,17 @@ import {showErrorAlert} from '../../ui/Alert';
 const Home = () => {
   const navigation = useNavigation();
   const data = useRecoilValue(productState);
+  const [product, setProduct] = useState();
+  const [page, setPage] = useState(0);
 
+  useEffect(() => {
+    const ttt = async () => {
+      const response = await requestGetAllProduct(page);
+      console.log('rep', response);
+    };
+
+    ttt();
+  });
   // const {data, isLoading, error} = useQuery(
   //   ['allProduct'],
   //   requestGetAllProduct,
