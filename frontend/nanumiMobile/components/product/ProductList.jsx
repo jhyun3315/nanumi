@@ -14,6 +14,7 @@ import {userState} from '../../state/user';
 const ProductList = ({isSearch}) => {
   const [user] = useRecoilState(userState);
 
+  console.log(user);
   const {
     data,
     error,
