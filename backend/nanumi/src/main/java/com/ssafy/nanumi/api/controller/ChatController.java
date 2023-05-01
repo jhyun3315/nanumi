@@ -49,8 +49,8 @@ public class ChatController {
         // 해당 채팅방의 최근 20개의 채팅 로그를 반환한다.
         return new ResponseEntity<>(chatService.GetChatLogLimit20(roomSeq), HttpStatus.OK);
     }
-    @GetMapping("/chat/end/{product_id}")
-    public CustomResponse endChat(@PathVariable("product_id") Long productId) {
+    @GetMapping("/chat/end/{product-id}")
+    public CustomResponse endChat(@PathVariable("product-id") Long productId) {
         return responseService.getDataResponse(chatService.chatEndMatch(productId),RESPONSE_SUCCESS);
     }
 }
