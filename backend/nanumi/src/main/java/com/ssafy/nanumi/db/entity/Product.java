@@ -57,6 +57,9 @@ public class Product extends BaseTimeEntity {
     public void close(){
         this.isClosed = true;
     }
+    public void matchedEnd() {
+        this.isMatched =true;
+    }
     @Builder
     public Product(long id, String name, String content, boolean isClosed, boolean isDeleted, Address address, User user, Category category) {
         this.id = id;
