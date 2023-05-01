@@ -52,7 +52,6 @@ public class UserService {
         }else{
             throw new CustomException(NOT_MATCHED_PASSWORD);
         }
-
     }
 
     public void join(UserJoinDTO userJoinDTO) {
@@ -71,7 +70,7 @@ public class UserService {
                     .build();
 
             UserInfo userInfoSaved  = userInfoRepository.save(userInfo);
-            if(addressRepository.findById(userJoinDTO.getAddress_id()).isEmpty()){
+            if(addressRepository.findById(userJoinDTO.getAddressId()).isEmpty()){
                 throw new CustomException(NOT_FOUND_ADDRESS_CODE);
             }else{
                 User user = User.builder()
@@ -80,7 +79,7 @@ public class UserService {
                         .profileUrl(Image.DefaultImage.getValue())
                         .password(passwordEncoder.encode(userJoinDTO.getPassword()))
                         .loginProvider(loginProvider)
-                        .address(addressRepository.getById(userJoinDTO.getAddress_id()))
+                        .address(addressRepository.getById(userJoinDTO.getAddressId()))
                         .userInfo(userInfoSaved)
                         .build();
 
