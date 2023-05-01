@@ -16,7 +16,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @NoArgsConstructor
 @Builder
 @Document(collection = "chatroom")
-
 public class ChatRoomEntity {
 
     @Transient

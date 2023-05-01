@@ -18,17 +18,20 @@ import java.util.List;
 public class ChatRoomController {
     private final ChatRoomService chatRoomService;
 
-
+    // TODO 채팅방 생성 메서드
     @PostMapping("room")
     public ResponseEntity<?> createRoom(@RequestBody CreateChatRoomDTO DTO) {
         return chatRoomService.CreateChatRoom(DTO);
     }
 
+    // TODO 모든 채팅방 찾기 메서드
     @GetMapping("findroom")
     public ResponseEntity<List<ChatRoomEntity>> findRoom() {
         return new ResponseEntity<>(chatRoomService.FindRoom(), HttpStatus.OK);
     }
 
+
+    // TODO 특정 사용자의 채팅방 찾기 메서드
     @GetMapping("findmyroom")
     public ResponseEntity<List<ChatRoomEntity>> findMyRoom(@RequestParam long user) {
         return new ResponseEntity<>(chatRoomService.FindMyChatRooms(user), HttpStatus.OK);

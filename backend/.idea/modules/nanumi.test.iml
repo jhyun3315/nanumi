@@ -28,7 +28,6 @@
       <sourceFolder url="file://$MODULE_DIR$/../../nanumi/src/test/java" isTestSource="true" />
     </content>
     <orderEntry type="inheritedJdk" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: com.sun.activation:jakarta.activation:1.2.2" level="project" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="nanumi.main" />
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-starter-security:2.7.10" level="project" />
@@ -36,8 +35,10 @@
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-starter-data-redis:2.7.10" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-starter-websocket:2.7.10" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-starter-web:2.7.10" level="project" />
+    <orderEntry type="library" name="Gradle: com.amazonaws:aws-java-sdk-s3:1.12.281" level="project" />
     <orderEntry type="library" name="Gradle: io.springfox:springfox-boot-starter:3.0.0" level="project" />
-    <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-starter-mail:2.7.10" level="project" />
+    <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-starter-mail:2.6.3" level="project" />
+    <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-starter-thymeleaf:2.7.10" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-starter-data-mongodb:2.7.10" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-starter-test:2.7.10" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.security:spring-security-test:5.7.7" level="project" />
@@ -60,6 +61,9 @@
     <orderEntry type="library" name="Gradle: org.springframework:spring-webmvc:5.3.26" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-starter-tomcat:2.7.10" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework:spring-web:5.3.26" level="project" />
+    <orderEntry type="library" name="Gradle: com.amazonaws:aws-java-sdk-kms:1.12.281" level="project" />
+    <orderEntry type="library" name="Gradle: com.amazonaws:aws-java-sdk-core:1.12.281" level="project" />
+    <orderEntry type="library" name="Gradle: com.amazonaws:jmespath-java:1.12.281" level="project" />
     <orderEntry type="library" name="Gradle: io.springfox:springfox-oas:3.0.0" level="project" />
     <orderEntry type="library" name="Gradle: io.springfox:springfox-data-rest:3.0.0" level="project" />
     <orderEntry type="library" name="Gradle: io.springfox:springfox-bean-validators:3.0.0" level="project" />
@@ -71,6 +75,8 @@
     <orderEntry type="library" name="Gradle: org.slf4j:slf4j-api:1.7.36" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework:spring-context-support:5.3.26" level="project" />
     <orderEntry type="library" name="Gradle: com.sun.mail:jakarta.mail:1.6.7" level="project" />
+    <orderEntry type="library" name="Gradle: org.thymeleaf:thymeleaf-spring5:3.0.15.RELEASE" level="project" />
+    <orderEntry type="library" name="Gradle: org.thymeleaf.extras:thymeleaf-extras-java8time:3.0.4.RELEASE" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.data:spring-data-mongodb:3.4.10" level="project" />
     <orderEntry type="library" name="Gradle: org.mongodb:mongodb-driver-sync:4.6.1" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-test-autoconfigure:2.7.10" level="project" />
@@ -120,6 +126,12 @@
     <orderEntry type="library" name="Gradle: org.apache.tomcat.embed:tomcat-embed-websocket:9.0.73" level="project" />
     <orderEntry type="library" name="Gradle: org.apache.tomcat.embed:tomcat-embed-core:9.0.73" level="project" />
     <orderEntry type="library" name="Gradle: org.apache.tomcat.embed:tomcat-embed-el:9.0.73" level="project" />
+    <orderEntry type="library" name="Gradle: com.fasterxml.jackson.dataformat:jackson-dataformat-cbor:2.13.5" level="project" />
+    <orderEntry type="library" name="Gradle: org.apache.httpcomponents:httpclient:4.5.14" level="project" />
+    <orderEntry type="library" name="Gradle: commons-logging:commons-logging:1.2" level="project" />
+    <orderEntry type="library" name="Gradle: commons-codec:commons-codec:1.15" level="project" />
+    <orderEntry type="library" name="Gradle: software.amazon.ion:ion-java:1.0.2" level="project" />
+    <orderEntry type="library" name="Gradle: joda-time:joda-time:2.8.1" level="project" />
     <orderEntry type="library" name="Gradle: io.springfox:springfox-swagger-common:3.0.0" level="project" />
     <orderEntry type="library" name="Gradle: io.springfox:springfox-spring-webmvc:3.0.0" level="project" />
     <orderEntry type="library" name="Gradle: io.springfox:springfox-spring-web:3.0.0" level="project" />
@@ -132,6 +144,7 @@
     <orderEntry type="library" name="Gradle: io.swagger:swagger-models:1.5.20" level="project" />
     <orderEntry type="library" name="Gradle: io.swagger:swagger-annotations:1.5.20" level="project" />
     <orderEntry type="library" name="Gradle: com.sun.activation:jakarta.activation:1.2.2" level="project" />
+    <orderEntry type="library" name="Gradle: org.thymeleaf:thymeleaf:3.0.15.RELEASE" level="project" />
     <orderEntry type="library" name="Gradle: org.mongodb:mongodb-driver-core:4.6.1" level="project" />
     <orderEntry type="library" name="Gradle: org.mongodb:bson:4.6.1" level="project" />
     <orderEntry type="library" name="Gradle: net.minidev:json-smart:2.4.10" level="project" />
@@ -154,7 +167,10 @@
     <orderEntry type="library" name="Gradle: org.reactivestreams:reactive-streams:1.0.4" level="project" />
     <orderEntry type="library" name="Gradle: com.fasterxml.jackson.core:jackson-annotations:2.13.5" level="project" />
     <orderEntry type="library" name="Gradle: com.fasterxml.jackson.core:jackson-core:2.13.5" level="project" />
+    <orderEntry type="library" name="Gradle: org.apache.httpcomponents:httpcore:4.4.16" level="project" />
     <orderEntry type="library" name="Gradle: io.github.classgraph:classgraph:4.8.83" level="project" />
+    <orderEntry type="library" name="Gradle: org.attoparser:attoparser:2.0.5.RELEASE" level="project" />
+    <orderEntry type="library" name="Gradle: org.unbescape:unbescape:1.1.6.RELEASE" level="project" />
     <orderEntry type="library" name="Gradle: net.minidev:accessors-smart:2.4.9" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: org.apiguardian:apiguardian-api:1.1.2" level="project" />
     <orderEntry type="library" name="Gradle: org.junit.platform:junit-platform-commons:1.8.2" level="project" />
@@ -169,7 +185,6 @@
     <orderEntry type="library" scope="RUNTIME" name="Gradle: org.objenesis:objenesis:3.2" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: org.mongodb:bson-record-codec:4.6.1" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: org.junit.platform:junit-platform-engine:1.8.2" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: mysql:mysql-connector-java:" level="project" />
   </component>
   <component name="TestModuleProperties" production-module="nanumi.main" />
 </module>
