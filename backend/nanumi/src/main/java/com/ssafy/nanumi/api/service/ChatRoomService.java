@@ -20,6 +20,7 @@ public class ChatRoomService {
     private final ChatRoomRepository chatRoomRepository;
     private final SimpMessageSendingOperations messageTemplate;
 
+    //TODO 채팅방 생성 메서드
     @Transactional
     public ResponseEntity<?> CreateChatRoom(CreateChatRoomDTO DTO) {
         long sendUser = DTO.getSendUser();
@@ -34,9 +35,12 @@ public class ChatRoomService {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    // TODO 모든 채팅방 찾기 메소드
     public List<ChatRoomEntity> FindRoom() {
         return chatRoomRepository.findAll();
     }
+
+    // TODO
     public List<ChatRoomEntity> FindMyChatRooms(long user) {
         return chatRoomRepository.findAllByUserListIn(user);
     }
