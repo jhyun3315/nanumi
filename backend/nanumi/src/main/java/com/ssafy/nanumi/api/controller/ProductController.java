@@ -17,8 +17,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 import static com.ssafy.nanumi.config.response.exception.CustomSuccessStatus.RESPONSE_SUCCESS;
 
 @RestController
@@ -30,51 +28,51 @@ public class ProductController {
     private final ResponseService responseService;
 
     /* 상품 전체 조회 */
-    @GetMapping("")
-    public CustomDataResponse<Page<ProductAllDTO>> getProductAll(@RequestParam("page") Integer page){
-        User user = userRepository.findById(1L)
+    @GetMapping("/{user-id}")
+    public CustomDataResponse<Page<ProductAllDTO>> getProductAll(@PathVariable("user-id") long userId, @RequestParam("page") Integer page){
+        User user = userRepository.findById(userId)
                 .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_USER));
         PageRequest pageRequest = PageRequest.of(page, 6);
         return responseService.getDataResponse(productService.findProductAll(user, pageRequest), RESPONSE_SUCCESS);
     }
     /* 상세 페이지 조회 */
-    @GetMapping("/{product_id}")
-    public CustomDataResponse<ProductDetailDTO> getProductOne(@PathVariable("product_id") Long id) {
-        return responseService.getDataResponse(productService.findByProductId(id), RESPONSE_SUCCESS);
+    @GetMapping("detail/{product-id}")
+    public CustomDataResponse<ProductDetailDTO> getProductOne(@PathVariable("product-id") long productId) {
+        return responseService.getDataResponse(productService.findByProductId(productId), RESPONSE_SUCCESS);
     }
     /* 카테고리별 조회 */
-    @GetMapping("/categories/{category_id}")
-    public CustomDataResponse<Page<ProductAllDTO>> getCateProductAll(@PathVariable("category_id") Long categoryId, @RequestParam("page") Integer page){
-        User user = userRepository.findById(1L)
+    @GetMapping("/categories/{category-id}/{user-id}")
+    public CustomDataResponse<Page<ProductAllDTO>> getCateProductAll(@PathVariable("user-id") long userId, @PathVariable("category-id") long categoryId, @RequestParam("page") Integer page){
+        User user = userRepository.findById(userId)
                 .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_USER));
         PageRequest pageRequest = PageRequest.of(page, 6);
         return responseService.getDataResponse(productService.findCateProductAll(categoryId, user, pageRequest), RESPONSE_SUCCESS);
     }
     /* 상품 등록 */
-    @PostMapping("")
-    public CustomResponse createProduct(@RequestBody ProductInsertDTO request) {
-        User user = userRepository.findById(1L)
+    @PostMapping("/{user-id}")
+    public CustomResponse createProduct(@PathVariable("user-id") long userId, @RequestBody ProductInsertDTO request) {
+        User user = userRepository.findById(userId)
                 .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_USER));
         productService.createProduct(request, user);
         return responseService.getSuccessResponse();
     }
     /* 상품 수정 */
-    @PatchMapping("/{product_id}")
-    public CustomResponse updateProduct(@PathVariable("product_id") Long id, @RequestBody ProductInsertDTO request) {
-        productService.updateProduct(request, id);
+    @PatchMapping("/{product-id}")
+    public CustomResponse updateProduct(@PathVariable("product-id") long productId, @RequestBody ProductInsertDTO request) {
+        productService.updateProduct(request, productId);
         return responseService.getSuccessResponse();
     }
     /* 상품 삭제 */
-    @DeleteMapping("/{product_id}")
-    public CustomResponse deleteProduct(@PathVariable("product_id") Long id) {
-        productService.deleteProduct(id);
+    @DeleteMapping("/{product-id}")
+    public CustomResponse deleteProduct(@PathVariable("product-id") long productId) {
+        productService.deleteProduct(productId);
         return responseService.getSuccessResponse();
     }
     /* 상품 신청 - 매칭 */
-    @GetMapping("/application/{product_id}")
-    public CustomDataResponse<MatchSuccessDto> applicationProduct(@PathVariable("product_id") Long id) {
-        User user = userRepository.findById(1L)
+    @GetMapping("/application/{product-id}/{user-id}")
+    public CustomDataResponse<MatchSuccessDto> applicationProduct(@PathVariable("user-id") long userId, @PathVariable("product-id") long productId) {
+        User user = userRepository.findById(userId)
                 .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_USER));
-        return responseService.getDataResponse(productService.applicationProduct(id, user),RESPONSE_SUCCESS);
+        return responseService.getDataResponse(productService.applicationProduct(productId, user),RESPONSE_SUCCESS);
     }
 }
