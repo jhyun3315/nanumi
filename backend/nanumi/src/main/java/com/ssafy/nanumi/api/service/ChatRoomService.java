@@ -40,17 +40,26 @@ public class ChatRoomService {
         return chatRoomRepository.findAll();
     }
 
-    // TODO
+    // TODO 특정 사용자의 채팅방 찾기 메소드
     public List<ChatRoomEntity> FindMyChatRooms(long user) {
         return chatRoomRepository.findAllByUserListIn(user);
     }
 
+    // TODO 채팅방 신고처리 메서드
     @Transactional
     public boolean reportByRoomSeq(Long seq) {
         ChatRoomEntity chatRoom = chatRoomRepository.findChatRoomEntityByChatroomSeq(seq);
+
+        // 찾은 채팅방이 없다면 false 리턴
         if(chatRoom == null) return false;
+
+        // 채팅방의 활성화 상태를 false로 변경하여 비활성화 합니다.
         chatRoom.setActivate(false);
+
+        // 변경된 정보를 저장한다.
         chatRoomRepository.save(chatRoom);
+
+        // 채팅방 신고처리가 성공적으로 완료되었으므로 true를 반환한다.
         return true;
     }
 

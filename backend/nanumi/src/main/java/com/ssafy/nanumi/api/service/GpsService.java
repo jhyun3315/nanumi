@@ -9,20 +9,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class GpsService {
     private final GpsRepository gpsRepository;
-
-    // TODO 사용자가 이전 GPS에서 현재 GPS로 이동하는 메서드
-    public void changeUserSector(String beforeGpsKey, String nowGpsKey, String sessionId) {
-        SectorDTO dto = new SectorDTO();
-        dto.setBeforeGpsKey(beforeGpsKey);
-        dto.setNowGpsKey(nowGpsKey);
-
-        // 사용자가 저장소에 없는 경우, 사용자를 추가
-        if (gpsRepository.getUser(sessionId) == null) {
-            gpsRepository.addUser(sessionId, dto);
-        } else {// 사용자가 저장소에 있는 경우, 사용자 정보를 업데이트`
-            gpsRepository.updateUser(sessionId, dto);
-        }
-    }
+    
 
     // TODO 세션 아이디를 기반으로 사용자를 제거하는 메소드
     public void dropUser(String sessionId) {
@@ -45,5 +32,21 @@ public class GpsService {
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
         return R * c; // 거리 반환 (km 단위)
+    }
+
+    // TODO 사용자가 위치를 변환할 때 사용하는 메서드
+    public void changeUserSector(String beforeLatitude, String beforeLongitude, String nowLatitude, String nowLongitude, String sessionId) {
+        SectorDTO dto = new SectorDTO();
+        dto.setBeforeLatitude(beforeLatitude);
+        dto.setBeforeLongitude(beforeLongitude);
+        dto.setNowLatitude(nowLatitude);
+        dto.setNowLongitude(nowLongitude);
+
+        // 사용자가 저장소에 없는 경우, 사용자를 추가
+        if (gpsRepository.getUser(sessionId) == null) {
+            gpsRepository.addUser(sessionId, dto);
+        } else {// 사용자가 저장소에 있는 경우, 사용자 정보를 업데이트`
+            gpsRepository.updateUser(sessionId, dto);
+        }
     }
 }
