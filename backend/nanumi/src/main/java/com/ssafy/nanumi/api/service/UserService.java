@@ -1,6 +1,7 @@
 package com.ssafy.nanumi.api.service;
 
 import com.ssafy.nanumi.api.request.UserJoinDTO;
+import com.ssafy.nanumi.api.request.UserLoginDTO;
 import com.ssafy.nanumi.api.request.UserUpdateDTO;
 import com.ssafy.nanumi.api.response.*;
 import com.ssafy.nanumi.common.Image;
@@ -36,6 +37,24 @@ public class UserService {
     private final LoginProviderRepository loginProviderRepository;
     private final EmailService emailService;
 
+    public UserLoginResDTO login(UserLoginDTO userLoginDTO){
+        String userID = userLoginDTO.getId();
+        String userPassword = userLoginDTO.getPassword();
+
+        User user = userRepository.findByEmail(userID).orElseThrow(() -> new CustomException(NOT_FOUND_USER));
+        String originPassword = user.getPassword();
+
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+
+        // 입력받은 비밀번호와 저장된 비밀번호 비교
+        if(encoder.matches(userPassword, originPassword)){
+            return new UserLoginResDTO(user);
+        }else{
+            throw new CustomException(NOT_MATCHED_PASSWORD);
+        }
+
+    }
+
     public void join(UserJoinDTO userJoinDTO) {
         LoginProvider loginProvider = loginProviderRepository.findByProvider(Provider.local)
                 .orElseThrow(() -> new CustomException(NOT_FOUND_LOGIN_PROVIDER));
@@ -67,8 +86,6 @@ public class UserService {
 
                 userRepository.save(user);
             }
-
-
         }
     }
 

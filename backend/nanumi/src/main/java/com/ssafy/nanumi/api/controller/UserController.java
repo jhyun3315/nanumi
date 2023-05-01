@@ -2,6 +2,7 @@ package com.ssafy.nanumi.api.controller;
 
 import com.ssafy.nanumi.api.request.AddressDTO;
 import com.ssafy.nanumi.api.request.UserJoinDTO;
+import com.ssafy.nanumi.api.request.UserLoginDTO;
 import com.ssafy.nanumi.api.request.UserUpdateDTO;
 import com.ssafy.nanumi.api.response.*;
 import com.ssafy.nanumi.api.service.UserService;
@@ -32,6 +33,13 @@ public class UserController {
     private final UserService userService;
     private final UserRepository userRepository;
     private final ResponseService responseService;
+
+    /* 로컬 로그인 (야매) */
+    @PostMapping("/users/login")
+    public CustomDataResponse login(@RequestBody UserLoginDTO userLoginDTO){
+       UserLoginResDTO userLoginResDTO = userService.login(userLoginDTO);
+       return responseService.getDataResponse(userLoginResDTO, RESPONSE_SUCCESS);
+    }
 
     /* 로컬 회원가입 */
     @PostMapping("/users/join")
