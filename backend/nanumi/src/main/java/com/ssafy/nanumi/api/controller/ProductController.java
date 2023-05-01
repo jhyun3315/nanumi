@@ -30,12 +30,10 @@ public class ProductController {
     public final UserRepository userRepository;
     private final ResponseService responseService;
 
-    @GetMapping("/search")
-    public CustomDataResponse<ProductSearchResDTO> search(@RequestParam ("name") String name, @RequestParam("page")int page){
-        User user = userRepository.findById(1L)
-                .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_USER));
+    @GetMapping("/search/{words}/{page}/{user-id}")
+    public CustomDataResponse<ProductSearchResDTO> search(@PathVariable ("words") String words, @PathVariable("page")int page, @PathVariable("user-id") long userId){
         PageRequest pageRequest = PageRequest.of(page, 6);
-        ProductSearchResDTO productSearchResDTO = productService.searchProductByWords(user, name, pageRequest);
+        ProductSearchResDTO productSearchResDTO = productService.searchProductByWords(userId, words, pageRequest);
         return responseService.getDataResponse(productSearchResDTO, RESPONSE_SUCCESS);
     }
 

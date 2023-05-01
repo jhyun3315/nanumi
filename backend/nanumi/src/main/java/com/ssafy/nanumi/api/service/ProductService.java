@@ -30,22 +30,18 @@ public class ProductService {
     private final MatchRepository matchRepository;
     private final UserRepository userRepository;
 
-    public ProductSearchResDTO searchProductByWords(User user, String name, PageRequest pageRequest){
-        if(userRepository.findById(user.getId()).isEmpty()) throw new CustomException(NOT_FOUND_USER);
-        long addressId = user.getAddress().getId();
+    public ProductSearchResDTO searchProductByWords(long userId, String words, PageRequest pageRequest){
+        User user = userRepository.findById(userId).orElseThrow(() ->  new CustomException(NOT_FOUND_USER));
+        Address address = addressRepository.findById(user.getAddress().getId()).orElseThrow( () ->  new CustomException(NOT_FOUND_ADDRESS_CODE));
 
-        if(addressRepository.findById(addressId).isEmpty()) throw new CustomException(NOT_FOUND_ADDRESS_CODE);
-        else{
-            Page<Product> pages = productRepository.searchAll(addressId, name, pageRequest);
-            List<ProductAllDTO> data = new ArrayList<>();
+        Page<Product> pages = productRepository.searchAll(address.getId(), words, pageRequest);
+        List<ProductAllDTO> data = new ArrayList<>();
 
-            for(Product p : pages.getContent()){
-                data.add(new ProductAllDTO(p));
-            }
-
-            ProductSearchResDTO productSearchResDTO = new ProductSearchResDTO(data, pages.getTotalPages(), pageRequest.getPageNumber());
-            return productSearchResDTO;
+        for (Product p : pages.getContent()) {
+            data.add(new ProductAllDTO(p));
         }
+
+        return new ProductSearchResDTO(data, pages.getTotalPages(), pageRequest.getPageNumber());
     }
 
     public Page<ProductAllDTO> findProductAll(User user, PageRequest pageRequest) {
