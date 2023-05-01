@@ -1,8 +1,14 @@
 package com.ssafy.nanumi.api.service;
 
 import com.ssafy.nanumi.common.ChatMessageDTO;
+import com.ssafy.nanumi.config.response.CustomResponse;
+import com.ssafy.nanumi.config.response.ResponseService;
+import com.ssafy.nanumi.config.response.exception.CustomException;
+import com.ssafy.nanumi.config.response.exception.CustomExceptionStatus;
 import com.ssafy.nanumi.db.entity.ChatEntity;
+import com.ssafy.nanumi.db.entity.Product;
 import com.ssafy.nanumi.db.repository.ChatRepository;
+import com.ssafy.nanumi.db.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Service;
@@ -20,6 +26,8 @@ public class ChatService {
     private final SimpMessageSendingOperations messageTemplate;
 
     private final ChatRepository chatRepository;
+    private final ProductRepository productRepository;
+    private final ResponseService responseService;
 
     // TODO DTO 객체를 입력으로 받아서, 채팅 메시지를 저장하고 해당 채팅방에 전송한다.
     @Transactional
@@ -48,5 +56,13 @@ public class ChatService {
     public List<ChatEntity> GetChatLogLimit20(long roomSeq) {
         // 데이터베이스에서 최근 20개의 채팅 로그를 가져온다.
         return chatRepository.findTop20ByRoomIdOrderBySendTimeDesc(roomSeq);
+    }
+
+    @Transactional
+    public CustomResponse chatEndMatch(Long productId) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_USER));
+        product.matchedEnd();
+        return responseService.getSuccessResponse();
     }
 }
