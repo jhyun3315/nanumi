@@ -6,12 +6,10 @@ import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Entity
 @Getter
-@Setter
 @Table(name="users")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User extends BaseTimeEntity {
@@ -35,9 +33,6 @@ public class User extends BaseTimeEntity {
     @ColumnDefault("0")
     @Column(name="is_deleted", columnDefinition = "TINYINT", nullable = false)
     private boolean isDeleted;
-
-    @Column(name="roles", columnDefinition = "VARCHAR(50)", nullable=false)
-    private String roles;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="address_id")
@@ -79,12 +74,5 @@ public class User extends BaseTimeEntity {
     public void updateUserInfo(String nickname, String profileUrl){
         this.profileUrl = profileUrl;
         this.nickname = nickname;
-    }
-
-    public List<String> getRoleList(){
-        if(this.roles.length() > 0){
-            return Arrays.asList(this.roles.split(","));
-        }
-        return new ArrayList<>();
     }
 }
