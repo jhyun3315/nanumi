@@ -55,8 +55,6 @@ const Register = () => {
   const checkEmailDuplicate = async email => {
     try {
       const response = await requestEmailDuplicateCheck(email);
-      console.log(email);
-      console.log(response);
       if (response.code === 200) {
         setValidCode(response.result.code);
       } else if (response.code === 400) {

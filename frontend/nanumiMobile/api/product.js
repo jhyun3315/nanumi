@@ -7,3 +7,10 @@ export const requestGetAllProduct = async (page, userId) => {
   );
   return response.data;
 };
+
+export const requestGetDetailProduct = async productId => {
+  const response = await axios.get(
+    `${API_END_POINT}/products/detail/${productId}`,
+  );
+  return response.data;
+};

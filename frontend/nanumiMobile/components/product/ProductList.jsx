@@ -21,7 +21,6 @@ const ProductList = ({isSearch}) => {
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
-    refetch,
   } = useInfiniteQuery(
     ['products'],
     ({pageParam = 0}) => requestGetAllProduct(pageParam, user.userId),
@@ -48,7 +47,7 @@ const ProductList = ({isSearch}) => {
 
   if (error) return <ErrorModal handlePress={fetchNextPage} />;
   if (isLoading) return <Fallback />;
-  if (!data?.pages?.content) return <EmptyState />;
+  if (!data?.pages[0]?.result.content) return <EmptyState />;
 
   return (
     <View style={styles.container}>

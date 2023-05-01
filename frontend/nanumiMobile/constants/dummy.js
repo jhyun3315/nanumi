@@ -67,9 +67,7 @@ const Data = [
     category: 'KITCHEN',
     key: 4,
     description: '테잎자국 있어요',
-    image: [
-      'https://dnvefa72aowie.cloudfront.net/origin/article/202304/26cf2654cac853116dc246b7a5c324902560e200dc50b9bf01b622c1690f3c7a.jpg?q=95&s=1440x1440&t=inside',
-    ],
+    image: [' '],
   },
   {
     id: '007',

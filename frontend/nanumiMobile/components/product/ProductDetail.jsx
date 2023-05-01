@@ -1,4 +1,4 @@
-import React, {useCallback, useMemo, useRef} from 'react';
+import React, {useCallback, useEffect, useMemo, useRef} from 'react';
 import FocusedStatusBar from './../../ui/FocusedStatusBar';
 import DetailDesc from './DetailDesc';
 import {
@@ -13,16 +13,20 @@ import {
 import {SIZES, SHADOWS, assets, COLORS} from '../../constants';
 import {CircleButton, MoreButton, RectButton} from './../../ui/Button';
 import {SubInfo} from './SubInfo';
-import Indicator from './Indicator';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {
   BottomSheetModal,
   BottomSheetModalProvider,
   BottomSheetBackdrop,
 } from '@gorhom/bottom-sheet';
+import {useQuery} from '@tanstack/react-query';
+import {useModal} from '../../hooks/useModal';
+import {requestGetDetailProduct} from '../../api/product';
+import Indicator from './Indicator';
 import ProductOptions from './ProductOptions';
 import GlobalModal from '../modal/GlobalModal';
-import {useModal} from '../../hooks/useModal';
+import {Fallback} from '../../ui/Fallback';
+import ErrorModal from '../modal/ErrorModal';
 
 const {width} = Dimensions.get('window');
 
@@ -53,7 +57,7 @@ const DetailHeader = ({data, navigation, handlePresentModalPress}) => {
   return (
     <View style={{width: '100%', height: 373}}>
       <Animated.FlatList
-        data={data.image}
+        data={data.productImageUrls}
         renderItem={renderImageItem}
         keyExtractor={(item, index) => `image-${item}-${index}`}
         horizontal
@@ -67,7 +71,7 @@ const DetailHeader = ({data, navigation, handlePresentModalPress}) => {
         )}
       />
 
-      <Indicator scrollX={scrollX} data={data.image} />
+      <Indicator scrollX={scrollX} data={data.productImageUrls} />
       <CircleButton
         imgUrl={assets.left}
         handlePress={() => {
@@ -90,8 +94,12 @@ const DetailHeader = ({data, navigation, handlePresentModalPress}) => {
 };
 
 const ProductDetail = ({route, navigation}) => {
-  const {data} = route.params;
+  const {id} = route.params.data;
   const {showModal} = useModal();
+
+  const {data, isLoading, error} = useQuery(['product', id], () =>
+    requestGetDetailProduct(id),
+  );
 
   const bottomSheetModalRef = useRef(null);
   const snapPoints = useMemo(() => ['20%'], []);
@@ -111,6 +119,7 @@ const ProductDetail = ({route, navigation}) => {
       });
     }, 300);
   };
+
   const renderBackDrop = useCallback(props => {
     return (
       <BottomSheetBackdrop
@@ -122,6 +131,9 @@ const ProductDetail = ({route, navigation}) => {
       />
     );
   }, []);
+
+  if (isLoading) return <Fallback />;
+  if (error) return <ErrorModal />;
 
   return (
     <GestureHandlerRootView style={{flex: 1}}>
@@ -144,13 +156,13 @@ const ProductDetail = ({route, navigation}) => {
             ListHeaderComponent={() => (
               <>
                 <DetailHeader
-                  data={data}
+                  data={data?.result}
                   navigation={navigation}
                   handlePresentModalPress={handlePresentModalPress}
                 />
-                <SubInfo />
+                <SubInfo data={data?.result} />
                 <View style={{padding: SIZES.font}}>
-                  <DetailDesc data={data} />
+                  <DetailDesc data={data?.result} />
                 </View>
               </>
             )}

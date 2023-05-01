@@ -58,15 +58,16 @@ export const ImageCmp = ({imgUrl}) => {
         width: 48,
         height: 48,
         marginRight: SIZES.small,
+        borderRadius: SIZES.extraLarge,
       }}
     />
   );
 };
 
-export const People = () => {
+export const People = ({data}) => {
   return (
     <View style={{flexDirection: 'row'}}>
-      <ImageCmp imgUrl={assets.person01} />
+      <ImageCmp imgUrl={{uri: data?.userProfileUrl}} />
     </View>
   );
 };
@@ -104,7 +105,7 @@ export const EndDate = () => {
   );
 };
 
-export const SubInfo = props => {
+export const SubInfo = ({isMatching, data}) => {
   return (
     <View
       style={{
@@ -114,8 +115,8 @@ export const SubInfo = props => {
         flexDirection: 'row',
         justifyContent: 'space-between',
       }}>
-      <People />
-      {!props.isMatching && <EndDate />}
+      <People data={data} />
+      {!isMatching && <EndDate />}
     </View>
   );
 };
