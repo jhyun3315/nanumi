@@ -21,10 +21,10 @@ public class ChatMessageDTO {
     // 채팅 메시지가 속한 채팅방의 ID를 저장하는 변수
     private long roomId;
 
-    // 채팅 메시지를 보낸 사용자의 ID를 저장하는 변수이다.
+    // 채팅 메시지를 보낸 사용자의 ID를 저장하는 변수
     private long sender;
 
-    // 채팅 메시지의 내용을 저장하는 변수이다.
+    // 채팅 메시지의 내용을 저장하는 변수
     private String message;
 
 }

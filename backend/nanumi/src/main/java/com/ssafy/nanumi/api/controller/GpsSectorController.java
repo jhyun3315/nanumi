@@ -1,44 +1,69 @@
-//package com.ssafy.nanumi.api.controller;
-//
-//import lombok.RequiredArgsConstructor;
-//import org.springframework.messaging.handler.annotation.Header;
-//import org.springframework.messaging.handler.annotation.MessageMapping;
-//import org.springframework.messaging.simp.SimpAttributesContextHolder;
-//import org.springframework.stereotype.Controller;
-//import org.springframework.web.bind.annotation.RequestMapping;
-//
-//@RequiredArgsConstructor
-//@RequestMapping("accounts")
-//@Controller
-//public class GpsSectorController {
-//    private final GpsService gpsService;
-//
-//    @MessageMapping("/sector")
-//    public void sector(@Header("simpSessionId") String sessionId, SectorDTO DTO) {
-//        // gps 데이터 전달받음
-//        // 해당 HashMap에서 이전 섹터 삭제, 새 섹터 입력
-//        // 5s 전체채팅 요청
-//        System.out.println(DTO.getBeforeGpsKey() + " / " + DTO.getNowGpsKey() + " / " + sessionId + " / " + DTO.getPair());
-//        gpsService.changeUserSector(DTO.getBeforeGpsKey(), DTO.getNowGpsKey(), sessionId, DTO.getPair());
-//        SimpAttributesContextHolder.currentAttributes().setAttribute("GPS", DTO.getNowGpsKey());
-//    }
-//
-//    @MessageMapping("/emoji")
-//    public void sector(@Header("simpSessionId") String sessionId, EmojiDTO DTO) {
-//        // 해당 HashMap에서 섹터 -> pk -> 이모지 수정
-//        // 5s 전체채팅 요청
-//        gpsService.changeUserEmoji(DTO.getGpsKey(), sessionId, DTO.getEmojiURL());
-//    }
-//
-//    @MessageMapping("/disconnect")
-//    public void disconnect(String test) {
-//        System.out.println(test);
-////        gpsService.dropUser(gpsKey, sessionId);
-//    }
-////    public void disconnect(EmojiDTO DTO) {
-////        System.out.println("DISCONNECT");
-////        gpsRepository.dropUser(DTO.getGpsKey(), DTO.getUuid());
-////        gpsDataSendScheduler.setOperationCommand();
-////    }
-//}
-//
+package com.ssafy.nanumi.api.controller;
+
+import com.ssafy.nanumi.api.service.GpsService;
+import com.ssafy.nanumi.common.SectorDTO;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.Header;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.simp.SimpAttributesContextHolder;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+
+/**
+ * TODO GpsSectorController는 GPS 섹터 업데이트와 관련된 들어오는 메시지를 처리하는 클래스
+ */
+@RequiredArgsConstructor
+@RequestMapping("accounts")
+@Controller
+public class GpsSectorController {
+    // GPS 섹터 데이터를 관리하기 위한 GpsService 인스턴스
+    private final GpsService gpsService;
+
+
+    /**
+     * GPS 섹터 업데이트 메시지를 처리.
+     *
+     * @param sessionId 메시지를 보낸 사용자의 세션 ID입니다.
+     * @param DTO       GPS 섹터 업데이트 정보를 포함하는 데이터 전송 객체.
+     */
+    @MessageMapping("/sector")
+    public void sector(@Header("simpSessionId") String sessionId, SectorDTO DTO) {
+
+        //System.out.println(DTO.getBeforeGpsKey() + " / " + DTO.getNowGpsKey() + " / " + sessionId + " / " + DTO.getPair());
+
+        // GpsService에서 사용자의 GPS 섹터를 업데이트
+        gpsService.changeUserSector(DTO.getBeforeGpsKey(), DTO.getNowGpsKey(), sessionId);
+
+        // 현재 사용자의 속성에 업데이트 된 GPS 섹터를 저장
+        SimpAttributesContextHolder.currentAttributes().setAttribute("GPS", DTO.getNowGpsKey());
+    }
+
+
+    /**
+     * 사용자 연결 해제 이벤트를 처리합니다.
+     *
+     * @param sessionId 연결 해제하는 사용자의 세션 ID입니다.
+     */
+    @MessageMapping("/disconnect")
+    public void disconnect(@Header("simpSessionId") String sessionId) {
+        System.out.println("drop test");
+
+        // GpsService에서 사용자를 제거합니다.
+        gpsService.dropUser(sessionId);
+    }
+
+
+    @PostMapping("/calculateDistance")
+    public ResponseEntity<Double> calculateDistance(@RequestParam double targetLat,
+                                                    @RequestParam double targetLon,
+                                                    @RequestParam double otherLat,
+                                                    @RequestParam double otherLon) {
+        double distance = gpsService.calculateDistance(targetLat, targetLon, otherLat, otherLon);
+        return ResponseEntity.ok(distance);
+    }
+}
+
