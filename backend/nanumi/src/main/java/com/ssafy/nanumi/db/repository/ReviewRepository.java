@@ -12,8 +12,8 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 
     @Query(value = "select p.user.id " +
             "from Review r " +
-            "left join fetch r.match m " +
-            "left join fetch m.product p " +
+            "left join r.match m " +
+            "left join m.product p " +
             "where r.match.id = :matchId")
     Optional<Long> findReceiverIdByMatchId(long matchId);
 }

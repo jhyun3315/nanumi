@@ -39,6 +39,7 @@ public class ReviewService {
         User writer = userRepository.findById(writerId)
                 .orElseThrow(() -> new CustomException(NOT_FOUND_USER));
 
+        // 매칭 조회
         Match match = matchRepository.findById(matchId)
                 .orElseThrow(() -> new CustomException(REQUEST_ERROR)); // 예외처리 필요
 
@@ -57,7 +58,7 @@ public class ReviewService {
             totalRating += r * 10; // 수정해야함
         }
 
-        // 리뷰 저장, starPoint가 0이 아닐때만 저장해야하나?
+        // 리뷰 저장, starPoint가 0이 아닐때만
         Review review = Review.builder()
                 .writer(writer)
                 .receiver(receiver)
