@@ -1,5 +1,7 @@
 import React from 'react';
-import {CATEGORIES, COLORS, SIZES} from '../../constants/theme';
+import {COLORS, SIZES} from '../../constants/theme';
+import {CATEGORIES} from '../../constants/category';
+
 import {
   View,
   Pressable,

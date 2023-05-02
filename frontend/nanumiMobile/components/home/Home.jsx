@@ -1,5 +1,4 @@
-import React, {useEffect, useState} from 'react';
-
+import React from 'react';
 import {SafeAreaView, StyleSheet} from 'react-native';
 import {COLORS} from '../../constants';
 import {CategoryButton} from '../../ui/Button';

@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import {COLORS, SIZES, FONTS} from '../../constants';
 import {CloseHeader} from '../../ui/BackHeader';
-import {CATEGORIES} from '../../constants/theme';
+import {CATEGORIES} from '../../constants/category';
 
 const RenderCategory = ({item, handleCategorySelected}) => {
   return (
