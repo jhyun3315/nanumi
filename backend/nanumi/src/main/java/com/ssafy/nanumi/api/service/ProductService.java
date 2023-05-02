@@ -61,9 +61,12 @@ public class ProductService {
     }
 
     public ProductDetailDTO findByProductId(Long productId) {
-        return productRepository.findById(productId)
-                .map(ProductDetailDTO::new)
+        Product product = productRepository.findById(productId)
                 .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_PRODUCT));
+        if (product.isDeleted()) {
+            throw new CustomException(CustomExceptionStatus.NOT_FOUND_PRODUCT);
+        }
+        return new ProductDetailDTO(product);
     }
 
     public Page<ProductAllDTO> findCateProductAll(Long categoryId, User user, Pageable pageRequest) {
