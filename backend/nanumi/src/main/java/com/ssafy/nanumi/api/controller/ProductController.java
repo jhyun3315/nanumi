@@ -16,8 +16,12 @@ import com.ssafy.nanumi.db.repository.UserRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+
+import java.io.IOException;
 
 import static com.ssafy.nanumi.config.response.exception.CustomSuccessStatus.RESPONSE_SUCCESS;
 
@@ -59,11 +63,13 @@ public class ProductController {
         return responseService.getDataResponse(productService.findCateProductAll(categoryId, user, pageRequest), RESPONSE_SUCCESS);
     }
     /* 상품 등록 */
-    @PostMapping("/{user-id}")
-    public CustomResponse createProduct(@PathVariable("user-id") long userId, @RequestBody ProductInsertDTO request) {
+    @PostMapping(path = "/{user-id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public CustomResponse createProduct(@PathVariable("user-id") long userId,
+                                        @RequestParam("images") MultipartFile[] images,
+                                        @ModelAttribute ProductInsertDTO request) throws IOException {
         User user = userRepository.findById(userId)
                 .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_USER));
-        productService.createProduct(request, user);
+        productService.createProduct(images, request, user);
         return responseService.getSuccessResponse();
     }
     /* 상품 수정 */

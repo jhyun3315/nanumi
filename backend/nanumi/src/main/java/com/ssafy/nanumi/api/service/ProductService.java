@@ -1,5 +1,7 @@
 package com.ssafy.nanumi.api.service;
 
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.ssafy.nanumi.api.request.ProductInsertDTO;
 import com.ssafy.nanumi.api.response.MatchSuccessDto;
 import com.ssafy.nanumi.api.response.ProductAllDTO;
@@ -10,12 +12,16 @@ import com.ssafy.nanumi.config.response.exception.CustomExceptionStatus;
 import com.ssafy.nanumi.db.entity.*;
 import com.ssafy.nanumi.db.repository.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import static com.ssafy.nanumi.config.response.exception.CustomExceptionStatus.*;
 
@@ -29,6 +35,10 @@ public class ProductService {
     private final ProductImageRepository productImageRepository;
     private final MatchRepository matchRepository;
     private final UserRepository userRepository;
+
+    @Value("${cloud.aws.s3.bucket}")
+    private String bucket;
+    private final AmazonS3 amazonS3;
 
     public ProductSearchResDTO searchProductByWords(long userId, String words, PageRequest pageRequest){
         User user = userRepository.findById(userId).orElseThrow(() ->  new CustomException(NOT_FOUND_USER));
@@ -63,7 +73,7 @@ public class ProductService {
         return productRepository.findAllCategoryProuduct(addressId,categoryId, pageRequest);
 }
 
-    public void createProduct(ProductInsertDTO request, User user){
+    public void createProduct(MultipartFile[] images, ProductInsertDTO request, User user) throws IOException {
         Category category = categoryRepository.findById(request.getCategoryId())
                 .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_CATEGORY));
         Address address = user.getAddress();
@@ -77,10 +87,19 @@ public class ProductService {
                 .address(address)
                 .build();
         Product createProduct = productRepository.save(product);
-        List<String> images = request.getPostImage();
-        for (String image : images) {
+
+        for(MultipartFile file : images) {
+            String s3FileName = UUID.randomUUID() + "-" + file.getOriginalFilename();
+
+            ObjectMetadata objMeta = new ObjectMetadata();
+            objMeta.setContentLength(file.getInputStream().available());
+
+            amazonS3.putObject(bucket, s3FileName, file.getInputStream(), objMeta);
+
+            String imageString = amazonS3.getUrl(bucket, s3FileName).toString();
+
             ProductImage productImage = ProductImage.builder()
-                    .imageUrl(image)
+                    .imageUrl(imageString)
                     .product(createProduct)
                     .build();
             productImageRepository.save(productImage);
