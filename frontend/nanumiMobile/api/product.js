@@ -26,6 +26,11 @@ export const requestCreateProduct = async (userId, data) => {
   const response = await axios.post(
     `${API_END_POINT}/products/${userId}`,
     data,
+    {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    },
   );
   return response;
 };

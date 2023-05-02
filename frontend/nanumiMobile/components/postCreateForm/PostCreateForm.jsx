@@ -16,7 +16,7 @@ const PostCreateForm = () => {
   const navigation = useNavigation();
   const [user] = useRecoilState(userState);
   const [selectedCategory, setSelectedCategory] = useState('');
-  const [images, setImages] = useState([]);
+  const [images, setImages] = useState([{}]);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
 
@@ -44,7 +44,7 @@ const PostCreateForm = () => {
           id: generateUniqueKey(),
           uri: image.realPath,
           name: image.fileName,
-          format: format,
+          type: format,
         };
       });
       setImages([...images, ...paths]);
@@ -79,8 +79,20 @@ const PostCreateForm = () => {
     try {
       const response = await requestCreateProduct(user.userId, formData);
       return response;
-    } catch (e) {
-      console.log(e);
+    } catch (error) {
+      if (error.response) {
+        // The request was made and the server responded with a status code
+        console.log('error.data', error.response.data);
+        console.log('error.stauts', error.response.status);
+        console.log('error.header', error.response.headers);
+      } else if (error.request) {
+        // The request was made but no response was received
+        console.log('error.request', error.request);
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        console.log('Error', error.message);
+      }
+      console.log('erro.config', error.config);
     }
   };
   const renderItem = ({item}) => (
