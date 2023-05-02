@@ -25,10 +25,13 @@ const ProductDeleteModal = ({args}) => {
   const deleteProductLocally = id => {
     setProductList(prev => {
       const updatedProducts = JSON.parse(JSON.stringify(prev.data)); // deep copy
-      updatedProducts.pages[0].result.content =
-        updatedProducts.pages[0].result.content.filter(
+
+      updatedProducts.pages.forEach(page => {
+        page.result.content = page.result.content.filter(
           product => product.id !== id,
         );
+      });
+
       return {...prev, data: updatedProducts};
     });
   };

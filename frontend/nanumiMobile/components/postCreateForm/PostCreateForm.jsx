@@ -67,16 +67,17 @@ const PostCreateForm = () => {
   };
 
   const handleCreateProduct = async () => {
-    const uris = images.map(image => image.uri);
-    const data = {
-      name: title,
-      content: description,
-      postImage: uris,
-      categoryId: selectedCategory.categoryId,
-    };
+    const formData = new FormData();
+    images.forEach(image => {
+      formData.append('imags', image);
+    });
+    formData.append('name', title);
+    formData.append('content', description);
+    formData.append('categoryId', selectedCategory.categoryId);
 
+    console.log(formData);
     try {
-      const response = await requestCreateProduct(user.userId, data);
+      const response = await requestCreateProduct(user.userId, formData);
       return response;
     } catch (e) {
       console.log(e);
