@@ -15,7 +15,6 @@ const queryClient = new QueryClient();
 const App = () => {
   return (
     <RecoilRoot>
-      <StatusBar />
       <QueryClientProvider client={queryClient}>
         <StackNavigator />
       </QueryClientProvider>

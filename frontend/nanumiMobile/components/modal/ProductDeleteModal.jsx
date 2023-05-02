@@ -6,48 +6,53 @@ import {
   Text,
   Pressable,
   TouchableWithoutFeedback,
+  StatusBar,
 } from 'react-native';
 import {COLORS, FONTS, SIZES} from '../../constants';
 import {RectButton} from '../../ui/Button';
 import {useModal} from '../../hooks/useModal';
+import FocusedStatusBar from '../../ui/FocusedStatusBar';
 const {width, height} = Dimensions.get('window');
 
 const ProductDeleteModal = () => {
   const {hideModal} = useModal();
 
   return (
-    <Modal visible={true} transparent={true}>
-      <Pressable style={styles.modalContainer} onPress={hideModal}>
-        <TouchableWithoutFeedback onPress={event => event.stopPropagation()}>
-          <View style={styles.modal}>
-            <View style={styles.logoutContainer}>
-              <Text style={styles.text}>상품삭제</Text>
+    <>
+      <FocusedStatusBar hidden={true} />
+      <Modal visible={true} transparent={true}>
+        <Pressable style={styles.modalContainer} onPress={hideModal}>
+          <TouchableWithoutFeedback onPress={event => event.stopPropagation()}>
+            <View style={styles.modal}>
+              <View style={styles.logoutContainer}>
+                <Text style={styles.text}>상품삭제</Text>
+              </View>
+              <Text style={styles.subText}>정말 상품을 삭제하시겠어요?</Text>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-around',
+                  alignItems: 'center',
+                }}>
+                <RectButton
+                  minWidth={96}
+                  fontSize={FONTS.font}
+                  handlePress={hideModal}>
+                  네
+                </RectButton>
+                <RectButton
+                  minWidth={96}
+                  fontSize={FONTS.font}
+                  backgroundColor={COLORS.primary}
+                  handlePress={hideModal}>
+                  취소
+                </RectButton>
+              </View>
             </View>
-            <Text style={styles.subText}>정말 상품을 삭제하시겠어요?</Text>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-around',
-                alignItems: 'center',
-              }}>
-              <RectButton
-                minWidth={96}
-                fontSize={FONTS.font}
-                handlePress={hideModal}>
-                네
-              </RectButton>
-              <RectButton
-                minWidth={96}
-                fontSize={FONTS.font}
-                backgroundColor={COLORS.primary}
-                handlePress={hideModal}>
-                취소
-              </RectButton>
-            </View>
-          </View>
-        </TouchableWithoutFeedback>
-      </Pressable>
-    </Modal>
+          </TouchableWithoutFeedback>
+        </Pressable>
+      </Modal>
+    </>
   );
 };
 export default ProductDeleteModal;
