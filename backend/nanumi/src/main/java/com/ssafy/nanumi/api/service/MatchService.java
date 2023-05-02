@@ -3,7 +3,6 @@ package com.ssafy.nanumi.api.service;
 import com.ssafy.nanumi.api.response.MatchInterface;
 import com.ssafy.nanumi.api.response.MatchResDTO;
 import com.ssafy.nanumi.config.response.exception.CustomException;
-import com.ssafy.nanumi.db.entity.Match;
 import com.ssafy.nanumi.db.entity.Product;
 import com.ssafy.nanumi.db.entity.User;
 import com.ssafy.nanumi.db.repository.MatchRepository;
@@ -15,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.ssafy.nanumi.config.response.exception.CustomExceptionStatus.*;
 

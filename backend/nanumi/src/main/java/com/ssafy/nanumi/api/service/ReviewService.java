@@ -2,7 +2,6 @@ package com.ssafy.nanumi.api.service;
 
 import com.ssafy.nanumi.api.request.UserReviewDTO;
 import com.ssafy.nanumi.config.response.exception.CustomException;
-import com.ssafy.nanumi.config.response.exception.CustomExceptionStatus;
 import com.ssafy.nanumi.db.entity.Match;
 import com.ssafy.nanumi.db.entity.Review;
 import com.ssafy.nanumi.db.entity.User;
