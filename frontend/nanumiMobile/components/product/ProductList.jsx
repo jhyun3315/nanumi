@@ -67,7 +67,7 @@ const ProductList = ({isSearch}) => {
 
   if (error) return <ErrorModal handlePress={fetchNextPage} />;
   if (isLoading) return <Fallback />;
-  if (!productList?.data?.pages[0]?.result.content) return <EmptyState />;
+  if (!productList?.data?.pages[0]?.result?.content) return <EmptyState />;
 
   return (
     <View style={styles.container}>

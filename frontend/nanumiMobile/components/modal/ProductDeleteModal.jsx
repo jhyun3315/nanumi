@@ -49,7 +49,7 @@ const ProductDeleteModal = ({args}) => {
 
   return (
     <>
-      <StatusBar hidden={true} />
+      {/* <StatusBar hidden={true} /> */}
       <Modal visible={true} transparent={true}>
         <Pressable style={styles.modalContainer} onPress={hideModal}>
           <TouchableWithoutFeedback onPress={event => event.stopPropagation()}>

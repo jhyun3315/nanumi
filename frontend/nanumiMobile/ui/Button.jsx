@@ -1,8 +1,7 @@
 import React from 'react';
 import Icon from 'react-native-ionicons';
-import {Pressable, View, Text, Image} from 'react-native';
+import {Pressable, Text, Image} from 'react-native';
 import {COLORS, SIZES, SHADOWS, FONTS} from '../constants';
-
 export const CircleButton = ({imgUrl, handlePress, ...props}) => {
   return (
     <Pressable

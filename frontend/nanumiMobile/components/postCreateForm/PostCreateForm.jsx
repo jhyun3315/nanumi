@@ -71,6 +71,7 @@ const PostCreateForm = () => {
     images.forEach(image => {
       formData.append('imags', image);
     });
+
     formData.append('name', title);
     formData.append('content', description);
     formData.append('categoryId', selectedCategory.categoryId);
