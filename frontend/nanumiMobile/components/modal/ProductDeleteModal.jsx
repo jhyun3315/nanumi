@@ -11,19 +11,33 @@ import {
 import {COLORS, FONTS, SIZES} from '../../constants';
 import {RectButton} from '../../ui/Button';
 import {useModal} from '../../hooks/useModal';
-import FocusedStatusBar from '../../ui/FocusedStatusBar';
 import {requestDeleteProduct} from '../../api/product';
 import {useNavigation} from '@react-navigation/native';
+import {useRecoilState} from 'recoil';
+import {productState} from '../../state/product';
 const {width, height} = Dimensions.get('window');
 
 const ProductDeleteModal = ({args}) => {
   const {hideModal} = useModal();
   const navigation = useNavigation();
+  const [productList, setProductList] = useRecoilState(productState);
+  const deleteProductLocally = id => {
+    setProductList(prev => {
+      const updatedPages = prev.data.pages.map(page => {
+        const updatedContent = page.result.content.filter(
+          product => product.id !== id,
+        );
+        return {...page, result: {...page.result, content: updatedContent}};
+      });
+      return {...prev, data: {...prev.data, pages: updatedPages}};
+    });
+  };
 
   const handleDeleteProduct = async () => {
     const response = await requestDeleteProduct(args);
     hideModal();
     if (response.code === 200) {
+      deleteProductLocally(args);
       navigation.navigate('BottomTabs', {screen: 'Home'});
     } else {
       Alert.alert('삭제에 실패했습니다.');

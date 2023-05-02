@@ -27,6 +27,7 @@ import Indicator from './Indicator';
 import ProductOptions from './ProductOptions';
 import GlobalModal from '../modal/GlobalModal';
 import ErrorModal from '../modal/ErrorModal';
+import DataErrorModal from '../modal/DataErrorModal';
 
 const {width} = Dimensions.get('window');
 
@@ -95,7 +96,12 @@ const DetailHeader = ({data, navigation, handlePresentModalPress}) => {
 
 const ProductDetail = ({route, navigation}) => {
   const {id} = route.params.data;
-  const {showModal} = useModal();
+  const {hideModal, showModal} = useModal();
+
+  const handleCloseAndBack = () => {
+    hideModal();
+    navigation.goBack();
+  };
 
   const {data, isLoading, error} = useQuery(['product', id], () =>
     requestGetDetailProduct(id),
@@ -133,6 +139,9 @@ const ProductDetail = ({route, navigation}) => {
     );
   }, []);
 
+  if (data?.code === 404) {
+    return <DataErrorModal handlePress={handleCloseAndBack} />;
+  }
   if (isLoading) return <Fallback />;
   if (error) return <ErrorModal />;
 

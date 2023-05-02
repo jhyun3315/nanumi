@@ -15,7 +15,7 @@ import {productState} from '../../state/product';
 
 const ProductList = ({isSearch}) => {
   const [user] = useRecoilState(userState);
-  const [productList, setProductList] = useState(productState);
+  const [productList, setProductList] = useRecoilState(productState);
   const {
     data,
     error,

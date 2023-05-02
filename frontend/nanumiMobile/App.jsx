@@ -1,17 +1,9 @@
 import React from 'react';
-import StackNavigator from './navigator/StackNavigator';
-import {StatusBar} from 'react-native';
 import {RecoilRoot} from 'recoil';
-import {
-  useQuery,
-  useMutation,
-  useQueryClient,
-  QueryClient,
-  QueryClientProvider,
-} from '@tanstack/react-query';
+import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
+import StackNavigator from './navigator/StackNavigator';
 
 const queryClient = new QueryClient();
-
 const App = () => {
   return (
     <RecoilRoot>

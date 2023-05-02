@@ -14,18 +14,20 @@ import MapUpdateScreen from '../screens/MapUpdateScreen';
 import ReportScreen from '../screens/ReportScreen';
 import LocationPickerScreen from '../screens/LocationPickerScreen';
 import ReviewScreen from '../screens/ReviewScreen';
-import HomeScreen from '../screens/HomeScreen';
 import BottomTabs from './BottomTabs';
 import ProfileUpdateScreen from '../screens/ProfileUpdateScreen';
+import CategoryProductScreen from '../screens/CategoryProductScreen';
+import FocusedStatusBar from '../ui/FocusedStatusBar';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import CategoryProductScreen from '../screens/CategoryProductScreen';
+import {COLORS} from '../constants';
 
 const Stack = createNativeStackNavigator();
 
 const StackNavigator = () => {
   return (
     <NavigationContainer>
+      <FocusedStatusBar backgroundColor={COLORS.primary} />
       <Stack.Navigator
         screenOptions={{
           headerShown: false,

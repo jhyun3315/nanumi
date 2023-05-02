@@ -31,6 +31,12 @@ export const requestCreateProduct = async (userId, data) => {
 };
 
 export const requestDeleteProduct = async productId => {
-  const response = await axios.delete(`${API_END_POINT}/products/${productId}`);
-  return response.data;
+  try {
+    const response = await axios.delete(
+      `${API_END_POINT}/products/${productId}`,
+    );
+    return response.data;
+  } catch (e) {
+    console.log(e);
+  }
 };
