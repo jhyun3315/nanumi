@@ -6,48 +6,80 @@ import {
   Text,
   Pressable,
   TouchableWithoutFeedback,
+  StatusBar,
 } from 'react-native';
 import {COLORS, FONTS, SIZES} from '../../constants';
 import {RectButton} from '../../ui/Button';
 import {useModal} from '../../hooks/useModal';
+import {requestDeleteProduct} from '../../api/product';
+import {useNavigation} from '@react-navigation/native';
+import {useRecoilState} from 'recoil';
+import {productState} from '../../state/product';
 const {width, height} = Dimensions.get('window');
 
-const ProductDeleteModal = () => {
+const ProductDeleteModal = ({args}) => {
   const {hideModal} = useModal();
+  const navigation = useNavigation();
+  const [productList, setProductList] = useRecoilState(productState);
+
+  const deleteProductLocally = id => {
+    setProductList(prev => {
+      const updatedProducts = JSON.parse(JSON.stringify(prev.data)); // deep copy
+      updatedProducts.pages[0].result.content =
+        updatedProducts.pages[0].result.content.filter(
+          product => product.id !== id,
+        );
+      return {...prev, data: updatedProducts};
+    });
+  };
+
+  const handleDeleteProduct = async () => {
+    const response = await requestDeleteProduct(args);
+    hideModal();
+    if (response.code === 200) {
+      deleteProductLocally(args);
+      navigation.navigate('BottomTabs', {screen: 'Home'});
+    } else {
+      Alert.alert('삭제에 실패했습니다.');
+    }
+  };
 
   return (
-    <Modal visible={true} transparent={true}>
-      <Pressable style={styles.modalContainer} onPress={hideModal}>
-        <TouchableWithoutFeedback onPress={event => event.stopPropagation()}>
-          <View style={styles.modal}>
-            <View style={styles.logoutContainer}>
-              <Text style={styles.text}>상품삭제</Text>
+    <>
+      <StatusBar hidden={true} />
+      <Modal visible={true} transparent={true}>
+        <Pressable style={styles.modalContainer} onPress={hideModal}>
+          <TouchableWithoutFeedback onPress={event => event.stopPropagation()}>
+            <View style={styles.modal}>
+              <View style={styles.logoutContainer}>
+                <Text style={styles.text}>상품삭제</Text>
+              </View>
+              <Text style={styles.subText}>정말 상품을 삭제하시겠어요?</Text>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-around',
+                  alignItems: 'center',
+                }}>
+                <RectButton
+                  minWidth={96}
+                  fontSize={FONTS.font}
+                  handlePress={handleDeleteProduct}>
+                  네
+                </RectButton>
+                <RectButton
+                  minWidth={96}
+                  fontSize={FONTS.font}
+                  backgroundColor={COLORS.primary}
+                  handlePress={hideModal}>
+                  취소
+                </RectButton>
+              </View>
             </View>
-            <Text style={styles.subText}>정말 상품을 삭제하시겠어요?</Text>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-around',
-                alignItems: 'center',
-              }}>
-              <RectButton
-                minWidth={96}
-                fontSize={FONTS.font}
-                handlePress={hideModal}>
-                네
-              </RectButton>
-              <RectButton
-                minWidth={96}
-                fontSize={FONTS.font}
-                backgroundColor={COLORS.primary}
-                handlePress={hideModal}>
-                취소
-              </RectButton>
-            </View>
-          </View>
-        </TouchableWithoutFeedback>
-      </Pressable>
-    </Modal>
+          </TouchableWithoutFeedback>
+        </Pressable>
+      </Modal>
+    </>
   );
 };
 export default ProductDeleteModal;

@@ -4,7 +4,7 @@ import {ProductTitle} from './SubInfo';
 import {COLORS, SIZES, FONTS} from '../../constants';
 
 const DetailDesc = ({data}) => {
-  const [text, setText] = useState(data.description.slice(0, 100));
+  const [text, setText] = useState(data.content.slice(0, 100));
   const [readMore, setReadMore] = useState(false);
 
   return (
@@ -12,27 +12,27 @@ const DetailDesc = ({data}) => {
       <View style={styles.header}>
         <ProductTitle
           title={data.name}
-          subTitle={data.creator}
+          subTitle={data.userNickname}
           titleSize={SIZES.extraLarge}
           subTitleSize={SIZES.font}
         />
       </View>
 
       <View style={styles.container}>
-        <Text style={styles.categoryTitle}>카테고리</Text>
+        <Text style={styles.categoryTitle}>{data.categoryName}</Text>
 
         <View style={styles.descriptionContainer}>
           <Text style={styles.descriptionText}>
-            {text}
+            {data.content}
             {!readMore && '...'}
             <Text
               style={styles.readMoreText}
               onPress={() => {
                 if (!readMore) {
-                  setText(data.description);
+                  setText(data.content);
                   setReadMore(true);
                 } else {
-                  setText(data.description.slice(0, 100));
+                  setText(data.content.slice(0, 100));
                   setReadMore(false);
                 }
               }}>

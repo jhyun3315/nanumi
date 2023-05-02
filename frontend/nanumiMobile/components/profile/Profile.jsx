@@ -14,11 +14,21 @@ import {RectButton} from '../../ui/Button';
 import {useModal} from '../../hooks/useModal';
 import ProgressBar from './ProgressBar';
 import GlobalModal from '../modal/GlobalModal';
+import {useQuery} from '@tanstack/react-query';
+import {requestGetProfile} from '../../api/user';
+import {useRecoilState} from 'recoil';
+import {userState} from './../../state/user';
+import {Fallback} from '../../ui/Fallback';
+import ErrorModal from '../modal/ErrorModal';
 
 const {width} = Dimensions.get('window');
 
 const Profile = ({navigation}) => {
   const {showModal} = useModal();
+  const [user] = useRecoilState(userState);
+  const {data, error, isLoading} = useQuery(['profile', user.userId], () =>
+    requestGetProfile(user.userId),
+  );
 
   const handleOpenLogoutModal = () => {
     showModal({
@@ -32,6 +42,9 @@ const Profile = ({navigation}) => {
     });
   };
 
+  if (isLoading) return <Fallback />;
+  if (error) return <ErrorModal />;
+
   return (
     <SafeAreaView
       style={{
@@ -43,7 +56,7 @@ const Profile = ({navigation}) => {
         <View style={styles.profileContainer}>
           <View style={styles.profileImage}>
             <Image
-              source={assets.person01}
+              source={{uri: data?.result?.profileUrl}}
               style={styles.image}
               resizeMode="contain"
             />
@@ -54,7 +67,9 @@ const Profile = ({navigation}) => {
               />
             </View>
           </View>
-          <Text style={[styles.text, styles.nickname]}>닉네임</Text>
+          <Text style={[styles.text, styles.nickname]}>
+            {data?.result?.nickname}
+          </Text>
         </View>
         <View style={{alignItems: 'center'}}>
           <RectButton
@@ -80,16 +95,18 @@ const Profile = ({navigation}) => {
               alignItems: 'center',
             }}>
             <Text style={styles.smallText}>매너온도</Text>
-            <Text style={styles.smallText}>36.5°C</Text>
+            <Text style={styles.smallText}>{data?.result?.temperature}°C</Text>
           </View>
-          <ProgressBar value={36.5} />
+          <ProgressBar value={data?.result?.temperature} />
         </View>
 
         <Pressable
           style={styles.statusContainer}
           onPress={() => navigation.navigate('DivideProduct')}>
           <View style={styles.statusBox}>
-            <Text style={[styles.text, styles.count]}>483</Text>
+            <Text style={[styles.text, styles.count]}>
+              {data?.result?.giveCount}
+            </Text>
             <Text style={[styles.text, styles.subText]}>나눔한 물건</Text>
           </View>
 
@@ -103,14 +120,18 @@ const Profile = ({navigation}) => {
                 borderRightWidth: 1,
               },
             ]}>
-            <Text style={[styles.text, styles.count]}>483</Text>
+            <Text style={[styles.text, styles.count]}>
+              {data?.result?.givingCount}
+            </Text>
             <Text style={[styles.text, styles.subText]}>나눔중인 물건</Text>
           </Pressable>
 
           <Pressable
             style={styles.statusBox}
             onPress={() => navigation.navigate('DivideProduct')}>
-            <Text style={[styles.text, styles.count]}>483</Text>
+            <Text style={[styles.text, styles.count]}>
+              {data?.result?.givenCount}
+            </Text>
             <Text style={[styles.text, styles.subText]}>나눔받은 물건</Text>
           </Pressable>
         </Pressable>
@@ -189,6 +210,7 @@ const styles = StyleSheet.create({
   image: {
     width: '100%',
     height: '100%',
+    borderRadius: 100,
   },
   tier: {
     position: 'absolute',

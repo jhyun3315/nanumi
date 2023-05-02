@@ -1,7 +1,12 @@
 import {atom} from 'recoil';
-import {Data} from '../constants';
 
 export const productState = atom({
   key: 'productState',
-  default: Data,
+  default: {
+    data: [],
+    error: null,
+    isLoading: true,
+    hasNextPage: false,
+    isFetchingNextPage: false,
+  },
 });

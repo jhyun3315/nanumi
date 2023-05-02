@@ -29,33 +29,43 @@ export const BackHeader = ({navigation, children}) => {
           navigation.goBack();
         }}
         left={16}
-        top={StatusBar.currentHeight - 12}
+        top={StatusBar.currentHeight - 24}
       />
     </View>
   );
 };
 
-export const CloseHeader = ({setModalVisible}) => {
+export const CloseHeader = ({handlePress, children}) => {
   return (
     <View
       style={{
         width: '100%',
         height: 60,
         backgroundColor: COLORS.white,
+        justifyContent: 'center',
+        alignItems: 'center',
       }}>
       <CircleButton
         imgUrl={assets.left}
-        handlePress={() => {
-          setModalVisible(false);
-        }}
+        handlePress={handlePress}
         left={16}
-        top={StatusBar.currentHeight - 12}
+        top={StatusBar.currentHeight - 24}
       />
+      <View>
+        <Text
+          style={{
+            fontFamily: FONTS.bold,
+            fontSize: SIZES.large,
+            color: COLORS.primary,
+          }}>
+          {children}
+        </Text>
+      </View>
     </View>
   );
 };
 
-export const CreateHeader = ({navigation}) => (
+export const CreateHeader = ({navigation, handlePress}) => (
   <View
     style={{
       width: '100%',
@@ -69,14 +79,14 @@ export const CreateHeader = ({navigation}) => (
         navigation.goBack();
       }}
       left={16}
-      top={StatusBar.currentHeight - 12}
+      top={StatusBar.currentHeight - 24}
     />
     <RectButton
       minWidth={64}
-      handlePress={() => console.log('등록')}
+      handlePress={handlePress}
       position={'absolute'}
       right={16}
-      top={StatusBar.currentHeight - 12}>
+      top={StatusBar.currentHeight - 24}>
       등록
     </RectButton>
   </View>
@@ -91,7 +101,7 @@ export const MoreHeader = ({navigation, handlePresentModalPress}) => {
           navigation.goBack();
         }}
         left={16}
-        top={StatusBar.currentHeight - 12}
+        top={StatusBar.currentHeight - 24}
       />
       <View style={{alignItems: 'center'}}>
         <Text style={styles.username}>사용자아이디</Text>
@@ -103,7 +113,7 @@ export const MoreHeader = ({navigation, handlePresentModalPress}) => {
         handlePress={handlePresentModalPress}
         position={'absolute'}
         right={16}
-        top={StatusBar.currentHeight - 12}
+        top={StatusBar.currentHeight - 24}
       />
     </View>
   );

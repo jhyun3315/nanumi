@@ -1,4 +1,4 @@
-import React, {useCallback, useMemo, useRef} from 'react';
+import React, {useCallback, useEffect, useMemo, useRef} from 'react';
 import FocusedStatusBar from './../../ui/FocusedStatusBar';
 import DetailDesc from './DetailDesc';
 import {
@@ -13,16 +13,21 @@ import {
 import {SIZES, SHADOWS, assets, COLORS} from '../../constants';
 import {CircleButton, MoreButton, RectButton} from './../../ui/Button';
 import {SubInfo} from './SubInfo';
-import Indicator from './Indicator';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {
   BottomSheetModal,
   BottomSheetModalProvider,
   BottomSheetBackdrop,
 } from '@gorhom/bottom-sheet';
+import {useQuery} from '@tanstack/react-query';
+import {useModal} from '../../hooks/useModal';
+import {requestGetDetailProduct} from '../../api/product';
+import {Fallback} from '../../ui/Fallback';
+import Indicator from './Indicator';
 import ProductOptions from './ProductOptions';
 import GlobalModal from '../modal/GlobalModal';
-import {useModal} from '../../hooks/useModal';
+import ErrorModal from '../modal/ErrorModal';
+import DataErrorModal from '../modal/DataErrorModal';
 
 const {width} = Dimensions.get('window');
 
@@ -53,7 +58,7 @@ const DetailHeader = ({data, navigation, handlePresentModalPress}) => {
   return (
     <View style={{width: '100%', height: 373}}>
       <Animated.FlatList
-        data={data.image}
+        data={data.productImageUrls}
         renderItem={renderImageItem}
         keyExtractor={(item, index) => `image-${item}-${index}`}
         horizontal
@@ -67,7 +72,7 @@ const DetailHeader = ({data, navigation, handlePresentModalPress}) => {
         )}
       />
 
-      <Indicator scrollX={scrollX} data={data.image} />
+      <Indicator scrollX={scrollX} data={data.productImageUrls} />
       <CircleButton
         imgUrl={assets.left}
         handlePress={() => {
@@ -90,8 +95,17 @@ const DetailHeader = ({data, navigation, handlePresentModalPress}) => {
 };
 
 const ProductDetail = ({route, navigation}) => {
-  const {data} = route.params;
-  const {showModal} = useModal();
+  const {id} = route.params.data;
+  const {hideModal, showModal} = useModal();
+
+  const handleCloseAndBack = () => {
+    hideModal();
+    navigation.goBack();
+  };
+
+  const {data, isLoading, error} = useQuery(['product', id], () =>
+    requestGetDetailProduct(id),
+  );
 
   const bottomSheetModalRef = useRef(null);
   const snapPoints = useMemo(() => ['20%'], []);
@@ -103,14 +117,16 @@ const ProductDetail = ({route, navigation}) => {
     bottomSheetModalRef.current?.close();
   };
 
-  const handleOpenProductDeleteModal = () => {
+  const handleOpenProductDeleteModal = productId => {
     handleCloseBottomModal();
     setTimeout(() => {
       showModal({
         modalType: 'ProductDeleteModal',
+        args: productId,
       });
     }, 300);
   };
+
   const renderBackDrop = useCallback(props => {
     return (
       <BottomSheetBackdrop
@@ -122,6 +138,12 @@ const ProductDetail = ({route, navigation}) => {
       />
     );
   }, []);
+
+  if (data?.code === 404) {
+    return <DataErrorModal handlePress={handleCloseAndBack} />;
+  }
+  if (isLoading) return <Fallback />;
+  if (error) return <ErrorModal />;
 
   return (
     <GestureHandlerRootView style={{flex: 1}}>
@@ -144,13 +166,13 @@ const ProductDetail = ({route, navigation}) => {
             ListHeaderComponent={() => (
               <>
                 <DetailHeader
-                  data={data}
+                  data={data?.result}
                   navigation={navigation}
                   handlePresentModalPress={handlePresentModalPress}
                 />
-                <SubInfo />
+                <SubInfo data={data?.result} />
                 <View style={{padding: SIZES.font}}>
-                  <DetailDesc data={data} />
+                  <DetailDesc data={data?.result} />
                 </View>
               </>
             )}
@@ -165,6 +187,7 @@ const ProductDetail = ({route, navigation}) => {
               duration: 200,
             }}>
             <ProductOptions
+              data={data}
               handleOpenProductDeleteModal={handleOpenProductDeleteModal}
             />
           </BottomSheetModal>

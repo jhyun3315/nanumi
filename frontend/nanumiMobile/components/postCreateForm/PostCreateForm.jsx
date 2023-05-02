@@ -8,16 +8,20 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {CreateHeader} from '../../ui/BackHeader';
 import {openPicker} from '@baronha/react-native-multiple-image-picker';
 import {generateUniqueKey} from '../../util/uniqueId';
+import {requestCreateProduct} from '../../api/product';
+import {useRecoilState} from 'recoil';
+import {userState} from '../../state/user';
 
 const PostCreateForm = () => {
   const navigation = useNavigation();
-  const [modalVisible, setModalVisible] = useState(false);
+  const [user] = useRecoilState(userState);
   const [selectedCategory, setSelectedCategory] = useState('');
   const [images, setImages] = useState([]);
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
 
-  const handleCategorySelected = useCallback(category => {
-    setSelectedCategory(category);
-    setModalVisible(false);
+  const handleCategorySelected = useCallback((categoryId, categoryName) => {
+    setSelectedCategory({categoryId, categoryName});
   }, []);
 
   const handleImageSelection = async () => {
@@ -54,13 +58,37 @@ const PostCreateForm = () => {
     setImages(newImages);
   };
 
+  const handleTitle = text => {
+    setTitle(prev => text);
+  };
+
+  const handleDescription = text => {
+    setDescription(prev => text);
+  };
+
+  const handleCreateProduct = async () => {
+    const uris = images.map(image => image.uri);
+    const data = {
+      name: title,
+      content: description,
+      postImage: uris,
+      categoryId: selectedCategory.categoryId,
+    };
+
+    try {
+      const response = await requestCreateProduct(user.userId, data);
+      return response;
+    } catch (e) {
+      console.log(e);
+    }
+  };
   const renderItem = ({item}) => (
     <ImageContainer data={item} handlePress={handleImageDelete} />
   );
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: COLORS.white}}>
-      <CreateHeader navigation={navigation} />
+      <CreateHeader navigation={navigation} handlePress={handleCreateProduct} />
       <View style={styles.container}>
         <View style={styles.imageContainer}>
           <FlatList
@@ -77,14 +105,15 @@ const PostCreateForm = () => {
             }
           />
         </View>
-        <ProductTitle />
+        <ProductTitle title={title} handleTitle={handleTitle} />
         <ProductCategory
-          modalVisible={modalVisible}
-          setModalVisible={setModalVisible}
           selectedCategory={selectedCategory}
           handleCategorySelected={handleCategorySelected}
         />
-        <ProductDesc />
+        <ProductDesc
+          description={description}
+          handleDescription={handleDescription}
+        />
       </View>
     </SafeAreaView>
   );

@@ -3,7 +3,6 @@ import ProductDetailScreen from '../screens/ProductDetailScreen';
 import SearchScreen from '../screens/SearchScreen';
 import LoginScreen from './../screens/LoginScreen';
 import RegisterScreen from '../screens/RegisterScreen';
-import CategoryScreen from '../screens/CategoryScreen';
 import PostCreateFormScreen from '../screens/PostCreateFormScreen';
 import ChatDetailScreen from '../screens/ChatDetailScreen';
 import MapScreen from '../screens/MapScreen';
@@ -15,24 +14,31 @@ import MapUpdateScreen from '../screens/MapUpdateScreen';
 import ReportScreen from '../screens/ReportScreen';
 import LocationPickerScreen from '../screens/LocationPickerScreen';
 import ReviewScreen from '../screens/ReviewScreen';
-import HomeScreen from '../screens/HomeScreen';
 import BottomTabs from './BottomTabs';
 import ProfileUpdateScreen from '../screens/ProfileUpdateScreen';
+import CategoryProductScreen from '../screens/CategoryProductScreen';
+import FocusedStatusBar from '../ui/FocusedStatusBar';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {COLORS} from '../constants';
 
 const Stack = createNativeStackNavigator();
 
 const StackNavigator = () => {
   return (
     <NavigationContainer>
+      <FocusedStatusBar backgroundColor={COLORS.primary} />
       <Stack.Navigator
         screenOptions={{
           headerShown: false,
         }}
         initialRouteName="Login">
         <Stack.Screen name="BottomTabs" component={BottomTabs} />
-        <Stack.Screen name="Home" component={HomeScreen} />
+
+        <Stack.Screen
+          name="CategoryProduct"
+          component={CategoryProductScreen}
+        />
         <Stack.Screen name="Detail" component={ProductDetailScreen} />
         <Stack.Screen name="Search" component={SearchScreen} />
         <Stack.Screen name="Login" component={LoginScreen} />
@@ -42,7 +48,6 @@ const StackNavigator = () => {
         <Stack.Screen name="ProfileToChat" component={ProfileToChatScreen} />
         <Stack.Screen name="BlockUser" component={BlockUserScreen} />
         <Stack.Screen name="Review" component={ReviewScreen} />
-
         <Stack.Screen name="DivideProduct" component={DivideProductScreen} />
         <Stack.Screen name="MapUpdate" component={MapUpdateScreen} />
         <Stack.Screen name="ProfileUpdate" component={ProfileUpdateScreen} />
@@ -53,14 +58,6 @@ const StackNavigator = () => {
         <Stack.Screen
           name="PostCreateForm"
           component={PostCreateFormScreen}
-          options={{
-            presentation: 'modal',
-            animation: 'slide_from_bottom',
-          }}
-        />
-        <Stack.Screen
-          name="Category"
-          component={CategoryScreen}
           options={{
             presentation: 'modal',
             animation: 'slide_from_bottom',

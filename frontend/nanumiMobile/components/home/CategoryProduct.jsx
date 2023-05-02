@@ -1,20 +1,21 @@
-import React, {useEffect} from 'react';
-import ProductCard from './ProductCard';
-import Header from '../../ui/Header';
-import ErrorModal from '../modal/ErrorModal';
-import EmptyState from '../../ui/EmptyState';
-import {COLORS} from '../../constants';
-import {View, FlatList, StyleSheet} from 'react-native';
+import React, {useEffect, useState} from 'react';
 import {useInfiniteQuery} from '@tanstack/react-query';
-import {requestGetAllProduct} from './../../api/product';
-import {Fallback} from '../../ui/Fallback';
+import {View, FlatList, StyleSheet} from 'react-native';
+import {requestGetCategoryProduct} from '../../api/product';
 import {useRecoilState} from 'recoil';
 import {userState} from '../../state/user';
-import {productState} from '../../state/product';
+import {COLORS} from '../../constants';
+import {Fallback} from '../../ui/Fallback';
+import {BackHeader} from './../../ui/BackHeader';
+import {useNavigation} from '@react-navigation/native';
+import ProductCard from './../product/ProductCard';
+import ErrorModal from '../modal/ErrorModal';
+import EmptyState from '../../ui/EmptyState';
 
-const ProductList = ({isSearch}) => {
+const CategoryProduct = ({categoryKey, categoryName}) => {
   const [user] = useRecoilState(userState);
-  const [productList, setProductList] = useRecoilState(productState);
+  const navigation = useNavigation();
+  const [productList, setProductList] = useState({});
   const {
     data,
     error,
@@ -23,8 +24,9 @@ const ProductList = ({isSearch}) => {
     hasNextPage,
     isFetchingNextPage,
   } = useInfiniteQuery(
-    ['products'],
-    ({pageParam = 0}) => requestGetAllProduct(pageParam, user.userId),
+    ['category'],
+    ({pageParam = 0}) =>
+      requestGetCategoryProduct(categoryKey, user.userId, pageParam),
     {
       getNextPageParam: (lastPage, pages) => {
         if (
@@ -46,38 +48,38 @@ const ProductList = ({isSearch}) => {
   };
 
   useEffect(() => {
-    setProductList({
-      ...productList,
+    setProductList(prev => ({
+      ...prev,
       isFetchingNextPage: isFetchingNextPage,
-    });
+    }));
   }, [isFetchingNextPage]);
 
   useEffect(() => {
-    setProductList({
-      ...productList,
+    setProductList(prev => ({
+      ...prev,
       data: data,
       error: error,
       isLoading: isLoading,
       hasNextPage: hasNextPage,
-    });
+    }));
   }, [data, error, isLoading, hasNextPage]);
 
-  const content =
-    productList?.data?.pages?.flatMap(page => page.result.content) ?? [];
+  const content = data?.pages.flatMap(page => page.result.content) ?? [];
 
   if (error) return <ErrorModal handlePress={fetchNextPage} />;
   if (isLoading) return <Fallback />;
-  if (!productList?.data?.pages[0]?.result.content) return <EmptyState />;
 
   return (
     <View style={styles.container}>
+      <BackHeader navigation={navigation}>{categoryName}</BackHeader>
+      {data?.pages[0]?.result.content.length === 0 && <EmptyState />}
+
       <View style={styles.flatListWrapper}>
         <FlatList
           data={content}
           renderItem={({item}) => <ProductCard data={item} />}
           keyExtractor={item => item.id.toString()}
           showsVerticalScrollIndicator={false}
-          ListHeaderComponent={isSearch ? '' : <Header />}
           contentContainerStyle={styles.contentContainerStyle}
           onEndReached={handleLoadMore}
           onEndReachedThreshold={0.5}
@@ -90,6 +92,8 @@ const ProductList = ({isSearch}) => {
     </View>
   );
 };
+
+export default CategoryProduct;
 
 const styles = StyleSheet.create({
   container: {
@@ -119,5 +123,3 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
   },
 });
-
-export default ProductList;

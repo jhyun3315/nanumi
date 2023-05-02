@@ -8,6 +8,8 @@ import MatchingUserModal from './MatchingUserModal';
 import LogoutModal from './LogoutModal';
 import WithdrawalModal from './WithdrawalModal';
 import ProductDeleteModal from './ProductDeleteModal';
+import HomeCategoryModal from './HomeCategoryModal';
+import CreateCategoryModal from './CreateCategoryModal';
 
 const MODAL_TYPES = {
   BlockUserModal: 'BlockUserModal',
@@ -17,6 +19,8 @@ const MODAL_TYPES = {
   LogoutModal: 'LogoutModal',
   WithdrawalModal: 'WithdrawalModal',
   ProductDeleteModal: 'ProductDeleteModal',
+  HomeCategoryModal: 'HomeCategoryModal',
+  CreateCategoryModal: 'CreateCategoryModal',
 };
 
 const MODAL_COMPONENTS = {
@@ -27,6 +31,8 @@ const MODAL_COMPONENTS = {
   [MODAL_TYPES.LogoutModal]: LogoutModal,
   [MODAL_TYPES.WithdrawalModal]: WithdrawalModal,
   [MODAL_TYPES.ProductDeleteModal]: ProductDeleteModal,
+  [MODAL_TYPES.HomeCategoryModal]: HomeCategoryModal,
+  [MODAL_TYPES.CreateCategoryModal]: CreateCategoryModal,
 };
 
 const GlobalModal = () => {
@@ -34,7 +40,13 @@ const GlobalModal = () => {
   if (!modal?.modalType) return null;
 
   const ModalComponent = MODAL_COMPONENTS[modal.modalType];
-  return ModalComponent ? <ModalComponent {...modal?.modalProps} /> : null;
+  return ModalComponent ? (
+    <ModalComponent
+      {...modal?.modalProps}
+      callback={modal?.callback}
+      args={modal?.args}
+    />
+  ) : null;
 };
 
 export default GlobalModal;

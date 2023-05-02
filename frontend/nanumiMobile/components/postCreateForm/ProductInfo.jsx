@@ -1,55 +1,54 @@
 import React from 'react';
 import {View, TextInput, StyleSheet, Pressable} from 'react-native';
 import {COLORS, FONTS, SIZES} from '../../constants';
-import CategoryList from '../modal/CategoryList';
+import GlobalModal from '../modal/GlobalModal';
+import {useModal} from '../../hooks/useModal';
 
-export const ProductTitle = () => {
+export const ProductTitle = ({title, handleTitle}) => {
   return (
     <View style={styles.container}>
       <TextInput
         placeholder="상품명"
         placeholderTextColor={COLORS.gray}
         style={styles.title}
+        value={title}
+        onChangeText={handleTitle}
       />
     </View>
   );
 };
 
-export const ProductCategory = ({
-  modalVisible,
-  setModalVisible,
-  selectedCategory,
-  handleCategorySelected,
-}) => {
+export const ProductCategory = ({selectedCategory, handleCategorySelected}) => {
+  const {showModal} = useModal();
+  const handleOpenCategoryModal = () => {
+    showModal({
+      modalType: 'CreateCategoryModal',
+      callback: handleCategorySelected,
+    });
+  };
   return (
-    <Pressable
-      style={styles.container}
-      onPress={() => {
-        setModalVisible(true);
-      }}>
+    <Pressable style={styles.container} onPress={handleOpenCategoryModal}>
       <TextInput
         placeholder="카테고리"
         placeholderTextColor={COLORS.gray}
+        value={selectedCategory.categoryName}
         style={styles.category}
-        value={selectedCategory}
         editable={false}
       />
-      <CategoryList
-        modalVisible={modalVisible}
-        handleCategorySelected={handleCategorySelected}
-        setModalVisible={setModalVisible}
-      />
+      <GlobalModal />
     </Pressable>
   );
 };
 
-export const ProductDesc = () => {
+export const ProductDesc = ({description, handleDescription}) => {
   return (
     <View style={styles.textInputContainer}>
       <TextInput
         placeholder="OO동에 올릴 게시글 내용을 작성해주세요 (나눔 금지 물품은 게시가 제한될 수 있습니다.)"
         placeholderTextColor={COLORS.gray}
         style={[styles.textInput, styles.desc]}
+        value={description}
+        onChangeText={handleDescription}
         numberOfLines={6}
         multiline={true}
       />
@@ -68,12 +67,11 @@ const styles = StyleSheet.create({
   title: {
     color: COLORS.primary,
     fontFamily: FONTS.bold,
-    lineHeight: 32,
+    lineHeight: 24,
   },
   category: {
     color: COLORS.primary,
     fontFamily: FONTS.medium,
-    lineHeight: 24,
   },
   textInputContainer: {
     width: '100%',
@@ -89,6 +87,5 @@ const styles = StyleSheet.create({
   desc: {
     color: COLORS.primary,
     fontFamily: FONTS.medium,
-    lineHeight: 32,
   },
 });
