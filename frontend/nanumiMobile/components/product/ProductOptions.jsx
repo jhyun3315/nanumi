@@ -2,13 +2,15 @@ import React from 'react';
 import {View, StyleSheet, Pressable, Text} from 'react-native';
 import {SIZES, COLORS, FONTS} from '../../constants';
 
-const ProductOptions = ({handleOpenProductDeleteModal}) => {
+const ProductOptions = ({data, handleOpenProductDeleteModal}) => {
   return (
     <View style={styles.optionContainer}>
       <Pressable style={styles.option}>
         <Text style={styles.optionText}>상품수정</Text>
       </Pressable>
-      <Pressable style={styles.option} onPress={handleOpenProductDeleteModal}>
+      <Pressable
+        style={styles.option}
+        onPress={() => handleOpenProductDeleteModal(data?.result?.id)}>
         <Text style={styles.optionText}>상품삭제</Text>
       </Pressable>
     </View>

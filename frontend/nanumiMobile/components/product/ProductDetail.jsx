@@ -22,10 +22,10 @@ import {
 import {useQuery} from '@tanstack/react-query';
 import {useModal} from '../../hooks/useModal';
 import {requestGetDetailProduct} from '../../api/product';
+import {Fallback} from '../../ui/Fallback';
 import Indicator from './Indicator';
 import ProductOptions from './ProductOptions';
 import GlobalModal from '../modal/GlobalModal';
-import {Fallback} from '../../ui/Fallback';
 import ErrorModal from '../modal/ErrorModal';
 
 const {width} = Dimensions.get('window');
@@ -111,11 +111,12 @@ const ProductDetail = ({route, navigation}) => {
     bottomSheetModalRef.current?.close();
   };
 
-  const handleOpenProductDeleteModal = () => {
+  const handleOpenProductDeleteModal = productId => {
     handleCloseBottomModal();
     setTimeout(() => {
       showModal({
         modalType: 'ProductDeleteModal',
+        args: productId,
       });
     }, 300);
   };
@@ -177,6 +178,7 @@ const ProductDetail = ({route, navigation}) => {
               duration: 200,
             }}>
             <ProductOptions
+              data={data}
               handleOpenProductDeleteModal={handleOpenProductDeleteModal}
             />
           </BottomSheetModal>

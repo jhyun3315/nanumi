@@ -12,14 +12,27 @@ import {COLORS, FONTS, SIZES} from '../../constants';
 import {RectButton} from '../../ui/Button';
 import {useModal} from '../../hooks/useModal';
 import FocusedStatusBar from '../../ui/FocusedStatusBar';
+import {requestDeleteProduct} from '../../api/product';
+import {useNavigation} from '@react-navigation/native';
 const {width, height} = Dimensions.get('window');
 
-const ProductDeleteModal = () => {
+const ProductDeleteModal = ({args}) => {
   const {hideModal} = useModal();
+  const navigation = useNavigation();
+
+  const handleDeleteProduct = async () => {
+    const response = await requestDeleteProduct(args);
+    hideModal();
+    if (response.code === 200) {
+      navigation.navigate('BottomTabs', {screen: 'Home'});
+    } else {
+      Alert.alert('삭제에 실패했습니다.');
+    }
+  };
 
   return (
     <>
-      <FocusedStatusBar hidden={true} />
+      <StatusBar hidden={true} />
       <Modal visible={true} transparent={true}>
         <Pressable style={styles.modalContainer} onPress={hideModal}>
           <TouchableWithoutFeedback onPress={event => event.stopPropagation()}>
@@ -37,7 +50,7 @@ const ProductDeleteModal = () => {
                 <RectButton
                   minWidth={96}
                   fontSize={FONTS.font}
-                  handlePress={hideModal}>
+                  handlePress={handleDeleteProduct}>
                   네
                 </RectButton>
                 <RectButton

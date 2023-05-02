@@ -32,7 +32,7 @@ const StackNavigator = () => {
         }}
         initialRouteName="Login">
         <Stack.Screen name="BottomTabs" component={BottomTabs} />
-        <Stack.Screen name="Home" component={HomeScreen} />
+
         <Stack.Screen
           name="CategoryProduct"
           component={CategoryProductScreen}

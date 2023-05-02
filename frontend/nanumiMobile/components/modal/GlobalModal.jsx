@@ -41,7 +41,11 @@ const GlobalModal = () => {
 
   const ModalComponent = MODAL_COMPONENTS[modal.modalType];
   return ModalComponent ? (
-    <ModalComponent {...modal?.modalProps} callback={modal.callback} />
+    <ModalComponent
+      {...modal?.modalProps}
+      callback={modal?.callback}
+      args={modal?.args}
+    />
   ) : null;
 };
 

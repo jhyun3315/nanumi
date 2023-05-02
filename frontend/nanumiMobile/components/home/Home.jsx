@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {SafeAreaView, StyleSheet} from 'react-native';
 import {COLORS} from '../../constants';
 import {CategoryButton} from '../../ui/Button';
@@ -15,6 +15,7 @@ const Home = () => {
       modalType: 'HomeCategoryModal',
     });
   };
+
   return (
     <SafeAreaView style={styles.container}>
       <GlobalModal />
