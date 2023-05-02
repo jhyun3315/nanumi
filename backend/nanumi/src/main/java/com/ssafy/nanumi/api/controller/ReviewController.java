@@ -20,13 +20,14 @@ public class ReviewController {
     private final ReviewService reviewService;
 
     /* 거래한 상대방 평가 */
-    @PostMapping("/reviews")
-    public CustomResponse saveUserReview(@RequestBody UserReviewDTO userReviewDTO) {
+    @PostMapping("/matches/{match-id}/reviews/{user-id}")
+    public CustomResponse saveUserReview(@RequestBody UserReviewDTO userReviewDTO,
+                                         @PathVariable("match-id") long matchId,
+                                         @PathVariable("user-id") long userId) {
 
         // TODO : writerId는 JWT에서, receiverId는 products table에서, matchId는 Pathvariable에서
 
-        long writerId = 1L;
-        long matchId = 1L;
+        long writerId = userId;
 
         // 별점을 남겼을 경우에만 (후기를 남겼을 경우에만)
         if (userReviewDTO.getStarPoint() != 0) {
