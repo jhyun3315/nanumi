@@ -1,5 +1,4 @@
-import React, {useEffect, useState} from 'react';
-import {useFocusEffect} from '@react-navigation/native';
+import React, {useEffect} from 'react';
 import ProductCard from './ProductCard';
 import Header from '../../ui/Header';
 import ErrorModal from '../modal/ErrorModal';
@@ -47,27 +46,28 @@ const ProductList = ({isSearch}) => {
   };
 
   useEffect(() => {
-    setProductList(prev => ({
-      ...prev,
+    setProductList({
+      ...productList,
       isFetchingNextPage: isFetchingNextPage,
-    }));
+    });
   }, [isFetchingNextPage]);
 
   useEffect(() => {
-    setProductList(prev => ({
-      ...prev,
+    setProductList({
+      ...productList,
       data: data,
       error: error,
       isLoading: isLoading,
       hasNextPage: hasNextPage,
-    }));
+    });
   }, [data, error, isLoading, hasNextPage]);
 
-  const content = data?.pages.flatMap(page => page.result.content) ?? [];
+  const content =
+    productList?.data?.pages?.flatMap(page => page.result.content) ?? [];
 
   if (error) return <ErrorModal handlePress={fetchNextPage} />;
   if (isLoading) return <Fallback />;
-  if (!data?.pages[0]?.result.content) return <EmptyState />;
+  if (!productList?.data?.pages[0]?.result.content) return <EmptyState />;
 
   return (
     <View style={styles.container}>

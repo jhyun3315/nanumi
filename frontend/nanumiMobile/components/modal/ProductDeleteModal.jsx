@@ -21,15 +21,15 @@ const ProductDeleteModal = ({args}) => {
   const {hideModal} = useModal();
   const navigation = useNavigation();
   const [productList, setProductList] = useRecoilState(productState);
+
   const deleteProductLocally = id => {
     setProductList(prev => {
-      const updatedPages = prev.data.pages.map(page => {
-        const updatedContent = page.result.content.filter(
+      const updatedProducts = JSON.parse(JSON.stringify(prev.data)); // deep copy
+      updatedProducts.pages[0].result.content =
+        updatedProducts.pages[0].result.content.filter(
           product => product.id !== id,
         );
-        return {...page, result: {...page.result, content: updatedContent}};
-      });
-      return {...prev, data: {...prev.data, pages: updatedPages}};
+      return {...prev, data: updatedProducts};
     });
   };
 

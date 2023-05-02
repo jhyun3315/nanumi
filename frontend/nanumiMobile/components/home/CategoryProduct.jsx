@@ -6,7 +6,6 @@ import {useRecoilState} from 'recoil';
 import {userState} from '../../state/user';
 import {COLORS} from '../../constants';
 import {Fallback} from '../../ui/Fallback';
-import {productState} from '../../state/product';
 import {BackHeader} from './../../ui/BackHeader';
 import {useNavigation} from '@react-navigation/native';
 import ProductCard from './../product/ProductCard';
@@ -16,7 +15,7 @@ import EmptyState from '../../ui/EmptyState';
 const CategoryProduct = ({categoryKey, categoryName}) => {
   const [user] = useRecoilState(userState);
   const navigation = useNavigation();
-  const [productList, setProductList] = useState(productState);
+  const [productList, setProductList] = useState({});
   const {
     data,
     error,
