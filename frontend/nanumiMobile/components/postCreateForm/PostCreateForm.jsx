@@ -15,11 +15,6 @@ const PostCreateForm = () => {
   const [selectedCategory, setSelectedCategory] = useState('');
   const [images, setImages] = useState([]);
 
-  const handleCategorySelected = useCallback(category => {
-    setSelectedCategory(category);
-    setModalVisible(false);
-  }, []);
-
   const handleImageSelection = async () => {
     try {
       const response = await openPicker({
@@ -78,12 +73,7 @@ const PostCreateForm = () => {
           />
         </View>
         <ProductTitle />
-        <ProductCategory
-          modalVisible={modalVisible}
-          setModalVisible={setModalVisible}
-          selectedCategory={selectedCategory}
-          handleCategorySelected={handleCategorySelected}
-        />
+        <ProductCategory />
         <ProductDesc />
       </View>
     </SafeAreaView>

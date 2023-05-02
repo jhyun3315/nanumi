@@ -1,7 +1,8 @@
 import React from 'react';
 import {View, TextInput, StyleSheet, Pressable} from 'react-native';
 import {COLORS, FONTS, SIZES} from '../../constants';
-import CategoryList from '../modal/CategoryList';
+import GlobalModal from '../modal/GlobalModal';
+import {useModal} from '../../hooks/useModal';
 
 export const ProductTitle = () => {
   return (
@@ -15,30 +16,22 @@ export const ProductTitle = () => {
   );
 };
 
-export const ProductCategory = ({
-  modalVisible,
-  setModalVisible,
-  selectedCategory,
-  handleCategorySelected,
-}) => {
+export const ProductCategory = ({}) => {
+  const {showModal} = useModal();
+  const handleOpenCategoryModal = () => {
+    showModal({
+      modalType: 'CreateCategoryModal',
+    });
+  };
   return (
-    <Pressable
-      style={styles.container}
-      onPress={() => {
-        setModalVisible(true);
-      }}>
+    <Pressable style={styles.container} onPress={handleOpenCategoryModal}>
       <TextInput
         placeholder="카테고리"
         placeholderTextColor={COLORS.gray}
         style={styles.category}
-        value={selectedCategory}
         editable={false}
       />
-      <CategoryList
-        modalVisible={modalVisible}
-        handleCategorySelected={handleCategorySelected}
-        setModalVisible={setModalVisible}
-      />
+      <GlobalModal />
     </Pressable>
   );
 };
