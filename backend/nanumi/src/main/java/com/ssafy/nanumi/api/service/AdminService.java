@@ -4,7 +4,6 @@ import com.ssafy.nanumi.api.request.ReportUserDTO;
 import com.ssafy.nanumi.api.request.UserBanDTO;
 import com.ssafy.nanumi.api.response.ReportAllDTO;
 import com.ssafy.nanumi.config.response.exception.CustomException;
-import com.ssafy.nanumi.config.response.exception.CustomExceptionStatus;
 import com.ssafy.nanumi.db.entity.Report;
 import com.ssafy.nanumi.db.entity.User;
 import com.ssafy.nanumi.db.entity.UserInfo;
