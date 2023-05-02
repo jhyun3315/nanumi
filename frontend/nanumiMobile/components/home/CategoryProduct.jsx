@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useInfiniteQuery} from '@tanstack/react-query';
 import {View, FlatList, StyleSheet} from 'react-native';
 import {requestGetCategoryProduct} from '../../api/product';
@@ -6,14 +6,17 @@ import {useRecoilState} from 'recoil';
 import {userState} from '../../state/user';
 import {COLORS} from '../../constants';
 import {Fallback} from '../../ui/Fallback';
+import {productState} from '../../state/product';
+import {BackHeader} from './../../ui/BackHeader';
+import {useNavigation} from '@react-navigation/native';
+import ProductCard from './../product/ProductCard';
 import ErrorModal from '../modal/ErrorModal';
 import EmptyState from '../../ui/EmptyState';
-import {productState} from '../../state/product';
 
-const CategoryProduct = ({categoryKey}) => {
+const CategoryProduct = ({categoryKey, categoryName}) => {
   const [user] = useRecoilState(userState);
-
-  const [productList, setProductList] = useRecoilState(productState);
+  const navigation = useNavigation();
+  const [productList, setProductList] = useState(productState);
   const {
     data,
     error,
@@ -28,10 +31,10 @@ const CategoryProduct = ({categoryKey}) => {
     {
       getNextPageParam: (lastPage, pages) => {
         if (
-          !lastPage?.result?.content?.lenght ||
+          !lastPage?.result?.content?.length ||
           (pages &&
             pages.length > 0 &&
-            pages[pages.lneght - 1].result &&
+            pages[pages.length - 1].result &&
             pages[pages.length - 1].result.last)
         ) {
           return undefined;
@@ -66,17 +69,18 @@ const CategoryProduct = ({categoryKey}) => {
 
   if (error) return <ErrorModal handlePress={fetchNextPage} />;
   if (isLoading) return <Fallback />;
-  if (!data?.pages[0]?.result.content) return <EmptyState />;
 
   return (
     <View style={styles.container}>
+      <BackHeader navigation={navigation}>{categoryName}</BackHeader>
+      {data?.pages[0]?.result.content.length === 0 && <EmptyState />}
+
       <View style={styles.flatListWrapper}>
         <FlatList
           data={content}
           renderItem={({item}) => <ProductCard data={item} />}
           keyExtractor={item => item.id.toString()}
           showsVerticalScrollIndicator={false}
-          ListHeaderComponent={isSearch ? '' : <Header />}
           contentContainerStyle={styles.contentContainerStyle}
           onEndReached={handleLoadMore}
           onEndReachedThreshold={0.5}

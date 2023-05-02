@@ -35,22 +35,32 @@ export const BackHeader = ({navigation, children}) => {
   );
 };
 
-export const CloseHeader = ({setModalVisible}) => {
+export const CloseHeader = ({handlePress, children}) => {
   return (
     <View
       style={{
         width: '100%',
         height: 60,
         backgroundColor: COLORS.white,
+        justifyContent: 'center',
+        alignItems: 'center',
       }}>
       <CircleButton
         imgUrl={assets.left}
-        handlePress={() => {
-          setModalVisible(false);
-        }}
+        handlePress={handlePress}
         left={16}
         top={StatusBar.currentHeight - 12}
       />
+      <View>
+        <Text
+          style={{
+            fontFamily: FONTS.bold,
+            fontSize: SIZES.large,
+            color: COLORS.primary,
+          }}>
+          {children}
+        </Text>
+      </View>
     </View>
   );
 };

@@ -8,6 +8,7 @@ import MatchingUserModal from './MatchingUserModal';
 import LogoutModal from './LogoutModal';
 import WithdrawalModal from './WithdrawalModal';
 import ProductDeleteModal from './ProductDeleteModal';
+import HomeCategoryModal from './HomeCategoryModal';
 
 const MODAL_TYPES = {
   BlockUserModal: 'BlockUserModal',
@@ -17,6 +18,7 @@ const MODAL_TYPES = {
   LogoutModal: 'LogoutModal',
   WithdrawalModal: 'WithdrawalModal',
   ProductDeleteModal: 'ProductDeleteModal',
+  HomeCategoryModal: 'HomeCategoryModal',
 };
 
 const MODAL_COMPONENTS = {
@@ -27,6 +29,7 @@ const MODAL_COMPONENTS = {
   [MODAL_TYPES.LogoutModal]: LogoutModal,
   [MODAL_TYPES.WithdrawalModal]: WithdrawalModal,
   [MODAL_TYPES.ProductDeleteModal]: ProductDeleteModal,
+  [MODAL_TYPES.HomeCategoryModal]: HomeCategoryModal,
 };
 
 const GlobalModal = () => {

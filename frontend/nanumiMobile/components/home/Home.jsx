@@ -3,21 +3,25 @@ import React, {useEffect, useState} from 'react';
 import {SafeAreaView, StyleSheet} from 'react-native';
 import {COLORS} from '../../constants';
 import {CategoryButton} from '../../ui/Button';
-import {useNavigation} from '@react-navigation/native';
+import {useModal} from '../../hooks/useModal';
 import FocusedStatusBar from '../../ui/FocusedStatusBar';
 import ProductList from '../product/ProductList';
+import GlobalModal from './../modal/GlobalModal';
 
 const Home = () => {
-  const navigation = useNavigation();
+  const {showModal} = useModal();
 
+  const handleOpenCategoryModal = () => {
+    showModal({
+      modalType: 'HomeCategoryModal',
+    });
+  };
   return (
     <SafeAreaView style={styles.container}>
+      <GlobalModal />
       <FocusedStatusBar background={COLORS.secondary} />
       <ProductList isSearch={false} />
-      <CategoryButton
-        minwidth={48}
-        handlePress={() => navigation.navigate('Category')}
-      />
+      <CategoryButton minwidth={48} handlePress={handleOpenCategoryModal} />
     </SafeAreaView>
   );
 };

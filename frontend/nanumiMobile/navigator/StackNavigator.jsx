@@ -3,7 +3,6 @@ import ProductDetailScreen from '../screens/ProductDetailScreen';
 import SearchScreen from '../screens/SearchScreen';
 import LoginScreen from './../screens/LoginScreen';
 import RegisterScreen from '../screens/RegisterScreen';
-import CategoryScreen from '../screens/CategoryScreen';
 import PostCreateFormScreen from '../screens/PostCreateFormScreen';
 import ChatDetailScreen from '../screens/ChatDetailScreen';
 import MapScreen from '../screens/MapScreen';
@@ -47,7 +46,6 @@ const StackNavigator = () => {
         <Stack.Screen name="ProfileToChat" component={ProfileToChatScreen} />
         <Stack.Screen name="BlockUser" component={BlockUserScreen} />
         <Stack.Screen name="Review" component={ReviewScreen} />
-
         <Stack.Screen name="DivideProduct" component={DivideProductScreen} />
         <Stack.Screen name="MapUpdate" component={MapUpdateScreen} />
         <Stack.Screen name="ProfileUpdate" component={ProfileUpdateScreen} />
@@ -58,14 +56,6 @@ const StackNavigator = () => {
         <Stack.Screen
           name="PostCreateForm"
           component={PostCreateFormScreen}
-          options={{
-            presentation: 'modal',
-            animation: 'slide_from_bottom',
-          }}
-        />
-        <Stack.Screen
-          name="Category"
-          component={CategoryScreen}
           options={{
             presentation: 'modal',
             animation: 'slide_from_bottom',

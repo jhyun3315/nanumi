@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import ProductCard from './ProductCard';
 import Header from '../../ui/Header';
 import ErrorModal from '../modal/ErrorModal';
@@ -14,7 +14,7 @@ import {productState} from '../../state/product';
 
 const ProductList = ({isSearch}) => {
   const [user] = useRecoilState(userState);
-  const [productList, setProductList] = useRecoilState(productState);
+  const [productList, setProductList] = useState(productState);
   const {
     data,
     error,
