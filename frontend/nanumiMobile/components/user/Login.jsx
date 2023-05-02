@@ -23,7 +23,6 @@ const Login = () => {
     });
   };
 
-  console.log(userInfo);
   const handleLogin = async () => {
     const data = {
       id: userInfo.username,

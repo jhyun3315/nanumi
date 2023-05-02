@@ -20,3 +20,8 @@ export const requestLogin = async data => {
     console.log('catch', error);
   }
 };
+
+export const requestGetProfile = async userId => {
+  const response = await axios.get(`${API_END_POINT}/users/${userId}`);
+  return response.data;
+};

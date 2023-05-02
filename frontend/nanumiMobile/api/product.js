@@ -21,3 +21,12 @@ export const requestGetCategoryProduct = async (categoryId, userId, page) => {
   );
   return response.data;
 };
+
+export const requestCreateProduct = async (userId, data) => {
+  console.log(userId);
+  const response = await axios.post(
+    `${API_END_POINT}/products/${userId}`,
+    data,
+  );
+  return response;
+};

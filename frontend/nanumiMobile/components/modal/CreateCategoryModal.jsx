@@ -12,27 +12,33 @@ import {CloseHeader} from '../../ui/BackHeader';
 import {CATEGORIES} from '../../constants/category';
 import {useModal} from '../../hooks/useModal';
 
-const RenderCategory = ({item}) => {
-  console.log(item);
+const RenderCategory = ({item, callback}) => {
+  const {hideModal} = useModal();
+
   return (
-    <Pressable style={styles.categoryItem} onPress={() => {}}>
+    <Pressable
+      style={styles.categoryItem}
+      onPress={() => {
+        callback(item.key, item.name);
+        hideModal();
+      }}>
       <Image style={styles.categoryImage} source={item.source} />
       <Text style={styles.categoryName}>{item.name}</Text>
     </Pressable>
   );
 };
 
-const CreateCategoryModal = ({}) => {
+const CreateCategoryModal = ({callback}) => {
   const {hideModal} = useModal();
   return (
-    <Modal
-      style={styles.categoryContainer}
-      visible={true}
-      animationType="slide">
+    <Modal style={styles.categoryContainer} visible={true} animationType="none">
       <CloseHeader handlePress={hideModal} />
       <FlatList
         data={CATEGORIES}
-        renderItem={({item}) => <RenderCategory item={item} />}
+        initialNumToRender={20}
+        renderItem={({item}) => (
+          <RenderCategory item={item} callback={callback} />
+        )}
         keyExtractor={item => item.key.toString()}
       />
     </Modal>

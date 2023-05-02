@@ -18,7 +18,7 @@ const Home = () => {
   return (
     <SafeAreaView style={styles.container}>
       <GlobalModal />
-      <FocusedStatusBar background={COLORS.secondary} />
+      <FocusedStatusBar background={COLORS.white} />
       <ProductList isSearch={false} />
       <CategoryButton minwidth={48} handlePress={handleOpenCategoryModal} />
     </SafeAreaView>
