@@ -1,11 +1,11 @@
-import React, {useCallback} from 'react';
+import React from 'react';
 import {SafeAreaView, StyleSheet} from 'react-native';
 import {CategoryButton} from '../../ui/Button';
 import {useModal} from '../../hooks/useModal';
 import ProductList from '../product/ProductList';
 import GlobalModal from './../modal/GlobalModal';
 
-const Home = () => {
+const Home = ({navigation}) => {
   const {showModal} = useModal();
 
   const handleOpenCategoryModal = () => {

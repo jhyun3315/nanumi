@@ -15,6 +15,7 @@ import {useRecoilState} from 'recoil';
 import {requestProfileUpdate} from '../../api/user';
 import {userState} from '../../state/user';
 import Icon from 'react-native-ionicons';
+import {showErrorAlert} from '../../ui/Alert';
 
 const ProfileUpate = ({navigation, nickname, profileUrl}) => {
   const [updateNickname, setUpdateNickname] = useState(nickname);
@@ -43,14 +44,12 @@ const ProfileUpate = ({navigation, nickname, profileUrl}) => {
           type: format,
         };
       });
-
       setUpdateProfileUrl(...path);
     } catch (e) {
       console.log(e);
     }
   };
 
-  console.log(updateProfileUrl);
   const handleProfileUpdate = async () => {
     const formData = new FormData();
     formData.append('nickname', updateNickname);
@@ -60,24 +59,14 @@ const ProfileUpate = ({navigation, nickname, profileUrl}) => {
       name: updateProfileUrl.name,
     });
 
-    console.log('formDat', formData._parts);
     try {
       const response = await requestProfileUpdate(user.userId, formData);
-      console.log(response);
+      if (response.code === 200)
+        navigation.navigate('BottomTabs', {screen: 'Profile'});
+      else if (response.code === 400)
+        showErrorAlert('존재하는 유저가 아닙니다.', navigation);
     } catch (error) {
-      if (error.response) {
-        // The request was made and the server responded with a status code
-        console.log('error.data', error.response.data);
-        console.log('error.stauts', error.response.status);
-        console.log('error.header', error.response.headers);
-      } else if (error.request) {
-        // The request was made but no response was received
-        console.log('error.request', error.request);
-      } else {
-        // Something happened in setting up the request that triggered an Error
-        console.log('Error', error.message);
-      }
-      console.log('erro.config', error.config);
+      showErrorAlert('알 수 없는 에러가 발생했습니다.', navigation);
     }
   };
   return (
