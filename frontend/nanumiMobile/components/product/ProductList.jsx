@@ -49,7 +49,6 @@ const ProductList = ({isSearch}) => {
 
   useFocusEffect(
     useCallback(() => {
-      console.log('a');
       refetch();
     }, []),
   );
