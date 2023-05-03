@@ -52,6 +52,7 @@ const ProductList = ({isSearch}) => {
       refetch();
     }, []),
   );
+
   useEffect(() => {
     setProductList({
       ...productList,
@@ -74,7 +75,6 @@ const ProductList = ({isSearch}) => {
 
   if (error) return <ErrorModal handlePress={fetchNextPage} />;
   if (isLoading) return <Fallback />;
-  if (!productList?.data?.pages[0]?.result?.content) return <EmptyState />;
 
   return (
     <View style={styles.container}>
@@ -90,6 +90,7 @@ const ProductList = ({isSearch}) => {
           onEndReachedThreshold={0.5}
         />
       </View>
+      {!!productList?.data?.pages[0]?.result?.content && <EmptyState />}
       <View style={styles.backgroundWrapper}>
         <View style={styles.backgroundTop} />
         <View style={styles.backgroundBottom} />

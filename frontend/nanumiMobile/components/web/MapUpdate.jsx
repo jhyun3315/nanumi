@@ -16,6 +16,10 @@ import {BackHeader} from '../../ui/BackHeader';
 import {RectButton} from '../../ui/Button';
 import {getDisntace} from '../../util/distance';
 import {showErrorAlert} from '../../ui/Alert';
+import {requsetUpdateCoordinate} from '../../api/user';
+import {useRecoilState} from 'recoil';
+import {userState} from '../../state/user';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const {width, height} = Dimensions.get('window');
 const MAX_DISTANCE = 5000;
@@ -47,8 +51,31 @@ const reducer = (state, action) => {
 };
 const MapUpdate = ({navigation}) => {
   const {coordinate, code, addressName} = useLocationPermission();
+  const [user, setUser] = useRecoilState(userState);
   const [state, dispatch] = useReducer(reducer, initialState);
 
+  const handleUpdateCoordinate = async () => {
+    const response = await requsetUpdateCoordinate(user.userId, {
+      addressId: state.newCode,
+    });
+
+    if (response.code === 200) {
+      const asyncUser = await AsyncStorage.getItem('user');
+      const parsedUser = JSON.parse(asyncUser);
+      const updateUser = {
+        ...parsedUser,
+        addressId: response.result.addressId,
+        si: response.result.si,
+        gugun: response.result.gugun,
+        dong: response.result.dong,
+      };
+      await AsyncStorage.setItem('user', JSON.stringify(updateUser));
+      setUser(updateUser);
+      navigation.navigate('BottomTabs', {screen: 'Home'});
+    } else {
+      showErrorAlert(response.message, navigation);
+    }
+  };
   const getCityName = async coordinate => {
     try {
       const response = await axios.get(
@@ -98,10 +125,6 @@ const MapUpdate = ({navigation}) => {
     }
   };
 
-  const handlePress = () => {
-    navigation.navigate('Profile');
-  };
-
   useEffect(() => {
     dispatch({type: 'SET_ALL_DATA', payload: {coordinate, code, addressName}});
   }, [coordinate, addressName, code]);
@@ -140,7 +163,7 @@ const MapUpdate = ({navigation}) => {
           minWidth={64}
           fontSize={SIZES.font}
           {...SHADOWS.dark}
-          handlePress={handlePress}>
+          handlePress={handleUpdateCoordinate}>
           수정
         </RectButton>
       </View>

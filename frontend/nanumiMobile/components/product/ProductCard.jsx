@@ -5,7 +5,6 @@ import {COLORS, SIZES, SHADOWS} from '../../constants';
 import {ProductPrice, ProductTitle, SubInfo} from './SubInfo';
 import {RectButton} from '../../ui/Button';
 
-const {height} = Dimensions.get('window');
 const ProductCard = ({data}) => {
   const navigation = useNavigation();
   return (
