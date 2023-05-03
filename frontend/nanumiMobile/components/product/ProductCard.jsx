@@ -1,10 +1,11 @@
 import React from 'react';
-import {View, Image, Text, StyleSheet} from 'react-native';
+import {View, Image, Text, StyleSheet, Dimensions} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {COLORS, SIZES, SHADOWS} from '../../constants';
 import {ProductPrice, ProductTitle, SubInfo} from './SubInfo';
 import {RectButton} from '../../ui/Button';
 
+const {height} = Dimensions.get('window');
 const ProductCard = ({data}) => {
   const navigation = useNavigation();
   return (
@@ -12,7 +13,7 @@ const ProductCard = ({data}) => {
       <View style={styles.imageContainer}>
         <Image
           source={{uri: data.productImageUrl}}
-          resizeMode="contain"
+          resizeMode="stretch"
           style={styles.image}
         />
       </View>
@@ -43,7 +44,7 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     width: '100%',
-    height: 250,
+    height: 230,
   },
   image: {
     width: '100%',
