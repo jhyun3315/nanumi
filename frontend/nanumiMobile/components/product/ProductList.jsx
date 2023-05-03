@@ -1,8 +1,4 @@
-import React, {useEffect} from 'react';
-import ProductCard from './ProductCard';
-import Header from '../../ui/Header';
-import ErrorModal from '../modal/ErrorModal';
-import EmptyState from '../../ui/EmptyState';
+import React, {useCallback, useEffect} from 'react';
 import {COLORS} from '../../constants';
 import {View, FlatList, StyleSheet} from 'react-native';
 import {useInfiniteQuery} from '@tanstack/react-query';
@@ -11,6 +7,11 @@ import {Fallback} from '../../ui/Fallback';
 import {useRecoilState} from 'recoil';
 import {userState} from '../../state/user';
 import {productState} from '../../state/product';
+import {useFocusEffect} from '@react-navigation/native';
+import ProductCard from './ProductCard';
+import Header from '../../ui/Header';
+import ErrorModal from '../modal/ErrorModal';
+import EmptyState from '../../ui/EmptyState';
 
 const ProductList = ({isSearch}) => {
   const [user] = useRecoilState(userState);
@@ -22,6 +23,7 @@ const ProductList = ({isSearch}) => {
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
+    refetch,
   } = useInfiniteQuery(
     ['products'],
     ({pageParam = 0}) => requestGetAllProduct(user.userId, pageParam),
@@ -38,7 +40,6 @@ const ProductList = ({isSearch}) => {
         }
         return pages ? pages?.length : undefined;
       },
-      refetchInterval: 60000,
     },
   );
 
@@ -46,6 +47,12 @@ const ProductList = ({isSearch}) => {
     if (!isLoading && hasNextPage) fetchNextPage();
   };
 
+  useFocusEffect(
+    useCallback(() => {
+      console.log('a');
+      refetch();
+    }, []),
+  );
   useEffect(() => {
     setProductList({
       ...productList,

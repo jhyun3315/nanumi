@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import {SafeAreaView, StyleSheet} from 'react-native';
 import {CategoryButton} from '../../ui/Button';
 import {useModal} from '../../hooks/useModal';
