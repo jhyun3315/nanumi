@@ -1,8 +1,4 @@
-import React, {useEffect} from 'react';
-import ProductCard from './ProductCard';
-import Header from '../../ui/Header';
-import ErrorModal from '../modal/ErrorModal';
-import EmptyState from '../../ui/EmptyState';
+import React, {useCallback, useEffect} from 'react';
 import {COLORS} from '../../constants';
 import {View, FlatList, StyleSheet} from 'react-native';
 import {useInfiniteQuery} from '@tanstack/react-query';
@@ -11,6 +7,11 @@ import {Fallback} from '../../ui/Fallback';
 import {useRecoilState} from 'recoil';
 import {userState} from '../../state/user';
 import {productState} from '../../state/product';
+import {useFocusEffect} from '@react-navigation/native';
+import ProductCard from './ProductCard';
+import Header from '../../ui/Header';
+import ErrorModal from '../modal/ErrorModal';
+import EmptyState from '../../ui/EmptyState';
 
 const ProductList = ({isSearch}) => {
   const [user] = useRecoilState(userState);
@@ -22,9 +23,10 @@ const ProductList = ({isSearch}) => {
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
+    refetch,
   } = useInfiniteQuery(
     ['products'],
-    ({pageParam = 0}) => requestGetAllProduct(pageParam, user.userId),
+    ({pageParam = 0}) => requestGetAllProduct(user.userId, pageParam),
     {
       getNextPageParam: (lastPage, pages) => {
         if (
@@ -38,13 +40,18 @@ const ProductList = ({isSearch}) => {
         }
         return pages ? pages?.length : undefined;
       },
-      refetchInterval: 60000,
     },
   );
 
   const handleLoadMore = () => {
     if (!isLoading && hasNextPage) fetchNextPage();
   };
+
+  useFocusEffect(
+    useCallback(() => {
+      refetch();
+    }, []),
+  );
 
   useEffect(() => {
     setProductList({
@@ -68,7 +75,6 @@ const ProductList = ({isSearch}) => {
 
   if (error) return <ErrorModal handlePress={fetchNextPage} />;
   if (isLoading) return <Fallback />;
-  if (!productList?.data?.pages[0]?.result?.content) return <EmptyState />;
 
   return (
     <View style={styles.container}>
@@ -84,6 +90,9 @@ const ProductList = ({isSearch}) => {
           onEndReachedThreshold={0.5}
         />
       </View>
+      {productList?.data?.pages[0]?.result?.content.length === 0 && (
+        <EmptyState />
+      )}
       <View style={styles.backgroundWrapper}>
         <View style={styles.backgroundTop} />
         <View style={styles.backgroundBottom} />

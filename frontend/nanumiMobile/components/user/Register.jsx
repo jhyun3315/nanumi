@@ -52,6 +52,7 @@ const Register = () => {
     }
   }, [userInfo, validCode]);
 
+  console.log(validCode);
   const checkEmailDuplicate = async email => {
     try {
       const response = await requestEmailDuplicateCheck(email);

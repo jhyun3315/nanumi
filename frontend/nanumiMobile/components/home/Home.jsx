@@ -5,7 +5,7 @@ import {useModal} from '../../hooks/useModal';
 import ProductList from '../product/ProductList';
 import GlobalModal from './../modal/GlobalModal';
 
-const Home = () => {
+const Home = ({navigation}) => {
   const {showModal} = useModal();
 
   const handleOpenCategoryModal = () => {

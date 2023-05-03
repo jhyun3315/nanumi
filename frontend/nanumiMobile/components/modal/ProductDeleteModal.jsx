@@ -13,34 +13,16 @@ import {RectButton} from '../../ui/Button';
 import {useModal} from '../../hooks/useModal';
 import {requestDeleteProduct} from '../../api/product';
 import {useNavigation} from '@react-navigation/native';
-import {useRecoilState} from 'recoil';
-import {productState} from '../../state/product';
 const {width, height} = Dimensions.get('window');
 
 const ProductDeleteModal = ({args}) => {
   const {hideModal} = useModal();
   const navigation = useNavigation();
-  const [productList, setProductList] = useRecoilState(productState);
-
-  const deleteProductLocally = id => {
-    setProductList(prev => {
-      const updatedProducts = JSON.parse(JSON.stringify(prev.data)); // deep copy
-
-      updatedProducts.pages.forEach(page => {
-        page.result.content = page.result.content.filter(
-          product => product.id !== id,
-        );
-      });
-
-      return {...prev, data: updatedProducts};
-    });
-  };
 
   const handleDeleteProduct = async () => {
     const response = await requestDeleteProduct(args);
     hideModal();
     if (response.code === 200) {
-      deleteProductLocally(args);
       navigation.navigate('BottomTabs', {screen: 'Home'});
     } else {
       Alert.alert('삭제에 실패했습니다.');
@@ -49,7 +31,7 @@ const ProductDeleteModal = ({args}) => {
 
   return (
     <>
-      {/* <StatusBar hidden={true} /> */}
+      <StatusBar hidden={true} />
       <Modal visible={true} transparent={true}>
         <Pressable style={styles.modalContainer} onPress={hideModal}>
           <TouchableWithoutFeedback onPress={event => event.stopPropagation()}>

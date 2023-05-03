@@ -81,7 +81,6 @@ const PostCreateForm = () => {
 
     try {
       const response = await requestCreateProduct(user.userId, formData);
-      console.log(response);
       if (response.code === 200) {
         navigation.navigate('BottomTabs', {screen: 'Home'});
       } else if (response.code === 413) {
@@ -90,7 +89,6 @@ const PostCreateForm = () => {
         showErrorAlert('알 수 없는 에러 발생', navigation);
       }
     } catch (error) {
-      console.log(error);
       showErrorAlert('알 수 없는 에러 발생', navigation);
     }
   };

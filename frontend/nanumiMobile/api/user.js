@@ -13,12 +13,8 @@ export const requestSignup = async data => {
 };
 
 export const requestLogin = async data => {
-  try {
-    const response = await axios.post(`${API_END_POINT}/users/login`, data);
-    return response.data;
-  } catch (error) {
-    console.log('catch', error);
-  }
+  const response = await axios.post(`${API_END_POINT}/users/login`, data);
+  return response.data;
 };
 
 export const requestGetProfile = async userId => {
@@ -32,5 +28,13 @@ export const requestProfileUpdate = async (userId, data) => {
       'Content-Type': 'multipart/form-data',
     },
   });
+  return response.data;
+};
+
+export const requsetUpdateCoordinate = async (userId, data) => {
+  const response = await axios.patch(
+    `${API_END_POINT}/users/address/${userId}`,
+    data,
+  );
   return response.data;
 };
