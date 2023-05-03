@@ -55,7 +55,7 @@ public class LogAop {
         Method method = getMethod(joinPoint);
         ObjectMapper mapper = new ObjectMapper();
         log.info("return type = {}", returnObj.getClass().getSimpleName());
-        log.info("return value = {}", mapper.writeValueAsString(returnObj));
+//        log.info("return value = {}", returnObj);
     }
 
     // JoinPoint로 메서드 정보 가져오기
