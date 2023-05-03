@@ -69,7 +69,6 @@ const DivideProduct = ({navigation}) => {
   if (isLoading) return <Fallback />;
   if (!productList?.data?.pages[0]?.result?.content) return <EmptyState />;
 
-  console.log(data);
   return (
     <View style={styles.container}>
       <BackHeader navigation={navigation}>나눔 상품</BackHeader>

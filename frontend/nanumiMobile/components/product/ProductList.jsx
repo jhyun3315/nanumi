@@ -90,7 +90,9 @@ const ProductList = ({isSearch}) => {
           onEndReachedThreshold={0.5}
         />
       </View>
-      {!!productList?.data?.pages[0]?.result?.content && <EmptyState />}
+      {productList?.data?.pages[0]?.result?.content.length === 0 && (
+        <EmptyState />
+      )}
       <View style={styles.backgroundWrapper}>
         <View style={styles.backgroundTop} />
         <View style={styles.backgroundBottom} />
