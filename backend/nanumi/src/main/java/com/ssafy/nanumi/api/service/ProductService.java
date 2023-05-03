@@ -76,13 +76,13 @@ public class ProductService {
         return productRepository.findAllCategoryProuduct(addressId,categoryId, pageRequest);
 }
 
-    public void createProduct(MultipartFile[] images, ProductInsertDTO request, User user) throws IOException {
-        Category category = categoryRepository.findById(request.getCategoryId())
+    public void createProduct(MultipartFile[] images,String name,String content,Long categoryId, User user) throws IOException {
+        Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_CATEGORY));
         Address address = user.getAddress();
         Product product = Product.builder()
-                .name(request.getName())
-                .content(request.getContent())
+                .name(name)
+                .content(content)
                 .isClosed(false)
                 .isDeleted(false)
                 .user(user)

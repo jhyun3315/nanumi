@@ -66,10 +66,12 @@ public class ProductController {
     @PostMapping(path = "/{user-id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public CustomResponse createProduct(@PathVariable("user-id") long userId,
                                         @RequestParam("images") MultipartFile[] images,
-                                        @ModelAttribute ProductInsertDTO request) throws IOException {
+                                        @RequestParam("name") String name,
+                                        @RequestParam("content") String content,
+                                        @RequestParam("categoryId") Long categoryId) throws IOException {
         User user = userRepository.findById(userId)
                 .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_USER));
-        productService.createProduct(images, request, user);
+        productService.createProduct(images,name,content,categoryId,user);
         return responseService.getSuccessResponse();
     }
     /* 상품 수정 */
