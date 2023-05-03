@@ -16,11 +16,12 @@ import {requestProfileUpdate} from '../../api/user';
 import {userState} from '../../state/user';
 import Icon from 'react-native-ionicons';
 import {showErrorAlert} from '../../ui/Alert';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ProfileUpate = ({navigation, nickname, profileUrl}) => {
   const [updateNickname, setUpdateNickname] = useState(nickname);
   const [updateProfileUrl, setUpdateProfileUrl] = useState(profileUrl);
-  const [user] = useRecoilState(userState);
+  const [user, setUser] = useRecoilState(userState);
 
   const handleImageSelection = async () => {
     try {
@@ -61,9 +62,18 @@ const ProfileUpate = ({navigation, nickname, profileUrl}) => {
 
     try {
       const response = await requestProfileUpdate(user.userId, formData);
-      if (response.code === 200)
+      if (response.code === 200) {
+        const asyncUser = await AsyncStorage.getItem('user');
+        const parsedUser = JSON.parse(asyncUser);
+        const updateUser = {
+          ...parsedUser,
+          nickname: updateNickname,
+          userProfileUrl: `file:///${updateProfileUrl.uri}`,
+        };
+        await AsyncStorage.setItem('user', JSON.stringify(updateUser));
+        setUser(updateUser);
         navigation.navigate('BottomTabs', {screen: 'Profile'});
-      else if (response.code === 400)
+      } else if (response.code === 400)
         showErrorAlert('존재하는 유저가 아닙니다.', navigation);
     } catch (error) {
       showErrorAlert('알 수 없는 에러가 발생했습니다.', navigation);
