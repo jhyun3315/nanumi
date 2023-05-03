@@ -27,6 +27,10 @@ export const requestGetProfile = async userId => {
 };
 
 export const requestProfileUpdate = async (userId, data) => {
-  const response = await axios.patch(`${API_END_POINT}/users/${userId}`, data);
+  const response = await axios.patch(`${API_END_POINT}/users/${userId}`, data, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
   return response.data;
 };

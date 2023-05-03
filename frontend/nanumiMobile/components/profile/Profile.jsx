@@ -30,6 +30,7 @@ const Profile = ({navigation}) => {
     requestGetProfile(user.userId),
   );
 
+  console.log(data);
   const handleOpenLogoutModal = () => {
     showModal({
       modalType: 'LogoutModal',
@@ -79,7 +80,10 @@ const Profile = ({navigation}) => {
             borderRadius={SIZES.base}
             {...SHADOWS.dark}
             handlePress={() => {
-              navigation.navigate('ProfileUpdate');
+              navigation.navigate('ProfileUpdate', {
+                nickname: data?.result?.nickname,
+                profileUrl: data?.result?.profileUrl,
+              });
             }}>
             수정하기
           </RectButton>

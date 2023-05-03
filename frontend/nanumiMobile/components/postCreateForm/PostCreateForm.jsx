@@ -28,14 +28,11 @@ const PostCreateForm = () => {
   const handleImageSelection = async () => {
     try {
       const response = await openPicker({
-        usedCameraButton: false,
         mediaType: 'image',
         doneTitle: '완료',
         selectedAssets: [],
         isExportThumbnail: true,
         maxSelectedAssets: 10 - images.length,
-        isCrop: true,
-        isCropCircle: true,
         usedCameraButton: true,
       });
       const paths = response.map(image => {
