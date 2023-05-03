@@ -57,8 +57,8 @@ public class UserController {
     /*사용자 장소 정보 등록 수정*/
     @PatchMapping("/users/address/{user-id}")
     public CustomResponse saveUserAddress(@PathVariable("user-id")long userId, @RequestBody AddressDTO addressDTO){
-        userService.updateUserAddress(addressDTO.getAddressId(),userId);
-        return responseService.getSuccessResponse();
+
+        return responseService.getDataResponse(userService.updateUserAddress(addressDTO.getAddressId(),userId), RESPONSE_SUCCESS);
     }
 
     /*사용자 주소 조회*/
