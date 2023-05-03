@@ -12,7 +12,7 @@ import {RectButton} from '../../ui/Button';
 import {useModal} from '../../hooks/useModal';
 const {width, height} = Dimensions.get('window');
 
-const LogoutModal = () => {
+const LogoutModal = ({callback}) => {
   const {hideModal} = useModal();
 
   return (
@@ -33,7 +33,7 @@ const LogoutModal = () => {
               <RectButton
                 minWidth={96}
                 fontSize={FONTS.font}
-                handlePress={hideModal}>
+                handlePress={callback}>
                 네
               </RectButton>
               <RectButton

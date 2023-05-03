@@ -21,12 +21,21 @@ import {useFocusEffect} from '@react-navigation/native';
 import ErrorModal from '../modal/ErrorModal';
 import ProgressBar from './ProgressBar';
 import GlobalModal from '../modal/GlobalModal';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const {width} = Dimensions.get('window');
 
 const Profile = ({navigation}) => {
-  const {showModal} = useModal();
-  const [user] = useRecoilState(userState);
+  const {showModal, hideModal} = useModal();
+  const [user, setUser] = useRecoilState(userState);
+
+  const handleLogout = async () => {
+    await AsyncStorage.removeItem('user');
+    setUser({});
+    hideModal();
+    navigation.navigate('Login');
+  };
+
   const {data, error, isLoading, refetch} = useQuery(
     ['profile', user.userId],
     () => requestGetProfile(user.userId),
@@ -35,6 +44,7 @@ const Profile = ({navigation}) => {
   const handleOpenLogoutModal = () => {
     showModal({
       modalType: 'LogoutModal',
+      callback: handleLogout,
     });
   };
 
