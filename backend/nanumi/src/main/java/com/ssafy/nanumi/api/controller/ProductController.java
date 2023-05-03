@@ -63,7 +63,7 @@ public class ProductController {
         return responseService.getDataResponse(productService.findCateProductAll(categoryId, user, pageRequest), RESPONSE_SUCCESS);
     }
     /* 상품 등록 */
-    @PostMapping(path = "/{user-id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(path = "/{user-id}")
     public CustomResponse createProduct(@PathVariable("user-id") long userId,
                                         @RequestParam("images") MultipartFile[] images,
                                         @RequestParam("name") String name,
