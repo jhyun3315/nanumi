@@ -44,7 +44,7 @@ public class LogAop {
 
         for (Object arg : args) {
             log.info("parameter type = {}", arg.getClass().getSimpleName());
-            log.info("parameter value = {}", mapper.writeValueAsString(arg));
+//            log.info("parameter value = {}", mapper.writeValueAsString(arg));
         }
     }
 
