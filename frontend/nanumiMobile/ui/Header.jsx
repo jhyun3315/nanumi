@@ -29,7 +29,11 @@ const Header = () => {
             }}>
             <Icon name="search" color={COLORS.primary} size={32} />
           </Pressable>
-          <View style={styles.personIcon}>
+          <Pressable
+            style={styles.personIcon}
+            onPress={() =>
+              navigation.navigate('BottomTabs', {screen: 'Profile'})
+            }>
             <Image
               source={{uri: user?.userProfileUrl}}
               resizeMode="contain"
@@ -41,7 +45,7 @@ const Header = () => {
               resizeMode="contain"
               style={styles.badgeImage}
             />
-          </View>
+          </Pressable>
         </View>
       </View>
       <View style={{marginVertical: SIZES.font}}>
