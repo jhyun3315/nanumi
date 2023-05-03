@@ -1,7 +1,7 @@
 import axios from 'axios';
 import {API_END_POINT} from './constant';
 
-export const requestGetAllProduct = async (page, userId) => {
+export const requestGetAllProduct = async (userId, page) => {
   const response = await axios.get(
     `${API_END_POINT}/products/${userId}?page=${page}`,
   );
@@ -36,12 +36,13 @@ export const requestCreateProduct = async (userId, data) => {
 };
 
 export const requestDeleteProduct = async productId => {
-  try {
-    const response = await axios.delete(
-      `${API_END_POINT}/products/${productId}`,
-    );
-    return response.data;
-  } catch (e) {
-    console.log(e);
-  }
+  const response = await axios.delete(`${API_END_POINT}/products/${productId}`);
+  return response.data;
+};
+
+export const requsetGetDivideProduct = async (userId, page) => {
+  const response = await axios.get(
+    `${API_END_POINT}/users/products/${userId}?page=${page}`,
+  );
+  return response.data;
 };

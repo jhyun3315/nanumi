@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useCallback} from 'react';
 import {
   View,
   Text,
@@ -12,25 +12,26 @@ import {
 import {COLORS, FONTS, SIZES, SHADOWS, assets} from '../../constants';
 import {RectButton} from '../../ui/Button';
 import {useModal} from '../../hooks/useModal';
-import ProgressBar from './ProgressBar';
-import GlobalModal from '../modal/GlobalModal';
 import {useQuery} from '@tanstack/react-query';
 import {requestGetProfile} from '../../api/user';
 import {useRecoilState} from 'recoil';
 import {userState} from './../../state/user';
 import {Fallback} from '../../ui/Fallback';
+import {useFocusEffect} from '@react-navigation/native';
 import ErrorModal from '../modal/ErrorModal';
+import ProgressBar from './ProgressBar';
+import GlobalModal from '../modal/GlobalModal';
 
 const {width} = Dimensions.get('window');
 
 const Profile = ({navigation}) => {
   const {showModal} = useModal();
   const [user] = useRecoilState(userState);
-  const {data, error, isLoading} = useQuery(['profile', user.userId], () =>
-    requestGetProfile(user.userId),
+  const {data, error, isLoading, refetch} = useQuery(
+    ['profile', user.userId],
+    () => requestGetProfile(user.userId),
   );
 
-  console.log(data);
   const handleOpenLogoutModal = () => {
     showModal({
       modalType: 'LogoutModal',
@@ -42,6 +43,12 @@ const Profile = ({navigation}) => {
       modalType: 'WithdrawalModal',
     });
   };
+
+  useFocusEffect(
+    useCallback(() => {
+      refetch();
+    }, []),
+  );
 
   if (isLoading) return <Fallback />;
   if (error) return <ErrorModal />;

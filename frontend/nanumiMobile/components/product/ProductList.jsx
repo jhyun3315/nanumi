@@ -24,7 +24,7 @@ const ProductList = ({isSearch}) => {
     isFetchingNextPage,
   } = useInfiniteQuery(
     ['products'],
-    ({pageParam = 0}) => requestGetAllProduct(pageParam, user.userId),
+    ({pageParam = 0}) => requestGetAllProduct(user.userId, pageParam),
     {
       getNextPageParam: (lastPage, pages) => {
         if (
