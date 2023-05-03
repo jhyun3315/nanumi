@@ -16,6 +16,9 @@ configurations {
 	compileOnly {
 		extendsFrom annotationProcessor
 	}
+//	all {
+//		exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+//	}
 }
 
 repositories {
@@ -29,8 +32,14 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation "com.amazonaws:aws-java-sdk-s3:1.12.281"
 
+	// logging - aop
+//	implementation 'org.springframework.boot:spring-boot-starter-log4j2'
+	implementation 'org.springframework.boot:spring-boot-starter-aop'
+	implementation 'org.json:json:20220320'
+
 	// swagger
 	implementation group: 'io.springfox', name: 'springfox-boot-starter', version: '3.0.0'
+
 	// email auth
 	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: '2.6.3'
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
