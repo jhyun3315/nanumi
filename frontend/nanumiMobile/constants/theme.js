@@ -5,6 +5,8 @@ export const COLORS = {
   gray: '#74858C',
   violet: '#8B5CF6',
   disable: '#D1BEFB',
+  lightBlue: '#f1f4ff',
+  blue: '#1F41BB',
 };
 
 export const SIZES = {
