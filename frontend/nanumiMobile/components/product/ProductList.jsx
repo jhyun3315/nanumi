@@ -38,6 +38,7 @@ const ProductList = ({isSearch}) => {
         }
         return pages ? pages?.length : undefined;
       },
+      refetchInterval: 60000,
     },
   );
 

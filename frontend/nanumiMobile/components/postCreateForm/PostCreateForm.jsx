@@ -11,8 +11,7 @@ import {generateUniqueKey} from '../../util/uniqueId';
 import {requestCreateProduct} from '../../api/product';
 import {useRecoilState} from 'recoil';
 import {userState} from '../../state/user';
-import {API_END_POINT} from '../../api/constant';
-import axios from 'axios';
+import {showErrorAlert} from './../../ui/Alert';
 
 const PostCreateForm = () => {
   const navigation = useNavigation();
@@ -83,36 +82,22 @@ const PostCreateForm = () => {
     formData.append('content', description);
     formData.append('categoryId', selectedCategory.categoryId);
 
-    console.log(formData);
     try {
-      const response = await axios.post(
-        `${API_END_POINT}/products/${user.userId}`,
-        formData,
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        },
-      );
-      console.log('response', response);
-      return response;
-    } catch (error) {
-      console.log('error', error);
-      if (error.response) {
-        // The request was made and the server responded with a status code
-        console.log('error.data', error.response.data);
-        console.log('error.stauts', error.response.status);
-        console.log('error.header', error.response.headers);
-      } else if (error.request) {
-        // The request was made but no response was received
-        console.log('error.request', error.request);
+      const response = await requestCreateProduct(user.userId, formData);
+      console.log(response);
+      if (response.code === 200) {
+        navigation.navigate('BottomTabs', {screen: 'Home'});
+      } else if (response.code === 413) {
+        showErrorAlert('파일의 크기가 너무 큽니다.', navigation);
       } else {
-        // Something happened in setting up the request that triggered an Error
-        console.log('Error', error.message);
+        showErrorAlert('알 수 없는 에러 발생', navigation);
       }
-      console.log('erro.config', error.config);
+    } catch (error) {
+      console.log(error);
+      showErrorAlert('알 수 없는 에러 발생', navigation);
     }
   };
+
   const renderItem = ({item}) => (
     <ImageContainer data={item} handlePress={handleImageDelete} />
   );

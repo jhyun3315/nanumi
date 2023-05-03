@@ -32,7 +32,7 @@ export const requestCreateProduct = async (userId, data) => {
       },
     },
   );
-  return response;
+  return response.data;
 };
 
 export const requestDeleteProduct = async productId => {
