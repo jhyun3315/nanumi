@@ -4,7 +4,6 @@ import {CircleButton, MoreButton, RectButton} from './Button';
 import {COLORS, FONTS, SIZES, assets} from '../constants';
 
 export const BackHeader = ({navigation, children}) => {
-  console.log(StatusBar.currentHeight);
   return (
     <View
       style={{
@@ -30,7 +29,6 @@ export const BackHeader = ({navigation, children}) => {
           navigation.goBack();
         }}
         left={16}
-        top={StatusBar.currentHeight - 16}
       />
     </View>
   );
@@ -46,12 +44,7 @@ export const CloseHeader = ({handlePress, children}) => {
         justifyContent: 'center',
         alignItems: 'center',
       }}>
-      <CircleButton
-        imgUrl={assets.left}
-        handlePress={handlePress}
-        left={16}
-        top={StatusBar.currentHeight - 16}
-      />
+      <CircleButton imgUrl={assets.left} handlePress={handlePress} left={16} />
       <View>
         <Text
           style={{
@@ -66,7 +59,7 @@ export const CloseHeader = ({handlePress, children}) => {
   );
 };
 
-export const CreateHeader = ({navigation, handlePress}) => (
+export const CreateHeader = ({navigation, handlePress, children}) => (
   <View
     style={{
       width: '100%',
@@ -88,7 +81,7 @@ export const CreateHeader = ({navigation, handlePress}) => (
       position={'absolute'}
       right={16}
       top={StatusBar.currentHeight - 16}>
-      등록
+      {children}
     </RectButton>
   </View>
 );
@@ -102,7 +95,6 @@ export const MoreHeader = ({navigation, handlePresentModalPress}) => {
           navigation.goBack();
         }}
         left={16}
-        top={StatusBar.currentHeight - 16}
       />
       <View style={{alignItems: 'center'}}>
         <Text style={styles.username}>사용자아이디</Text>
@@ -114,7 +106,6 @@ export const MoreHeader = ({navigation, handlePresentModalPress}) => {
         handlePress={handlePresentModalPress}
         position={'absolute'}
         right={16}
-        top={StatusBar.currentHeight - 16}
       />
     </View>
   );

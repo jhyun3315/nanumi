@@ -1,16 +1,7 @@
 import React from 'react';
-import {
-  SafeAreaView,
-  View,
-  StyleSheet,
-  Image,
-  Text,
-  TextInput,
-  StatusBar,
-} from 'react-native';
-import {BackHeader} from '../../ui/BackHeader';
+import {SafeAreaView, View, StyleSheet, Image, TextInput} from 'react-native';
+import {CreateHeader} from '../../ui/BackHeader';
 import {COLORS, assets, SIZES, FONTS} from '../../constants';
-import {RectButton} from '../../ui/Button';
 import Icon from 'react-native-ionicons';
 
 const ProfileUpate = ({navigation}) => {
@@ -21,16 +12,7 @@ const ProfileUpate = ({navigation}) => {
         backgroundColor: COLORS.white,
         alignItems: 'center',
       }}>
-      <BackHeader navigation={navigation}>프로필 수정</BackHeader>
-      <RectButton
-        minWidth={42}
-        minHeight={42}
-        position={'absolute'}
-        borderRadius={SIZES.small / 2}
-        right={16}
-        top={StatusBar.currentHeight - 12}>
-        수정
-      </RectButton>
+      <CreateHeader navigation={navigation}>수정</CreateHeader>
       <View style={styles.profileImage}>
         <Image
           source={assets.person01}

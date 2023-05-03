@@ -11,12 +11,14 @@ import {generateUniqueKey} from '../../util/uniqueId';
 import {requestCreateProduct} from '../../api/product';
 import {useRecoilState} from 'recoil';
 import {userState} from '../../state/user';
+import {API_END_POINT} from '../../api/constant';
+import axios from 'axios';
 
 const PostCreateForm = () => {
   const navigation = useNavigation();
   const [user] = useRecoilState(userState);
   const [selectedCategory, setSelectedCategory] = useState('');
-  const [images, setImages] = useState([{}]);
+  const [images, setImages] = useState([]);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
 
@@ -68,8 +70,13 @@ const PostCreateForm = () => {
 
   const handleCreateProduct = async () => {
     const formData = new FormData();
+
     images.forEach(image => {
-      formData.append('imags', image);
+      formData.append('images', {
+        uri: `file://${image.uri}`,
+        type: `image/${image.type}`,
+        name: image.name,
+      });
     });
 
     formData.append('name', title);
@@ -78,9 +85,19 @@ const PostCreateForm = () => {
 
     console.log(formData);
     try {
-      const response = await requestCreateProduct(user.userId, formData);
+      const response = await axios.post(
+        `${API_END_POINT}/products/${user.userId}`,
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        },
+      );
+      console.log('response', response);
       return response;
     } catch (error) {
+      console.log('error', error);
       if (error.response) {
         // The request was made and the server responded with a status code
         console.log('error.data', error.response.data);
@@ -102,7 +119,9 @@ const PostCreateForm = () => {
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: COLORS.white}}>
-      <CreateHeader navigation={navigation} handlePress={handleCreateProduct} />
+      <CreateHeader navigation={navigation} handlePress={handleCreateProduct}>
+        등록
+      </CreateHeader>
       <View style={styles.container}>
         <View style={styles.imageContainer}>
           <FlatList
@@ -114,7 +133,7 @@ const PostCreateForm = () => {
             ListHeaderComponent={
               <AddImageButton
                 handlePress={handleImageSelection}
-                images={images}
+                images={images ? images : []}
               />
             }
           />
