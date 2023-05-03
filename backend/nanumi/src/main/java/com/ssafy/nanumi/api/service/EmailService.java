@@ -8,6 +8,7 @@ import org.thymeleaf.spring5.SpringTemplateEngine;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.Random;
 
@@ -19,10 +20,9 @@ public class EmailService {
     private final JavaMailSender emailSender;
     // 타임리프를사용하기 위한 객체를 의존성 주입으로 가져온다
     private final SpringTemplateEngine templateEngine;
-    private String authNum; //랜덤 인증 코드
 
     //랜덤 인증 코드 생성
-    public void createCode() {
+    public String createCode() {
         Random random = new Random();
         StringBuffer key = new StringBuffer();
 
@@ -41,15 +41,13 @@ public class EmailService {
                     break;
             }
         }
-        authNum = key.toString();
+        return key.toString();
     }
 
-    //메일 양식 작성
-    public MimeMessage createEmailForm(String email) throws MessagingException, UnsupportedEncodingException {
+    public String sendEmail(String email) throws MessagingException, UnsupportedEncodingException {
 
-        createCode(); //인증 코드 생성
-        String setFrom = "nanunmib23@gmail.com"; //email-config에 설정한 자신의 이메일 주소(보내는 사람)
-        String toEmail = email; //받는 사람
+        String authNum = createCode(); //인증 코드 생성
+        String setFrom = "nanumib23@naver.com"; //email-config에 설정한 자신의 이메일 주소(보내는 사람)
         String title = "나누미 회원가입 인증 번호"; //제목
 
         MimeMessage message = emailSender.createMimeMessage();
@@ -58,17 +56,8 @@ public class EmailService {
         message.setFrom(setFrom); //보내는 이메일
         message.setText(setContext(authNum), "utf-8", "html");
 
-        return message;
-    }
-
-    //실제 메일 전송
-    public String sendEmail(String toEmail) throws MessagingException, UnsupportedEncodingException {
-
-        //메일전송에 필요한 정보 설정
-        MimeMessage emailForm = createEmailForm(toEmail);
         //실제 메일 전송
-        emailSender.send(emailForm);
-
+        emailSender.send(message);
         return authNum; //인증 코드 반환
     }
 

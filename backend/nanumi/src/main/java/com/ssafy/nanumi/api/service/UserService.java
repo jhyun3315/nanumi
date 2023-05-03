@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.mail.MessagingException;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
 import static com.ssafy.nanumi.config.response.exception.CustomExceptionStatus.*;
@@ -88,7 +89,7 @@ public class UserService {
         }
     }
 
-    public EmailCheckResDTO checkEmail(String email) throws MessagingException, UnsupportedEncodingException {
+    public EmailCheckResDTO checkEmail(String email) throws MessagingException, IOException {
         String code = "";
 
         if( userRepository.findByEmail(email).isPresent() ){
