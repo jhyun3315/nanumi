@@ -2,10 +2,18 @@ import React from 'react';
 import {View, StyleSheet, Pressable, Text} from 'react-native';
 import {SIZES, COLORS, FONTS} from '../../constants';
 
-const ProductOptions = ({data, handleOpenProductDeleteModal}) => {
+const ProductOptions = ({
+  data,
+  handleOpenProductDeleteModal,
+  handleCloseModalAndNavigateProductUpdate,
+}) => {
   return (
     <View style={styles.optionContainer}>
-      <Pressable style={styles.option}>
+      <Pressable
+        style={styles.option}
+        onPress={() =>
+          handleCloseModalAndNavigateProductUpdate(data?.result?.id)
+        }>
         <Text style={styles.optionText}>상품수정</Text>
       </Pressable>
       <Pressable

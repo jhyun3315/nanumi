@@ -21,6 +21,7 @@ import FocusedStatusBar from '../ui/FocusedStatusBar';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {COLORS} from '../constants';
+import PostUpdateFormScreen from '../screens/PostUpdateFormScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -74,6 +75,14 @@ const StackNavigator = () => {
         <Stack.Screen
           name="LocationPicker"
           component={LocationPickerScreen}
+          options={{
+            presentation: 'modal',
+            animation: 'slide_from_bottom',
+          }}
+        />
+        <Stack.Screen
+          name="PostUpdateForm"
+          component={PostUpdateFormScreen}
           options={{
             presentation: 'modal',
             animation: 'slide_from_bottom',

@@ -127,6 +127,13 @@ const ProductDetail = ({route, navigation}) => {
     }, 300);
   };
 
+  const handleCloseModalAndNavigateProductUpdate = productId => {
+    handleCloseBottomModal();
+    setTimeout(() => {
+      navigation.navigate('PostUpdateForm', {productId: productId});
+    }, 400);
+  };
+
   const renderBackDrop = useCallback(props => {
     return (
       <BottomSheetBackdrop
@@ -189,6 +196,9 @@ const ProductDetail = ({route, navigation}) => {
             <ProductOptions
               data={data}
               handleOpenProductDeleteModal={handleOpenProductDeleteModal}
+              handleCloseModalAndNavigateProductUpdate={
+                handleCloseModalAndNavigateProductUpdate
+              }
             />
           </BottomSheetModal>
           <GlobalModal />

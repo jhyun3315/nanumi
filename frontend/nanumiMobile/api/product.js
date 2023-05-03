@@ -35,6 +35,20 @@ export const requestCreateProduct = async (userId, data) => {
   return response.data;
 };
 
+export const requestUpdateProduct = async (productId, data) => {
+  const response = await axios.patch(
+    `${API_END_POINT}/products/${productId}`,
+    data,
+    {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    },
+  );
+
+  return response.data;
+};
+
 export const requestDeleteProduct = async productId => {
   const response = await axios.delete(`${API_END_POINT}/products/${productId}`);
   return response.data;
