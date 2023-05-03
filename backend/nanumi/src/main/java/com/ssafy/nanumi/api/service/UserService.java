@@ -100,7 +100,7 @@ public class UserService {
         return new EmailCheckResDTO(code);
     }
 
-    public void updateUserAddress(long addressCode, long userId){
+    public AddressResDTO updateUserAddress(long addressCode, long userId){
        if(addressRepository.findById(addressCode).isEmpty()){
            throw new CustomException(NOT_FOUND_ADDRESS_CODE);
        }else{
@@ -108,6 +108,7 @@ public class UserService {
                    () -> new CustomException(NOT_FOUND_USER)
            );
            user.updateAddress(addressRepository.getById(addressCode));
+          return new AddressResDTO(user.getAddress());
        }
     }
 
