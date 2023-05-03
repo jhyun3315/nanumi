@@ -19,7 +19,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 import javax.mail.MessagingException;
-import java.io.UnsupportedEncodingException;
+import java.io.IOException;
 import static com.ssafy.nanumi.config.response.exception.CustomSuccessStatus.*;
 
 @Slf4j
@@ -47,7 +47,7 @@ public class UserController {
     }
 
     @GetMapping("/users/check/{email}")
-    public CustomDataResponse emailCheck(@PathVariable("email") String email) throws MessagingException, UnsupportedEncodingException {
+    public CustomDataResponse emailCheck(@PathVariable("email") String email) throws MessagingException, IOException {
         // 이메일 중복 처리, 인증 처리
         System.out.println(email);
         EmailCheckResDTO emailCheckResDTO = userService.checkEmail(email);
