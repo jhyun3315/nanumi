@@ -23,6 +23,8 @@ import {useQuery} from '@tanstack/react-query';
 import {useModal} from '../../hooks/useModal';
 import {requestGetDetailProduct} from '../../api/product';
 import {Fallback} from '../../ui/Fallback';
+import {useRecoilState} from 'recoil';
+import {userState} from './../../state/user';
 import Indicator from './Indicator';
 import ProductOptions from './ProductOptions';
 import GlobalModal from '../modal/GlobalModal';
@@ -33,6 +35,8 @@ const {width} = Dimensions.get('window');
 
 const DetailHeader = ({data, navigation, handlePresentModalPress}) => {
   const scrollX = useRef(new Animated.Value(0)).current;
+  const [user] = useRecoilState(userState);
+  const userId = data?.result?.userId;
 
   const renderImageItem = ({item, index}) => {
     const inputRange = [
@@ -81,15 +85,17 @@ const DetailHeader = ({data, navigation, handlePresentModalPress}) => {
         left={15}
         top={StatusBar.currentHeight + 10}
       />
-      <MoreButton
-        minWidth={40}
-        minHeight={40}
-        handlePress={handlePresentModalPress}
-        position={'absolute'}
-        right={16}
-        backgroundColor={COLORS.secondary}
-        top={StatusBar.currentHeight + 10}
-      />
+      {user.userId === userId && (
+        <MoreButton
+          minWidth={40}
+          minHeight={40}
+          handlePress={handlePresentModalPress}
+          position={'absolute'}
+          right={16}
+          backgroundColor={COLORS.secondary}
+          top={StatusBar.currentHeight + 10}
+        />
+      )}
     </View>
   );
 };
@@ -107,6 +113,7 @@ const ProductDetail = ({route, navigation}) => {
     requestGetDetailProduct(id),
   );
 
+  console.log(data);
   const bottomSheetModalRef = useRef(null);
   const snapPoints = useMemo(() => ['20%'], []);
   const handlePresentModalPress = useCallback(() => {

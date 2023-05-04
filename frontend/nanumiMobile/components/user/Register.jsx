@@ -29,16 +29,6 @@ const Register = () => {
   };
 
   useEffect(() => {
-    setUserInfo({
-      email: '',
-      validCode: '',
-      nickname: '',
-      password: '',
-      confirmPassword: '',
-    });
-  }, []);
-
-  useEffect(() => {
     // 유효성 검사를 통해 다음 버튼 활성화 여부를 결정
     if (
       userInfo.validCode === validCode &&
@@ -51,7 +41,7 @@ const Register = () => {
       setIsNextButtonDisable(true);
     }
   }, [userInfo, validCode]);
-
+  console.log('렌더링');
   console.log(validCode);
   const checkEmailDuplicate = async email => {
     try {
