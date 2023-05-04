@@ -43,6 +43,7 @@ const ProductList = ({isSearch}) => {
     },
   );
 
+  console.log('data', data?.pages[0].result);
   const handleLoadMore = () => {
     if (!isLoading && hasNextPage) fetchNextPage();
   };

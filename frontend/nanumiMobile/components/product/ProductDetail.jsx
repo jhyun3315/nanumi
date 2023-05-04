@@ -21,7 +21,10 @@ import {
 } from '@gorhom/bottom-sheet';
 import {useQuery} from '@tanstack/react-query';
 import {useModal} from '../../hooks/useModal';
-import {requestGetDetailProduct} from '../../api/product';
+import {
+  requestDonationReceived,
+  requestGetDetailProduct,
+} from '../../api/product';
 import {Fallback} from '../../ui/Fallback';
 import {useRecoilState} from 'recoil';
 import {userState} from './../../state/user';
@@ -118,6 +121,25 @@ const ProductDetail = ({route, navigation}) => {
     navigation.goBack();
   };
 
+  const handleDonationReceived = async () => {
+    const response = await requestDonationReceived(
+      data?.result?.id,
+      user.userId,
+    );
+
+    if (response?.result?.result) {
+      showModal({
+        modalType: 'SuccessDontaionModal',
+        callback: handleCloseAndBack,
+      });
+    } else {
+      showModal({
+        modalType: 'SuccessDontaionModal',
+        callback: handleCloseAndBack,
+      });
+    }
+  };
+
   const bottomSheetModalRef = useRef(null);
   const snapPoints = useMemo(() => ['20%'], []);
   const handlePresentModalPress = useCallback(() => {
@@ -177,7 +199,8 @@ const ProductDetail = ({route, navigation}) => {
               minWidth={170}
               fontSize={SIZES.large}
               {...SHADOWS.dark}
-              isDisable={isDisable}>
+              isDisable={isDisable}
+              handlePress={handleDonationReceived}>
               나눔받기
             </RectButton>
           </View>

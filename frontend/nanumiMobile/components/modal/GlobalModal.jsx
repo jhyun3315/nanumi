@@ -10,6 +10,7 @@ import WithdrawalModal from './WithdrawalModal';
 import ProductDeleteModal from './ProductDeleteModal';
 import HomeCategoryModal from './HomeCategoryModal';
 import CreateCategoryModal from './CreateCategoryModal';
+import SuccessDontaionModal from './SuccessDontaionModal';
 
 const MODAL_TYPES = {
   BlockUserModal: 'BlockUserModal',
@@ -21,6 +22,7 @@ const MODAL_TYPES = {
   ProductDeleteModal: 'ProductDeleteModal',
   HomeCategoryModal: 'HomeCategoryModal',
   CreateCategoryModal: 'CreateCategoryModal',
+  SuccessDontaionModal: 'SuccessDontaionModal',
 };
 
 const MODAL_COMPONENTS = {
@@ -33,6 +35,7 @@ const MODAL_COMPONENTS = {
   [MODAL_TYPES.ProductDeleteModal]: ProductDeleteModal,
   [MODAL_TYPES.HomeCategoryModal]: HomeCategoryModal,
   [MODAL_TYPES.CreateCategoryModal]: CreateCategoryModal,
+  [MODAL_TYPES.SuccessDontaionModal]: SuccessDontaionModal,
 };
 
 const GlobalModal = () => {
