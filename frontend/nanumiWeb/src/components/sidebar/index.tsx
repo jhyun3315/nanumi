@@ -15,20 +15,23 @@ const SideBar = () => {
     { name: 'Cards', icon: <BiCreditCardAlt /> },
     { name: 'Contacts', icon: <BiUser /> },
     { name: 'Loan Calculator', icon: <BiCalculator /> },
-    { name: 'Settings', icon: <RiSettings5Line /> },
+    { name: '설정', icon: <RiSettings5Line /> },
   ];
   return (
     <div className="h-screen border-r border-gray-200 w-64 px-9 py-9 space-y-24">
       <div className="flex flex-row items-center">
         <img src={Logo} alt="nanumi-logo" className="w-12 h-12" />
-        <div>NANUMI</div>
+        <div className="text-violet-500">NANUMI</div>
       </div>
       <div>
         <ul>
-          <div className="mb-4">Menu</div>
+          <div className="mb-4 text-violet-500">Menu</div>
           {menu.map((value, index) => {
             return (
-              <li key={index} className="mb-7 flex flex-row items-center">
+              <li
+                key={index}
+                className="mb-7 flex flex-row items-center text-gray-400"
+              >
                 <div className="mr-5">{value.icon}</div>
                 {value.name}
               </li>

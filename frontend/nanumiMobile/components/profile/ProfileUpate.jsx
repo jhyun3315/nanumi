@@ -55,9 +55,22 @@ const ProfileUpate = ({navigation, nickname, profileUrl}) => {
     const formData = new FormData();
     formData.append('nickname', updateNickname);
     formData.append('profileUrl', {
-      uri: `file://${updateProfileUrl.uri}`,
-      type: `image/${updateProfileUrl.type}`,
-      name: updateProfileUrl.name,
+      uri:
+        typeof updateProfileUrl !== 'string' &&
+        updateProfileUrl.uri.startsWith('/storage')
+          ? `file://${updateProfileUrl.uri}`
+          : updateProfileUrl,
+
+      type:
+        typeof updateProfileUrl !== 'string' &&
+        updateProfileUrl.uri.startsWith('/storage')
+          ? `image/${updateProfileUrl.type}`
+          : `image/jpeg`,
+      name:
+        typeof updateProfileUrl !== 'string' &&
+        updateProfileUrl.uri.startsWith('/storage')
+          ? updateProfileUrl.name
+          : generateUniqueKey(),
     });
 
     try {
@@ -67,8 +80,8 @@ const ProfileUpate = ({navigation, nickname, profileUrl}) => {
         const parsedUser = JSON.parse(asyncUser);
         const updateUser = {
           ...parsedUser,
-          nickname: updateNickname,
-          userProfileUrl: `file:///${updateProfileUrl.uri}`,
+          nickname: response.result.nickName,
+          userProfileUrl: response.result.profileUrl,
         };
         await AsyncStorage.setItem('user', JSON.stringify(updateUser));
         setUser(updateUser);
