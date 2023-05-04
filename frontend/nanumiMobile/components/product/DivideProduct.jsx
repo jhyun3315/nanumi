@@ -1,19 +1,45 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useMemo} from 'react';
 import {COLORS} from '../../constants';
 import {View, FlatList, StyleSheet} from 'react-native';
 import {useRecoilState} from 'recoil';
 import {BackHeader} from '../../ui/BackHeader';
 import {useInfiniteQuery} from '@tanstack/react-query';
 import {userState} from '../../state/user';
-import {requsetGetDivideProduct} from '../../api/product';
+import {
+  requsetGetDividingProduct,
+  requestGetDividedProductList,
+  requestGetReceivedProductList,
+} from '../../api/product';
 import {Fallback} from '../../ui/Fallback';
 import ProductCard from './ProductCard';
 import ErrorModal from '../modal/ErrorModal';
 import EmptyState from '../../ui/EmptyState';
 
-const DivideProduct = ({navigation}) => {
+const DivideProduct = ({navigation, type}) => {
   const [user] = useRecoilState(userState);
   const [productList, setProductList] = useState([]);
+
+  const queryFn = useMemo(() => {
+    switch (type) {
+      case 'divided':
+        return requestGetDividedProductList;
+      case 'dividing':
+        return requsetGetDividingProduct;
+      case 'received':
+        return requestGetReceivedProductList;
+    }
+  }, [type]);
+
+  const title = useMemo(() => {
+    switch (type) {
+      case 'divided':
+        return '나눔한 상품';
+      case 'dividing':
+        return '나눔중인 상품';
+      case 'received':
+        return '나눔받은 상품';
+    }
+  }, [type]);
 
   const {
     data,
@@ -23,8 +49,8 @@ const DivideProduct = ({navigation}) => {
     hasNextPage,
     isFetchingNextPage,
   } = useInfiniteQuery(
-    ['divideProduct'],
-    ({pageParam = 0}) => requsetGetDivideProduct(user.userId, pageParam),
+    [type],
+    ({pageParam = 0}) => queryFn(user.userId, pageParam),
     {
       getNextPageParam: (lastPage, pages) => {
         if (
@@ -67,11 +93,10 @@ const DivideProduct = ({navigation}) => {
 
   if (error) return <ErrorModal handlePress={fetchNextPage} />;
   if (isLoading) return <Fallback />;
-  if (!productList?.data?.pages[0]?.result?.content) return <EmptyState />;
 
   return (
     <View style={styles.container}>
-      <BackHeader navigation={navigation}>나눔 상품</BackHeader>
+      <BackHeader navigation={navigation}>{title}</BackHeader>
       <View style={styles.flatListWrapper}>
         <FlatList
           data={content}
@@ -83,6 +108,9 @@ const DivideProduct = ({navigation}) => {
           onEndReachedThreshold={0.5}
         />
       </View>
+      {productList?.data?.pages[0]?.result?.content.length === 0 && (
+        <EmptyState />
+      )}
       <View style={styles.backgroundWrapper}>
         <View style={styles.backgroundTop} />
         <View style={styles.backgroundBottom} />

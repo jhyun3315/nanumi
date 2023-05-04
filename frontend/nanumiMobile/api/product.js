@@ -54,16 +54,33 @@ export const requestDeleteProduct = async productId => {
   return response.data;
 };
 
-export const requsetGetDivideProduct = async (userId, page) => {
+export const requestSearchProduct = async (words, userId, page) => {
+  const response = await axios.get(
+    `${API_END_POINT}/products/search/${words}/${page}/${userId}`,
+  );
+  return response.data;
+};
+
+// 나눔중인 상품 목록
+export const requsetGetDividingProduct = async (userId, page) => {
+  const response = await axios.get(
+    `${API_END_POINT}/users/matches/${userId}?page=${page}`,
+  );
+  return response.data;
+};
+
+// 나눔한 물건
+export const requestGetDividedProductList = async (userId, page) => {
   const response = await axios.get(
     `${API_END_POINT}/users/products/${userId}?page=${page}`,
   );
   return response.data;
 };
 
-export const requestSearchProduct = async (words, userId, page) => {
+// 나눔받은 물건
+export const requestGetReceivedProductList = async (userId, page) => {
   const response = await axios.get(
-    `${API_END_POINT}/products/search/${words}/${page}/${userId}`,
+    `${API_END_POINT}/users/given/${userId}?page=${page}`,
   );
   return response.data;
 };
