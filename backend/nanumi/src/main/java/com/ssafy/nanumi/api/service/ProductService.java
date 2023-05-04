@@ -108,14 +108,37 @@ public class ProductService {
             productImageRepository.save(productImage);
         }
     }
-    public void updateProduct(ProductInsertDTO request, Long productId) {
+    public void updateProduct(Long productId,
+                              MultipartFile[] images,
+                              String name,
+                              String content,
+                              Long categoryId) throws IOException {
         Product product = productRepository.findById(productId)
                 .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_PRODUCT));
-        Category category = categoryRepository.findById(request.getCategoryId())
+        Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_CATEGORY));
-        product.setName(request.getName());
-        product.setContent(request.getContent());
+
+        for(MultipartFile file : images) {
+            String s3FileName = UUID.randomUUID() + "-" + file.getOriginalFilename();
+
+            ObjectMetadata objMeta = new ObjectMetadata();
+            objMeta.setContentLength(file.getInputStream().available());
+
+            amazonS3.putObject(bucket, s3FileName, file.getInputStream(), objMeta);
+
+            String imageString = amazonS3.getUrl(bucket, s3FileName).toString();
+
+            ProductImage productImage = ProductImage.builder()
+                    .imageUrl(imageString)
+                    .product(product)
+                    .build();
+            productImageRepository.save(productImage);
+        }
+
+        product.setName(name);
+        product.setContent(content);
         product.setCategory(category);
+
     }
     public void deleteProduct(Long productId){
         Product product = productRepository.findById(productId)

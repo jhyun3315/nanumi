@@ -76,8 +76,13 @@ public class ProductController {
     }
     /* 상품 수정 */
     @PatchMapping("/{product-id}")
-    public CustomResponse updateProduct(@PathVariable("product-id") long productId, @RequestBody ProductInsertDTO request) {
-        productService.updateProduct(request, productId);
+    public CustomResponse updateProduct(@PathVariable("product-id") long productId,
+                                        @RequestParam("images") MultipartFile[] images,
+                                        @RequestParam("name") String name,
+                                        @RequestParam("content") String content,
+                                        @RequestParam("categoryId") Long categoryId
+                                        ) throws IOException {
+        productService.updateProduct(productId,images,name,content,categoryId);
         return responseService.getSuccessResponse();
     }
     /* 상품 삭제 */
