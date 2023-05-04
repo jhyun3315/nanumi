@@ -1,5 +1,13 @@
 import { ReactNode } from 'react';
-import { BiCreditCard, BiSearch, BiUser, BiBox, BiBug } from 'react-icons/bi';
+import {
+  BiCreditCard,
+  BiSearch,
+  BiUser,
+  BiBox,
+  BiBug,
+  BiEdit,
+  BiTrash,
+} from 'react-icons/bi';
 
 import {
   LeadingActions,
@@ -7,6 +15,7 @@ import {
   SwipeableListItem,
   SwipeAction,
   TrailingActions,
+  Type,
 } from 'react-swipeable-list';
 import 'react-swipeable-list/dist/styles.css';
 
@@ -34,13 +43,23 @@ const ContentLeft = () => {
         destructive={true}
         onClick={() => console.info('swipe action triggered')}
       >
-        Delete
+        <div className="flex items-center px-4">
+          <BiTrash size={25} color="white" />
+        </div>
+      </SwipeAction>
+      <SwipeAction
+        destructive={true}
+        onClick={() => console.info('swipe action triggered')}
+      >
+        <div className="flex items-center px-4">
+          <BiEdit size={25} color="white" />
+        </div>
       </SwipeAction>
     </TrailingActions>
   );
 
   return (
-    <section className="px-14 flex-1 pt-14">
+    <section className="container-content-left px-16 flex-1 pt-14 h-screen overflow-y-scroll">
       <div className="border border-gray-300 rounded-lg w-full flex px-3 py-3 items-center">
         <BiSearch className="mr-2" />
         <input type={'text'} className="flex-1" placeholder="Search" />
@@ -94,20 +113,28 @@ const ContentLeft = () => {
           }
         />
       </div>
-      <div>
-        <SwipeableList>
-          <SwipeableListItem trailingActions={trailingActions()}>
-            <div className="bg-white px-8 py-4 rounded-xl border border-gray-200 w-full flex">
-              <img
-                src={
-                  'https://nanumi.s3.ap-northeast-2.amazonaws.com/ebd28134-03c0-4980-8d40-47e2c9140487-1680657612511.jpg'
-                }
-                alt="user-image"
-                className="w-8 h-8 rounded-full object-cover"
-              />
-            </div>
-          </SwipeableListItem>
-        </SwipeableList>
+      <div className="mt-20">
+        {Array.from(Array(8)).map((_, index) => (
+          <div key={index} className="rounded-2xl bg-violet-700 mb-4">
+            <SwipeableList threshold={0.9} type={Type.IOS}>
+              <SwipeableListItem trailingActions={trailingActions()}>
+                <div className="bg-white px-8 p-4 rounded-xl border border-gray-200 w-full flex">
+                  <img
+                    src={
+                      'https://nanumi.s3.ap-northeast-2.amazonaws.com/ebd28134-03c0-4980-8d40-47e2c9140487-1680657612511.jpg'
+                    }
+                    alt="user-image"
+                    className="w-8 h-8 rounded-full object-cover mr-3"
+                  />
+                  <div className="text-lg">
+                    <div className="text-gray-900">닉네임</div>
+                    <div className="text-gray-400 text-sm">유저</div>
+                  </div>
+                </div>
+              </SwipeableListItem>
+            </SwipeableList>
+          </div>
+        ))}
       </div>
     </section>
   );
