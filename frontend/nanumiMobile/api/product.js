@@ -84,3 +84,10 @@ export const requestGetReceivedProductList = async (userId, page) => {
   );
   return response.data;
 };
+
+export const requestDonationReceived = async (productId, userId) => {
+  const response = await axios.get(
+    `${API_END_POINT}/products/application/${productId}/${userId}`,
+  );
+  return response.data;
+};
