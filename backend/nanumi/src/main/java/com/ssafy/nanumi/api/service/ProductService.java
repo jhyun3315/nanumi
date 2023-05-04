@@ -143,6 +143,9 @@ public class ProductService {
                     .user(user)
                     .build();
             Match newMatch = matchRepository.save(match);
+            if (product.getMatches().size() == 2) {
+                product.setClosed(true);
+            }
             return MatchSuccessDto.builder()
                     .result(true)
                     .resultMessage("신청 되었습니다.")
@@ -150,7 +153,6 @@ public class ProductService {
                     .build();
         }
         else {
-            product.setClosed(true);
             return MatchSuccessDto.builder()
                     .result(false)
                     .resultMessage("인원이 다 찼습니다.")
