@@ -60,3 +60,10 @@ export const requsetGetDivideProduct = async (userId, page) => {
   );
   return response.data;
 };
+
+export const requestSearchProduct = async (words, userId, page) => {
+  const response = await axios.get(
+    `${API_END_POINT}/product/search/${words}/${page}/${userId}`,
+  );
+  return response.data;
+};
