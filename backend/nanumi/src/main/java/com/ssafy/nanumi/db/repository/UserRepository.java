@@ -22,7 +22,7 @@ public interface UserRepository extends JpaRepository<User,Long> {
 
     @Query(value = "select p " +
             "from Product p " +
-            "where p.isDeleted = false and p.user.id = :userId")
+            "where p.isDeleted = false and p.user.id = :userId and p.isMatched = true ")
     Page<ProductAllDTO> getAllReceiveProduct(long userId, Pageable pageable);
 
     @Query(value = "select p " +

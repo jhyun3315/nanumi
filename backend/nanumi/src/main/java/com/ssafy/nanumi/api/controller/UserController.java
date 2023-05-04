@@ -3,7 +3,6 @@ package com.ssafy.nanumi.api.controller;
 import com.ssafy.nanumi.api.request.AddressDTO;
 import com.ssafy.nanumi.api.request.UserJoinDTO;
 import com.ssafy.nanumi.api.request.UserLoginDTO;
-import com.ssafy.nanumi.api.request.UserUpdateDTO;
 import com.ssafy.nanumi.api.response.*;
 import com.ssafy.nanumi.api.service.UserService;
 import com.ssafy.nanumi.config.response.CustomDataResponse;
