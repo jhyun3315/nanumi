@@ -34,6 +34,13 @@ public class ProductController {
     private final UserRepository userRepository;
     private final ResponseService responseService;
 
+    /* 검색어가 없는 경우 전체 조회 */
+    @GetMapping("/search/{page}/{user-id}")
+    public CustomDataResponse<Page<ProductAllDTO>> search(@PathVariable("page")int page, @PathVariable("user-id") long userId){
+        PageRequest pageRequest = PageRequest.of(page, 6);
+        return responseService.getDataResponse(productService.findProductAll(userId, pageRequest), RESPONSE_SUCCESS);
+    }
+
     /* 제목으로 상품 검색 */
     @GetMapping("/search/{words}/{page}/{user-id}")
     public CustomDataResponse<Page<ProductAllDTO>> search(@PathVariable ("words") String words, @PathVariable("page")int page, @PathVariable("user-id") long userId){
