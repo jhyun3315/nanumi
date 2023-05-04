@@ -94,6 +94,8 @@ const PostUpdateForm = ({navigation, productId}) => {
       } else {
         formData.append('images', {
           uri: image.uri,
+          type: 'image/jpeg',
+          name: generateUniqueKey(),
         });
       }
     });
