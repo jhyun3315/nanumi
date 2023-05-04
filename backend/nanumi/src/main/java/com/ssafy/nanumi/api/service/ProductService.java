@@ -2,11 +2,9 @@ package com.ssafy.nanumi.api.service;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.ssafy.nanumi.api.request.ProductInsertDTO;
 import com.ssafy.nanumi.api.response.MatchSuccessDto;
 import com.ssafy.nanumi.api.response.ProductAllDTO;
 import com.ssafy.nanumi.api.response.ProductDetailDTO;
-import com.ssafy.nanumi.api.response.ProductSearchResDTO;
 import com.ssafy.nanumi.config.response.exception.CustomException;
 import com.ssafy.nanumi.config.response.exception.CustomExceptionStatus;
 import com.ssafy.nanumi.db.entity.*;
@@ -17,9 +15,7 @@ import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -91,14 +87,10 @@ public class ProductService {
 
         for(MultipartFile file : images) {
             String s3FileName = UUID.randomUUID() + "-" + file.getOriginalFilename();
-
             ObjectMetadata objMeta = new ObjectMetadata();
             objMeta.setContentLength(file.getInputStream().available());
-
             amazonS3.putObject(bucket, s3FileName, file.getInputStream(), objMeta);
-
             String imageString = amazonS3.getUrl(bucket, s3FileName).toString();
-
             ProductImage productImage = ProductImage.builder()
                     .imageUrl(imageString)
                     .product(createProduct)
@@ -116,16 +108,15 @@ public class ProductService {
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_CATEGORY));
 
+        List<ProductImage> beforeImages = product.getProductImages();
+        productImageRepository.deleteAll(beforeImages);
+
         for(MultipartFile file : images) {
             String s3FileName = UUID.randomUUID() + "-" + file.getOriginalFilename();
-
             ObjectMetadata objMeta = new ObjectMetadata();
             objMeta.setContentLength(file.getInputStream().available());
-
             amazonS3.putObject(bucket, s3FileName, file.getInputStream(), objMeta);
-
             String imageString = amazonS3.getUrl(bucket, s3FileName).toString();
-
             ProductImage productImage = ProductImage.builder()
                     .imageUrl(imageString)
                     .product(product)
