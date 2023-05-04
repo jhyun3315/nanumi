@@ -40,22 +40,17 @@ public class ProductService {
     private String bucket;
     private final AmazonS3 amazonS3;
 
-    public ProductSearchResDTO searchProductByWords(long userId, String words, PageRequest pageRequest){
+    public Page<ProductAllDTO> searchProductByWords(long userId, String words, PageRequest pageRequest){
         User user = userRepository.findById(userId).orElseThrow(() ->  new CustomException(NOT_FOUND_USER));
         Address address = addressRepository.findById(user.getAddress().getId()).orElseThrow( () ->  new CustomException(NOT_FOUND_ADDRESS_CODE));
 
-        Page<Product> pages = productRepository.searchAll(address.getId(), words, pageRequest);
-        List<ProductAllDTO> data = new ArrayList<>();
-
-        for (Product p : pages.getContent()) {
-            data.add(new ProductAllDTO(p));
-        }
-
-        return new ProductSearchResDTO(data, pages.getTotalPages(), pageRequest.getPageNumber());
+        return productRepository.searchAll(address.getId(), words, pageRequest);
     }
 
-    public Page<ProductAllDTO> findProductAll(User user, PageRequest pageRequest) {
-        userRepository.findById(user.getId()).orElseThrow( () -> new CustomException(NOT_FOUND_USER));
+    public Page<ProductAllDTO> findProductAll(long userId, PageRequest pageRequest) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_USER));
+
         Long addressId = user.getAddress().getId();
         return productRepository.findAllProduct(addressId, pageRequest);
     }
@@ -69,7 +64,10 @@ public class ProductService {
         return new ProductDetailDTO(product);
     }
 
-    public Page<ProductAllDTO> findCateProductAll(Long categoryId, User user, Pageable pageRequest) {
+    public Page<ProductAllDTO> findCateProductAll(Long categoryId, long userId, Pageable pageRequest) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_USER));
+
         categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new CustomException(CustomExceptionStatus.NOT_FOUND_CATEGORY));
         Long addressId = user.getAddress().getId();

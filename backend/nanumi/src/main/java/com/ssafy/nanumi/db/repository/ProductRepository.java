@@ -19,7 +19,7 @@ public interface ProductRepository extends JpaRepository<Product,Long> {
         "AND p.isMatched = false " +
         "AND p.isDeleted = false " +
         "AND p.name Like %:name%")
-    Page<Product> searchAll(long addressId, String name, Pageable pageable);
+    Page<ProductAllDTO> searchAll(long addressId, String name, Pageable pageable);
 
     @Query(value = "select p " +
             "from Product p " +
