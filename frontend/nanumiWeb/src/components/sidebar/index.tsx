@@ -18,10 +18,10 @@ const SideBar = () => {
     { name: 'Settings', icon: <RiSettings5Line /> },
   ];
   return (
-    <div className="h-screen border-r border-gray-200 w-64 px-9">
+    <div className="h-screen border-r border-gray-200 w-64 px-9 py-9 space-y-24">
       <div className="flex flex-row items-center">
-        <img src={Logo} alt="nanumi-logo" className="w-9 h-9" />
-        <div>나누미</div>
+        <img src={Logo} alt="nanumi-logo" className="w-12 h-12" />
+        <div>NANUMI</div>
       </div>
       <div>
         <ul>
