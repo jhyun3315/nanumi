@@ -36,7 +36,7 @@ const {width} = Dimensions.get('window');
 const DetailHeader = ({data, navigation, handlePresentModalPress}) => {
   const scrollX = useRef(new Animated.Value(0)).current;
   const [user] = useRecoilState(userState);
-  const userId = data?.result?.userId;
+  const userId = data?.userId;
 
   const renderImageItem = ({item, index}) => {
     const inputRange = [
@@ -85,6 +85,7 @@ const DetailHeader = ({data, navigation, handlePresentModalPress}) => {
         left={15}
         top={StatusBar.currentHeight + 10}
       />
+      {/* 내 물품만 수정,삭제 버튼 누를 수 있음 */}
       {user.userId === userId && (
         <MoreButton
           minWidth={40}
@@ -102,6 +103,14 @@ const DetailHeader = ({data, navigation, handlePresentModalPress}) => {
 
 const ProductDetail = ({route, navigation}) => {
   const {id} = route.params.data;
+  const {data, isLoading, error} = useQuery(['product', id], () =>
+    requestGetDetailProduct(id),
+  );
+
+  const [user] = useRecoilState(userState);
+  // 내 물건이라면 나눔받기 버튼 못누름
+  const isDisable = user.userId === data?.result?.userId;
+
   const {hideModal, showModal} = useModal();
 
   const handleCloseAndBack = () => {
@@ -109,11 +118,6 @@ const ProductDetail = ({route, navigation}) => {
     navigation.goBack();
   };
 
-  const {data, isLoading, error} = useQuery(['product', id], () =>
-    requestGetDetailProduct(id),
-  );
-
-  console.log(data);
   const bottomSheetModalRef = useRef(null);
   const snapPoints = useMemo(() => ['20%'], []);
   const handlePresentModalPress = useCallback(() => {
@@ -169,7 +173,11 @@ const ProductDetail = ({route, navigation}) => {
             translucent={true}
           />
           <View style={styles.buttonContainer}>
-            <RectButton minWidth={170} fontSize={SIZES.large} {...SHADOWS.dark}>
+            <RectButton
+              minWidth={170}
+              fontSize={SIZES.large}
+              {...SHADOWS.dark}
+              isDisable={isDisable}>
               나눔받기
             </RectButton>
           </View>
