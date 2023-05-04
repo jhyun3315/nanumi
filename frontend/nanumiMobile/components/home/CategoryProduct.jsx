@@ -11,10 +11,24 @@ import {useNavigation} from '@react-navigation/native';
 import ProductCard from './../product/ProductCard';
 import ErrorModal from '../modal/ErrorModal';
 import EmptyState from '../../ui/EmptyState';
+import {useModal} from '../../hooks/useModal';
 
 const CategoryProduct = ({categoryKey, categoryName}) => {
   const [user] = useRecoilState(userState);
   const navigation = useNavigation();
+  const {showModal} = useModal();
+
+  const handleOpenModal = () => {
+    showModal({
+      modalType: 'OneButtonModal',
+      modalProps: {
+        title: '오류',
+        content: '데이터를 가져오는데 실패했습니다.',
+        callback: fetchNextPage,
+      },
+    });
+    return;
+  };
   const [productList, setProductList] = useState({});
   const {
     data,
@@ -66,7 +80,7 @@ const CategoryProduct = ({categoryKey, categoryName}) => {
 
   const content = data?.pages.flatMap(page => page.result.content) ?? [];
 
-  if (error) return <ErrorModal handlePress={fetchNextPage} />;
+  if (error) handleOpenModal();
   if (isLoading) return <Fallback />;
 
   return (
