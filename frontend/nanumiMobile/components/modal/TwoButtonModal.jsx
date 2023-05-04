@@ -15,7 +15,6 @@ const {width, height} = Dimensions.get('window');
 const LogoutModal = () => {
   const {modal, hideModal} = useModal();
 
-  console.log('logout렌더링');
   return (
     <Modal visible={modal?.modalProps.visible} transparent={true}>
       <Pressable style={styles.modalContainer} onPress={hideModal}>

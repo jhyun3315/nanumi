@@ -20,7 +20,7 @@ import {useModal} from '../../hooks/useModal';
 import GlobalModal from '../modal/GlobalModal';
 
 const ChatDetail = ({navigation}) => {
-  const {showModal} = useModal();
+  const {showModal, hideModal} = useModal();
 
   const handleCloseBottomModal = () => {
     bottomSheetModalRef.current?.close();
@@ -30,7 +30,15 @@ const ChatDetail = ({navigation}) => {
     handleCloseBottomModal();
     setTimeout(() => {
       showModal({
-        modalType: 'BlockUserModal',
+        modalType: 'TwoButtonModal',
+        modalProps: {
+          title: '차단하기',
+          content:
+            '차단시 상대방과의 거래가 취소되고 서로의 게시글을 확인하거나 채팅을 할 수 없어요. 차단하실래요?',
+          visible: true,
+          onConfirm: hideModal,
+          onCancel: hideModal,
+        },
       });
     }, 300);
   };
