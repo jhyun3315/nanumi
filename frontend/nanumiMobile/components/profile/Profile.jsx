@@ -123,7 +123,9 @@ const Profile = ({navigation}) => {
 
         <Pressable
           style={styles.statusContainer}
-          onPress={() => navigation.navigate('DivideProduct')}>
+          onPress={() =>
+            navigation.navigate('DivideProduct', {type: 'divided'})
+          }>
           <View style={styles.statusBox}>
             <Text style={[styles.text, styles.count]}>
               {data?.result?.giveCount}
@@ -132,7 +134,9 @@ const Profile = ({navigation}) => {
           </View>
 
           <Pressable
-            onPress={() => navigation.navigate('DivideProduct')}
+            onPress={() =>
+              navigation.navigate('DivideProduct', {type: 'dividing'})
+            }
             style={[
               styles.statusBox,
               {
@@ -149,7 +153,9 @@ const Profile = ({navigation}) => {
 
           <Pressable
             style={styles.statusBox}
-            onPress={() => navigation.navigate('DivideProduct')}>
+            onPress={() =>
+              navigation.navigate('DivideProduct', {type: 'received'})
+            }>
             <Text style={[styles.text, styles.count]}>
               {data?.result?.givenCount}
             </Text>

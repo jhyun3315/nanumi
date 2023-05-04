@@ -1,45 +1,18 @@
-import React, {useState, useEffect, useMemo} from 'react';
+import React, {useState, useEffect} from 'react';
 import {COLORS} from '../../constants';
 import {View, FlatList, StyleSheet} from 'react-native';
-import {useRecoilState} from 'recoil';
-import {BackHeader} from '../../ui/BackHeader';
 import {useInfiniteQuery} from '@tanstack/react-query';
-import {userState} from '../../state/user';
-import {
-  requsetGetDividingProduct,
-  requestGetDividedProductList,
-  requestGetReceivedProductList,
-} from '../../api/product';
+import {requestSearchProduct} from './../../api/product';
 import {Fallback} from '../../ui/Fallback';
-import ProductCard from './ProductCard';
+import {userState} from '../../state/user';
+import {useRecoilState} from 'recoil';
+import ProductCard from '../product/ProductCard';
 import ErrorModal from '../modal/ErrorModal';
 import EmptyState from '../../ui/EmptyState';
 
-const DivideProduct = ({navigation, type}) => {
+const SearchList = ({words}) => {
   const [user] = useRecoilState(userState);
   const [productList, setProductList] = useState([]);
-
-  const queryFn = useMemo(() => {
-    switch (type) {
-      case 'divided':
-        return requestGetDividedProductList;
-      case 'dividing':
-        return requsetGetDividingProduct;
-      case 'received':
-        return requestGetReceivedProductList;
-    }
-  }, [type]);
-
-  const title = useMemo(() => {
-    switch (type) {
-      case 'divided':
-        return '나눔한 상품';
-      case 'dividing':
-        return '나눔중인 상품';
-      case 'received':
-        return '나눔받은 상품';
-    }
-  }, [type]);
 
   const {
     data,
@@ -49,8 +22,8 @@ const DivideProduct = ({navigation, type}) => {
     hasNextPage,
     isFetchingNextPage,
   } = useInfiniteQuery(
-    [type],
-    ({pageParam = 0}) => queryFn(user.userId, pageParam),
+    ['search', words],
+    ({pageParam = 0}) => requestSearchProduct(words, user.userId, pageParam),
     {
       getNextPageParam: (lastPage, pages) => {
         if (
@@ -96,7 +69,6 @@ const DivideProduct = ({navigation, type}) => {
 
   return (
     <View style={styles.container}>
-      <BackHeader navigation={navigation}>{title}</BackHeader>
       <View style={styles.flatListWrapper}>
         <FlatList
           data={content}
@@ -119,7 +91,7 @@ const DivideProduct = ({navigation, type}) => {
   );
 };
 
-export default DivideProduct;
+export default SearchList;
 
 const styles = StyleSheet.create({
   container: {
