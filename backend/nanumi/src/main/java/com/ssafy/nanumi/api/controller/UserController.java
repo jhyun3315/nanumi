@@ -79,13 +79,12 @@ public class UserController {
 
     /* 회원 정보 수정 */
     @PatchMapping("/users/{user-id}")
-    public CustomResponse updateUser(@PathVariable("user-id") Long userId,
+    public CustomDataResponse<UserSimpleDTO> updateUser(@PathVariable("user-id") Long userId,
                                      @RequestParam("nickname") String nickname,
                                      @RequestParam("profileUrl") MultipartFile profileUrl) throws IOException {
         User user = userRepository.findById(userId)
                 .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_USER));
-        userService.updateUser(user, nickname, profileUrl);
-        return responseService.getSuccessResponse();
+        return responseService.getDataResponse(userService.updateUser(user, nickname, profileUrl), RESPONSE_SUCCESS);
     }
 
     /* 회원 정보 탈퇴 */
