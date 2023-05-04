@@ -132,7 +132,6 @@ public class ProductService {
                     .build();
             productImageRepository.save(productImage);
         }
-
         product.setName(name);
         product.setContent(content);
         product.setCategory(category);
