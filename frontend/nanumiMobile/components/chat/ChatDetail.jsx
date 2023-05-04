@@ -47,7 +47,15 @@ const ChatDetail = ({navigation}) => {
     handleCloseBottomModal();
     setTimeout(() => {
       showModal({
-        modalType: 'ChatExitModal',
+        modalType: 'TwoButtonModal',
+        modalProps: {
+          title: '채팅방 나가기',
+          content:
+            '채팅방을 나가면 채팅 목록 및 대화 내용이 삭제되고 복구할 수없어요. 채팅방에서 나가시겠어요?',
+          visible: true,
+          onConfirm: hideModal,
+          onCancel: hideModal,
+        },
       });
     }, 300);
   };

@@ -1,7 +1,6 @@
 import React from 'react';
 import {useRecoilState} from 'recoil';
 import {modalState} from '../../state/modal';
-import ChatExitModal from './ChatExitModal';
 import TransactionCompleteModal from './TransactionCompleteModal';
 import MatchingUserModal from './MatchingUserModal';
 import WithdrawalModal from './WithdrawalModal';
@@ -13,7 +12,6 @@ import OneButtonModal from './OneButtonModal';
 import TwoButtonModal from './TwoButtonModal';
 
 const MODAL_TYPES = {
-  ChatExitModal: 'ChatExitModal',
   TransactionCompleteModal: 'TransactionCompleteModal',
   MatchingUserModal: 'MatchingUserModal',
   WithdrawalModal: 'WithdrawalModal',
@@ -26,7 +24,6 @@ const MODAL_TYPES = {
 };
 
 const MODAL_COMPONENTS = {
-  [MODAL_TYPES.ChatExitModal]: ChatExitModal,
   [MODAL_TYPES.TransactionCompleteModal]: TransactionCompleteModal,
   [MODAL_TYPES.MatchingUserModal]: MatchingUserModal,
   [MODAL_TYPES.WithdrawalModal]: WithdrawalModal,
