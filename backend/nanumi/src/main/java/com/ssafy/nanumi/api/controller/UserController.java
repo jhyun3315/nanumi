@@ -3,7 +3,6 @@ package com.ssafy.nanumi.api.controller;
 import com.ssafy.nanumi.api.request.AddressDTO;
 import com.ssafy.nanumi.api.request.UserJoinDTO;
 import com.ssafy.nanumi.api.request.UserLoginDTO;
-import com.ssafy.nanumi.api.request.UserUpdateDTO;
 import com.ssafy.nanumi.api.response.*;
 import com.ssafy.nanumi.api.service.UserService;
 import com.ssafy.nanumi.config.response.CustomDataResponse;
@@ -79,13 +78,12 @@ public class UserController {
 
     /* 회원 정보 수정 */
     @PatchMapping("/users/{user-id}")
-    public CustomResponse updateUser(@PathVariable("user-id") Long userId,
+    public CustomDataResponse<UserSimpleDTO> updateUser(@PathVariable("user-id") Long userId,
                                      @RequestParam("nickname") String nickname,
                                      @RequestParam("profileUrl") MultipartFile profileUrl) throws IOException {
         User user = userRepository.findById(userId)
                 .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_USER));
-        userService.updateUser(user, nickname, profileUrl);
-        return responseService.getSuccessResponse();
+        return responseService.getDataResponse(userService.updateUser(user, nickname, profileUrl), RESPONSE_SUCCESS);
     }
 
     /* 회원 정보 탈퇴 */
@@ -106,7 +104,7 @@ public class UserController {
         return responseService.getDataResponse(userService.getAllReview(user, pageRequest),RESPONSE_SUCCESS);
     }
 
-    /* 나눔 상품 목록 조회 (모든 거래) */
+    /* 나눔한 상품 목록 조회 (모든 거래) */
     @GetMapping("/users/products/{user-id}")
     public CustomDataResponse<Page<ProductAllDTO>> getAllReceiveProduct(@PathVariable("user-id") Long userId, @RequestParam("page") Integer page){
         User user = userRepository.findById(userId)
@@ -122,5 +120,14 @@ public class UserController {
                 .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_USER));
         PageRequest pageRequest = PageRequest.of(page, 6);
         return responseService.getDataResponse(userService.getMatchingProduct(user, pageRequest),RESPONSE_SUCCESS);
+    }
+
+    /* 나눔 받은 상품 목록 조회 */
+    @GetMapping("users/given/{user-id}")
+    public CustomDataResponse<Page<ProductAllDTO>> getGivenProduct(@PathVariable("user-id") Long userId, @RequestParam("page") Integer page){
+        User user = userRepository.findById(userId)
+                .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_USER));
+        PageRequest pageRequest = PageRequest.of(page, 6);
+        return responseService.getDataResponse(userService.getGivenProduct(user, pageRequest), RESPONSE_SUCCESS);
     }
 }

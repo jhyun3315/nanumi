@@ -4,7 +4,6 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.ssafy.nanumi.api.request.UserJoinDTO;
 import com.ssafy.nanumi.api.request.UserLoginDTO;
-import com.ssafy.nanumi.api.request.UserUpdateDTO;
 import com.ssafy.nanumi.api.response.*;
 import com.ssafy.nanumi.common.Image;
 import com.ssafy.nanumi.common.provider.Provider;
@@ -26,7 +25,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.mail.MessagingException;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.UUID;
 
 import static com.ssafy.nanumi.config.response.exception.CustomExceptionStatus.*;
@@ -161,11 +159,12 @@ public class UserService {
                 .build();
     }
 
-    public void updateUser(User user, String nickname, MultipartFile profileImg) throws IOException {
+    public UserSimpleDTO updateUser(User user, String nickname, MultipartFile profileImg) throws IOException {
         String userNickname = user.getNickname();
         String imageString = user.getProfileUrl();
         if(nickname != null) {
-            userNickname = nickname;}
+            userNickname = nickname;
+        }
         if(profileImg != null) {
             String s3FileName = UUID.randomUUID() + "-" + profileImg.getOriginalFilename();
             ObjectMetadata objMeta = new ObjectMetadata();
@@ -173,7 +172,9 @@ public class UserService {
             amazonS3.putObject(bucket, s3FileName, profileImg.getInputStream(), objMeta);
             imageString = amazonS3.getUrl(bucket, s3FileName).toString();
         }
-        user.updateUserInfo(userNickname, imageString);}
+        user.updateUserInfo(userNickname, imageString);
+        return new UserSimpleDTO(user);
+    }
     public void deleteUser(User user) {
         user.delete();
     }
@@ -186,5 +187,8 @@ public class UserService {
     }
     public Page<ProductAllDTO> getMatchingProduct(User user, PageRequest pageRequest){
         return userRepository.getAllMatchingProduct(user.getId(), pageRequest);
+    }
+    public Page<ProductAllDTO> getGivenProduct(User user, PageRequest pageRequest){
+        return userRepository.getAllGivenProduct(user.getId(),pageRequest);
     }
 }
