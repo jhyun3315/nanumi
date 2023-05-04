@@ -8,20 +8,16 @@ import {
   StyleSheet,
   SafeAreaView,
 } from 'react-native';
-import {COLORS, Data, SIZES, assets} from '../../constants';
+import {COLORS, SIZES, assets} from '../../constants';
 import {useNavigation} from '@react-navigation/native';
-import ProductList from '../product/ProductList';
+import SearchList from './SearchList';
 
 const Search = () => {
   const navigation = useNavigation();
-  const [data, setData] = useState();
+  const [words, setWords] = useState('');
 
-  const handleSearch = value => {
-    if (!value.length) return setData(Data);
-    const filteredData = Data.filter(item => item.name.includes(value));
-
-    if (filteredData.length) setData(filteredData);
-    else setData(Data);
+  const handleWords = text => {
+    setWords(text);
   };
 
   return (
@@ -47,12 +43,12 @@ const Search = () => {
             <TextInput
               placeholder="검색"
               style={styles.searchInput}
-              onChangeText={handleSearch}
+              onChangeText={handleWords}
             />
           </View>
         </View>
       </View>
-      <ProductList isSearch={true} data={data} />
+      <SearchList words={words} />
     </SafeAreaView>
   );
 };
