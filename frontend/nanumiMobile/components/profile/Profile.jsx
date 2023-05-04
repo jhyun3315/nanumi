@@ -69,7 +69,14 @@ const Profile = ({navigation}) => {
 
   const handleOpenWithdrawalModal = () => {
     showModal({
-      modalType: 'WithdrawalModal',
+      modalType: 'TwoButtonModal',
+      modalProps: {
+        title: '회원탈퇴',
+        content: '정말 탈퇴하시겠어요?',
+        visible: true,
+        onConfirm: hideModal,
+        onCancel: hideModal,
+      },
     });
   };
 
