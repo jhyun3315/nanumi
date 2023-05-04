@@ -16,9 +16,7 @@ const ProductOptions = ({
         }>
         <Text style={styles.optionText}>상품수정</Text>
       </Pressable>
-      <Pressable
-        style={styles.option}
-        onPress={() => handleOpenProductDeleteModal(data?.result?.id)}>
+      <Pressable style={styles.option} onPress={handleOpenProductDeleteModal}>
         <Text style={styles.optionText}>상품삭제</Text>
       </Pressable>
     </View>

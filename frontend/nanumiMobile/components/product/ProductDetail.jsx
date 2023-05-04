@@ -22,6 +22,7 @@ import {
 import {useQuery} from '@tanstack/react-query';
 import {useModal} from '../../hooks/useModal';
 import {
+  requestDeleteProduct,
   requestDonationReceived,
   requestGetDetailProduct,
 } from '../../api/product';
@@ -113,8 +114,14 @@ const ProductDetail = ({route, navigation}) => {
   const [user] = useRecoilState(userState);
   // 내 물건이라면 나눔받기 버튼 못누름
   const isDisable = user.userId === data?.result?.userId;
-
   const {hideModal, showModal} = useModal();
+
+  const bottomSheetModalRef = useRef(null);
+  const snapPoints = useMemo(() => ['20%'], []);
+
+  const handlePresentModalPress = useCallback(() => {
+    bottomSheetModalRef.current?.present();
+  });
 
   const handleCloseAndBack = () => {
     hideModal();
@@ -140,22 +147,30 @@ const ProductDetail = ({route, navigation}) => {
     }
   };
 
-  const bottomSheetModalRef = useRef(null);
-  const snapPoints = useMemo(() => ['20%'], []);
-  const handlePresentModalPress = useCallback(() => {
-    bottomSheetModalRef.current?.present();
-  });
+  const handleDeleteProduct = async () => {
+    const response = await requestDeleteProduct(id);
+    hideModal();
+    if (response.code === 200)
+      navigation.navigate('BottomTabs', {screen: 'Home'});
+    else Alert.alert('삭제에 실패했습니다.');
+  };
 
   const handleCloseBottomModal = () => {
     bottomSheetModalRef.current?.close();
   };
 
-  const handleOpenProductDeleteModal = productId => {
+  const handleOpenProductDeleteModal = () => {
     handleCloseBottomModal();
     setTimeout(() => {
       showModal({
-        modalType: 'ProductDeleteModal',
-        args: productId,
+        modalType: 'TwoButtonModal',
+        modalProps: {
+          title: '상품 삭제',
+          content: '정말 상품을 삭제하시겠어요?',
+          visible: true,
+          onConfirm: handleDeleteProduct,
+          onCancel: hideModal,
+        },
       });
     }, 300);
   };
