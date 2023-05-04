@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 public class UserLoginResDTO {
     private long userId;
     private String nickname;
+    private String jwtToken;
     private String tier;
     private String userProfileUrl;
     private long addressId;
