@@ -188,4 +188,7 @@ public class UserService {
     public Page<ProductAllDTO> getMatchingProduct(User user, PageRequest pageRequest){
         return userRepository.getAllMatchingProduct(user.getId(), pageRequest);
     }
+    public Page<ProductAllDTO> getGivenProduct(User user, PageRequest pageRequest){
+        return userRepository.getAllGivenProduct(user.getId(),pageRequest);
+    }
 }
