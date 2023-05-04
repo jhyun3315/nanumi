@@ -29,4 +29,11 @@ public interface UserRepository extends JpaRepository<User,Long> {
             "from Product p " +
             "where p.isDeleted = false and p.isMatched = false and p.user.id = :userId")
     Page<ProductAllDTO> getAllMatchingProduct(long userId, Pageable pageable);
+
+    @Query(value = "select p " +
+            "from Product p " +
+            "left join p.Matches m " +
+            "where m.user.id = :userId and m.isMatching = true "
+    )
+    Page<ProductAllDTO> getAllGivenProduct(long userId, Pageable pageable);
 }

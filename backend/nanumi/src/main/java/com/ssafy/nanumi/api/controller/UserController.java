@@ -105,7 +105,7 @@ public class UserController {
         return responseService.getDataResponse(userService.getAllReview(user, pageRequest),RESPONSE_SUCCESS);
     }
 
-    /* 나눔 상품 목록 조회 (모든 거래) */
+    /* 나눔한 상품 목록 조회 (모든 거래) */
     @GetMapping("/users/products/{user-id}")
     public CustomDataResponse<Page<ProductAllDTO>> getAllReceiveProduct(@PathVariable("user-id") Long userId, @RequestParam("page") Integer page){
         User user = userRepository.findById(userId)
@@ -121,5 +121,14 @@ public class UserController {
                 .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_USER));
         PageRequest pageRequest = PageRequest.of(page, 6);
         return responseService.getDataResponse(userService.getMatchingProduct(user, pageRequest),RESPONSE_SUCCESS);
+    }
+
+    /* 나눔 받은 상품 목록 조회 */
+    @GetMapping("users/given/{user-id}")
+    public CustomDataResponse<Page<ProductAllDTO>> getGivenProduct(@PathVariable("user-id") Long userId, @RequestParam("page") Integer page){
+        User user = userRepository.findById(userId)
+                .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_USER));
+        PageRequest pageRequest = PageRequest.of(page, 6);
+        return responseService.getDataResponse(userService.getGivenProduct(user, pageRequest), RESPONSE_SUCCESS);
     }
 }
