@@ -17,14 +17,14 @@ import {useNavigation} from '@react-navigation/native';
 
 const HomeCategoryModal = () => {
   const navigation = useNavigation();
-  const {hideModal} = useModal();
+  const {modal, hideModal} = useModal();
 
   const closeModalAndNavigate = (categoryKey, categoryName) => {
+    hideModal();
     navigation.navigate('CategoryProduct', {
       categoryKey: categoryKey,
       categoryName: categoryName,
     });
-    hideModal();
   };
 
   const renderCategory = ({item}) => {
@@ -43,7 +43,10 @@ const HomeCategoryModal = () => {
   };
 
   return (
-    <Modal style={styles.container} animationType="slide">
+    <Modal
+      style={styles.container}
+      animationType="slide"
+      visible={modal?.modalProps?.visible}>
       <CloseHeader handlePress={hideModal}>카테고리</CloseHeader>
       <View style={styles.categoryContainer}>
         <FlatList

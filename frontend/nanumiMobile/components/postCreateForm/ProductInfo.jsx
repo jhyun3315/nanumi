@@ -19,11 +19,14 @@ export const ProductTitle = ({title, handleTitle}) => {
 };
 
 export const ProductCategory = ({selectedCategory, handleCategorySelected}) => {
-  const {showModal} = useModal();
+  const {modal, showModal} = useModal();
   const handleOpenCategoryModal = () => {
     showModal({
       modalType: 'CreateCategoryModal',
-      callback: handleCategorySelected,
+      modalProps: {
+        visible: true,
+        onConfirm: handleCategorySelected,
+      },
     });
   };
   return (

@@ -47,11 +47,11 @@ const ProductList = ({isSearch}) => {
     if (!isLoading && hasNextPage) fetchNextPage();
   };
 
-  // useFocusEffect(
-  //   useCallback(() => {
-  //     refetch();
-  //   }, []),
-  // );
+  useFocusEffect(
+    useCallback(() => {
+      refetch();
+    }, []),
+  );
 
   useEffect(() => {
     setProductList({

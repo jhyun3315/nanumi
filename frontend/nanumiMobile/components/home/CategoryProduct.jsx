@@ -70,7 +70,7 @@ const CategoryProduct = ({categoryKey, categoryName}) => {
 
   const content = data?.pages.flatMap(page => page.result.content) ?? [];
 
-  if (isError) return <ErrorModal />;
+  if (isError) return <ErrorModal handlePress={refetch} />;
   if (isLoading) return <Fallback />;
 
   return (

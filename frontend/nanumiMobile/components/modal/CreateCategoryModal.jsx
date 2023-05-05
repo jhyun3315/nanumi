@@ -12,14 +12,13 @@ import {CloseHeader} from '../../ui/BackHeader';
 import {CATEGORIES} from '../../constants/category';
 import {useModal} from '../../hooks/useModal';
 
-const RenderCategory = ({item, callback}) => {
-  const {hideModal} = useModal();
-
+const RenderCategory = ({item}) => {
+  const {modal, hideModal} = useModal();
   return (
     <Pressable
       style={styles.categoryItem}
       onPress={() => {
-        callback(item.key, item.name);
+        modal?.modalProps?.onConfirm(item.key, item.name);
         hideModal();
       }}>
       <Image style={styles.categoryImage} source={item.source} />
@@ -28,17 +27,18 @@ const RenderCategory = ({item, callback}) => {
   );
 };
 
-const CreateCategoryModal = ({callback}) => {
-  const {hideModal} = useModal();
+const CreateCategoryModal = () => {
+  const {modal, hideModal} = useModal();
   return (
-    <Modal style={styles.categoryContainer} visible={true} animationType="none">
+    <Modal
+      style={styles.categoryContainer}
+      visible={modal?.modalProps?.visible}
+      animationType="fade">
       <CloseHeader handlePress={hideModal} />
       <FlatList
         data={CATEGORIES}
         initialNumToRender={20}
-        renderItem={({item}) => (
-          <RenderCategory item={item} callback={callback} />
-        )}
+        renderItem={({item}) => <RenderCategory item={item} />}
         keyExtractor={item => item.key.toString()}
       />
     </Modal>
