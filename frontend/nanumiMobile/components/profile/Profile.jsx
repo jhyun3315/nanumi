@@ -30,10 +30,10 @@ const Profile = ({navigation}) => {
   const [user, setUser] = useRecoilState(userState);
 
   const handleLogout = async () => {
+    navigation.navigate('Login');
     await AsyncStorage.removeItem('user');
     setUser({});
     hideModal();
-    navigation.navigate('Login');
   };
 
   const {data, error, isLoading, refetch} = useQuery(
