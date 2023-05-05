@@ -43,16 +43,15 @@ const ProductList = ({isSearch}) => {
     },
   );
 
-  console.log('data', data?.pages[0].result);
   const handleLoadMore = () => {
     if (!isLoading && hasNextPage) fetchNextPage();
   };
 
-  useFocusEffect(
-    useCallback(() => {
-      refetch();
-    }, []),
-  );
+  // useFocusEffect(
+  //   useCallback(() => {
+  //     refetch();
+  //   }, []),
+  // );
 
   useEffect(() => {
     setProductList({
@@ -74,7 +73,7 @@ const ProductList = ({isSearch}) => {
   const content =
     productList?.data?.pages?.flatMap(page => page.result.content) ?? [];
 
-  if (error) return <ErrorModal handlePress={fetchNextPage} />;
+  if (error) return <ErrorModal handlePress={refetch} />;
   if (isLoading) return <Fallback />;
 
   return (

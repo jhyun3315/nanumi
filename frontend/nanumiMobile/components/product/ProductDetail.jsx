@@ -107,7 +107,7 @@ const DetailHeader = ({data, navigation, handlePresentModalPress}) => {
 
 const ProductDetail = ({route, navigation}) => {
   const {id} = route.params.data;
-  const {data, isLoading, error} = useQuery(['product', id], () =>
+  const {data, isLoading, error, refetch} = useQuery(['product', id], () =>
     requestGetDetailProduct(id),
   );
 
@@ -136,13 +136,25 @@ const ProductDetail = ({route, navigation}) => {
 
     if (response?.result?.result) {
       showModal({
-        modalType: 'SuccessDontaionModal',
-        callback: handleCloseAndBack,
+        modalType: 'OneButtonModal',
+        modalProps: {
+          title: '신청 성공',
+          content: '신청에 성공했습니다.',
+          buttonText: '확인',
+          visible: true,
+          onConfirm: handleCloseAndBack,
+        },
       });
     } else {
       showModal({
-        modalType: 'SuccessDontaionModal',
-        callback: handleCloseAndBack,
+        modalType: 'OneButtonModal',
+        modalProps: {
+          title: '신청 실패',
+          content: '신청인원이 가득찼습니다.',
+          buttonText: '확인',
+          visible: true,
+          onConfirm: handleCloseAndBack,
+        },
       });
     }
   };
@@ -194,11 +206,10 @@ const ProductDetail = ({route, navigation}) => {
     );
   }, []);
 
-  if (data?.code === 404) {
+  if (data?.code === 404)
     return <DataErrorModal handlePress={handleCloseAndBack} />;
-  }
   if (isLoading) return <Fallback />;
-  if (error) return <ErrorModal />;
+  if (error) return <ErrorModal handlePress={refetch} />;
 
   return (
     <GestureHandlerRootView style={{flex: 1}}>

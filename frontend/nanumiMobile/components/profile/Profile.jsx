@@ -29,7 +29,6 @@ const Profile = ({navigation}) => {
   const {showModal, hideModal} = useModal();
   const [user, setUser] = useRecoilState(userState);
 
-  console.log('렌더링');
   const handleLogout = async () => {
     await AsyncStorage.removeItem('user');
     setUser({});
@@ -41,18 +40,6 @@ const Profile = ({navigation}) => {
     ['profile', user.userId],
     () => requestGetProfile(user.userId),
   );
-
-  const handleOpenModal = () => {
-    showModal({
-      modalType: 'OneButtonModal',
-      modalProps: {
-        title: '오류',
-        content: '데이터를 가져오는데 실패했습니다.',
-        callback: fetchNextPage,
-      },
-    });
-    return;
-  };
 
   const handleOpenLogoutModal = () => {
     showModal({
@@ -86,8 +73,8 @@ const Profile = ({navigation}) => {
     }, []),
   );
 
+  if (error) return <ErrorModal handlePress={refetch} />;
   if (isLoading) return <Fallback />;
-  if (error) handleOpenModal();
 
   return (
     <SafeAreaView

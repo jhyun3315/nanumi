@@ -5,7 +5,6 @@ import TransactionCompleteModal from './TransactionCompleteModal';
 import MatchingUserModal from './MatchingUserModal';
 import HomeCategoryModal from './HomeCategoryModal';
 import CreateCategoryModal from './CreateCategoryModal';
-import SuccessDontaionModal from './SuccessDontaionModal';
 import OneButtonModal from './OneButtonModal';
 import TwoButtonModal from './TwoButtonModal';
 
@@ -14,7 +13,6 @@ const MODAL_TYPES = {
   MatchingUserModal: 'MatchingUserModal',
   HomeCategoryModal: 'HomeCategoryModal',
   CreateCategoryModal: 'CreateCategoryModal',
-  SuccessDontaionModal: 'SuccessDontaionModal',
   OneButtonModal: 'OneButtonModal',
   TwoButtonModal: 'TwoButtonModal',
 };
@@ -24,7 +22,6 @@ const MODAL_COMPONENTS = {
   [MODAL_TYPES.MatchingUserModal]: MatchingUserModal,
   [MODAL_TYPES.HomeCategoryModal]: HomeCategoryModal,
   [MODAL_TYPES.CreateCategoryModal]: CreateCategoryModal,
-  [MODAL_TYPES.SuccessDontaionModal]: SuccessDontaionModal,
   [MODAL_TYPES.OneButtonModal]: OneButtonModal,
   [MODAL_TYPES.TwoButtonModal]: TwoButtonModal,
 };

@@ -12,15 +12,19 @@ import {RectButton} from '../../ui/Button';
 import {useModal} from '../../hooks/useModal';
 const {width, height} = Dimensions.get('window');
 
-const LogoutModal = () => {
+const TwoButtonModal = () => {
   const {modal, hideModal} = useModal();
 
   return (
-    <Modal visible={modal?.modalProps.visible} transparent={true}>
+    <Modal
+      visible={modal?.modalProps.visible}
+      transparent={true}
+      statusBarTranslucent={true}
+      backgroundColor="transparent">
       <Pressable style={styles.modalContainer} onPress={hideModal}>
         <TouchableWithoutFeedback onPress={event => event.stopPropagation()}>
           <View style={styles.modal}>
-            <View style={styles.logoutContainer}>
+            <View style={styles.twoButtonContainer}>
               <Text style={styles.text}>{modal?.modalProps?.title}</Text>
             </View>
             <Text style={styles.subText}>{modal?.modalProps?.content}</Text>
@@ -50,7 +54,7 @@ const LogoutModal = () => {
     </Modal>
   );
 };
-export default LogoutModal;
+export default TwoButtonModal;
 
 const styles = {
   closeIcon: {
@@ -81,7 +85,7 @@ const styles = {
     transform: [{translateX: -0.4 * width}, {translateY: -0.15 * height}],
     justifyContent: 'space-between',
   },
-  logoutContainer: {
+  twoButtonContainer: {
     justifyContent: 'center',
   },
   text: {
@@ -89,7 +93,6 @@ const styles = {
     color: COLORS.primary,
     fontSize: SIZES.large,
   },
-
   subText: {
     fontFamily: FONTS.medium,
     color: COLORS.primary,

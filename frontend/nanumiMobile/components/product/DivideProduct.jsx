@@ -48,6 +48,7 @@ const DivideProduct = ({navigation, type}) => {
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
+    refetch,
   } = useInfiniteQuery(
     [type],
     ({pageParam = 0}) => queryFn(user.userId, pageParam),
@@ -91,7 +92,7 @@ const DivideProduct = ({navigation, type}) => {
   const content =
     productList?.data?.pages?.flatMap(page => page.result.content) ?? [];
 
-  if (error) return <ErrorModal handlePress={fetchNextPage} />;
+  if (error) return <ErrorModal handlePress={refetch} />;
   if (isLoading) return <Fallback />;
 
   return (

@@ -7,20 +7,20 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {CreateHeader} from '../../ui/BackHeader';
 import {openPicker} from '@baronha/react-native-multiple-image-picker';
 import {generateUniqueKey} from '../../util/uniqueId';
-import {useRecoilState} from 'recoil';
 import {userState} from '../../state/user';
 import {useQuery} from '@tanstack/react-query';
 import {requestGetDetailProduct, requestUpdateProduct} from '../../api/product';
 import {Fallback} from '../../ui/Fallback';
 import {showErrorAlert} from '../../ui/Alert';
+import {useModal} from '../../hooks/useModal';
 import DataErrorModal from '../modal/DataErrorModal';
 import ErrorModal from '../modal/ErrorModal';
 
 const PostUpdateForm = ({navigation, productId}) => {
-  const [user] = useRecoilState(userState);
   const {data, isLoading, error} = useQuery(['product', productId], () =>
     requestGetDetailProduct(productId),
   );
+  const {hideModal} = useModal();
   const [selectedCategory, setSelectedCategory] = useState({
     categoryId: data?.result?.categoryId,
     categoryName: data?.result?.categoryName,
@@ -77,6 +77,10 @@ const PostUpdateForm = ({navigation, productId}) => {
     setDescription(prev => text);
   };
 
+  const handleCloseAndBack = () => {
+    hideModal();
+    navigation.goBack();
+  };
   const renderItem = ({item}) => (
     <ImageContainer data={item} handlePress={handleImageDelete} />
   );
@@ -104,10 +108,8 @@ const PostUpdateForm = ({navigation, productId}) => {
     formData.append('content', description);
     formData.append('categoryId', selectedCategory.categoryId);
 
-    console.log(formData._parts);
     try {
       const response = await requestUpdateProduct(productId, formData);
-      console.log(response);
       if (response.code === 200) {
         navigation.navigate('BottomTabs', {screen: 'Home'});
       } else if (response.code === 413) {
@@ -120,7 +122,8 @@ const PostUpdateForm = ({navigation, productId}) => {
     }
   };
 
-  if (data?.code === 404) return <DataErrorModal />;
+  if (data?.code === 404)
+    return <DataErrorModal handlePress={handleCloseAndBack} />;
   if (isLoading) return <Fallback />;
   if (error) return <ErrorModal />;
 

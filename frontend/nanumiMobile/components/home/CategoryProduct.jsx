@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useCallback} from 'react';
 import {useInfiniteQuery} from '@tanstack/react-query';
 import {View, FlatList, StyleSheet} from 'react-native';
 import {requestGetCategoryProduct} from '../../api/product';
@@ -8,35 +8,25 @@ import {COLORS} from '../../constants';
 import {Fallback} from '../../ui/Fallback';
 import {BackHeader} from './../../ui/BackHeader';
 import {useNavigation} from '@react-navigation/native';
-import ProductCard from './../product/ProductCard';
-import ErrorModal from '../modal/ErrorModal';
-import EmptyState from '../../ui/EmptyState';
 import {useModal} from '../../hooks/useModal';
+import ProductCard from './../product/ProductCard';
+import EmptyState from '../../ui/EmptyState';
+import ErrorModal from '../modal/ErrorModal';
 
 const CategoryProduct = ({categoryKey, categoryName}) => {
   const [user] = useRecoilState(userState);
   const navigation = useNavigation();
-  const {showModal} = useModal();
 
-  const handleOpenModal = () => {
-    showModal({
-      modalType: 'OneButtonModal',
-      modalProps: {
-        title: '오류',
-        content: '데이터를 가져오는데 실패했습니다.',
-        callback: fetchNextPage,
-      },
-    });
-    return;
-  };
   const [productList, setProductList] = useState({});
   const {
     data,
     error,
+    isError,
     isLoading,
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
+    refetch,
   } = useInfiniteQuery(
     ['category'],
     ({pageParam = 0}) =>
@@ -80,7 +70,7 @@ const CategoryProduct = ({categoryKey, categoryName}) => {
 
   const content = data?.pages.flatMap(page => page.result.content) ?? [];
 
-  if (error) handleOpenModal();
+  if (isError) return <ErrorModal />;
   if (isLoading) return <Fallback />;
 
   return (
