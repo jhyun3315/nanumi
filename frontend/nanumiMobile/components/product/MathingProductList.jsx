@@ -1,19 +1,22 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, FlatList, StyleSheet, Image} from 'react-native';
 import {ProductPrice, ProductTitle, SubInfo} from './SubInfo';
 import {productState} from '../../state/product';
 import {COLORS, SHADOWS, SIZES} from '../../constants';
-import {useRecoilValue} from 'recoil';
+import {useRecoilState, useRecoilValue} from 'recoil';
 import {RectButton} from '../../ui/Button';
 import {BackHeader} from '../../ui/BackHeader';
 import GlobalModal from '../modal/GlobalModal';
 import {useModal} from '../../hooks/useModal';
+import {useInfiniteQuery} from '@tanstack/react-query';
+import {requsetGetDividingProduct} from '../../api/product';
+import {userState} from '../../state/user';
+import ErrorModal from '../modal/ErrorModal';
+import {Fallback} from '../../ui/Fallback';
 
-const MatchingProductListItem = ({
-  data,
-  navigation,
-  handleOpenMatchingUserModal,
-}) => {
+const MatchingProductListItem = ({data, navigation}) => {
+  const {modal, showModal} = useModal();
+  const handleOpenMatchingUserModa = () => {};
   return (
     <View
       style={{
@@ -25,14 +28,14 @@ const MatchingProductListItem = ({
       }}>
       <View style={styles.imageContainer}>
         <Image
-          source={{uri: data.image[0]}}
+          source={{uri: data?.productImageUrl}}
           resizeMode="contain"
           style={styles.image}
         />
       </View>
       <SubInfo isMatching={true} />
       <View style={styles.textContainer}>
-        <ProductTitle title={data.name} titlSize={SIZES.large} />
+        <ProductTitle title={data?.name} titlSize={SIZES.large} />
         <View style={styles.priceButtonContainer}>
           <ProductPrice />
           <RectButton
@@ -48,31 +51,79 @@ const MatchingProductListItem = ({
 };
 
 const MatchingProductList = ({navigation}) => {
-  const data = useRecoilValue(productState);
-
+  const [user] = useRecoilState(userState);
+  const [productList, setProductList] = useState({});
   const {showModal} = useModal();
 
-  const handleOpenMatchingUserModal = () => {
-    showModal({
-      modalType: 'MatchingUserModal',
+  const {
+    data,
+    error,
+    isLoading,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    refetch,
+  } = useInfiniteQuery(
+    ['dividing'],
+    ({pageParam = 0}) => requsetGetDividingProduct(user.userId, pageParam),
+    {
+      getNextPageParam: (lastPage, pages) => {
+        if (
+          !lastPage?.result?.content?.length ||
+          (pages &&
+            pages.length > 0 &&
+            pages[pages.length - 1].result &&
+            pages[pages.length - 1].result.last)
+        ) {
+          return undefined;
+        }
+        return pages ? pages?.length : undefined;
+      },
+    },
+  );
+
+  useEffect(() => {
+    setProductList({
+      ...productList,
+      isFetchingNextPage: isFetchingNextPage,
     });
+  }, [isFetchingNextPage]);
+
+  useEffect(() => {
+    setProductList({
+      ...productList,
+      data: data,
+      error: error,
+      isLoading: isLoading,
+      hasNextPage: hasNextPage,
+    });
+  }, [data, error, isLoading, hasNextPage]);
+
+  const handleLoadMore = () => {
+    if (!isLoading && hasNextPage) fetchNextPage();
   };
+
+  const content =
+    productList?.data?.pages?.flatMap(page => page.result.content) ?? [];
+
+  console.log(content);
+  if (error) return <ErrorModal handlePress={refetch} />;
+  if (isLoading) return <Fallback />;
+
   return (
     <View style={styles.container}>
       <BackHeader navigation={navigation}>매칭 상품</BackHeader>
       <View style={styles.flatListWrapper}>
         <FlatList
-          data={data}
+          data={content}
           renderItem={({item}) => (
-            <MatchingProductListItem
-              data={item}
-              navigation={navigation}
-              handleOpenMatchingUserModal={handleOpenMatchingUserModal}
-            />
+            <MatchingProductListItem data={item} navigation={navigation} />
           )}
           keyExtractor={item => item.id.toString()}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.contentContainerStyle}
+          onEndReached={handleLoadMore}
+          onEndReachedThreshold={0.5}
         />
       </View>
       <GlobalModal />

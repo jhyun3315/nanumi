@@ -11,6 +11,9 @@ const Home = ({navigation}) => {
   const handleOpenCategoryModal = () => {
     showModal({
       modalType: 'HomeCategoryModal',
+      modalProps: {
+        visible: true,
+      },
     });
   };
 

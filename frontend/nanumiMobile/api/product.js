@@ -91,3 +91,10 @@ export const requestDonationReceived = async (productId, userId) => {
   );
   return response.data;
 };
+
+export const requestGetMatchUsers = async (productId, userId) => {
+  const response = await axios.get(
+    `${API_END_POINT}/matches/${productId}/${userId}`,
+  );
+  return response.data;
+};
