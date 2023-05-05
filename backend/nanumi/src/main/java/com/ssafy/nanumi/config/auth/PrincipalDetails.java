@@ -11,8 +11,12 @@ import java.util.Collection;
 
 @Getter
 @NoArgsConstructor
-public class PrincipaDetails implements UserDetails {
+public class PrincipalDetails implements UserDetails {
     private User user;
+
+    public PrincipalDetails(User user) {
+        this.user = user;
+    }
 
     // 해당 user의 권한을 리턴 하는 곳.
     @Override
@@ -39,22 +43,22 @@ public class PrincipaDetails implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return false;
+        return true;
     }
 
 
