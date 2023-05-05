@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Modal,
   View,
@@ -12,57 +12,74 @@ import {
 import {COLORS, FONTS, SIZES, assets} from '../../constants';
 import {useModal} from '../../hooks/useModal';
 import {RectButton} from '../../ui/Button';
+import {useQuery} from '@tanstack/react-query';
+import {requestGetMatchingUsers} from '../../api/product';
+import {useRecoilState} from 'recoil';
+import {userState} from '../../state/user';
+import {Fallback} from '../../ui/Fallback';
+import ErrorModal from './ErrorModal';
 
 const {width, height} = Dimensions.get('window');
 
-const USERS = [
-  {
-    id: '1',
-    name: 'gg',
-    profileImage: assets.person01,
-  },
-  {
-    id: '2',
-    name: 'ss',
-    profileImage: assets.person02,
-  },
-  {
-    id: '3',
-    name: 'gg',
-    profileImage: assets.person03,
-  },
-];
+const MatchingUserModalContent = () => {
+  const [user] = useRecoilState(userState);
+  const {modal} = useModal();
+  const {data, isLoading, error, refetch} = useQuery(
+    ['matchingUsers', modal?.modalProps?.productId],
+    () => requestGetMatchingUsers(modal?.modalProps?.productId, user.userId),
+  );
 
-const MatchingUserModal = () => {
-  const {hideModal} = useModal();
+  console.log(data);
+  if (error) return <ErrorModal handlePress={refetch} />;
+  if (isLoading) return <Fallback />;
 
   return (
-    <Modal visible={true} transparent={true}>
-      <Pressable style={styles.modalContainer} onPress={hideModal}>
-        <TouchableWithoutFeedback
-          onPress={event => event.stopPropagation()}
-          style={{zIndex: 1, flex: 1}}>
-          <View style={styles.modal}>
-            {USERS?.map(user => (
-              <View key={user.id} style={styles.userContanier}>
-                <Image
-                  source={user?.profileImage}
-                  style={styles.profileImage}
-                />
-                <View style={styles.infoContainer}>
-                  <Text style={styles.subText}>{user?.name}</Text>
-                  <RectButton minWidth={64} fontSize={FONTS.font}>
-                    채팅하기
-                  </RectButton>
-                </View>
-              </View>
-            ))}
+    <TouchableWithoutFeedback
+      onPress={event => event.stopPropagation()}
+      style={{zIndex: 1, flex: 1}}>
+      <View style={styles.modal}>
+        {data?.result.length === 0 && (
+          <View
+            style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+            <Text style={styles.subText}>매칭된 유저가 없습니다</Text>
           </View>
-        </TouchableWithoutFeedback>
+        )}
+        {data?.result?.map(user => (
+          <View key={user?.userId} style={styles.userContanier}>
+            <Image
+              source={{uri: user?.userProfileUrl}}
+              style={styles.profileImage}
+            />
+            <View style={styles.infoContainer}>
+              <Text style={styles.subText}>{user?.name}</Text>
+              <RectButton minWidth={64} fontSize={FONTS.font}>
+                채팅하기
+              </RectButton>
+            </View>
+          </View>
+        ))}
+      </View>
+    </TouchableWithoutFeedback>
+  );
+};
+
+const MatchingUserModal = () => {
+  const {modal, hideModal} = useModal();
+
+  return (
+    <Modal
+      visible={modal?.modalProps.visible}
+      transparent={true}
+      statusBarTranslucent={true}
+      backgroundColor="transparent"
+      animationType="fade">
+      <Pressable style={styles.modalContainer} onPress={hideModal}>
+        <MatchingUserModalContent />
       </Pressable>
     </Modal>
   );
 };
+
 export default MatchingUserModal;
 
 const styles = StyleSheet.create({

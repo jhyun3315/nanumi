@@ -1,22 +1,34 @@
 import React, {useState, useEffect} from 'react';
 import {View, FlatList, StyleSheet, Image} from 'react-native';
 import {ProductPrice, ProductTitle, SubInfo} from './SubInfo';
-import {productState} from '../../state/product';
 import {COLORS, SHADOWS, SIZES} from '../../constants';
-import {useRecoilState, useRecoilValue} from 'recoil';
+import {useRecoilState} from 'recoil';
 import {RectButton} from '../../ui/Button';
 import {BackHeader} from '../../ui/BackHeader';
 import GlobalModal from '../modal/GlobalModal';
 import {useModal} from '../../hooks/useModal';
 import {useInfiniteQuery} from '@tanstack/react-query';
-import {requsetGetDividingProduct} from '../../api/product';
-import {userState} from '../../state/user';
-import ErrorModal from '../modal/ErrorModal';
+import {
+  requestGetMatchingUsers,
+  requsetGetDividingProduct,
+} from '../../api/product';
 import {Fallback} from '../../ui/Fallback';
+import {userState} from './../../state/user';
+import ErrorModal from '../modal/ErrorModal';
 
-const MatchingProductListItem = ({data, navigation}) => {
-  const {modal, showModal} = useModal();
-  const handleOpenMatchingUserModa = () => {};
+const MatchingProductListItem = ({data}) => {
+  const {showModal} = useModal();
+
+  const handleOpenMatchingUserModal = () => {
+    showModal({
+      modalType: 'MatchingUserModal',
+      modalProps: {
+        visible: true,
+        productId: data?.id,
+      },
+    });
+  };
+
   return (
     <View
       style={{
@@ -53,7 +65,6 @@ const MatchingProductListItem = ({data, navigation}) => {
 const MatchingProductList = ({navigation}) => {
   const [user] = useRecoilState(userState);
   const [productList, setProductList] = useState({});
-  const {showModal} = useModal();
 
   const {
     data,
