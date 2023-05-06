@@ -115,7 +115,16 @@ public class UserController {
 
     /* 매칭 목록 (현재 진행중 "나눔" 목록) */
     @GetMapping("/users/matches/{user-id}")
-    public CustomDataResponse<Page<ProductAllDTO>> getMatchingProduct(@PathVariable("user-id") Long userId, @RequestParam("page") Integer page){
+    public CustomDataResponse<Page<ProductAllDTO>> getMatchProduct(@PathVariable("user-id") Long userId, @RequestParam("page") Integer page){
+        User user = userRepository.findById(userId)
+                .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_USER));
+        PageRequest pageRequest = PageRequest.of(page, 6);
+        return responseService.getDataResponse(userService.getMatchProduct(user, pageRequest),RESPONSE_SUCCESS);
+    }
+
+    /* 매칭 중인 상품 목록 조회 */
+    @GetMapping("/users/matching/{user-id}")
+    public CustomDataResponse<Page<ProductAllDTO>> getMatchingeProduct(@PathVariable("user-id") Long userId, @RequestParam("page") Integer page ){
         User user = userRepository.findById(userId)
                 .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_USER));
         PageRequest pageRequest = PageRequest.of(page, 6);

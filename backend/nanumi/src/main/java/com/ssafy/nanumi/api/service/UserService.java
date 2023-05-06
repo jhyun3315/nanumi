@@ -179,13 +179,16 @@ public class UserService {
         user.delete();
     }
 
-        public Page<ReviewReadDTO> getAllReview(User user, PageRequest pageRequest){
-    return userRepository.getAllReview(user.getId(), pageRequest);
+    public Page<ReviewReadDTO> getAllReview(User user, PageRequest pageRequest){
+        return userRepository.getAllReview(user.getId(), pageRequest);
     }
     public Page<ProductAllDTO> getAllReceiveProduct(User user, PageRequest pageRequest){
         return userRepository.getAllReceiveProduct(user.getId(), pageRequest);
     }
-    public Page<ProductAllDTO> getMatchingProduct(User user, PageRequest pageRequest){
+    public Page<ProductAllDTO> getMatchProduct(User user, PageRequest pageRequest){
+        return userRepository.getAllMatchProduct(user.getId(), pageRequest);
+    }
+    public Page<ProductAllDTO> getMatchingProduct(User user,PageRequest pageRequest){
         return userRepository.getAllMatchingProduct(user.getId(), pageRequest);
     }
     public Page<ProductAllDTO> getGivenProduct(User user, PageRequest pageRequest){
