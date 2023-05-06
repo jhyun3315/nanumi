@@ -2,6 +2,7 @@ package com.ssafy.nanumi.api.controller;
 
 
 import com.ssafy.nanumi.api.service.ChatRoomService;
+import com.ssafy.nanumi.common.ChatRoomInfoDTO;
 import com.ssafy.nanumi.common.CreateChatRoomDTO;
 import com.ssafy.nanumi.db.entity.ChatRoomEntity;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +34,7 @@ public class ChatRoomController {
 
     // TODO 특정 사용자의 채팅방 찾기 메서드
     @GetMapping("findmyroom")
-    public ResponseEntity<List<ChatRoomEntity>> findMyRoom(@RequestParam long user) {
+    public ResponseEntity<List<ChatRoomInfoDTO>> findMyRoom(@RequestParam long user) {
         return new ResponseEntity<>(chatRoomService.FindMyChatRooms(user), HttpStatus.OK);
     }
 }
