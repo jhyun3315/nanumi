@@ -41,7 +41,6 @@ const Register = () => {
       setIsNextButtonDisable(true);
     }
   }, [userInfo, validCode]);
-  console.log('렌더링');
   console.log(validCode);
   const checkEmailDuplicate = async email => {
     try {

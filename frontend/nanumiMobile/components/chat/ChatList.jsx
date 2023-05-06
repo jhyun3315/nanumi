@@ -23,7 +23,9 @@ const ChatList = ({navigation}) => {
       refetch();
     }, []),
   );
+
   console.log('채팅', data);
+
   if (isLoading) return <Fallback />;
   if (error) return <ErrorModal handlePress={refetch} />;
 
