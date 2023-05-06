@@ -1,6 +1,5 @@
 package com.ssafy.nanumi.api.service;
 
-
 import com.ssafy.nanumi.common.ChatRoomInfoDTO;
 import com.ssafy.nanumi.common.CreateChatRoomDTO;
 import com.ssafy.nanumi.db.entity.ChatMessageEntity;
@@ -26,8 +25,6 @@ import java.util.List;
 public class ChatRoomService {
     private final ChatRoomRepository chatRoomRepository;
     private final SimpMessageSendingOperations messageTemplate;
-    private final UserRepository userRepository;
-
     private final ChatRepository chatRepository;
 
     //TODO 채팅방 생성 메서드
@@ -35,14 +32,21 @@ public class ChatRoomService {
     public ResponseEntity<?> CreateChatRoom(CreateChatRoomDTO DTO) {
         long sendUser = DTO.getSendUser();
         long receiveUser = DTO.getReceiveUser();
-        long[] users= new long[] {sendUser, receiveUser};
+
+        long[] users = new long[]{sendUser, receiveUser};
 
         try {
-            ChatRoomEntity chatRoomEntity = ChatRoomEntity.builder().userList(users).build();
+            ChatRoomEntity chatRoomEntity = ChatRoomEntity.builder()
+                    .userList(users)
+                    .opponentId(DTO.getOpponentId())
+                    .opponentNickname(DTO.getOpponentNickname())
+                    .opponentProfileImage(DTO.getOpponentProfileImage())
+                    .build();
+
             chatRoomRepository.save(chatRoomEntity);
 
-            // messageTemplate.convertAndSend("/sub/user/" + sendUser, new com.ssafy.nanumi.common.SubscribeChatRoomDTO("CHATROOM", receiveUser, chatRoomEntity.getChatroomSeq()));
-            // messageTemplate.convertAndSend("/sub/user/" + receiveUser, new com.cupid.joalarm.chatroom.dto.SubscribeChatRoomDTO("CHATROOM", sendUser, chatRoomEntity.getChatroomSeq()));
+            messageTemplate.convertAndSend("/sub/user/" + sendUser, new com.ssafy.nanumi.common.SubscribeChatRoomDTO("CHATROOM", receiveUser, chatRoomEntity.getChatroomSeq()));
+            messageTemplate.convertAndSend("/sub/user/" + receiveUser, new com.ssafy.nanumi.common.SubscribeChatRoomDTO("CHATROOM", sendUser, chatRoomEntity.getChatroomSeq()));
 
             return new ResponseEntity<>("Chat room created successfully", HttpStatus.CREATED);
         } catch (Exception e) {
@@ -50,14 +54,8 @@ public class ChatRoomService {
         }
     }
 
+
     // TODO 모든 채팅방 찾기 메소드
-    public List<ChatRoomEntity> FindRoom() {
-        return chatRoomRepository.findAll();
-    }
-
-
-
-
 
     public List<ChatRoomInfoDTO> FindMyChatRooms(long user) {
         List<ChatRoomEntity> chatRoomEntities = chatRoomRepository.findAllByUserListContaining(user);
@@ -66,17 +64,22 @@ public class ChatRoomService {
         for (ChatRoomEntity chatRoomEntity : chatRoomEntities) {
             ChatRoomInfoDTO chatRoomInfoDTO = new ChatRoomInfoDTO();
 
-            // 상대방 정보 가져오기
-            long opponentId = Arrays.stream(chatRoomEntity.getUserList()).filter(id -> id != user).findFirst().orElse(0);
-            User opponent = userRepository.findById(opponentId).orElse(null);
+            long opponentId = Arrays.stream(chatRoomEntity.getUserList())
+                    .filter(id -> id != user)
+                    .findFirst()
+                    .orElse(0L);
+
+            // 상대방 정보를 chatRoomEntity에서 가져오기
+            String opponentNickname = chatRoomEntity.getOpponentNickname();
+            String opponentProfileImage = chatRoomEntity.getOpponentProfileImage();
 
             // 마지막 메시지 정보 가져오기
-            List<ChatMessageEntity> lastMessages = chatRepository.findTop20ByRoomIdOrderBySendTimeDesc(chatRoomEntity.getChatroomSeq());
+            List<ChatMessageEntity> lastMessages = chatRepository.findTop1ByRoomIdOrderBySendTimeDesc(chatRoomEntity.getChatroomSeq());
             ChatMessageEntity lastMessage = lastMessages.isEmpty() ? null : lastMessages.get(0);
 
             chatRoomInfoDTO.setChatRoomId(chatRoomEntity.getChatroomSeq());
-            chatRoomInfoDTO.setOpponentNickname(opponent.getNickname());
-            chatRoomInfoDTO.setOpponentProfileImage(opponent.getProfileUrl());
+            chatRoomInfoDTO.setOpponentNickname(opponentNickname);
+            chatRoomInfoDTO.setOpponentProfileImage(opponentProfileImage);
             if (lastMessage != null) {
                 chatRoomInfoDTO.setLastMessage(lastMessage.getMessage());
                 chatRoomInfoDTO.setLastMessageTime(LocalDateTime.parse(lastMessage.getSendTime()));
@@ -89,15 +92,13 @@ public class ChatRoomService {
     }
 
 
-
-
     // TODO 채팅방 신고처리 메서드
     @Transactional
     public boolean reportByRoomSeq(Long seq) {
         ChatRoomEntity chatRoom = chatRoomRepository.findChatRoomEntityByChatroomSeq(seq);
 
         // 찾은 채팅방이 없다면 false 리턴
-        if(chatRoom == null) return false;
+        if (chatRoom == null) return false;
 
         // 채팅방의 활성화 상태를 false로 변경하여 비활성화 합니다.
         chatRoom.setActivate(false);

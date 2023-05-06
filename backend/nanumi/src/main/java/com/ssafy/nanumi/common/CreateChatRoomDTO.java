@@ -8,6 +8,9 @@ import lombok.Setter;
 public class CreateChatRoomDTO {
     private long sendUser;
     private long receiveUser;
+    private long opponentId;
+    private String opponentNickname;
+    private String opponentProfileImage;
 
 }
 
