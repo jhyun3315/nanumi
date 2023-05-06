@@ -8,9 +8,9 @@ import {BackHeader} from '../../ui/BackHeader';
 import GlobalModal from '../modal/GlobalModal';
 import {useModal} from '../../hooks/useModal';
 import {useInfiniteQuery} from '@tanstack/react-query';
-import {requsetGetDividingProduct} from '../../api/product';
 import {Fallback} from '../../ui/Fallback';
 import {userState} from './../../state/user';
+import {requestGetDonationingProductList} from './../../api/product';
 import {requestCreateChatRoom} from './../../api/chat';
 import ErrorModal from '../modal/ErrorModal';
 
@@ -24,8 +24,8 @@ const MatchingProductListItem = ({data}) => {
       sendUser: user.userId,
       receiveUser: data?.result?.userId,
     };
+    //채팅방 목록으로 이동시키기
     const response = await requestCreateChatRoom(data);
-    console.log(response);
   };
 
   const handleOpenMatchingUserModal = () => {
@@ -86,7 +86,8 @@ const MatchingProductList = ({navigation}) => {
     refetch,
   } = useInfiniteQuery(
     ['dividing'],
-    ({pageParam = 0}) => requsetGetDividingProduct(user.userId, pageParam),
+    ({pageParam = 0}) =>
+      requestGetDonationingProductList(user.userId, pageParam),
     {
       getNextPageParam: (lastPage, pages) => {
         if (
@@ -127,7 +128,6 @@ const MatchingProductList = ({navigation}) => {
   const content =
     productList?.data?.pages?.flatMap(page => page.result.content) ?? [];
 
-  console.log(content);
   if (error) return <ErrorModal handlePress={refetch} />;
   if (isLoading) return <Fallback />;
 

@@ -1,4 +1,4 @@
-import React, {useEffect, useCallback} from 'react';
+import React, {useCallback} from 'react';
 import {
   View,
   Text,
@@ -30,10 +30,10 @@ const Profile = ({navigation}) => {
   const [user, setUser] = useRecoilState(userState);
 
   const handleLogout = async () => {
+    hideModal();
+    navigation.navigate('Login');
     setUser({});
     await AsyncStorage.removeItem('user');
-    navigation.navigate('Login');
-    hideModal();
   };
 
   const {data, error, isLoading, refetch} = useQuery(

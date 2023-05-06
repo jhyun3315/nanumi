@@ -33,6 +33,7 @@ const Login = () => {
       // 로그인에 성공했을 경우
       await AsyncStorage.setItem('user', JSON.stringify(response.result));
       setUser(response.result);
+      setUserInfo({username: '', password: ''});
       navigation.navigate('BottomTabs');
     } else {
       Alert.alert(response.message);
@@ -68,10 +69,12 @@ const Login = () => {
         <View style={{marginVertical: SIZES.base * 3}}>
           <UserTextInput
             placeholder="이메일"
+            value={userInfo?.username}
             onChangeText={value => handleInputChange('username', value)}
           />
           <UserTextInput
             placeholder="비밀번호"
+            value={userInfo?.password}
             secureTextEntry={true}
             onChangeText={value => handleInputChange('password', value)}
           />
