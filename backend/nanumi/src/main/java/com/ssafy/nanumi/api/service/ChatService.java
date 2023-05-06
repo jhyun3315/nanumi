@@ -5,7 +5,7 @@ import com.ssafy.nanumi.config.response.CustomResponse;
 import com.ssafy.nanumi.config.response.ResponseService;
 import com.ssafy.nanumi.config.response.exception.CustomException;
 import com.ssafy.nanumi.config.response.exception.CustomExceptionStatus;
-import com.ssafy.nanumi.db.entity.ChatEntity;
+import com.ssafy.nanumi.db.entity.ChatMessageEntity;
 import com.ssafy.nanumi.db.entity.Product;
 import com.ssafy.nanumi.db.repository.ChatRepository;
 import com.ssafy.nanumi.db.repository.ProductRepository;
@@ -37,7 +37,7 @@ public class ChatService {
         DateFormat df = new SimpleDateFormat(pattern);
 
         // chatEntiy 객체를 데이터 베이스에 저장
-        ChatEntity chatEntity = ChatEntity.builder()
+        ChatMessageEntity chatEntity = ChatMessageEntity.builder()
                 .type(DTO.getType())
                 .roomId(DTO.getRoomId())
                 .sender(DTO.getSender())
@@ -53,7 +53,7 @@ public class ChatService {
 
     // TODO roomSeq를 입력으로 받아서 해당 채팅방의 최근 20개의 채팅 로그를 반환한다.
     @Transactional
-    public List<ChatEntity> GetChatLogLimit20(long roomSeq) {
+    public List<ChatMessageEntity> GetChatLogLimit20(long roomSeq) {
         // 데이터베이스에서 최근 20개의 채팅 로그를 가져온다.
         return chatRepository.findTop20ByRoomIdOrderBySendTimeDesc(roomSeq);
     }

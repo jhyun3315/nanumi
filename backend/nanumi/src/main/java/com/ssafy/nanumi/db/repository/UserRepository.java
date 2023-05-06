@@ -29,4 +29,6 @@ public interface UserRepository extends JpaRepository<User,Long> {
             "from Product p " +
             "where p.isDeleted = false and p.isMatched = false and p.user.id = :userId")
     Page<ProductAllDTO> getAllMatchingProduct(long userId, Pageable pageable);
+
+
 }

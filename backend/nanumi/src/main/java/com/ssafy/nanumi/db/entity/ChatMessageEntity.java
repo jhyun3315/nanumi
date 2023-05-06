@@ -6,15 +6,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
-import java.sql.Timestamp;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Document(collection = "chat")
-
-public class ChatEntity {
+public class ChatMessageEntity {
     private ChatMessageDTO.MessageType type;
     private long roomId;
     private long sender;
