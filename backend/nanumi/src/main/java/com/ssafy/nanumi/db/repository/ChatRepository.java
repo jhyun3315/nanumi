@@ -8,4 +8,5 @@ import java.util.Optional;
 
 public interface ChatRepository extends MongoRepository<ChatMessageEntity, String> {
     List<ChatMessageEntity> findTop20ByRoomIdOrderBySendTimeDesc(long roomId);
+    List<ChatMessageEntity> findTop1ByRoomIdOrderBySendTimeDesc(long chatroomSeq);
 }

@@ -17,7 +17,7 @@ public class ChatMessageDTO {
 
     // 채팅 메시지의 타입을 저장하는 변수
     private MessageType type;
-    
+
     // 채팅 메시지가 속한 채팅방의 ID를 저장하는 변수
     private long roomId;
 

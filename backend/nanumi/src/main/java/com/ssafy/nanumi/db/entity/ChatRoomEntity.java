@@ -1,20 +1,17 @@
 package com.ssafy.nanumi.db.entity;
 
-
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Getter
+@Setter
 @Document(collection = "chatroom")
 public class ChatRoomEntity {
 
@@ -25,6 +22,9 @@ public class ChatRoomEntity {
     private ObjectId _id;
     private long chatroomSeq;
     private long[] userList;
+    private long opponentId;
+    private String opponentNickname;
+    private String opponentProfileImage;
     @Builder.Default
     private boolean isActivate = true;
 
