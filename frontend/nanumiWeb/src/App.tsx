@@ -1,16 +1,15 @@
-import SideBar from './components/sidebar';
-import { BiUser } from 'react-icons/bi';
-import { GrNotification } from 'react-icons/gr';
-import ContentRight from './components/content/ContentRight';
-import ContentLeft from './components/content/ContentLeft';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import AdminPage from './pages/AdminPage';
+import HomePage from './pages/HomePage';
 
 function App() {
   return (
-    <div className="w-full min-h-screen bg-white flex flex-row">
-      <SideBar />
-      <ContentLeft />
-      <ContentRight />
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/admin" element={<AdminPage />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
