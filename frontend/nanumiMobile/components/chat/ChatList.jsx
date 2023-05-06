@@ -65,6 +65,7 @@ const ChatList = ({navigation}) => {
     () => requestGetMyChatRoom(user.userId),
   );
 
+  // receive의 프로필 이미지, 유저닉네임, 마지막 채팅, 시간?
   console.log('채팅', data);
   if (isLoading) return <Fallback />;
   if (error) return <ErrorModal handlePress={refetch} />;
