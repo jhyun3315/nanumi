@@ -7,6 +7,8 @@ import com.ssafy.nanumi.api.request.UserLoginDTO;
 import com.ssafy.nanumi.api.response.*;
 import com.ssafy.nanumi.common.Image;
 import com.ssafy.nanumi.common.provider.Provider;
+import com.ssafy.nanumi.config.auth.JwtToken;
+import com.ssafy.nanumi.config.auth.JwtTokenProvider;
 import com.ssafy.nanumi.config.response.exception.CustomException;
 import com.ssafy.nanumi.db.entity.Address;
 import com.ssafy.nanumi.db.entity.LoginProvider;
@@ -18,13 +20,19 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 
 import javax.mail.MessagingException;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.UUID;
 
 import static com.ssafy.nanumi.config.response.exception.CustomExceptionStatus.*;
@@ -43,20 +51,23 @@ public class UserService {
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
     private final AmazonS3 amazonS3;
+    private final AuthenticationManagerBuilder authenticationManagerBuilder;
+    private final JwtTokenProvider jwtTokenProvider;
 
 
     public UserLoginResDTO login(UserLoginDTO userLoginDTO){
-        String userID = userLoginDTO.getId();
+        String userEmail = userLoginDTO.getId();
         String userPassword = userLoginDTO.getPassword();
 
-        User user = userRepository.findByEmail(userID).orElseThrow(() -> new CustomException(NOT_FOUND_USER));
+        User user = userRepository.findByEmail(userEmail).orElseThrow(() -> new CustomException(NOT_FOUND_USER));
         String originPassword = user.getPassword();
 
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
         // 입력받은 비밀번호와 저장된 비밀번호 비교
         if(encoder.matches(userPassword, originPassword)){
-            return new UserLoginResDTO(user);
+            JwtToken token = jwtTokenProvider.generateToken(userEmail);
+            return new UserLoginResDTO(user, token);
         }else{
             throw new CustomException(NOT_MATCHED_PASSWORD);
         }

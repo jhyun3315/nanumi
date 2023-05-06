@@ -1,5 +1,6 @@
 package com.ssafy.nanumi.api.response;
 
+import com.ssafy.nanumi.config.auth.JwtToken;
 import com.ssafy.nanumi.db.entity.Address;
 import com.ssafy.nanumi.db.entity.User;
 import lombok.Builder;
@@ -11,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 public class UserLoginResDTO {
     private long userId;
     private String nickname;
+    private JwtToken jwtToken;
     private String tier;
     private String userProfileUrl;
     private long addressId;
@@ -20,10 +22,11 @@ public class UserLoginResDTO {
 
 
     @Builder
-    public UserLoginResDTO(User user) {
+    public UserLoginResDTO(User user, JwtToken jwtToken) {
         Address address = user.getAddress();
         this.userId = user.getId();
         this.nickname = user.getNickname();
+        this.jwtToken = jwtToken;
         this.tier = user.getUserInfo().getTier();
         this.userProfileUrl = user.getProfileUrl();
         this.addressId = address.getId();
