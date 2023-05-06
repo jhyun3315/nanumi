@@ -1,4 +1,3 @@
-import React from 'react';
 import styles from '../../styles/Global';
 import assets from '../../assets';
 import Button from './Button';
@@ -51,9 +50,7 @@ const SectionWrapper = ({
           >
             {description}
           </p>
-          {showBtn && (
-            <Button assetUrl={assets.expo} link="deployed nft marketplace rn" />
-          )}
+          {showBtn && <Button assetUrl={assets.logo01} link="deployed rn" />}
         </div>
         <div className={`flex-1 ${styles.flexCenter} p-8 sm:px-0`}>
           <img

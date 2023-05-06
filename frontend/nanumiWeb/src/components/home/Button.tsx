@@ -9,7 +9,7 @@ type ButtonProps = {
 const Button = ({ assetUrl, link }: ButtonProps) => {
   return (
     <div
-      className={styles.btnBlack}
+      className={styles.btnWhite}
       onClick={() => window.open(link, '_blank')}
     >
       <img src={assetUrl} alt="expo_icon" className={styles.btnIcon} />

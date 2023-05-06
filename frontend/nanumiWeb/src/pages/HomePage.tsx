@@ -13,8 +13,8 @@ const HomePage = () => {
         reverse={false}
       />
       <SectionWrapper
-        title="Smart User Interface MarketPlace"
-        description="Experience a buttery UI of ProNef NFT MarketPlace. Smppth constance colors of a fluent UI design"
+        title="당신 근처의 나누미"
+        description="나눔에는 값을 매길수 없어요. 동네 주민들과 가깝고 따뜻한 거래를 지금 경험해보세요."
         showBtn={false}
         mockupImg={assets.homeCards}
         banner=""
