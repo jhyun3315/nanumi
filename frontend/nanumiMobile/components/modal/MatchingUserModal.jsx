@@ -32,25 +32,30 @@ const MatchingUserModalContent = () => {
   if (error) return <ErrorModal handlePress={refetch} />;
   if (isLoading) return <Fallback />;
 
+  const content = data?.result?.filter((item, index, self) => {
+    return index === self.findIndex(t => t.userId === item.userId);
+  });
+
+  console.log(data);
   return (
     <TouchableWithoutFeedback
       onPress={event => event.stopPropagation()}
       style={{zIndex: 1, flex: 1}}>
       <View style={styles.modal}>
-        {data?.result.length === 0 && (
+        {content === 0 && (
           <View
             style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
             <Text style={styles.subText}>매칭된 유저가 없습니다</Text>
           </View>
         )}
-        {data?.result?.map(matchingUser => (
+        {content?.map(matchingUser => (
           <View key={matchingUser?.userId} style={styles.userContanier}>
             <Image
               source={{uri: matchingUser?.userProfileUrl}}
               style={styles.profileImage}
             />
             <View style={styles.infoContainer}>
-              <Text style={styles.subText}>{matchingUser?.name}</Text>
+              <Text style={styles.subText}>{matchingUser?.userNickname}</Text>
               <RectButton
                 minWidth={64}
                 fontSize={FONTS.font}
@@ -114,7 +119,7 @@ const styles = StyleSheet.create({
     width: SIZES.extraLarge * 2,
     height: SIZES.extraLarge * 2,
     borderRadius: SIZES.extraLarge,
-    marginRight: SIZES.base,
+    marginRight: SIZES.base * 2,
   },
   infoContainer: {
     flex: 1,
