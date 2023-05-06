@@ -2,22 +2,6 @@ import React from 'react';
 import {View, Text, Pressable, StyleSheet, Image} from 'react-native';
 import {COLORS, FONTS, SIZES} from '../../constants';
 export const ChatListItem = ({data, navigation}) => {
-  const showStoryCircle = () => {};
-
-  const showNotification = type => {
-    if (data?.notification && type === 'number') {
-      return (
-        <View style={styles.notificationCircle}>
-          <Text style={styles.notification}>{data?.notification}</Text>
-        </View>
-      );
-    } else if (data?.notification && type === 'imageCircle') {
-      return {
-        borderColor: COLORS.primary,
-      };
-    }
-  };
-
   return (
     <View style={styles.chatContainer}>
       <Pressable
@@ -26,7 +10,10 @@ export const ChatListItem = ({data, navigation}) => {
           navigation.navigate('ChatDetail');
         }}>
         <View style={[styles.imageContainer]}>
-          <Image style={styles.image} source={data?.profileImage} />
+          <Image
+            style={styles.image}
+            source={{uri: data?.opponentProfileImage}}
+          />
         </View>
         <View
           style={{
@@ -39,9 +26,11 @@ export const ChatListItem = ({data, navigation}) => {
               justifyContent: 'space-between',
             }}>
             <Text numberOfLines={1} style={[styles.text, styles.username]}>
-              {data?.username}
+              {data?.opponentNickname}
             </Text>
-            <Text style={[styles.text, styles.time]}>{data?.time}</Text>
+            <Text style={[styles.text, styles.time]}>
+              {data?.lastMessageTime ? data?.lastMessageTime : '00:00'}
+            </Text>
           </View>
           <View
             style={{
@@ -52,9 +41,8 @@ export const ChatListItem = ({data, navigation}) => {
               numberOfLines={1}
               ellipsizeMode="tail"
               style={[styles.text, styles.message]}>
-              {data?.lastMessage}
+              {data?.lastMessage ? data?.lastMessage : '채팅기록이 없어요'}
             </Text>
-            {showNotification('number')}
           </View>
         </View>
       </Pressable>

@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, FlatList, StyleSheet, Image} from 'react-native';
+import {View, FlatList, StyleSheet, Image, Alert} from 'react-native';
 import {ProductPrice, ProductTitle, SubInfo} from './SubInfo';
 import {COLORS, SHADOWS, SIZES} from '../../constants';
 import {useRecoilState} from 'recoil';
@@ -14,18 +14,21 @@ import {requestGetDonationingProductList} from './../../api/product';
 import {requestCreateChatRoom} from './../../api/chat';
 import ErrorModal from '../modal/ErrorModal';
 
-const MatchingProductListItem = ({data}) => {
-  const [user] = useRecoilState(userState);
+const MatchingProductListItem = ({data, navigation}) => {
+  const {showModal, hideModal} = useModal();
 
-  const {showModal} = useModal();
-
-  const handleCreateChatRoomAndNavigate = async () => {
+  const handleCreateChatRoomAndNavigate = async (sendUser, receiveUser) => {
     const data = {
-      sendUser: user.userId,
-      receiveUser: data?.result?.userId,
+      sendUser: sendUser,
+      receiveUser: receiveUser,
     };
-    //채팅방 목록으로 이동시키기
     const response = await requestCreateChatRoom(data);
+    if (response === 'Chat room created successfully') {
+      hideModal();
+      navigation.navigate('BottomTabs', {screen: 'ChatList'});
+    } else {
+      Alert.alert(response);
+    }
   };
 
   const handleOpenMatchingUserModal = () => {

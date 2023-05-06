@@ -43,18 +43,20 @@ const MatchingUserModalContent = () => {
             <Text style={styles.subText}>매칭된 유저가 없습니다</Text>
           </View>
         )}
-        {data?.result?.map(user => (
-          <View key={user?.userId} style={styles.userContanier}>
+        {data?.result?.map(matchingUser => (
+          <View key={matchingUser?.userId} style={styles.userContanier}>
             <Image
-              source={{uri: user?.userProfileUrl}}
+              source={{uri: matchingUser?.userProfileUrl}}
               style={styles.profileImage}
             />
             <View style={styles.infoContainer}>
-              <Text style={styles.subText}>{user?.name}</Text>
+              <Text style={styles.subText}>{matchingUser?.name}</Text>
               <RectButton
                 minWidth={64}
                 fontSize={FONTS.font}
-                handlePress={modal?.modalProps?.onConfirm}>
+                handlePress={() =>
+                  modal?.modalProps?.onConfirm(user.userId, matchingUser.userId)
+                }>
                 채팅하기
               </RectButton>
             </View>

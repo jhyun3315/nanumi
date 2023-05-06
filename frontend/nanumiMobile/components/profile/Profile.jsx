@@ -41,6 +41,8 @@ const Profile = ({navigation}) => {
     () => requestGetProfile(user.userId),
   );
 
+  console.log(data);
+
   const handleOpenLogoutModal = () => {
     showModal({
       modalType: 'TwoButtonModal',
