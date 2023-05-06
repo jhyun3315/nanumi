@@ -36,7 +36,7 @@ public class MatchService {
 
         for (MatchInterface match : lst) {
             System.out.println(match.getUserId());
-            result.add(new MatchResDTO(match.getUserId(), match.getProfileUrl(), match.getProductId(), match.getMatchId(), match.getCreateDate()));
+            result.add(new MatchResDTO(match.getUserId(), match.getUserNickName(), match.getProfileUrl(), match.getProductId(), match.getMatchId(), match.getCreateDate()));
         }
         return result;
     }
