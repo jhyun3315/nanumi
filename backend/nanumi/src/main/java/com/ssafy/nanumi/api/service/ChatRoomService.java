@@ -27,12 +27,17 @@ public class ChatRoomService {
         long receiveUser = DTO.getReceiveUser();
         long[] users= new long[] {sendUser, receiveUser};
 
-        ChatRoomEntity chatRoomEntity = ChatRoomEntity.builder().userList(users).build();
-        chatRoomRepository.save(chatRoomEntity);
+        try {
+            ChatRoomEntity chatRoomEntity = ChatRoomEntity.builder().userList(users).build();
+            chatRoomRepository.save(chatRoomEntity);
 
-        // messageTemplate.convertAndSend("/sub/user/" + sendUser, new com.ssafy.nanumi.common.SubscribeChatRoomDTO("CHATROOM", receiveUser, chatRoomEntity.getChatroomSeq()));
-        // messageTemplate.convertAndSend("/sub/user/" + receiveUser, new com.cupid.joalarm.chatroom.dto.SubscribeChatRoomDTO("CHATROOM", sendUser, chatRoomEntity.getChatroomSeq()));
-        return new ResponseEntity<>(HttpStatus.OK);
+            // messageTemplate.convertAndSend("/sub/user/" + sendUser, new com.ssafy.nanumi.common.SubscribeChatRoomDTO("CHATROOM", receiveUser, chatRoomEntity.getChatroomSeq()));
+            // messageTemplate.convertAndSend("/sub/user/" + receiveUser, new com.cupid.joalarm.chatroom.dto.SubscribeChatRoomDTO("CHATROOM", sendUser, chatRoomEntity.getChatroomSeq()));
+
+            return new ResponseEntity<>("Chat room created successfully", HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Failed to create chat room", HttpStatus.BAD_REQUEST);
+        }
     }
 
     // TODO 모든 채팅방 찾기 메소드

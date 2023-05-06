@@ -13,11 +13,18 @@ public class CorsConfig {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);   // 이 서버에서 응답을 보냈을 때 JSON을 자바스크립트에서 처리할 수 있게 할지 설정. false일 경우 자바스크립트에서 응답 받지 못함.
-//        config.addAllowedOrigin("*");       // 모든 IP에 응답을 허용
+        //config.addAllowedOrigin("*");       // 모든 IP에 응답을 허용
+
+
+
         config.addAllowedOriginPattern("*");
         config.addAllowedHeader("*");       // 모든 header에 응답 허용
         config.addAllowedMethod("*");       // 모든 get, post, put, delete, patch 요청 허용
+        config.setMaxAge(3600L); // preflight 캐시 유지 시간 (초)
+
         source.registerCorsConfiguration("/**", config);
+
+
         return new CorsFilter(source);
     }
 }
