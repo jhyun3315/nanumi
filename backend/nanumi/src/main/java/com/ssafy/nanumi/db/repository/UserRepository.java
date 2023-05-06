@@ -28,6 +28,12 @@ public interface UserRepository extends JpaRepository<User,Long> {
     @Query(value = "select p " +
             "from Product p " +
             "where p.isDeleted = false and p.isMatched = false and p.user.id = :userId")
+    Page<ProductAllDTO> getAllMatchProduct(long userId, Pageable pageable);
+
+    @Query(value = "select p " +
+            "from Product p " +
+            "where p.Matches.size > 0 and p.isDeleted = false and p.isMatched = false and p.user.id = :userId"
+    )
     Page<ProductAllDTO> getAllMatchingProduct(long userId, Pageable pageable);
 
     @Query(value = "select p " +
