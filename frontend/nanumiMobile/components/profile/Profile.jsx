@@ -30,9 +30,9 @@ const Profile = ({navigation}) => {
   const [user, setUser] = useRecoilState(userState);
 
   const handleLogout = async () => {
-    navigation.navigate('Login');
-    await AsyncStorage.removeItem('user');
     setUser({});
+    await AsyncStorage.removeItem('user');
+    navigation.navigate('Login');
     hideModal();
   };
 

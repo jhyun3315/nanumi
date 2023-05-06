@@ -8,16 +8,25 @@ import {BackHeader} from '../../ui/BackHeader';
 import GlobalModal from '../modal/GlobalModal';
 import {useModal} from '../../hooks/useModal';
 import {useInfiniteQuery} from '@tanstack/react-query';
-import {
-  requestGetMatchingUsers,
-  requsetGetDividingProduct,
-} from '../../api/product';
+import {requsetGetDividingProduct} from '../../api/product';
 import {Fallback} from '../../ui/Fallback';
 import {userState} from './../../state/user';
+import {requestCreateChatRoom} from './../../api/chat';
 import ErrorModal from '../modal/ErrorModal';
 
 const MatchingProductListItem = ({data}) => {
+  const [user] = useRecoilState(userState);
+
   const {showModal} = useModal();
+
+  const handleCreateChatRoomAndNavigate = async () => {
+    const data = {
+      sendUser: user.userId,
+      receiveUser: data?.result?.userId,
+    };
+    const response = await requestCreateChatRoom(data);
+    console.log(response);
+  };
 
   const handleOpenMatchingUserModal = () => {
     showModal({
@@ -25,6 +34,7 @@ const MatchingProductListItem = ({data}) => {
       modalProps: {
         visible: true,
         productId: data?.id,
+        onConfirm: handleCreateChatRoomAndNavigate,
       },
     });
   };

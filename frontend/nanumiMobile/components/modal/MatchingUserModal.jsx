@@ -29,7 +29,6 @@ const MatchingUserModalContent = () => {
     () => requestGetMatchingUsers(modal?.modalProps?.productId, user.userId),
   );
 
-  console.log(data);
   if (error) return <ErrorModal handlePress={refetch} />;
   if (isLoading) return <Fallback />;
 
@@ -52,7 +51,10 @@ const MatchingUserModalContent = () => {
             />
             <View style={styles.infoContainer}>
               <Text style={styles.subText}>{user?.name}</Text>
-              <RectButton minWidth={64} fontSize={FONTS.font}>
+              <RectButton
+                minWidth={64}
+                fontSize={FONTS.font}
+                handlePress={modal?.modalProps?.onConfirm}>
                 채팅하기
               </RectButton>
             </View>
@@ -100,11 +102,11 @@ const styles = StyleSheet.create({
     top: '50%',
     left: '50%',
     transform: [{translateX: -0.4 * width}, {translateY: -0.15 * height}],
-    justifyContent: 'space-between',
   },
   userContanier: {
     flexDirection: 'row',
     alignItems: 'center',
+    marginBottom: SIZES.extraLarge,
   },
   profileImage: {
     width: SIZES.extraLarge * 2,
