@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class BlockCancelDTO {
+public class BlockDTO {
 
     private long targetId;
 }

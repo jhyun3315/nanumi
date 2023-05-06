@@ -1,6 +1,6 @@
 package com.ssafy.nanumi.api.service;
 
-import com.ssafy.nanumi.api.request.BlockCancelDTO;
+import com.ssafy.nanumi.api.request.BlockDTO;
 import com.ssafy.nanumi.config.response.exception.CustomException;
 import com.ssafy.nanumi.db.entity.Blacklist;
 import com.ssafy.nanumi.db.entity.User;
@@ -22,19 +22,38 @@ public class BlacklistService {
     private final BlacklistRepository blacklistRepository;
     private final UserRepository userRepository;
 
-    /* 사용자 차단 해제 */
-    public void blockCancel(long blockerId, BlockCancelDTO blockCancelDTO) {
+    /* 사용자 차단 */
+    public void blockUser(long blockerId, BlockDTO blockDTO) {
 
         // 차단자 유저 검증
         User blocker = userRepository.findById(blockerId)
                 .orElseThrow(() -> new CustomException(NOT_FOUND_USER));
 
         // 차단대상자 유저 검증
-        User target = userRepository.findById(blockCancelDTO.getTargetId())
+        User target = userRepository.findById(blockDTO.getTargetId())
+                .orElseThrow(() -> new CustomException(NOT_FOUND_USER));
+
+        // 사용자 차단
+        Blacklist blacklist = Blacklist.builder()
+                .blocker(blocker)
+                .target(target)
+                .isBlocked(true)
+                .build();
+    }
+
+    /* 사용자 차단 해제 */
+    public void blockCancel(long blockerId, BlockDTO blockDTO) {
+
+        // 차단자 유저 검증
+        User blocker = userRepository.findById(blockerId)
+                .orElseThrow(() -> new CustomException(NOT_FOUND_USER));
+
+        // 차단대상자 유저 검증
+        User target = userRepository.findById(blockDTO.getTargetId())
                 .orElseThrow(() -> new CustomException(NOT_FOUND_USER));
 
         // 차단 목록 조회
-        Blacklist blacklist = blacklistRepository.findByBlockIdAndTargetId(blockerId, blockCancelDTO.getTargetId())
+        Blacklist blacklist = blacklistRepository.findByBlockIdAndTargetId(blockerId, blockDTO.getTargetId())
                 .orElseThrow(() -> new CustomException(REQUEST_ERROR)); // 에러 처리 필요
 
         // 사용자 차단 해제
