@@ -17,12 +17,23 @@ import ErrorModal from '../modal/ErrorModal';
 const MatchingProductListItem = ({data, navigation}) => {
   const {showModal, hideModal} = useModal();
 
-  const handleCreateChatRoomAndNavigate = async (sendUser, receiveUser) => {
+  const handleCreateChatRoomAndNavigate = async (
+    sendUser,
+    receiveUser,
+    opponentId,
+    opponentNickName,
+    opponentProfileImage,
+  ) => {
     const data = {
       sendUser: sendUser,
       receiveUser: receiveUser,
+      opponentId: opponentId,
+      opponentNickName: opponentNickName,
+      opponentProfileImage: opponentProfileImage,
     };
+    console.log('data', data);
     const response = await requestCreateChatRoom(data);
+    console.log('response', response);
     if (response === 'Chat room created successfully') {
       hideModal();
       navigation.navigate('BottomTabs', {screen: 'ChatList'});

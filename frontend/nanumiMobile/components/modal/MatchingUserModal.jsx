@@ -36,7 +36,7 @@ const MatchingUserModalContent = () => {
     return index === self.findIndex(t => t.userId === item.userId);
   });
 
-  console.log(data);
+  console.log(content);
   return (
     <TouchableWithoutFeedback
       onPress={event => event.stopPropagation()}
@@ -60,7 +60,13 @@ const MatchingUserModalContent = () => {
                 minWidth={64}
                 fontSize={FONTS.font}
                 handlePress={() =>
-                  modal?.modalProps?.onConfirm(user.userId, matchingUser.userId)
+                  modal?.modalProps?.onConfirm(
+                    user.userId,
+                    matchingUser.userId,
+                    content?.userId,
+                    content?.userNickname,
+                    content?.userProfileUrl,
+                  )
                 }>
                 채팅하기
               </RectButton>
