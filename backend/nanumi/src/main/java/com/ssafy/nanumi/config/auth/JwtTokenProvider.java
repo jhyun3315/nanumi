@@ -21,16 +21,14 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Component
-@RequiredArgsConstructor
 public class JwtTokenProvider {
-    private String key;
+    private final String key;
 
     public JwtTokenProvider( @Value("${jwt.secret}") String key) {
         this.key = Base64.getEncoder().encodeToString(key.getBytes());
     }
 
     public JwtToken generateToken(String userEmail){
-        System.out.println("만들자 토큰!!!! "+userEmail);
         String authorities = "USER";
 
         String accessToken = Jwts.builder()
@@ -69,9 +67,13 @@ public class JwtTokenProvider {
     }
 
     public boolean validateToken(String token){
+        boolean flag = false;
+        System.out.println("검증을 해보자ㅏ");
+
         try{
-            Jwts.parser().setSigningKey(key).parseClaimsJws(token);
-            return true;
+            Jws<Claims> claims = Jwts.parser().setSigningKey(this.key).parseClaimsJws(token);
+            System.out.println("이게뭘가"+claims.getBody());
+            flag = !claims.getBody().getExpiration().before(new Date());
         }catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e){
             log.info("Invalid JWT Token", e);
         }catch (ExpiredJwtException e){
@@ -79,7 +81,7 @@ public class JwtTokenProvider {
         }catch (IllegalArgumentException e){
             log.info("JWT claims string is empty.", e);
         }
-        return false;
+        return flag;
     }
 
     private Claims parseClaims(String accessToken) {
