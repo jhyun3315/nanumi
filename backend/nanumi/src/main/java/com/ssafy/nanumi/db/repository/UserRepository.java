@@ -22,13 +22,24 @@ public interface UserRepository extends JpaRepository<User,Long> {
 
     @Query(value = "select p " +
             "from Product p " +
-            "where p.isDeleted = false and p.user.id = :userId")
+            "where p.isDeleted = false and p.user.id = :userId and p.isMatched = true ")
     Page<ProductAllDTO> getAllReceiveProduct(long userId, Pageable pageable);
 
     @Query(value = "select p " +
             "from Product p " +
             "where p.isDeleted = false and p.isMatched = false and p.user.id = :userId")
+    Page<ProductAllDTO> getAllMatchProduct(long userId, Pageable pageable);
+
+    @Query(value = "select p " +
+            "from Product p " +
+            "where p.Matches.size > 0 and p.isDeleted = false and p.isMatched = false and p.user.id = :userId"
+    )
     Page<ProductAllDTO> getAllMatchingProduct(long userId, Pageable pageable);
 
-
+    @Query(value = "select p " +
+            "from Product p " +
+            "left join p.Matches m " +
+            "where m.user.id = :userId and m.isMatching = true "
+    )
+    Page<ProductAllDTO> getAllGivenProduct(long userId, Pageable pageable);
 }

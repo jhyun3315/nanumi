@@ -1,6 +1,5 @@
 package com.ssafy.nanumi.api.service;
 
-import com.ssafy.nanumi.common.SectorDTO;
 import com.ssafy.nanumi.db.entity.GpsUser;
 import com.ssafy.nanumi.db.repository.GpsRepository;
 import lombok.RequiredArgsConstructor;

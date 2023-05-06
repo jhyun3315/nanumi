@@ -28,7 +28,7 @@ public class ProductDetailDTO {
         categoryId = product.getCategory().getId();
         categoryName = product.getCategory().getName();
         productImageUrls = product.getProductImages().stream().map(h->h.getImageUrl()).collect(Collectors.toList());
-        userId = product.getId();
+        userId = product.getUser().getId();
         userNickname = product.getUser().getNickname();
         userProfileUrl= product.getUser().getProfileUrl();
     }
