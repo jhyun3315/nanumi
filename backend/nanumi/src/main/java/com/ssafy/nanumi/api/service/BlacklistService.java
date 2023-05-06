@@ -1,6 +1,7 @@
 package com.ssafy.nanumi.api.service;
 
 import com.ssafy.nanumi.api.request.BlockDTO;
+import com.ssafy.nanumi.api.response.BlacklistDTO;
 import com.ssafy.nanumi.config.response.exception.CustomException;
 import com.ssafy.nanumi.db.entity.Blacklist;
 import com.ssafy.nanumi.db.entity.User;
@@ -10,6 +11,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.ssafy.nanumi.config.response.exception.CustomExceptionStatus.*;
 
@@ -58,5 +62,36 @@ public class BlacklistService {
 
         // 사용자 차단 해제
         blacklist.blockCancel();
+    }
+
+    /* 차단 사용자 목록 조회 */
+    @Transactional(readOnly = true)
+    public List<BlacklistDTO> findBlacklist(long userId) {
+
+        // 유저 검증
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new CustomException(NOT_FOUND_USER));
+
+        // 차단 사용자 목록 조회
+        List<Blacklist> blacklists = blacklistRepository.findByBlockerIdAndIsBlockedTrue(userId);
+
+        List<BlacklistDTO> blacklistDTOS = new ArrayList<>();
+
+        for (Blacklist blacklist : blacklists) {
+
+            // 차단대상자 유저 조회
+            User target = userRepository.findById(blacklist.getTarget().getId())
+                    .orElseThrow(() -> new CustomException(NOT_FOUND_USER));
+
+            blacklistDTOS.add(
+                    BlacklistDTO.builder()
+                            .id(blacklist.getId())
+                            .nickname(target.getNickname())
+                            .profileUrl(target.getProfileUrl())
+                            .build()
+            );
+        }
+
+        return blacklistDTOS;
     }
 }

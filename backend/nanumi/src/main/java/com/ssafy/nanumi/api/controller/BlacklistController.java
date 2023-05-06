@@ -1,12 +1,18 @@
 package com.ssafy.nanumi.api.controller;
 
 import com.ssafy.nanumi.api.request.BlockDTO;
+import com.ssafy.nanumi.api.response.BlacklistDTO;
 import com.ssafy.nanumi.api.service.BlacklistService;
+import com.ssafy.nanumi.config.response.CustomDataResponse;
 import com.ssafy.nanumi.config.response.CustomResponse;
 import com.ssafy.nanumi.config.response.ResponseService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+import static com.ssafy.nanumi.config.response.exception.CustomSuccessStatus.*;
 
 @Slf4j
 @RestController
@@ -40,5 +46,16 @@ public class BlacklistController {
         blacklistService.blockCancel(blockerId, blockDTO);
 
         return responseService.getSuccessResponse();
+    }
+
+    /* 차단 사용자 목록 조회 */
+    @GetMapping("block/{user-id}")
+    public CustomDataResponse<List<BlacklistDTO>> findBlacklist(@PathVariable("user-id") long userId) {
+
+        // TODO : userId는 JWT에서
+
+        List<BlacklistDTO> blacklistDTOS = blacklistService.findBlacklist(userId);
+
+        return responseService.getDataResponse(blacklistDTOS, RESPONSE_SUCCESS);
     }
 }
