@@ -1,10 +1,7 @@
-import React from 'react';
-import { Download, Features, Button, SectionWrapper } from '../components/home';
+import { Features, SectionWrapper } from '../components/home';
 import assets from '../assets';
 
-type Props = {};
-
-const HomePage: React.FC<Props> = () => {
+const HomePage = () => {
   return (
     <div>
       <SectionWrapper
