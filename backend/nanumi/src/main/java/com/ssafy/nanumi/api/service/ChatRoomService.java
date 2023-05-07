@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -31,7 +32,14 @@ public class ChatRoomService {
     @Transactional
     public ResponseEntity<?> CreateChatRoom(CreateChatRoomDTO DTO) {
         long sendUser = DTO.getSendUser();
-        long receiveUser = DTO.getReceiveUser();
+        long receiveUser = DTO.getOpponentId();
+        long productId = DTO.getProductId();
+
+        // 이미 존재하는 채팅방인지 확인
+        ChatRoomEntity existingChatRoom = chatRoomRepository.findByUserListContainingAndProductId(sendUser, productId);
+        if (existingChatRoom != null) {
+            return new ResponseEntity<>("Chat room already exists", HttpStatus.BAD_REQUEST);
+        }
 
         long[] users = new long[]{sendUser, receiveUser};
 
@@ -41,6 +49,7 @@ public class ChatRoomService {
                     .opponentId(DTO.getOpponentId())
                     .opponentNickname(DTO.getOpponentNickname())
                     .opponentProfileImage(DTO.getOpponentProfileImage())
+                    .productId(DTO.getProductId())
                     .build();
 
             chatRoomRepository.save(chatRoomEntity);
@@ -48,7 +57,7 @@ public class ChatRoomService {
             messageTemplate.convertAndSend("/sub/user/" + sendUser, new com.ssafy.nanumi.common.SubscribeChatRoomDTO("CHATROOM", receiveUser, chatRoomEntity.getChatroomSeq()));
             messageTemplate.convertAndSend("/sub/user/" + receiveUser, new com.ssafy.nanumi.common.SubscribeChatRoomDTO("CHATROOM", sendUser, chatRoomEntity.getChatroomSeq()));
 
-            return new ResponseEntity<>("Chat room created successfully", HttpStatus.CREATED);
+            return new ResponseEntity<>(Collections.singletonMap("productId", chatRoomEntity.getProductId()), HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>("Failed to create chat room", HttpStatus.BAD_REQUEST);
         }
@@ -80,6 +89,7 @@ public class ChatRoomService {
             chatRoomInfoDTO.setChatRoomId(chatRoomEntity.getChatroomSeq());
             chatRoomInfoDTO.setOpponentNickname(opponentNickname);
             chatRoomInfoDTO.setOpponentProfileImage(opponentProfileImage);
+            chatRoomInfoDTO.setProductId(chatRoomEntity.getProductId());
             if (lastMessage != null) {
                 chatRoomInfoDTO.setLastMessage(lastMessage.getMessage());
                 chatRoomInfoDTO.setLastMessageTime(LocalDateTime.parse(lastMessage.getSendTime()));

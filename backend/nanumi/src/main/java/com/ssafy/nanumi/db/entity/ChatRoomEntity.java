@@ -25,6 +25,7 @@ public class ChatRoomEntity {
     private long opponentId;
     private String opponentNickname;
     private String opponentProfileImage;
+    private long productId;
     @Builder.Default
     private boolean isActivate = true;
 

@@ -7,10 +7,9 @@ import lombok.Setter;
 @Setter
 public class CreateChatRoomDTO {
     private long sendUser;
-    private long receiveUser;
     private long opponentId;
     private String opponentNickname;
     private String opponentProfileImage;
-
+    private long productId;
 }
 
