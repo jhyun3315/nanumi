@@ -19,9 +19,10 @@ import ProfileUpdateScreen from '../screens/ProfileUpdateScreen';
 import CategoryProductScreen from '../screens/CategoryProductScreen';
 import FocusedStatusBar from '../ui/FocusedStatusBar';
 import {NavigationContainer} from '@react-navigation/native';
+import PostUpdateFormScreen from '../screens/PostUpdateFormScreen';
+import OtherProfileScreen from '../screens/OtherProfileScreen';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {COLORS} from '../constants';
-import PostUpdateFormScreen from '../screens/PostUpdateFormScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -52,6 +53,7 @@ const StackNavigator = () => {
         <Stack.Screen name="DivideProduct" component={DivideProductScreen} />
         <Stack.Screen name="MapUpdate" component={MapUpdateScreen} />
         <Stack.Screen name="ProfileUpdate" component={ProfileUpdateScreen} />
+        <Stack.Screen name="OtherProfile" component={OtherProfileScreen} />
         <Stack.Screen
           name="MatchingProduct"
           component={MatchingProductScreen}
