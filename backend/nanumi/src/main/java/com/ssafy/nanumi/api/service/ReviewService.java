@@ -33,7 +33,6 @@ public class ReviewService {
     @Transactional(readOnly = false)
     public void saveUserReview(UserReviewDTO userReviewDTO, long writerId, long matchId) {
 
-        // TODO : rating 계산로직 수정
         // TODO : writerId는 JWT에서, receiverId는 products table에서, matchId는 Pathvariable에서
 
         // 리뷰 작성자 유저 검증
@@ -57,7 +56,7 @@ public class ReviewService {
         List<Integer> rating = userReviewDTO.getRating();
         int totalRating = 0;
         for (int r : rating) {
-            totalRating += r * 10; // 수정해야함
+            totalRating += 1; // 수정해야함
         }
 
         // 리뷰 저장, starPoint가 0이 아닐때만
@@ -80,13 +79,10 @@ public class ReviewService {
         receiverInfo.updateStar(userReviewDTO.getStarPoint());
         receiverInfo.updateRating(totalRating);
 
-        // 온도 계산 (수정 필요)
-        double avgStar = receiverInfo.getStarTotal() / receiverInfo.getStarCount();
-        double avgRating = receiverInfo.getRatingTotal() / receiverInfo.getRatingCount();
-        System.out.println("avgStar : " + avgStar + ", avgRating : " + avgRating);
-
-        double temperature = avgStar / avgRating;
-        System.out.println("temperature : " + temperature);
+        // 온도 계산
+        double temperature;
+        temperature = ((userReviewDTO.getStarPoint() + totalRating) / 2 - 3) * 0.15;
+        temperature = Math.floor(temperature * 100) / 100.0;
 
         // 리뷰 대상자 온도 업데이트
         receiverInfo.updateTemperature(temperature);
