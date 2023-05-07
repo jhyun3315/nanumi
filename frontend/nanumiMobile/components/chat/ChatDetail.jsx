@@ -1,4 +1,4 @@
-import React, {useState, useCallback, useRef, useMemo} from 'react';
+import React, {useState, useCallback, useRef, useMemo, useEffect} from 'react';
 import {SafeAreaView} from 'react-native';
 import {
   ChatHeader,
@@ -17,11 +17,24 @@ import {
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {GiftedChat} from 'react-native-gifted-chat';
 import {useModal} from '../../hooks/useModal';
+import {requestGetDetailProduct} from '../../api/product';
+import {Fallback} from '../../ui/Fallback';
+import {useQuery} from '@tanstack/react-query';
 import GlobalModal from '../modal/GlobalModal';
+import ErrorModal from '../modal/ErrorModal';
+import DataErrorModal from '../modal/DataErrorModal';
 
-const ChatDetail = ({navigation}) => {
+const ChatDetail = ({navigation, productId}) => {
   const {showModal, hideModal} = useModal();
+  const {data, isLoading, error, refetch} = useQuery(
+    ['product', productId],
+    () => requestGetDetailProduct(productId),
+  );
 
+  const handleCloseAndBack = () => {
+    hideModal();
+    navigation.goBack();
+  };
   const handleCloseBottomModal = () => {
     bottomSheetModalRef.current?.close();
   };
@@ -109,6 +122,11 @@ const ChatDetail = ({navigation}) => {
     );
   }, []);
 
+  if (data?.code === 404)
+    return <DataErrorModal handlePress={handleCloseAndBack} />;
+  if (isLoading) return <Fallback />;
+  if (error) return <ErrorModal handlePress={refetch} />;
+
   return (
     <GestureHandlerRootView style={{flex: 1}}>
       <BottomSheetModalProvider>
@@ -117,7 +135,7 @@ const ChatDetail = ({navigation}) => {
             navigation={navigation}
             handlePresentModalPress={handlePresentModalPress}
           />
-          <ChatProductInfo />
+          <ChatProductInfo data={data?.result} />
           <GiftedChat
             messages={messages}
             onSend={newMessage => handleSend(newMessage)}

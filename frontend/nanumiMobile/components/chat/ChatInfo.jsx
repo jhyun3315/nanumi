@@ -23,26 +23,24 @@ export const ChatHeader = ({navigation, handlePresentModalPress}) => {
   );
 };
 
-export const ChatProductInfo = () => {
+export const ChatProductInfo = ({data}) => {
   return (
     <View style={styles.productContainer}>
       <Pressable>
         <Image
-          source={{
-            uri: 'https://dnvefa72aowie.cloudfront.net/origin/article/202304/a57a1ca73e29c26b6b680e9874ba24c8f8c0d7c17fb26087e8489efd40107d0b.jpg?q=95&s=1440x1440&t=inside',
-          }}
+          source={{uri: data?.productImageUrls[0]}}
           style={styles.productImage}
         />
       </Pressable>
       <View style={styles.infoContainer}>
         <Text numberOfLines={1} ellipsizeMode="tail" style={styles.productName}>
-          상품명
+          {data?.name}
         </Text>
         <Text
           numberOfLines={1}
           ellipsizeMode="tail"
           style={styles.productDescription}>
-          상품 설명asdasdadasdskldjaskldasjasjasdjjkladkljakldjaskldjakldjak
+          {data?.content}
         </Text>
       </View>
     </View>

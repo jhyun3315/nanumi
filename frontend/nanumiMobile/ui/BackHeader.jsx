@@ -96,10 +96,6 @@ export const MoreHeader = ({navigation, handlePresentModalPress}) => {
         }}
         left={16}
       />
-      <View style={{alignItems: 'center'}}>
-        <Text style={styles.username}>사용자아이디</Text>
-        <Text style={styles.temperature}>36.5</Text>
-      </View>
       <MoreButton
         minWidth={40}
         minHeight={40}

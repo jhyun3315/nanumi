@@ -1,8 +1,9 @@
 import React from 'react';
 import ChatDetail from '../components/chat/ChatDetail';
 
-const ChatDetailScreen = ({navigation}) => {
-  return <ChatDetail navigation={navigation} />;
+const ChatDetailScreen = ({navigation, route}) => {
+  const {productId} = route.params;
+  return <ChatDetail navigation={navigation} productId={productId} />;
 };
 
 export default ChatDetailScreen;
