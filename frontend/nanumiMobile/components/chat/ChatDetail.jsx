@@ -1,4 +1,4 @@
-import React, {useState, useCallback, useRef, useMemo, useEffect} from 'react';
+import React, {useState, useCallback, useMemo, useEffect, useRef} from 'react';
 import {SafeAreaView} from 'react-native';
 import {
   ChatHeader,
@@ -21,21 +21,53 @@ import {requestGetDetailProduct} from '../../api/product';
 import {Fallback} from '../../ui/Fallback';
 import {useQuery} from '@tanstack/react-query';
 import GlobalModal from '../modal/GlobalModal';
+import * as StompJs from '@stomp/stompjs';
+import SockJS from 'sockjs-client';
 import ErrorModal from '../modal/ErrorModal';
 import DataErrorModal from '../modal/DataErrorModal';
 
-const ChatDetail = ({navigation, productId}) => {
+const ChatDetail = ({navigation, productId, chatRoomId}) => {
   const {showModal, hideModal} = useModal();
- 
+  const client = useRef(null);
+
   const {data, isLoading, error, refetch} = useQuery(
     ['product', productId],
     () => requestGetDetailProduct(productId),
   );
 
+  const bottomSheetModalRef = useRef(null);
+  const snapPoints = useMemo(() => ['40%', '55%'], []);
+
+  // 나=user.userId, 상대방 알필요없나? 물건:productId, 해당채팅방:chatRoomId
+  const subscribe = () => {};
+
+  const disconnect = () => {
+    client.current.deactivate();
+    console.log('연결 끊어짐');
+  };
+
+  const connect = () => {
+    client.current = new StompJs.Client({
+      webSocketFactory: () =>
+        new SockJS(`https://k8b103.p.ssafy.io/api/ws-stomp`),
+
+      onConnect: () => {
+        console.log('연결됨');
+      },
+
+      onDisconnect: () => {
+        disconnect();
+      },
+    });
+
+    client.current.activate();
+  };
+
   const handleCloseAndBack = () => {
     hideModal();
     navigation.goBack();
   };
+
   const handleCloseBottomModal = () => {
     bottomSheetModalRef.current?.close();
   };
@@ -83,8 +115,6 @@ const ChatDetail = ({navigation, productId}) => {
     }, 300);
   };
 
-  const bottomSheetModalRef = useRef(null);
-  const snapPoints = useMemo(() => ['40%', '55%'], []);
   const handlePresentModalPress = useCallback(() => {
     bottomSheetModalRef.current?.present();
   }, []);
@@ -123,6 +153,11 @@ const ChatDetail = ({navigation, productId}) => {
     );
   }, []);
 
+  useEffect(() => {
+    connect();
+
+    return () => client.current.deactivate();
+  }, []);
   if (data?.code === 404)
     return <DataErrorModal handlePress={handleCloseAndBack} />;
   if (isLoading) return <Fallback />;

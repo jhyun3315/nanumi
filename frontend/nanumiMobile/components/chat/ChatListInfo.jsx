@@ -7,7 +7,10 @@ export const ChatListItem = ({data, navigation}) => {
       <Pressable
         style={styles.conversation}
         onPress={() => {
-          navigation.navigate('ChatDetail', {productId: data?.productId});
+          navigation.navigate('ChatDetail', {
+            productId: data?.productId,
+            chatRoomId: data?.chatRoomId,
+          });
         }}>
         <View style={[styles.imageContainer]}>
           <Image
