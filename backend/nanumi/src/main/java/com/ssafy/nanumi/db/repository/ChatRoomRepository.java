@@ -13,5 +13,7 @@ public interface ChatRoomRepository extends MongoRepository<ChatRoomEntity, Stri
     public ChatRoomEntity findChatRoomEntityByChatroomSeq(long seq);
 
     List<ChatRoomEntity> findAllByUserListContaining(long user);
+
+    ChatRoomEntity findByUserListContainingAndProductId(long sendUser, long productId);
 }
 

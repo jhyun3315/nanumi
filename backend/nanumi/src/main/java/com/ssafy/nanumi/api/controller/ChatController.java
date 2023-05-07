@@ -3,7 +3,6 @@ package com.ssafy.nanumi.api.controller;
 import com.ssafy.nanumi.api.service.ChatRoomService;
 import com.ssafy.nanumi.api.service.ChatService;
 import com.ssafy.nanumi.common.ChatMessageDTO;
-import com.ssafy.nanumi.common.ChatRoomInfoDTO;
 import com.ssafy.nanumi.config.response.CustomResponse;
 import com.ssafy.nanumi.config.response.ResponseService;
 import com.ssafy.nanumi.db.entity.ChatMessageEntity;
@@ -53,10 +52,10 @@ public class ChatController {
     }
 
 
-    @GetMapping("findmyroom")
-    public ResponseEntity<List<ChatRoomInfoDTO>> findMyRoom(@RequestParam long user) {
-        return new ResponseEntity<>(chatRoomService.FindMyChatRooms(user), HttpStatus.OK);
-    }
+//    @GetMapping("findmyroom")
+//    public ResponseEntity<List<ChatRoomInfoDTO>> findMyRoom(@RequestParam long user) {
+//        return new ResponseEntity<>(chatRoomService.FindMyChatRooms(user), HttpStatus.OK);
+//    }
 
     @GetMapping("/chat/end/{product-id}")
     public CustomResponse endChat(@PathVariable("product-id") Long productId) {
