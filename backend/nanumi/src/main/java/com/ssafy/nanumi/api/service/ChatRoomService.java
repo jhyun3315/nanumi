@@ -38,7 +38,7 @@ public class ChatRoomService {
         // 이미 존재하는 채팅방인지 확인
         ChatRoomEntity existingChatRoom = chatRoomRepository.findByUserListContainingAndProductId(sendUser, productId);
         if (existingChatRoom != null) {
-            return new ResponseEntity<>("Chat room already exists", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(Collections.singletonMap("error", "Chat room already exists"), HttpStatus.OK);
         }
 
         long[] users = new long[]{sendUser, receiveUser};
