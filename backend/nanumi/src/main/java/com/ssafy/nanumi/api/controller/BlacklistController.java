@@ -36,7 +36,7 @@ public class BlacklistController {
     }
 
     /* 사용자 차단 해제 */
-    @PatchMapping("/block/{uesr-id}")
+    @PatchMapping("/block/{user-id}")
     public CustomResponse blockCancel(@PathVariable("user-id") long userId, @RequestBody BlockDTO blockDTO) {
 
         // TODO : userId는 JWT에서

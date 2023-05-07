@@ -43,6 +43,8 @@ public class BlacklistService {
                 .target(target)
                 .isBlocked(true)
                 .build();
+
+        blacklistRepository.save(blacklist);
     }
 
     /* 사용자 차단 해제 */
