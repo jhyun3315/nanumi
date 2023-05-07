@@ -1,6 +1,7 @@
 import React from 'react';
-import {View, Image, Text} from 'react-native';
+import {View, Image, Text, Pressable} from 'react-native';
 import {SIZES, COLORS, SHADOWS, assets, FONTS} from '../../constants';
+import {useNavigation} from '@react-navigation/native';
 
 export const ProductTitle = ({title, titleSize, subTitle, subTitleSize}) => {
   return (
@@ -65,10 +66,15 @@ export const ImageCmp = ({imgUrl}) => {
 };
 
 export const People = ({data}) => {
+  const navigation = useNavigation();
   return (
-    <View style={{flexDirection: 'row'}}>
+    <Pressable
+      style={{flexDirection: 'row'}}
+      onPress={() =>
+        navigation.navigate('OtherProfile', {userId: data?.userId})
+      }>
       <ImageCmp imgUrl={{uri: data?.userProfileUrl}} />
-    </View>
+    </Pressable>
   );
 };
 
