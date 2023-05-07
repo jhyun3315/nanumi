@@ -21,14 +21,14 @@ const MatchingProductListItem = ({data, navigation}) => {
     sendUser,
     receiveUser,
     opponentId,
-    opponentNickName,
+    opponentNickname,
     opponentProfileImage,
   ) => {
     const data = {
       sendUser: sendUser,
       receiveUser: receiveUser,
       opponentId: opponentId,
-      opponentNickName: opponentNickName,
+      opponentNickname: opponentNickname,
       opponentProfileImage: opponentProfileImage,
     };
     console.log('data', data);
