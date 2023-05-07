@@ -19,26 +19,24 @@ const MatchingProductListItem = ({data, navigation}) => {
 
   const handleCreateChatRoomAndNavigate = async (
     sendUser,
-    receiveUser,
     opponentId,
     opponentNickname,
     opponentProfileImage,
+    productId,
   ) => {
-    const data = {
+    const body = {
       sendUser: sendUser,
-      receiveUser: receiveUser,
       opponentId: opponentId,
       opponentNickname: opponentNickname,
       opponentProfileImage: opponentProfileImage,
+      productId: productId,
     };
-    console.log('data', data);
-    const response = await requestCreateChatRoom(data);
-    console.log('response', response);
-    if (response === 'Chat room created successfully') {
+    const response = await requestCreateChatRoom(body);
+    if (response.productId) {
       hideModal();
       navigation.navigate('BottomTabs', {screen: 'ChatList'});
-    } else {
-      Alert.alert(response);
+    } else if (response.error) {
+      Alert.alert('이미 존재하는 채팅방입니다.');
     }
   };
 

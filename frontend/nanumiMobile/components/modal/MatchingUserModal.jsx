@@ -61,10 +61,10 @@ const MatchingUserModalContent = () => {
                 handlePress={() =>
                   modal?.modalProps?.onConfirm(
                     user.userId,
-                    matchingUser.userId,
                     matchingUser?.userId,
                     matchingUser?.userNickname,
                     matchingUser?.userProfileUrl,
+                    modal?.modalProps?.productId,
                   )
                 }>
                 채팅하기
