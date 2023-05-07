@@ -7,6 +7,7 @@ import Icon from 'react-native-ionicons';
 import {Platform} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {COLORS} from '../constants';
+import Test from '../components/home/Test';
 
 const Tab = createBottomTabNavigator();
 
@@ -29,7 +30,7 @@ const BottomTabs = ({navigation}) => {
       }}>
       <Tab.Screen
         name="Home"
-        component={HomeScreen}
+        component={Test}
         options={({}) => ({
           title: '홈',
           headerShown: false,

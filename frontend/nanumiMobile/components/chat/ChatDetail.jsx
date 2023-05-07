@@ -23,6 +23,7 @@ import {useQuery} from '@tanstack/react-query';
 import GlobalModal from '../modal/GlobalModal';
 import ErrorModal from '../modal/ErrorModal';
 import DataErrorModal from '../modal/DataErrorModal';
+import axios from 'axios';
 
 const ChatDetail = ({navigation, productId}) => {
   const {showModal, hideModal} = useModal();
@@ -124,25 +125,25 @@ const ChatDetail = ({navigation, productId}) => {
   }, []);
 
   useEffect(() => {
-    ws.current = new WebSocket(`http://localhost:8080/ws-stomp`);
+    ws.current = new WebSocket(`ws://172.30.1.3:8080/ws-stomp`, {origin: '*'});
     console.log(ws.current);
-    ws.onopen = () => {
+    ws.current.onopen = () => {
       console.log('connected');
     };
 
-    ws.onmessage = e => {
+    ws.current.onmessage = e => {
       console.log('message', e.data);
     };
 
-    ws.onerror = e => {
-      console.log('error', e.message);
+    ws.current.onerror = e => {
+      console.log('error', e);
     };
 
-    ws.onclose = e => {
+    ws.current.onclose = e => {
       console.log('close', e.code, e.reason);
 
       return () => {
-        ws.close();
+        ws.current.close();
       };
     };
   }, []);
