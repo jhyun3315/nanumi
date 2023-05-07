@@ -87,7 +87,7 @@ const ProductList = ({isSearch}) => {
           ListHeaderComponent={isSearch ? '' : <Header />}
           contentContainerStyle={styles.contentContainerStyle}
           onEndReached={handleLoadMore}
-          onEndReachedThreshold={0.5}
+          onEndReachedThreshold={2}
         />
       </View>
       {productList?.data?.pages[0]?.result?.content.length === 0 && (

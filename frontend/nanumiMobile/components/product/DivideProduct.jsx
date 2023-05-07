@@ -15,8 +15,7 @@ import ProductCard from './ProductCard';
 import ErrorModal from '../modal/ErrorModal';
 import EmptyState from '../../ui/EmptyState';
 
-const DivideProduct = ({navigation, type}) => {
-  const [user] = useRecoilState(userState);
+const DivideProduct = ({navigation, type, userId}) => {
   const [productList, setProductList] = useState([]);
 
   const queryFn = useMemo(() => {
@@ -51,7 +50,7 @@ const DivideProduct = ({navigation, type}) => {
     refetch,
   } = useInfiniteQuery(
     [type],
-    ({pageParam = 0}) => queryFn(user.userId, pageParam),
+    ({pageParam = 0}) => queryFn(userId, pageParam),
     {
       getNextPageParam: (lastPage, pages) => {
         if (
@@ -106,7 +105,7 @@ const DivideProduct = ({navigation, type}) => {
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.contentContainerStyle}
           onEndReached={handleLoadMore}
-          onEndReachedThreshold={0.5}
+          onEndReachedThreshold={2}
         />
       </View>
       {productList?.data?.pages[0]?.result?.content.length === 0 && (

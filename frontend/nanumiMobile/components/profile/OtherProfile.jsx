@@ -80,7 +80,10 @@ const OtherProfile = ({navigation, userId}) => {
         <Pressable
           style={styles.statusContainer}
           onPress={() =>
-            navigation.navigate('DivideProduct', {type: 'divided'})
+            navigation.navigate('DivideProduct', {
+              type: 'divided',
+              userId: userId,
+            })
           }>
           <View style={styles.statusBox}>
             <Text style={[styles.text, styles.count]}>
@@ -91,7 +94,10 @@ const OtherProfile = ({navigation, userId}) => {
 
           <Pressable
             onPress={() =>
-              navigation.navigate('DivideProduct', {type: 'dividing'})
+              navigation.navigate('DivideProduct', {
+                type: 'dividing',
+                userId: userId,
+              })
             }
             style={[
               styles.statusBox,
@@ -110,7 +116,10 @@ const OtherProfile = ({navigation, userId}) => {
           <Pressable
             style={styles.statusBox}
             onPress={() =>
-              navigation.navigate('DivideProduct', {type: 'received'})
+              navigation.navigate('DivideProduct', {
+                type: 'received',
+                userId: userId,
+              })
             }>
             <Text style={[styles.text, styles.count]}>
               {data?.result?.givenCount}
