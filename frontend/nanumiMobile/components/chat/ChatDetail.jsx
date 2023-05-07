@@ -26,6 +26,7 @@ import DataErrorModal from '../modal/DataErrorModal';
 
 const ChatDetail = ({navigation, productId}) => {
   const {showModal, hideModal} = useModal();
+  const ws = useRef(null);
   const {data, isLoading, error, refetch} = useQuery(
     ['product', productId],
     () => requestGetDetailProduct(productId),
@@ -120,6 +121,30 @@ const ChatDetail = ({navigation, productId}) => {
         pressBehavior="close"
       />
     );
+  }, []);
+
+  useEffect(() => {
+    ws.current = new WebSocket(`http://localhost:8080/ws-stomp`);
+    console.log(ws.current);
+    ws.onopen = () => {
+      console.log('connected');
+    };
+
+    ws.onmessage = e => {
+      console.log('message', e.data);
+    };
+
+    ws.onerror = e => {
+      console.log('error', e.message);
+    };
+
+    ws.onclose = e => {
+      console.log('close', e.code, e.reason);
+
+      return () => {
+        ws.close();
+      };
+    };
   }, []);
 
   if (data?.code === 404)
