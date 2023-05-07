@@ -23,11 +23,10 @@ import {useQuery} from '@tanstack/react-query';
 import GlobalModal from '../modal/GlobalModal';
 import ErrorModal from '../modal/ErrorModal';
 import DataErrorModal from '../modal/DataErrorModal';
-import axios from 'axios';
 
 const ChatDetail = ({navigation, productId}) => {
   const {showModal, hideModal} = useModal();
-  const ws = useRef(null);
+ 
   const {data, isLoading, error, refetch} = useQuery(
     ['product', productId],
     () => requestGetDetailProduct(productId),
@@ -122,30 +121,6 @@ const ChatDetail = ({navigation, productId}) => {
         pressBehavior="close"
       />
     );
-  }, []);
-
-  useEffect(() => {
-    ws.current = new WebSocket(`ws://172.30.1.3:8080/ws-stomp`, {origin: '*'});
-    console.log(ws.current);
-    ws.current.onopen = () => {
-      console.log('connected');
-    };
-
-    ws.current.onmessage = e => {
-      console.log('message', e.data);
-    };
-
-    ws.current.onerror = e => {
-      console.log('error', e);
-    };
-
-    ws.current.onclose = e => {
-      console.log('close', e.code, e.reason);
-
-      return () => {
-        ws.current.close();
-      };
-    };
   }, []);
 
   if (data?.code === 404)

@@ -3,6 +3,7 @@ import {RecoilRoot} from 'recoil';
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
 import StackNavigator from './navigator/StackNavigator';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as encoding from 'text-encoding';
 
 const queryClient = new QueryClient();
 const App = () => {
