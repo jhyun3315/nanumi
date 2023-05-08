@@ -5,6 +5,7 @@ import com.ssafy.nanumi.api.request.UserJoinDTO;
 import com.ssafy.nanumi.api.request.UserLoginDTO;
 import com.ssafy.nanumi.api.response.*;
 import com.ssafy.nanumi.api.service.UserService;
+import com.ssafy.nanumi.common.SearchPageReq;
 import com.ssafy.nanumi.config.response.CustomDataResponse;
 import com.ssafy.nanumi.config.response.CustomResponse;
 import com.ssafy.nanumi.config.response.ResponseService;
@@ -16,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import javax.mail.MessagingException;
@@ -118,7 +120,13 @@ public class UserController {
     public CustomDataResponse<Page<ProductAllDTO>> getMatchProduct(@PathVariable("user-id") Long userId, @RequestParam("page") Integer page){
         User user = userRepository.findById(userId)
                 .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_USER));
-        PageRequest pageRequest = PageRequest.of(page, 6);
+
+        SearchPageReq searchPageReq = new SearchPageReq(page);
+        PageRequest pageRequest = PageRequest.of(searchPageReq.getPageIndex(),
+                searchPageReq.getPageSizeForProduct(),
+                Sort.by(searchPageReq.getSortStdForProduct()).descending()
+        );
+
         return responseService.getDataResponse(userService.getMatchProduct(user, pageRequest),RESPONSE_SUCCESS);
     }
 
@@ -127,7 +135,13 @@ public class UserController {
     public CustomDataResponse<Page<ProductAllDTO>> getMatchingeProduct(@PathVariable("user-id") Long userId, @RequestParam("page") Integer page ){
         User user = userRepository.findById(userId)
                 .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_USER));
-        PageRequest pageRequest = PageRequest.of(page, 6);
+
+        SearchPageReq searchPageReq = new SearchPageReq(page);
+        PageRequest pageRequest = PageRequest.of(searchPageReq.getPageIndex(),
+                searchPageReq.getPageSizeForProduct(),
+                Sort.by(searchPageReq.getSortStdForProduct()).descending()
+        );
+
         return responseService.getDataResponse(userService.getMatchingProduct(user, pageRequest),RESPONSE_SUCCESS);
     }
 
@@ -136,7 +150,13 @@ public class UserController {
     public CustomDataResponse<Page<ProductAllDTO>> getGivenProduct(@PathVariable("user-id") Long userId, @RequestParam("page") Integer page){
         User user = userRepository.findById(userId)
                 .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_USER));
-        PageRequest pageRequest = PageRequest.of(page, 6);
+
+        SearchPageReq searchPageReq = new SearchPageReq(page);
+        PageRequest pageRequest = PageRequest.of(searchPageReq.getPageIndex(),
+                searchPageReq.getPageSizeForProduct(),
+                Sort.by(searchPageReq.getSortStdForProduct()).descending()
+        );
+
         return responseService.getDataResponse(userService.getGivenProduct(user, pageRequest), RESPONSE_SUCCESS);
     }
 }
