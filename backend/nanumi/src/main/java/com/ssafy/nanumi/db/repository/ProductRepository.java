@@ -23,16 +23,16 @@ public interface ProductRepository extends JpaRepository<Product,Long> {
 
     @Query(value = "select p " +
             "from Product p " +
-            "where p.address.id = :addressId and p.isClosed = false and p.isDeleted = false ")
+            "where p.address.id = :addressId and p.isClosed = false and p.isDeleted = false and p.isMatched = false")
     Page<ProductAllDTO> findAllProduct(Long addressId, Pageable pageable);
 
     @Query(value = "select p " +
             "from Product p " +
-            "where  p.isDeleted = false and p.isClosed = false and p.address.id = :addressId and p.category.id = :categoryId")
+            "where p.isDeleted = false and p.isClosed = false and p.isMatched = false and p.address.id = :addressId and p.category.id = :categoryId")
     Page<ProductAllDTO> findAllCategoryProuduct(Long addressId, Long categoryId, Pageable pageable);
 
     @Query(value = "select count(p) " +
             "from Product p " +
-            "where p.user.id = :userId and p.isClosed = false and p.isDeleted = false and p.isClosed = false")
+            "where p.user.id = :userId and p.isClosed = false and p.isDeleted = false and p.isMatched = false")
     Optional<Integer> findGivingCount(long userId);
 }
