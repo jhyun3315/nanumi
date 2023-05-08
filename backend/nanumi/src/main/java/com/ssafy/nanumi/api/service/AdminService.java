@@ -58,6 +58,10 @@ public class AdminService {
 
         for (Report report : reportList) {
 
+            // 신고 대상자 신고 누적 횟수 조회
+            int reportedCount = userInfoRepository.findUserInfoIdByUserId(report.getReported().getId())
+                    .orElseThrow(() -> new CustomException(NOT_FOUND_USER));
+
             reportAllDTOS.add(
                     ReportAllDTO.builder()
                             .id(report.getId())
@@ -65,6 +69,7 @@ public class AdminService {
                             .reportedId(report.getReported().getId())
                             .content(report.getContent())
                             .status(report.isStatus())
+                            .reportedCount(reportedCount)
                             .stopDate(report.getStopDate())
                             .reportDate(report.getCreateDate().toString())
                             .build()
