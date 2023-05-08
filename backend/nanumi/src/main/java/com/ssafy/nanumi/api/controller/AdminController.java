@@ -25,7 +25,7 @@ public class AdminController {
     private final ResponseService responseService;
 
     /* 관리자 로그인 */
-    @PostMapping("/admin")
+    @PostMapping("/admin/login")
     public CustomResponse adminLogin(@RequestBody AdminLoginDTO adminLoginDTO) {
 
         // TODO : 관리자 ID 검증부분, password match해주는 로직 추가
