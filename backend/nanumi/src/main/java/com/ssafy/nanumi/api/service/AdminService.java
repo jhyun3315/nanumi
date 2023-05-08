@@ -12,6 +12,7 @@ import com.ssafy.nanumi.db.repository.UserInfoRepository;
 import com.ssafy.nanumi.db.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,7 +41,9 @@ public class AdminService {
         User adminUser = userRepository.findByEmail(email)
                 .orElseThrow(() -> new CustomException(REQUEST_ERROR));
 
-        if (!password.equals(adminUser.getPassword())) {
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+
+        if (!encoder.matches(password, adminUser.getPassword())) {
             throw new CustomException(REQUEST_ERROR);
         }
     }
