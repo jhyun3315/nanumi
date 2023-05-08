@@ -57,7 +57,9 @@ public class ChatService {
         chatRepository.save(chatEntity);
 
         // 채팅방의 구독자들에게 채팅 메시지를 전송한다.
-        messageTemplate.convertAndSend("/sub/chat/room/" + DTO.getRoomId(), chatEntity);
+//        messageTemplate.convertAndSend("/sub/chat/room/" + DTO.getRoomId(), chatEntity);
+        messageTemplate.convertAndSend("/sub/chat/room/" + DTO.getRoomId(), chatEntity.toString());
+
     }
 
 
