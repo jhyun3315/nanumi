@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -65,7 +66,6 @@ public class ChatRoomService {
 
 
     // TODO 모든 채팅방 찾기 메소드
-
     public List<ChatRoomInfoDTO> FindMyChatRooms(long user) {
         List<ChatRoomEntity> chatRoomEntities = chatRoomRepository.findAllByUserListContaining(user);
         List<ChatRoomInfoDTO> chatRoomInfoDTOs = new ArrayList<>();
@@ -92,7 +92,9 @@ public class ChatRoomService {
             chatRoomInfoDTO.setProductId(chatRoomEntity.getProductId());
             if (lastMessage != null) {
                 chatRoomInfoDTO.setLastMessage(lastMessage.getMessage());
-                chatRoomInfoDTO.setLastMessageTime(LocalDateTime.parse(lastMessage.getSendTime()));
+                //chatRoomInfoDTO.setLastMessageTime(LocalDateTime.parse(lastMessage.getSendTime()));
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd a hh:mm ss:SSS");
+                chatRoomInfoDTO.setLastMessageTime(LocalDateTime.parse(lastMessage.getSendTime(), formatter));
             }
 
             chatRoomInfoDTOs.add(chatRoomInfoDTO);
