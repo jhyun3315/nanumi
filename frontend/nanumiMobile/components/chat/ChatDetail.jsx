@@ -81,13 +81,6 @@ const ChatDetail = ({navigation, productId, chatRoomId}) => {
   const snapPoints = useMemo(() => ['40%', '55%'], []);
 
   // 나=user.userId, 상대방 알필요없나? 물건:productId, 해당채팅방:chatRoomId
-  const subscribe = () => {
-    client.current.subscribe(`/sub/chat/room/${chatRoomId}`, message => {
-      const data = JSON.parse(message);
-      console.log('data', data);
-      console.log('subscribe 성공');
-    });
-  };
 
   const disconnect = () => {
     client.current.deactivate();
@@ -101,8 +94,6 @@ const ChatDetail = ({navigation, productId, chatRoomId}) => {
 
       onConnect: () => {
         console.log('연결됨');
-
-        subscribe();
       },
 
       onDisconnect: () => {
