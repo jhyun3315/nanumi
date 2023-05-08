@@ -51,7 +51,7 @@ public class ChatService {
                 .roomId(DTO.getRoomId())
                 .sender(DTO.getSender())
                 .message(DTO.getMessage())
-                .profileUrl(profileUrl)
+                //.profileUrl(profileUrl)
                 .sendTime(df.format(new Date()))
                 .build();
         chatRepository.save(chatEntity);
