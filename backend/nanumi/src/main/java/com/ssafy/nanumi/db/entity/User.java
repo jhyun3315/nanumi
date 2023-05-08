@@ -30,6 +30,9 @@ public class User extends BaseTimeEntity {
     @Column(name ="password", columnDefinition = "VARCHAR(64)", nullable = false)
     private String password;
 
+    @Column(name="fcm_token", columnDefinition="VARCHAR(255)")
+    private String fcmToken;
+
     @ColumnDefault("0")
     @Column(name="is_deleted", columnDefinition = "TINYINT", nullable = false)
     private boolean isDeleted;

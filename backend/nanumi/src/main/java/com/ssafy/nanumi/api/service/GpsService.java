@@ -1,6 +1,5 @@
 package com.ssafy.nanumi.api.service;
 
-import com.ssafy.nanumi.common.SectorDTO;
 import com.ssafy.nanumi.db.entity.GpsUser;
 import com.ssafy.nanumi.db.repository.GpsRepository;
 import lombok.RequiredArgsConstructor;
@@ -54,5 +53,8 @@ public class GpsService {
             gpsUser.setNowLongitude(nowLongitude);
             gpsRepository.save(gpsUser);
         }
+    }
+
+    public void sendPushNotification() {
     }
 }
