@@ -34,34 +34,40 @@ public class ProductController {
     private final UserRepository userRepository;
     private final ResponseService responseService;
 
-    @GetMapping("/search/{words}/{page}/{user-id}")
-    public CustomDataResponse<ProductSearchResDTO> search(@PathVariable ("words") String words, @PathVariable("page")int page, @PathVariable("user-id") long userId){
+    /* 검색어가 없는 경우 전체 조회 */
+    @GetMapping("/search/{page}/{user-id}")
+    public CustomDataResponse<Page<ProductAllDTO>> search(@PathVariable("page")int page, @PathVariable("user-id") long userId){
         PageRequest pageRequest = PageRequest.of(page, 6);
-        ProductSearchResDTO productSearchResDTO = productService.searchProductByWords(userId, words, pageRequest);
-        return responseService.getDataResponse(productSearchResDTO, RESPONSE_SUCCESS);
+        return responseService.getDataResponse(productService.findProductAll(userId, pageRequest), RESPONSE_SUCCESS);
+    }
+
+    /* 제목으로 상품 검색 */
+    @GetMapping("/search/{words}/{page}/{user-id}")
+    public CustomDataResponse<Page<ProductAllDTO>> search(@PathVariable ("words") String words, @PathVariable("page")int page, @PathVariable("user-id") long userId){
+        PageRequest pageRequest = PageRequest.of(page, 6);
+        return responseService.getDataResponse(productService.searchProductByWords(userId, words, pageRequest), RESPONSE_SUCCESS);
     }
 
     /* 상품 전체 조회 */
     @GetMapping("/{user-id}")
     public CustomDataResponse<Page<ProductAllDTO>> getProductAll(@PathVariable("user-id") long userId, @RequestParam("page") Integer page){
-        User user = userRepository.findById(userId)
-                .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_USER));
         PageRequest pageRequest = PageRequest.of(page, 6);
-        return responseService.getDataResponse(productService.findProductAll(user, pageRequest), RESPONSE_SUCCESS);
+        return responseService.getDataResponse(productService.findProductAll(userId, pageRequest), RESPONSE_SUCCESS);
     }
+
     /* 상세 페이지 조회 */
     @GetMapping("detail/{product-id}")
     public CustomDataResponse<ProductDetailDTO> getProductOne(@PathVariable("product-id") long productId) {
         return responseService.getDataResponse(productService.findByProductId(productId), RESPONSE_SUCCESS);
     }
+
     /* 카테고리별 조회 */
     @GetMapping("/categories/{category-id}/{user-id}")
     public CustomDataResponse<Page<ProductAllDTO>> getCateProductAll(@PathVariable("user-id") long userId, @PathVariable("category-id") long categoryId, @RequestParam("page") Integer page){
-        User user = userRepository.findById(userId)
-                .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_USER));
         PageRequest pageRequest = PageRequest.of(page, 6);
-        return responseService.getDataResponse(productService.findCateProductAll(categoryId, user, pageRequest), RESPONSE_SUCCESS);
+        return responseService.getDataResponse(productService.findCateProductAll(categoryId, userId, pageRequest), RESPONSE_SUCCESS);
     }
+
     /* 상품 등록 */
     @PostMapping(path = "/{user-id}")
     public CustomResponse createProduct(@PathVariable("user-id") long userId,
@@ -76,8 +82,13 @@ public class ProductController {
     }
     /* 상품 수정 */
     @PatchMapping("/{product-id}")
-    public CustomResponse updateProduct(@PathVariable("product-id") long productId, @RequestBody ProductInsertDTO request) {
-        productService.updateProduct(request, productId);
+    public CustomResponse updateProduct(@PathVariable("product-id") long productId,
+                                        @RequestParam("images") MultipartFile[] images,
+                                        @RequestParam("name") String name,
+                                        @RequestParam("content") String content,
+                                        @RequestParam("categoryId") Long categoryId
+                                        ) throws IOException {
+        productService.updateProduct(productId,images,name,content,categoryId);
         return responseService.getSuccessResponse();
     }
     /* 상품 삭제 */

@@ -1,12 +1,8 @@
 import React from 'react';
-import {View, Text} from 'react-native';
+import ProductDetail from '../components/product/ProductDetail';
 
-const ProductDetailScreen = () => {
-  return (
-    <View>
-      <Text>ProductDetailScreen</Text>
-    </View>
-  );
+const ProductDetailScreen = ({route, navigation}) => {
+  return <ProductDetail route={route} navigation={navigation} />;
 };
 
 export default ProductDetailScreen;

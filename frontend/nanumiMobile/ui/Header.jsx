@@ -1,24 +1,47 @@
 import React from 'react';
-import {View, Text, Image, TextInput, StyleSheet} from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  TextInput,
+  StyleSheet,
+  Pressable,
+} from 'react-native';
+import Icon from 'react-native-ionicons';
 import {COLORS, FONTS, SIZES, assets} from '../constants';
+import {useNavigation} from '@react-navigation/native';
 
 const Header = () => {
+  const navigation = useNavigation();
   return (
     <View style={styles.header}>
       <View style={styles.headerRow}>
         <TextInput />
-        <View style={styles.personIcon}>
-          <Image
-            source={assets.person01}
-            resizeMode="contain"
-            style={styles.personImage}
-          />
-          {/* tier 있으면 tier image 들어갈곳 */}
-          <Image
-            source={assets.badge}
-            resizeMode="contain"
-            style={styles.badgeImage}
-          />
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          <Pressable
+            onPress={() => {
+              navigation.navigate('Search');
+            }}>
+            <Icon name="search" color={COLORS.primary} size={32} />
+          </Pressable>
+          <View style={styles.personIcon}>
+            <Image
+              source={assets.person01}
+              resizeMode="contain"
+              style={styles.personImage}
+            />
+            {/* tier 있으면 tier image 들어갈곳 */}
+            <Image
+              source={assets.badge}
+              resizeMode="contain"
+              style={styles.badgeImage}
+            />
+          </View>
         </View>
       </View>
       <View style={{marginVertical: SIZES.font}}>
@@ -44,8 +67,10 @@ const styles = StyleSheet.create({
   },
 
   personIcon: {
-    width: 45,
-    height: 45,
+    flexDirection: 'row',
+    width: 36,
+    height: 36,
+    marginLeft: SIZES.base,
   },
 
   personImage: {
@@ -57,8 +82,8 @@ const styles = StyleSheet.create({
     position: 'absolute',
     width: 15,
     height: 15,
-    bottom: 0,
-    right: 0,
+    bottom: -1,
+    right: -1,
   },
 
   greetingText: {

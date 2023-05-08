@@ -3,7 +3,6 @@ package com.ssafy.nanumi.api.controller;
 import com.ssafy.nanumi.api.request.AddressDTO;
 import com.ssafy.nanumi.api.request.UserJoinDTO;
 import com.ssafy.nanumi.api.request.UserLoginDTO;
-import com.ssafy.nanumi.api.request.UserUpdateDTO;
 import com.ssafy.nanumi.api.response.*;
 import com.ssafy.nanumi.api.service.UserService;
 import com.ssafy.nanumi.config.response.CustomDataResponse;
@@ -18,8 +17,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import javax.mail.MessagingException;
-import java.io.UnsupportedEncodingException;
+import java.io.IOException;
 import static com.ssafy.nanumi.config.response.exception.CustomSuccessStatus.*;
 
 @Slf4j
@@ -47,7 +47,7 @@ public class UserController {
     }
 
     @GetMapping("/users/check/{email}")
-    public CustomDataResponse emailCheck(@PathVariable("email") String email) throws MessagingException, UnsupportedEncodingException {
+    public CustomDataResponse emailCheck(@PathVariable("email") String email) throws MessagingException, IOException {
         // 이메일 중복 처리, 인증 처리
         System.out.println(email);
         EmailCheckResDTO emailCheckResDTO = userService.checkEmail(email);
@@ -57,8 +57,8 @@ public class UserController {
     /*사용자 장소 정보 등록 수정*/
     @PatchMapping("/users/address/{user-id}")
     public CustomResponse saveUserAddress(@PathVariable("user-id")long userId, @RequestBody AddressDTO addressDTO){
-        userService.updateUserAddress(addressDTO.getAddressId(),userId);
-        return responseService.getSuccessResponse();
+
+        return responseService.getDataResponse(userService.updateUserAddress(addressDTO.getAddressId(),userId), RESPONSE_SUCCESS);
     }
 
     /*사용자 주소 조회*/
@@ -78,11 +78,12 @@ public class UserController {
 
     /* 회원 정보 수정 */
     @PatchMapping("/users/{user-id}")
-    public CustomResponse updateUser(@PathVariable("user-id") Long userId, @RequestBody UserUpdateDTO userUpdateDTO) {
+    public CustomDataResponse<UserSimpleDTO> updateUser(@PathVariable("user-id") Long userId,
+                                     @RequestParam("nickname") String nickname,
+                                     @RequestParam("profileUrl") MultipartFile profileUrl) throws IOException {
         User user = userRepository.findById(userId)
                 .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_USER));
-        userService.updateUser(user, userUpdateDTO);
-        return responseService.getSuccessResponse();
+        return responseService.getDataResponse(userService.updateUser(user, nickname, profileUrl), RESPONSE_SUCCESS);
     }
 
     /* 회원 정보 탈퇴 */
@@ -103,7 +104,7 @@ public class UserController {
         return responseService.getDataResponse(userService.getAllReview(user, pageRequest),RESPONSE_SUCCESS);
     }
 
-    /* 나눔 상품 목록 조회 (모든 거래) */
+    /* 나눔한 상품 목록 조회 (모든 거래) */
     @GetMapping("/users/products/{user-id}")
     public CustomDataResponse<Page<ProductAllDTO>> getAllReceiveProduct(@PathVariable("user-id") Long userId, @RequestParam("page") Integer page){
         User user = userRepository.findById(userId)
@@ -114,10 +115,28 @@ public class UserController {
 
     /* 매칭 목록 (현재 진행중 "나눔" 목록) */
     @GetMapping("/users/matches/{user-id}")
-    public CustomDataResponse<Page<ProductAllDTO>> getMatchingProduct(@PathVariable("user-id") Long userId, @RequestParam("page") Integer page){
+    public CustomDataResponse<Page<ProductAllDTO>> getMatchProduct(@PathVariable("user-id") Long userId, @RequestParam("page") Integer page){
+        User user = userRepository.findById(userId)
+                .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_USER));
+        PageRequest pageRequest = PageRequest.of(page, 6);
+        return responseService.getDataResponse(userService.getMatchProduct(user, pageRequest),RESPONSE_SUCCESS);
+    }
+
+    /* 매칭 중인 상품 목록 조회 */
+    @GetMapping("/users/matching/{user-id}")
+    public CustomDataResponse<Page<ProductAllDTO>> getMatchingeProduct(@PathVariable("user-id") Long userId, @RequestParam("page") Integer page ){
         User user = userRepository.findById(userId)
                 .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_USER));
         PageRequest pageRequest = PageRequest.of(page, 6);
         return responseService.getDataResponse(userService.getMatchingProduct(user, pageRequest),RESPONSE_SUCCESS);
+    }
+
+    /* 나눔 받은 상품 목록 조회 */
+    @GetMapping("users/given/{user-id}")
+    public CustomDataResponse<Page<ProductAllDTO>> getGivenProduct(@PathVariable("user-id") Long userId, @RequestParam("page") Integer page){
+        User user = userRepository.findById(userId)
+                .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_USER));
+        PageRequest pageRequest = PageRequest.of(page, 6);
+        return responseService.getDataResponse(userService.getGivenProduct(user, pageRequest), RESPONSE_SUCCESS);
     }
 }

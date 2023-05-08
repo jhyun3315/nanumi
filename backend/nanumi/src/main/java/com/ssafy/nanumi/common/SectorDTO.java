@@ -16,6 +16,4 @@ public class SectorDTO {
     private String MatchingId;
 
     private String targetLocation;
-
-
 }

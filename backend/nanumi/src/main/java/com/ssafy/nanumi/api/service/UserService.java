@@ -1,8 +1,9 @@
 package com.ssafy.nanumi.api.service;
 
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.ssafy.nanumi.api.request.UserJoinDTO;
 import com.ssafy.nanumi.api.request.UserLoginDTO;
-import com.ssafy.nanumi.api.request.UserUpdateDTO;
 import com.ssafy.nanumi.api.response.*;
 import com.ssafy.nanumi.common.Image;
 import com.ssafy.nanumi.common.provider.Provider;
@@ -14,14 +15,17 @@ import com.ssafy.nanumi.db.entity.UserInfo;
 import com.ssafy.nanumi.db.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.mail.MessagingException;
-import java.io.UnsupportedEncodingException;
+import java.io.IOException;
+import java.util.UUID;
 
 import static com.ssafy.nanumi.config.response.exception.CustomExceptionStatus.*;
 
@@ -36,6 +40,10 @@ public class UserService {
     private final ProductRepository productRepository;
     private final LoginProviderRepository loginProviderRepository;
     private final EmailService emailService;
+    @Value("${cloud.aws.s3.bucket}")
+    private String bucket;
+    private final AmazonS3 amazonS3;
+
 
     public UserLoginResDTO login(UserLoginDTO userLoginDTO){
         String userID = userLoginDTO.getId();
@@ -88,7 +96,7 @@ public class UserService {
         }
     }
 
-    public EmailCheckResDTO checkEmail(String email) throws MessagingException, UnsupportedEncodingException {
+    public EmailCheckResDTO checkEmail(String email) throws MessagingException, IOException {
         String code = "";
 
         if( userRepository.findByEmail(email).isPresent() ){
@@ -99,7 +107,7 @@ public class UserService {
         return new EmailCheckResDTO(code);
     }
 
-    public void updateUserAddress(long addressCode, long userId){
+    public AddressResDTO updateUserAddress(long addressCode, long userId){
        if(addressRepository.findById(addressCode).isEmpty()){
            throw new CustomException(NOT_FOUND_ADDRESS_CODE);
        }else{
@@ -107,6 +115,7 @@ public class UserService {
                    () -> new CustomException(NOT_FOUND_USER)
            );
            user.updateAddress(addressRepository.getById(addressCode));
+          return new AddressResDTO(user.getAddress());
        }
     }
 
@@ -150,24 +159,39 @@ public class UserService {
                 .build();
     }
 
-    public void updateUser(User user, UserUpdateDTO userUpdateDTO) {
-        String userNickname = userUpdateDTO.getNickname();
-        String userProfile = userUpdateDTO.getProfileUrl();
-
-        if(userNickname.equals("")) userNickname = user.getNickname();
-        else if(userProfile.equals("")) userProfile = Image.DefaultImage.getValue();
-        user.updateUserInfo(userNickname, userProfile);
+    public UserSimpleDTO updateUser(User user, String nickname, MultipartFile profileImg) throws IOException {
+        String userNickname = user.getNickname();
+        String imageString = user.getProfileUrl();
+        if(nickname != null) {
+            userNickname = nickname;
+        }
+        if(profileImg != null) {
+            String s3FileName = UUID.randomUUID() + "-" + profileImg.getOriginalFilename();
+            ObjectMetadata objMeta = new ObjectMetadata();
+            objMeta.setContentLength(profileImg.getInputStream().available());
+            amazonS3.putObject(bucket, s3FileName, profileImg.getInputStream(), objMeta);
+            imageString = amazonS3.getUrl(bucket, s3FileName).toString();
+        }
+        user.updateUserInfo(userNickname, imageString);
+        return new UserSimpleDTO(user);
     }
-    public void deleteUser(User user){
+    public void deleteUser(User user) {
         user.delete();
     }
+
     public Page<ReviewReadDTO> getAllReview(User user, PageRequest pageRequest){
         return userRepository.getAllReview(user.getId(), pageRequest);
     }
     public Page<ProductAllDTO> getAllReceiveProduct(User user, PageRequest pageRequest){
         return userRepository.getAllReceiveProduct(user.getId(), pageRequest);
     }
-    public Page<ProductAllDTO> getMatchingProduct(User user, PageRequest pageRequest){
+    public Page<ProductAllDTO> getMatchProduct(User user, PageRequest pageRequest){
+        return userRepository.getAllMatchProduct(user.getId(), pageRequest);
+    }
+    public Page<ProductAllDTO> getMatchingProduct(User user,PageRequest pageRequest){
         return userRepository.getAllMatchingProduct(user.getId(), pageRequest);
+    }
+    public Page<ProductAllDTO> getGivenProduct(User user, PageRequest pageRequest){
+        return userRepository.getAllGivenProduct(user.getId(),pageRequest);
     }
 }

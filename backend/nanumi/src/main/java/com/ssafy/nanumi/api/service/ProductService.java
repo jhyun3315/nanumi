@@ -2,11 +2,9 @@ package com.ssafy.nanumi.api.service;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.ssafy.nanumi.api.request.ProductInsertDTO;
 import com.ssafy.nanumi.api.response.MatchSuccessDto;
 import com.ssafy.nanumi.api.response.ProductAllDTO;
 import com.ssafy.nanumi.api.response.ProductDetailDTO;
-import com.ssafy.nanumi.api.response.ProductSearchResDTO;
 import com.ssafy.nanumi.config.response.exception.CustomException;
 import com.ssafy.nanumi.config.response.exception.CustomExceptionStatus;
 import com.ssafy.nanumi.db.entity.*;
@@ -17,9 +15,7 @@ import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -40,22 +36,17 @@ public class ProductService {
     private String bucket;
     private final AmazonS3 amazonS3;
 
-    public ProductSearchResDTO searchProductByWords(long userId, String words, PageRequest pageRequest){
+    public Page<ProductAllDTO> searchProductByWords(long userId, String words, PageRequest pageRequest){
         User user = userRepository.findById(userId).orElseThrow(() ->  new CustomException(NOT_FOUND_USER));
         Address address = addressRepository.findById(user.getAddress().getId()).orElseThrow( () ->  new CustomException(NOT_FOUND_ADDRESS_CODE));
 
-        Page<Product> pages = productRepository.searchAll(address.getId(), words, pageRequest);
-        List<ProductAllDTO> data = new ArrayList<>();
-
-        for (Product p : pages.getContent()) {
-            data.add(new ProductAllDTO(p));
-        }
-
-        return new ProductSearchResDTO(data, pages.getTotalPages(), pageRequest.getPageNumber());
+        return productRepository.searchAll(address.getId(), words, pageRequest);
     }
 
-    public Page<ProductAllDTO> findProductAll(User user, PageRequest pageRequest) {
-        userRepository.findById(user.getId()).orElseThrow( () -> new CustomException(NOT_FOUND_USER));
+    public Page<ProductAllDTO> findProductAll(long userId, PageRequest pageRequest) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_USER));
+
         Long addressId = user.getAddress().getId();
         return productRepository.findAllProduct(addressId, pageRequest);
     }
@@ -69,7 +60,10 @@ public class ProductService {
         return new ProductDetailDTO(product);
     }
 
-    public Page<ProductAllDTO> findCateProductAll(Long categoryId, User user, Pageable pageRequest) {
+    public Page<ProductAllDTO> findCateProductAll(Long categoryId, long userId, Pageable pageRequest) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_USER));
+
         categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new CustomException(CustomExceptionStatus.NOT_FOUND_CATEGORY));
         Long addressId = user.getAddress().getId();
@@ -93,14 +87,10 @@ public class ProductService {
 
         for(MultipartFile file : images) {
             String s3FileName = UUID.randomUUID() + "-" + file.getOriginalFilename();
-
             ObjectMetadata objMeta = new ObjectMetadata();
             objMeta.setContentLength(file.getInputStream().available());
-
             amazonS3.putObject(bucket, s3FileName, file.getInputStream(), objMeta);
-
             String imageString = amazonS3.getUrl(bucket, s3FileName).toString();
-
             ProductImage productImage = ProductImage.builder()
                     .imageUrl(imageString)
                     .product(createProduct)
@@ -108,14 +98,35 @@ public class ProductService {
             productImageRepository.save(productImage);
         }
     }
-    public void updateProduct(ProductInsertDTO request, Long productId) {
+    public void updateProduct(Long productId,
+                              MultipartFile[] images,
+                              String name,
+                              String content,
+                              Long categoryId) throws IOException {
         Product product = productRepository.findById(productId)
                 .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_PRODUCT));
-        Category category = categoryRepository.findById(request.getCategoryId())
+        Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_CATEGORY));
-        product.setName(request.getName());
-        product.setContent(request.getContent());
+
+        List<ProductImage> beforeImages = product.getProductImages();
+        productImageRepository.deleteAll(beforeImages);
+
+        for(MultipartFile file : images) {
+            String s3FileName = UUID.randomUUID() + "-" + file.getOriginalFilename();
+            ObjectMetadata objMeta = new ObjectMetadata();
+            objMeta.setContentLength(file.getInputStream().available());
+            amazonS3.putObject(bucket, s3FileName, file.getInputStream(), objMeta);
+            String imageString = amazonS3.getUrl(bucket, s3FileName).toString();
+            ProductImage productImage = ProductImage.builder()
+                    .imageUrl(imageString)
+                    .product(product)
+                    .build();
+            productImageRepository.save(productImage);
+        }
+        product.setName(name);
+        product.setContent(content);
         product.setCategory(category);
+
     }
     public void deleteProduct(Long productId){
         Product product = productRepository.findById(productId)
@@ -132,6 +143,9 @@ public class ProductService {
                     .user(user)
                     .build();
             Match newMatch = matchRepository.save(match);
+            if (product.getMatches().size() == 2) {
+                product.setClosed(true);
+            }
             return MatchSuccessDto.builder()
                     .result(true)
                     .resultMessage("신청 되었습니다.")
@@ -139,7 +153,6 @@ public class ProductService {
                     .build();
         }
         else {
-            product.setClosed(true);
             return MatchSuccessDto.builder()
                     .result(false)
                     .resultMessage("인원이 다 찼습니다.")
