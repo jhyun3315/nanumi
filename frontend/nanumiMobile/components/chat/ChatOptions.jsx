@@ -30,9 +30,7 @@ export const ChatOptions = ({
         onPress={handleCloseAndNavigateLocationPickerModal}>
         <Text style={styles.optionText}>거래장소선택</Text>
       </Pressable>
-      <Pressable style={styles.option} onPress={() => {}}>
-        <Text style={styles.optionText}>거래시작</Text>
-      </Pressable>
+
       <Pressable style={styles.option} onPress={handleOpenBlockUserModal}>
         <Text style={styles.optionText}>차단하기</Text>
       </Pressable>

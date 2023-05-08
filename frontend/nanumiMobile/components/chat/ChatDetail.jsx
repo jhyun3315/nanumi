@@ -25,13 +25,11 @@ import {useRecoilState} from 'recoil';
 import {userState} from '../../state/user';
 import {requestGetTop20ChatLog} from '../../api/chat';
 import {convertDate} from '../../util/formatDate';
-import {createRealmContext} from '@realm/react';
-import Realm from 'realm';
+import {decodeJson} from './../../util/decodeBinaryData';
 import * as StompJs from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
 import ErrorModal from '../modal/ErrorModal';
 import DataErrorModal from '../modal/DataErrorModal';
-import {decodeJson} from './../../util/decodeBinaryData';
 
 const ChatDetail = ({navigation, productId, chatRoomId}) => {
   const {
@@ -103,7 +101,7 @@ const ChatDetail = ({navigation, productId, chatRoomId}) => {
   };
 
   const handleRefetch = () => {
-    fetch();
+    refetch();
     chatLogRefetch();
   };
 
@@ -235,7 +233,7 @@ const ChatDetail = ({navigation, productId, chatRoomId}) => {
             messages={transformChatData}
             onSend={newMessage => handleSend(newMessage)}
             placeholder="메시지를 입력해주세요..."
-            user={{_id: 1}}
+            user={{_id: user.userId}}
             renderBubble={renderBubble}
             renderSend={renderSend}
             scrollToBottom

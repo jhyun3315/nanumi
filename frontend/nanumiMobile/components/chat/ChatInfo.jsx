@@ -52,8 +52,11 @@ export const renderBubble = props => {
     <Bubble
       {...props}
       wrapperStyle={{
+        left: {
+          backgroundColor: COLORS.lightGray,
+        },
         right: {
-          backgroundColor: COLORS.disable,
+          backgroundColor: COLORS.lightViolet,
         },
       }}
       textStyle={{

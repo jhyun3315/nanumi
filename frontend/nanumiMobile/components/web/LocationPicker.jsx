@@ -12,9 +12,11 @@ import {RectButton} from '../../ui/Button';
 const {width, height} = Dimensions.get('window');
 
 const LocationPicker = ({navigation}) => {
+  console.log('렌더링');
   const {coordinate, setCoordinate, addressName, setAddressName} =
     useLocationPermission();
 
+  console.log('coordintae', coordinate, 'addressName', addressName);
   const handleRegion = useCallback(
     async region => {
       const {address} = await getAddressFromCoords(region);
