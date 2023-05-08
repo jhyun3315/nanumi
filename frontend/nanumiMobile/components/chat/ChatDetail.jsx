@@ -21,6 +21,10 @@ import {requestGetDetailProduct} from '../../api/product';
 import {Fallback} from '../../ui/Fallback';
 import {useQuery} from '@tanstack/react-query';
 import GlobalModal from '../modal/GlobalModal';
+import {useRecoilState} from 'recoil';
+import {userState} from '../../state/user';
+import {requestGetTop20ChatLog} from '../../api/chat';
+import {convertDate} from '../../util/formatDate';
 import * as StompJs from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
 import ErrorModal from '../modal/ErrorModal';
@@ -28,6 +32,24 @@ import DataErrorModal from '../modal/DataErrorModal';
 
 const ChatDetail = ({navigation, productId, chatRoomId}) => {
   const {showModal, hideModal} = useModal();
+  const [user] = useRecoilState(userState);
+
+  const [messages, setMessages] = useState([
+    {
+      _id: 0,
+      text: 'New room created.',
+      createdAt: new Date().getTime(),
+    },
+    {
+      _id: 1,
+      text: 'Henlo!',
+      createdAt: new Date().getTime(),
+      user: {
+        _id: 2,
+        name: 'Test User',
+      },
+    },
+  ]);
   const client = useRef(null);
 
   const {data, isLoading, error, refetch} = useQuery(
@@ -35,11 +57,37 @@ const ChatDetail = ({navigation, productId, chatRoomId}) => {
     () => requestGetDetailProduct(productId),
   );
 
+  const {
+    data: chatLogData,
+    isLoading: chatLogIsLoading,
+    error: chatLogError,
+    refetch: chatLogRefetch,
+  } = useQuery(['chatLog', chatRoomId], () =>
+    requestGetTop20ChatLog(chatRoomId),
+  );
+
+  const transformedData = chatLogData?.map(message => ({
+    _id: message.message,
+    text: message.message,
+    createdAt: convertDate(message.sendTime),
+    user: {
+      _id: message.sender,
+      name: message.senderName,
+      // avatar: message.senderAvatarUrl,
+    },
+  }));
+
   const bottomSheetModalRef = useRef(null);
   const snapPoints = useMemo(() => ['40%', '55%'], []);
 
   // 나=user.userId, 상대방 알필요없나? 물건:productId, 해당채팅방:chatRoomId
-  const subscribe = () => {};
+  const subscribe = () => {
+    client.current.subscribe(`/sub/chat/room/${chatRoomId}`, message => {
+      const data = JSON.parse(message);
+      console.log('data', data);
+      console.log('subscribe 성공');
+    });
+  };
 
   const disconnect = () => {
     client.current.deactivate();
@@ -53,6 +101,8 @@ const ChatDetail = ({navigation, productId, chatRoomId}) => {
 
       onConnect: () => {
         console.log('연결됨');
+
+        subscribe();
       },
 
       onDisconnect: () => {
@@ -119,26 +169,24 @@ const ChatDetail = ({navigation, productId, chatRoomId}) => {
     bottomSheetModalRef.current?.present();
   }, []);
 
-  const [messages, setMessages] = useState([
-    {
-      _id: 0,
-      text: 'New room created.',
-      createdAt: new Date().getTime(),
-      system: true,
-    },
-    {
-      _id: 1,
-      text: 'Henlo!',
-      createdAt: new Date().getTime(),
-      user: {
-        _id: 2,
-        name: 'Test User',
-      },
-    },
-  ]);
-
   const handleSend = newMessage => {
-    setMessages(GiftedChat.append(messages, newMessage));
+    const transformMessage = {
+      type: 'TALK',
+      roomId: chatRoomId,
+      sender: user.userId,
+      message: newMessage[0].text,
+    };
+
+    if (client.current && client.current.connected) {
+      client.current.publish({
+        destination: '/pub/chat/message',
+        headers: {},
+        body: JSON.stringify(transformMessage),
+      });
+    } else {
+      console.warn('STOMP client is not connected');
+    }
+    // setMessages(GiftedChat.append(messages, newMessage));
   };
 
   const renderBackDrop = useCallback(props => {
@@ -158,6 +206,7 @@ const ChatDetail = ({navigation, productId, chatRoomId}) => {
 
     return () => client.current.deactivate();
   }, []);
+
   if (data?.code === 404)
     return <DataErrorModal handlePress={handleCloseAndBack} />;
   if (isLoading) return <Fallback />;
@@ -173,7 +222,7 @@ const ChatDetail = ({navigation, productId, chatRoomId}) => {
           />
           <ChatProductInfo data={data?.result} />
           <GiftedChat
-            messages={messages}
+            messages={transformedData}
             onSend={newMessage => handleSend(newMessage)}
             placeholder="메시지를 입력해주세요..."
             user={{_id: 1}}

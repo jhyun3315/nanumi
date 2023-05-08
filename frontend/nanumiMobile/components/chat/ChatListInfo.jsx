@@ -32,7 +32,9 @@ export const ChatListItem = ({data, navigation}) => {
               {data?.opponentNickname}
             </Text>
             <Text style={[styles.text, styles.time]}>
-              {data?.lastMessageTime ? data?.lastMessageTime : '00:00'}
+              {data?.lastMessageTime
+                ? `${data?.lastMessageTime[3]}:${data?.lastMessageTime[4]}`
+                : '00:00'}
             </Text>
           </View>
           <View

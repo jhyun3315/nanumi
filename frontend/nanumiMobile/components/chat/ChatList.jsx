@@ -18,6 +18,7 @@ const ChatList = ({navigation}) => {
     () => requestGetMyChatRoom(user.userId),
   );
 
+  console.log('채팅방조회', data);
   useFocusEffect(
     useCallback(() => {
       refetch();

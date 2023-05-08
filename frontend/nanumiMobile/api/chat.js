@@ -12,3 +12,10 @@ export const requestGetMyChatRoom = async userId => {
   );
   return response.data;
 };
+
+export const requestGetTop20ChatLog = async roomId => {
+  const response = await axios.get(
+    `${API_END_POINT}/chat/chatlog?roomSeq=${roomId}`,
+  );
+  return response.data;
+};
