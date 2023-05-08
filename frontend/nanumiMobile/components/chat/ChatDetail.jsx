@@ -25,38 +25,15 @@ import {useRecoilState} from 'recoil';
 import {userState} from '../../state/user';
 import {requestGetTop20ChatLog} from '../../api/chat';
 import {convertDate} from '../../util/formatDate';
+import {createRealmContext} from '@realm/react';
+import Realm from 'realm';
 import * as StompJs from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
 import ErrorModal from '../modal/ErrorModal';
 import DataErrorModal from '../modal/DataErrorModal';
+import {decodeJson} from './../../util/decodeBinaryData';
 
 const ChatDetail = ({navigation, productId, chatRoomId}) => {
-  const {showModal, hideModal} = useModal();
-  const [user] = useRecoilState(userState);
-
-  const [messages, setMessages] = useState([
-    {
-      _id: 0,
-      text: 'New room created.',
-      createdAt: new Date().getTime(),
-    },
-    {
-      _id: 1,
-      text: 'Henlo!',
-      createdAt: new Date().getTime(),
-      user: {
-        _id: 2,
-        name: 'Test User',
-      },
-    },
-  ]);
-  const client = useRef(null);
-
-  const {data, isLoading, error, refetch} = useQuery(
-    ['product', productId],
-    () => requestGetDetailProduct(productId),
-  );
-
   const {
     data: chatLogData,
     isLoading: chatLogIsLoading,
@@ -66,21 +43,40 @@ const ChatDetail = ({navigation, productId, chatRoomId}) => {
     requestGetTop20ChatLog(chatRoomId),
   );
 
-  const transformedData = chatLogData?.map(message => ({
-    _id: message.message,
-    text: message.message,
-    createdAt: convertDate(message.sendTime),
-    user: {
-      _id: message.sender,
-      name: message.senderName,
-      // avatar: message.senderAvatarUrl,
-    },
-  }));
+  const {data, isLoading, error, refetch} = useQuery(
+    ['product', productId],
+    () => requestGetDetailProduct(productId),
+  );
+
+  const {showModal, hideModal} = useModal();
+  const [user] = useRecoilState(userState);
+  const client = useRef(null);
+  const [transformChatData, setTransformChatData] = useState([]);
 
   const bottomSheetModalRef = useRef(null);
   const snapPoints = useMemo(() => ['40%', '55%'], []);
 
-  // 나=user.userId, 상대방 알필요없나? 물건:productId, 해당채팅방:chatRoomId
+  const subscribe = () => {
+    client.current.subscribe(`/sub/chat/room/${chatRoomId}`, message => {
+      const receivedChatTransform = decodeJson(message._binaryBody);
+      setTransformChatData(prevChatData => {
+        const newChatData = [
+          {
+            _id: receivedChatTransform?._id,
+            text: receivedChatTransform?.message,
+            createdAt: convertDate(receivedChatTransform?.sendTime),
+            user: {
+              _id: receivedChatTransform?.sender,
+              name: receivedChatTransform?.senderName,
+              // avatar: receivedChatTransform?.senderAvatarUrl,
+            },
+          },
+          ...prevChatData,
+        ];
+        return newChatData;
+      });
+    });
+  };
 
   const disconnect = () => {
     client.current.deactivate();
@@ -94,6 +90,8 @@ const ChatDetail = ({navigation, productId, chatRoomId}) => {
 
       onConnect: () => {
         console.log('연결됨');
+
+        subscribe();
       },
 
       onDisconnect: () => {
@@ -102,6 +100,11 @@ const ChatDetail = ({navigation, productId, chatRoomId}) => {
     });
 
     client.current.activate();
+  };
+
+  const handleRefetch = () => {
+    fetch();
+    chatLogRefetch();
   };
 
   const handleCloseAndBack = () => {
@@ -198,10 +201,26 @@ const ChatDetail = ({navigation, productId, chatRoomId}) => {
     return () => client.current.deactivate();
   }, []);
 
+  useEffect(() => {
+    if (chatLogData) {
+      setTransformChatData(
+        chatLogData.map(message => ({
+          _id: message._id,
+          text: message.message,
+          createdAt: convertDate(message.sendTime),
+          user: {
+            _id: message.sender,
+            name: message.senderName,
+          },
+        })),
+      );
+    }
+  }, [chatLogData]);
+
   if (data?.code === 404)
     return <DataErrorModal handlePress={handleCloseAndBack} />;
-  if (isLoading) return <Fallback />;
-  if (error) return <ErrorModal handlePress={refetch} />;
+  if (isLoading || chatLogIsLoading) return <Fallback />;
+  if (error || chatLogError) return <ErrorModal handlePress={handleRefetch} />;
 
   return (
     <GestureHandlerRootView style={{flex: 1}}>
@@ -213,7 +232,7 @@ const ChatDetail = ({navigation, productId, chatRoomId}) => {
           />
           <ChatProductInfo data={data?.result} />
           <GiftedChat
-            messages={transformedData}
+            messages={transformChatData}
             onSend={newMessage => handleSend(newMessage)}
             placeholder="메시지를 입력해주세요..."
             user={{_id: 1}}
