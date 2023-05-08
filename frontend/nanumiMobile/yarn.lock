@@ -1607,10 +1607,10 @@
     opencollective-postinstall "^2.0.1"
     superstruct "^0.6.2"
 
-"@react-native-firebase/firestore@^17.4.3":
+"@react-native-firebase/messaging@^17.4.3":
   version "17.4.3"
-  resolved "https://registry.npmjs.org/@react-native-firebase/firestore/-/firestore-17.4.3.tgz"
-  integrity sha512-tN9x2n0lkY2jQcV+xWQym7woMzTzqX/eHTngKgLgOG+wtjxlCNgSQwOPqnrFL+TqHuSUxKuyJm4NSy9/mXOpig==
+  resolved "https://registry.npmjs.org/@react-native-firebase/messaging/-/messaging-17.4.3.tgz"
+  integrity sha512-geZsrfU4nlWYWNz7ES0IbUNvK3j0/1wGbWj6V1ae7LJMXfuD21+dynb+VxwWhQTwlsr8IkpsIZDg1VIsL1rs6g==
 
 "@react-native/assets@1.0.0":
   version "1.0.0"
