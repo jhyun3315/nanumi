@@ -51,15 +51,20 @@ public class UserService {
 
         User user = userRepository.findByEmail(userID).orElseThrow(() -> new CustomException(NOT_FOUND_USER));
         String originPassword = user.getPassword();
+        UserInfo userInfo =userInfoRepository.findById(user.getId()).orElseThrow(() -> new CustomException(NOT_FOUND_USER_INFO));
 
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
         // 입력받은 비밀번호와 저장된 비밀번호 비교
-        if(encoder.matches(userPassword, originPassword)){
-            return new UserLoginResDTO(user);
+        if(encoder.matches(userLoginDTO.getPassword(), user.getPassword())){
+
+            if(userInfo.getFcmToken()==null) {
+                userInfo.setFcmToken(userLoginDTO.getFcmToken());
+            }
         }else{
             throw new CustomException(NOT_MATCHED_PASSWORD);
         }
+        return new UserLoginResDTO(user);
     }
 
     public void join(UserJoinDTO userJoinDTO) {

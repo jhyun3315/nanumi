@@ -4,6 +4,7 @@ import lombok.*;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
@@ -20,6 +21,8 @@ public class ChatRoomEntity {
 
     @Id
     private ObjectId _id;
+
+    private String userEmail;
     private long chatroomSeq;
     private long[] userList;
     private long opponentId;

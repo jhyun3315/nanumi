@@ -90,6 +90,7 @@ public class ChatRoomService {
             chatRoomInfoDTO.setOpponentNickname(opponentNickname);
             chatRoomInfoDTO.setOpponentProfileImage(opponentProfileImage);
             chatRoomInfoDTO.setProductId(chatRoomEntity.getProductId());
+            chatRoomInfoDTO.setOpponentId(chatRoomEntity.getOpponentId());
             if (lastMessage != null) {
                 chatRoomInfoDTO.setLastMessage(lastMessage.getMessage());
                 //chatRoomInfoDTO.setLastMessageTime(LocalDateTime.parse(lastMessage.getSendTime()));
