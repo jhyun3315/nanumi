@@ -29,7 +29,7 @@ public interface ProductRepository extends JpaRepository<Product,Long> {
     @Query(value = "select p " +
             "from Product p " +
             "where p.isDeleted = false and p.isClosed = false and p.isMatched = false and p.address.id = :addressId and p.category.id = :categoryId")
-    Page<ProductAllDTO> findAllCategoryProuduct(Long addressId, Long categoryId, Pageable pageable);
+    Page<ProductAllDTO> findAllCategoryProduct(Long addressId, Long categoryId, Pageable pageable);
 
     @Query(value = "select count(p) " +
             "from Product p " +
