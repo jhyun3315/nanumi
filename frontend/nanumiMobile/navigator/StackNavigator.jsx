@@ -12,7 +12,6 @@ import MatchingProductScreen from '../screens/MatchingProductScreen';
 import DivideProductScreen from '../screens/DivideProductScreen';
 import MapUpdateScreen from '../screens/MapUpdateScreen';
 import ReportScreen from '../screens/ReportScreen';
-import LocationPickerScreen from '../screens/LocationPickerScreen';
 import ReviewScreen from '../screens/ReviewScreen';
 import BottomTabs from './BottomTabs';
 import ProfileUpdateScreen from '../screens/ProfileUpdateScreen';
@@ -74,14 +73,7 @@ const StackNavigator = () => {
             animation: 'slide_from_bottom',
           }}
         />
-        <Stack.Screen
-          name="LocationPicker"
-          component={LocationPickerScreen}
-          options={{
-            presentation: 'modal',
-            animation: 'slide_from_bottom',
-          }}
-        />
+
         <Stack.Screen
           name="PostUpdateForm"
           component={PostUpdateFormScreen}

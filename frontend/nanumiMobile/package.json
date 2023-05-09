@@ -13,6 +13,8 @@
     "@baronha/react-native-multiple-image-picker": "^1.0.0",
     "@gorhom/bottom-sheet": "^4",
     "@react-native-async-storage/async-storage": "^1.18.1",
+    "@react-native-firebase/app": "^17.4.3",
+    "@react-native-firebase/messaging": "^17.4.3",
     "@react-navigation/bottom-tabs": "^6.5.7",
     "@react-navigation/native": "^6.1.6",
     "@react-navigation/native-stack": "^6.9.12",

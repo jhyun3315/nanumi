@@ -16,28 +16,15 @@ export const ChatOptions = ({
     }, 300);
   };
 
-  const handleCloseAndNavigateLocationPickerModal = () => {
-    handleCloseBottomModal();
-    setTimeout(() => {
-      navigation.navigate('LocationPicker');
-    }, 300);
-  };
-
   return (
     <View style={styles.optionContainer}>
       <Pressable
         style={styles.option}
-        onPress={handleCloseAndNavigateLocationPickerModal}>
-        <Text style={styles.optionText}>거래장소선택</Text>
-      </Pressable>
-
-      <Pressable style={styles.option} onPress={handleOpenBlockUserModal}>
-        <Text style={styles.optionText}>차단하기</Text>
-      </Pressable>
-      <Pressable
-        style={styles.option}
         onPress={handleOpenTransactionCompleteModal}>
         <Text style={styles.optionText}>거래완료</Text>
+      </Pressable>
+      <Pressable style={styles.option} onPress={handleOpenBlockUserModal}>
+        <Text style={styles.optionText}>차단하기</Text>
       </Pressable>
       <Pressable
         style={styles.option}
