@@ -71,7 +71,7 @@ const ProductList = ({isSearch}) => {
   }, [data, error, isLoading, hasNextPage]);
 
   const content =
-    productList?.data?.pages?.flatMap(page => page.result.content) ?? [];
+    productList?.data?.pages?.flatMap(page => page?.result?.content) ?? [];
 
   if (error) return <ErrorModal handlePress={refetch} />;
   if (isLoading) return <Fallback />;
@@ -82,7 +82,7 @@ const ProductList = ({isSearch}) => {
         <FlatList
           data={content}
           renderItem={({item}) => <ProductCard data={item} />}
-          keyExtractor={item => item.id.toString()}
+          keyExtractor={item => item?.id.toString()}
           showsVerticalScrollIndicator={false}
           ListHeaderComponent={isSearch ? '' : <Header />}
           contentContainerStyle={styles.contentContainerStyle}

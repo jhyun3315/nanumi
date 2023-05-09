@@ -8,6 +8,7 @@ export const COLORS = {
   disable: '#D1BEFB',
   lightBlue: '#eff6ff',
   blue: '#1F41BB',
+  opacityBlue: '#9AA7D5',
   lightGray: '#F0F0F0',
   red: '#F87171',
   yellow: '#E0C134',

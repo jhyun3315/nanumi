@@ -12,7 +12,7 @@ const Login = () => {
   const navigation = useNavigation();
   const setUser = useSetRecoilState(userState);
   const [userInfo, setUserInfo] = useState({
-    username: '',
+    email: '',
     password: '',
   });
 
@@ -25,7 +25,7 @@ const Login = () => {
 
   const handleLogin = async () => {
     const data = {
-      id: userInfo.username,
+      email: userInfo.email,
       password: userInfo.password,
     };
     const response = await requestLogin(data);
@@ -70,8 +70,8 @@ const Login = () => {
         <View style={{marginVertical: SIZES.base * 3}}>
           <UserTextInput
             placeholder="이메일"
-            value={userInfo?.username}
-            onChangeText={value => handleInputChange('username', value)}
+            value={userInfo?.email}
+            onChangeText={value => handleInputChange('email', value)}
           />
           <UserTextInput
             placeholder="비밀번호"

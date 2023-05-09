@@ -41,7 +41,7 @@ export const RectButton = ({
     <Pressable
       style={{
         minWidth: minWidth,
-        backgroundColor: isDisable ? COLORS.disable : COLORS.violet,
+        backgroundColor: isDisable ? COLORS.opacityBlue : COLORS.blue,
         borderRadius: SIZES.extraLarge,
         padding: SIZES.small,
         ...props,

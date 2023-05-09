@@ -9,6 +9,10 @@ import UserTextInput from './UserTextInput';
 
 const Register = () => {
   const navigation = useNavigation();
+  const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
+  const [confirmPasswordErrorMessage, setConfirmPasswordErrorMessage] =
+    useState('');
+  const [emailErrorMessage, setEmailErrorMessage] = useState('');
   const [userInfo, setUserInfo] = useState({
     email: '',
     validCode: '',
@@ -21,14 +25,35 @@ const Register = () => {
   const [isNextButtonDisable, setIsNextButtonDisable] = useState(true);
 
   const handleInputChange = (key, value) => {
-    console.log(userInfo);
     setUserInfo({
       ...userInfo,
       [key]: value,
     });
   };
 
+  const handleValidateEmail = email => {
+    const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+    return emailRegex.test(email);
+  };
+
   useEffect(() => {
+    if (!handleValidateEmail(userInfo.email)) {
+      setEmailErrorMessage('올바른 이메일 주소를 입력해주세요.');
+    } else {
+      setEmailErrorMessage('');
+    }
+
+    if (
+      userInfo.password.length > 0 &&
+      (userInfo.password.length < 4 || userInfo.password.length > 16)
+    )
+      setPasswordErrorMessage('비밀번호는 4자리 이상 16자리 이하여야 합니다.');
+    else setPasswordErrorMessage('');
+
+    if (userInfo.password !== userInfo.confirmPassword)
+      setConfirmPasswordErrorMessage('비밀번호가 일치하지 않습니다.');
+    else setConfirmPasswordErrorMessage('');
+
     // 유효성 검사를 통해 다음 버튼 활성화 여부를 결정
     if (
       userInfo.validCode === validCode &&
@@ -41,10 +66,11 @@ const Register = () => {
       setIsNextButtonDisable(true);
     }
   }, [userInfo, validCode]);
-  console.log(validCode);
+
   const checkEmailDuplicate = async email => {
     try {
       const response = await requestEmailDuplicateCheck(email);
+      console.log(response);
       if (response.code === 200) {
         setValidCode(response.result.code);
       } else if (response.code === 400) {
@@ -91,10 +117,19 @@ const Register = () => {
             <RectButton
               minWidth={48}
               borderRadius={3}
+              isDisable={!handleValidateEmail(userInfo.email)}
               handlePress={() => checkEmailDuplicate(userInfo.email)}>
               중복확인
             </RectButton>
           </View>
+          <Text
+            style={{
+              fontFamily: FONTS.medium,
+              color: COLORS.red,
+              fontSize: SIZES.font / 1.4,
+            }}>
+            {emailErrorMessage}
+          </Text>
           {validCode !== '' && (
             <UserTextInput
               placeholder="인증코드"
@@ -113,12 +148,28 @@ const Register = () => {
             value={userInfo.password}
             onChangeText={value => handleInputChange('password', value)}
           />
+          <Text
+            style={{
+              fontFamily: FONTS.medium,
+              color: COLORS.red,
+              fontSize: SIZES.font / 1.4,
+            }}>
+            {passwordErrorMessage}
+          </Text>
           <UserTextInput
             placeholder="비밀번호 확인"
             secureTextEntry={true}
             value={userInfo.confirmPassword}
             onChangeText={value => handleInputChange('confirmPassword', value)}
           />
+          <Text
+            style={{
+              fontFamily: FONTS.medium,
+              color: COLORS.red,
+              fontSize: SIZES.font / 1.4,
+            }}>
+            {confirmPasswordErrorMessage}
+          </Text>
         </View>
 
         <Pressable
@@ -155,17 +206,7 @@ const Register = () => {
           style={{
             padding: SIZES.base,
           }}
-          onPress={() => navigation.navigate('Login')}>
-          <Text
-            style={{
-              fontFamily: FONTS.bold,
-              color: COLORS.primary,
-              textAlign: 'center',
-              fontSize: SIZES.small,
-            }}>
-            이미 계정이 있으신가요?
-          </Text>
-        </Pressable>
+          onPress={() => navigation.navigate('Login')}></Pressable>
       </View>
     </SafeAreaView>
   );
