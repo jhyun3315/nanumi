@@ -1,12 +1,10 @@
 package com.ssafy.nanumi.db.entity;
 
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.stereotype.Service;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -66,15 +64,20 @@ public class UserInfo {
     @Column(name = "stop_date", columnDefinition = "TIMESTAMP", nullable = true)
     private LocalDateTime stopDate;
 
+    @Setter
     @Column(name = "refresh_token", columnDefinition = "VARCHAR(255)")
     private String refreshToken;
+
+    @Setter
+    @Column(name = "fcm_token", nullable = true, columnDefinition = "VARCHAR(255)")
+    private String fcmToken;
 
     @OneToOne(mappedBy = "userInfo")
     @JoinColumn(name = "user_id")
     private User user;
 
     @Builder
-    public UserInfo(long id, int starTotal, int starCount, int ratingTotal, int ratingCount, String tier, double temperature, long visitCount, int giveCount, int givenCount, int reportedTotalCount, LocalDateTime stopDate, String refreshToken, User user) {
+    public UserInfo(long id, int starTotal, int starCount, int ratingTotal, int ratingCount, String tier, double temperature, long visitCount, int giveCount, int givenCount, int reportedTotalCount, LocalDateTime stopDate, String refreshToken, String fcmToken, User user) {
         this.id = id;
         this.starTotal = starTotal;
         this.starCount = starCount;
@@ -82,12 +85,13 @@ public class UserInfo {
         this.ratingCount = ratingCount;
         this.tier = tier;
         this.temperature = temperature;
-        this.visitCount = visitCount;
-        this.giveCount = giveCount;
-        this.givenCount = givenCount;
-        this.reportedTotalCount = reportedTotalCount;
+        this.visitCount = visitCount; // 방문횟수
+        this.giveCount = giveCount; // 나눔
+        this.givenCount = givenCount; // 나눔받음
+        this.reportedTotalCount = reportedTotalCount; // 신고당한 횟수
         this.stopDate = stopDate;
         this.refreshToken = refreshToken;
+        this.fcmToken = fcmToken;
         this.user = user;
     }
 

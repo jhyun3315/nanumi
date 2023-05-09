@@ -7,12 +7,12 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public class UserLoginDTO {
-    private String id;
+    private String email;
     private String password;
 
     @Builder
-    public UserLoginDTO(String id, String password) {
-        this.id = id;
+    public UserLoginDTO(String email, String password) {
+        this.email = email;
         this.password = password;
     }
 }

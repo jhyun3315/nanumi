@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 public enum CustomExceptionStatus {
 
     /* common error */
+    REQUEST_LOGIN(false, 400, "로그인을 다시 하세요."),
     REQUEST_ERROR(false, 400, "잘못된 요청입니다."),
     RESPONSE_EMAIL_EXISTED(false, 400,"이미 존재하는 이메일 입니다."),
     NOT_MATCHED_PASSWORD(false, 400,"비밀번호가 올바르지 않습니다."),
