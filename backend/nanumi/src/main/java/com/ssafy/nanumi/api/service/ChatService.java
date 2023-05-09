@@ -1,5 +1,7 @@
 package com.ssafy.nanumi.api.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.nanumi.common.ChatMessageDTO;
 import com.ssafy.nanumi.config.response.CustomResponse;
 import com.ssafy.nanumi.config.response.ResponseService;
@@ -56,8 +58,19 @@ public class ChatService {
                 .build();
         chatRepository.save(chatEntity);
 
+        // messageTemplate.convertAndSend("/sub/chat/room/" + DTO.getRoomId(), chatEntity);
         // 채팅방의 구독자들에게 채팅 메시지를 전송한다.
-        messageTemplate.convertAndSend("/sub/chat/room/" + DTO.getRoomId(), chatEntity);
+        ObjectMapper objectMapper = new ObjectMapper();
+        String chatEntityJson = null;
+        try {
+            chatEntityJson = objectMapper.writeValueAsString(chatEntity);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return;
+        }
+
+        messageTemplate.convertAndSend("/sub/chat/room/" + DTO.getRoomId(), chatEntityJson);
+
     }
 
 

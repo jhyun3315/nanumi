@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.ssafy.nanumi.config.response.exception.CustomExceptionStatus.*;
 
@@ -31,13 +32,16 @@ public class MatchService {
         Product product = productRepository.findById(productId).orElseThrow(() -> new CustomException(NOT_FOUND_PRODUCT));
         if(product.getUser().getId() != user.getId()) throw new CustomException(INVALID_USER);
 
-        ArrayList<MatchInterface> lst = matchRepository.getMatchListByProduct(product.getId());
-        List<MatchResDTO> result = new ArrayList<>();
-
-        for (MatchInterface match : lst) {
-            System.out.println(match.getUserId());
-            result.add(new MatchResDTO(match.getUserId(), match.getUserNickName(), match.getProfileUrl(), match.getProductId(), match.getMatchId(), match.getCreateDate()));
-        }
-        return result;
+        ArrayList<MatchInterface> matches = matchRepository.getMatchListByProduct(product.getId());
+        return matches.stream()
+                .map(match -> new MatchResDTO(
+                        match.getUserId(),
+                        match.getUserNickName(),
+                        match.getProfileUrl(),
+                        match.getProductId(),
+                        match.getMatchId(),
+                        match.getCreateDate()
+                ))
+                .collect(Collectors.toList());
     }
 }
