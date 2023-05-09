@@ -14,4 +14,6 @@ public class LocationDTO {
     private double longitude;
     private double targetLatitude;
     private double targetLongitude;
+    private int chatRoomSeq;
+    private int opponentId;
 }

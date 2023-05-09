@@ -45,6 +45,8 @@
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-starter-data-elasticsearch:2.6.2" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-starter-data-mongodb:2.7.10" level="project" />
     <orderEntry type="library" name="Gradle: com.google.firebase:firebase-admin:9.1.1" level="project" />
+    <orderEntry type="library" name="Gradle: com.squareup.retrofit2:converter-gson:2.9.0" level="project" />
+    <orderEntry type="library" name="Gradle: com.squareup.retrofit2:retrofit:2.9.0" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-starter:2.7.10" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.security:spring-security-config:5.7.7" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.security:spring-security-web:5.7.7" level="project" />
@@ -94,6 +96,8 @@
     <orderEntry type="library" name="Gradle: io.netty:netty-codec-http:4.1.90.Final" level="project" />
     <orderEntry type="library" name="Gradle: io.netty:netty-handler:4.1.90.Final" level="project" />
     <orderEntry type="library" name="Gradle: io.netty:netty-transport:4.1.90.Final" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.code.gson:gson:2.9.1" level="project" />
+    <orderEntry type="library" name="Gradle: com.squareup.okhttp3:okhttp:4.9.3" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-autoconfigure:2.7.10" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot:2.7.10" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-starter-logging:2.7.10" level="project" />
@@ -165,7 +169,6 @@
     <orderEntry type="library" name="Gradle: com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava" level="project" />
     <orderEntry type="library" name="Gradle: com.google.http-client:google-http-client-jackson2:1.42.2" level="project" />
     <orderEntry type="library" name="Gradle: com.google.apis:google-api-services-storage:v1-rev20220705-2.0.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.google.code.gson:gson:2.9.1" level="project" />
     <orderEntry type="library" name="Gradle: com.google.cloud:google-cloud-core:2.8.22" level="project" />
     <orderEntry type="library" name="Gradle: com.google.cloud:google-cloud-core-http:2.8.22" level="project" />
     <orderEntry type="library" name="Gradle: com.google.http-client:google-http-client-appengine:1.42.2" level="project" />
@@ -200,6 +203,8 @@
     <orderEntry type="library" name="Gradle: io.netty:netty-buffer:4.1.90.Final" level="project" />
     <orderEntry type="library" name="Gradle: io.netty:netty-transport-native-unix-common:4.1.90.Final" level="project" />
     <orderEntry type="library" name="Gradle: io.netty:netty-resolver:4.1.90.Final" level="project" />
+    <orderEntry type="library" name="Gradle: com.squareup.okio:okio:2.8.0" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.6.21" level="project" />
     <orderEntry type="library" name="Gradle: ch.qos.logback:logback-classic:1.2.11" level="project" />
     <orderEntry type="library" name="Gradle: org.apache.logging.log4j:log4j-to-slf4j:2.17.2" level="project" />
     <orderEntry type="library" name="Gradle: org.slf4j:jul-to-slf4j:1.7.36" level="project" />
@@ -223,6 +228,8 @@
     <orderEntry type="library" name="Gradle: jakarta.json:jakarta.json-api:1.1.6" level="project" />
     <orderEntry type="library" name="Gradle: org.apache.httpcomponents:httpasyncclient:4.1.5" level="project" />
     <orderEntry type="library" name="Gradle: org.apache.httpcomponents:httpcore-nio:4.4.16" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-common:1.6.21" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains:annotations:13.0" level="project" />
     <orderEntry type="library" name="Gradle: ch.qos.logback:logback-core:1.2.11" level="project" />
     <orderEntry type="library" name="Gradle: org.apache.logging.log4j:log4j-api:2.17.2" level="project" />
     <orderEntry type="library" name="Gradle: org.elasticsearch:elasticsearch-x-content:7.17.9" level="project" />

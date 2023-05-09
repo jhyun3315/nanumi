@@ -4,7 +4,9 @@ import com.ssafy.nanumi.common.LocationDTO;
 import com.ssafy.nanumi.api.service.PushNotificationService;
 import com.ssafy.nanumi.db.entity.ChatRoomEntity;
 import com.ssafy.nanumi.db.entity.User;
+import com.ssafy.nanumi.db.entity.UserInfo;
 import com.ssafy.nanumi.db.repository.ChatRoomRepository;
+import com.ssafy.nanumi.db.repository.UserInfoRepository;
 import com.ssafy.nanumi.db.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -18,39 +20,21 @@ import java.util.Optional;
 @Controller
 public class GpsSectorController {
     // 상대방의 FCM 토큰을 가져오기 위해 ChatRoomRepository를 주입한다.
-    private final UserRepository userRepository;
-    private final ChatRoomRepository chatRoomRepository;
+    private final UserInfoRepository userInfoRepository;
     private final PushNotificationService pushNotificationService;
 
 
     @MessageMapping("/location")
-    public void handleLocation(LocationDTO locationDTO, String userEmail) {
+    public void handleLocation(LocationDTO locationDTO) {
         if (isWithinTargetDistance(locationDTO.getLatitude(), locationDTO.getLongitude(), locationDTO.getTargetLatitude(), locationDTO.getTargetLongitude())) {
             // 상대방에게 푸시 알림을 보내는 로직
-            long opponentId = getOpponentId(userEmail); // 사용자의 이메일로 상대방의 opponentId를 가져옵니다.
-            String opponentToken = getTokenByUserId(opponentId); // 상대방의 FCM 토큰을 가져오는 로직
-            pushNotificationService.sendPushNotification(opponentToken, "목표 지점 도착", "상대방이 목표 지점에 도착했습니다.");
-        }
-    }
+            long opponentId = locationDTO.getOpponentId(); // 사용자의 이메일로 상대방의 opponentId를 가져옵니다.
+            String fcmToken = userInfoRepository.getTokenByUserId(opponentId); // 상대방의 FCM 토큰을 가져오는 로직
 
+            System.out.println("opponentId : " + opponentId);
+            System.out.println("fcmToken : " + fcmToken);
 
-    private long getOpponentId(String userEmail) {
-        Optional<User> user = userRepository.findByEmail(userEmail);
-        if (user.isPresent()) {
-            List<ChatRoomEntity> chatRoomEntities = chatRoomRepository.findAllByUserListContaining(user.get().getId());
-            if (!chatRoomEntities.isEmpty()) {
-                return chatRoomEntities.get(0).getOpponentId();
-            }
-        }
-        return 0;
-    }
-    private String getTokenByUserId(long userId) {
-        Optional<User> userEntity = userRepository.findById(userId);
-        if (userEntity.isPresent()) {
-            // 이 예제에서는 상황에 맞게 구현해야 합니다.
-            return userEntity.get().getFcmToken();
-        } else {
-            return "user FCM token이 없다.";
+            pushNotificationService.sendPushNotification(fcmToken, "목표 지점 도착", "상대방이 목표 지점에 도착했습니다.");
         }
     }
 
