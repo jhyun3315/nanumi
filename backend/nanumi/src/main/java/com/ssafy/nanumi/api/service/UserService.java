@@ -2,16 +2,16 @@ package com.ssafy.nanumi.api.service;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.ssafy.nanumi.api.request.TokenInfoDTO;
 import com.ssafy.nanumi.api.request.UserJoinDTO;
 import com.ssafy.nanumi.api.request.UserLoginDTO;
 import com.ssafy.nanumi.api.response.*;
 import com.ssafy.nanumi.common.Image;
 import com.ssafy.nanumi.common.provider.Provider;
+import com.ssafy.nanumi.config.entity.BaseTimeEntity;
+import com.ssafy.nanumi.config.jwt.JwtProvider;
 import com.ssafy.nanumi.config.response.exception.CustomException;
-import com.ssafy.nanumi.db.entity.Address;
-import com.ssafy.nanumi.db.entity.LoginProvider;
-import com.ssafy.nanumi.db.entity.User;
-import com.ssafy.nanumi.db.entity.UserInfo;
+import com.ssafy.nanumi.db.entity.*;
 import com.ssafy.nanumi.db.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +25,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.mail.MessagingException;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.Date;
 import java.util.UUID;
 
 import static com.ssafy.nanumi.config.response.exception.CustomExceptionStatus.*;
@@ -40,31 +43,29 @@ public class UserService {
     private final ProductRepository productRepository;
     private final LoginProviderRepository loginProviderRepository;
     private final EmailService emailService;
+    private final JwtProvider jwtProvider;
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
     private final AmazonS3 amazonS3;
 
 
     public UserLoginResDTO login(UserLoginDTO userLoginDTO){
-        String userID = userLoginDTO.getId();
-        String userPassword = userLoginDTO.getPassword();
+        User user = userRepository.findByEmail(userLoginDTO.getEmail()).orElseThrow(() -> new CustomException(NOT_FOUND_USER));
+        // Access Token
+        String AT = jwtProvider.createAccessToken(user.getEmail(), user.getTiers());
+        // Refresh Token
+        String RT = jwtProvider.createRefreshToken(user.getEmail(), user.getTiers());
 
-        User user = userRepository.findByEmail(userID).orElseThrow(() -> new CustomException(NOT_FOUND_USER));
-        String originPassword = user.getPassword();
         UserInfo userInfo =userInfoRepository.findById(user.getId()).orElseThrow(() -> new CustomException(NOT_FOUND_USER_INFO));
+        userInfo.setRefreshToken(RT);
 
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-
         // 입력받은 비밀번호와 저장된 비밀번호 비교
         if(encoder.matches(userLoginDTO.getPassword(), user.getPassword())){
-
-            if(userInfo.getFcmToken()==null) {
-                userInfo.setFcmToken(userLoginDTO.getFcmToken());
-            }
+            return new UserLoginResDTO(user,AT, RT);
         }else{
             throw new CustomException(NOT_MATCHED_PASSWORD);
         }
-        return new UserLoginResDTO(user);
     }
 
     public void join(UserJoinDTO userJoinDTO) {
@@ -95,6 +96,9 @@ public class UserService {
                         .address(addressRepository.getById(userJoinDTO.getAddressId()))
                         .userInfo(userInfoSaved)
                         .build();
+
+                // Security 일반사용자 권한 추가
+                user.setRoles(Collections.singletonList(Authority.builder().name("ROLE_브론즈").build()));
 
                 userRepository.save(user);
             }
@@ -198,5 +202,8 @@ public class UserService {
     }
     public Page<ProductAllDTO> getGivenProduct(User user, PageRequest pageRequest){
         return userRepository.getAllGivenProduct(user.getId(),pageRequest);
+    }
+    public TokenInfoResDTO isRTValid(TokenInfoDTO request) throws Exception {
+        return jwtProvider.validateRefreshToken(request);
     }
 }
