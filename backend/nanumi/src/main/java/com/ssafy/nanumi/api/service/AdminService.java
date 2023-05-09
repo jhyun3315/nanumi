@@ -92,7 +92,9 @@ public class AdminService {
 
         // 현재 시간에서 stopDate만큼 더한 날짜
         LocalDateTime banDate = LocalDateTime.now();
+        log.info("banDate1 = " + banDate);
         banDate = banDate.plusDays(userBanDTO.getStopDate());
+        log.info("banDate2 = " + banDate);
 
         // 신고 누적 횟수, 제재 기간 갱신
         userInfo.updateBanUser(banDate);
