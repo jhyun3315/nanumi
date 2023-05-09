@@ -1,11 +1,10 @@
 package com.ssafy.nanumi.api.controller;
 
-import com.ssafy.nanumi.api.request.ProductInsertDTO;
 import com.ssafy.nanumi.api.response.MatchSuccessDto;
 import com.ssafy.nanumi.api.response.ProductAllDTO;
 import com.ssafy.nanumi.api.response.ProductDetailDTO;
-import com.ssafy.nanumi.api.response.ProductSearchResDTO;
 import com.ssafy.nanumi.api.service.ProductService;
+import com.ssafy.nanumi.common.SearchPageReq;
 import com.ssafy.nanumi.config.response.CustomDataResponse;
 import com.ssafy.nanumi.config.response.CustomResponse;
 import com.ssafy.nanumi.config.response.ResponseService;
@@ -16,7 +15,7 @@ import com.ssafy.nanumi.db.repository.UserRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.MediaType;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -37,21 +36,34 @@ public class ProductController {
     /* 검색어가 없는 경우 전체 조회 */
     @GetMapping("/search/{page}/{user-id}")
     public CustomDataResponse<Page<ProductAllDTO>> search(@PathVariable("page")int page, @PathVariable("user-id") long userId){
-        PageRequest pageRequest = PageRequest.of(page, 6);
+        SearchPageReq searchPageReq = new SearchPageReq(page);
+        PageRequest pageRequest = PageRequest.of(searchPageReq.getPageIndex(),
+                searchPageReq.getPageSizeForProduct(),
+                Sort.by(searchPageReq.getSortStdForProduct()).descending()
+        );
+
         return responseService.getDataResponse(productService.findProductAll(userId, pageRequest), RESPONSE_SUCCESS);
     }
 
     /* 제목으로 상품 검색 */
     @GetMapping("/search/{words}/{page}/{user-id}")
     public CustomDataResponse<Page<ProductAllDTO>> search(@PathVariable ("words") String words, @PathVariable("page")int page, @PathVariable("user-id") long userId){
-        PageRequest pageRequest = PageRequest.of(page, 6);
+        SearchPageReq searchPageReq = new SearchPageReq(page);
+        PageRequest pageRequest = PageRequest.of(searchPageReq.getPageIndex(),
+                searchPageReq.getPageSizeForProduct(),
+                Sort.by(searchPageReq.getSortStdForProduct()).descending()
+        );
         return responseService.getDataResponse(productService.searchProductByWords(userId, words, pageRequest), RESPONSE_SUCCESS);
     }
 
     /* 상품 전체 조회 */
     @GetMapping("/{user-id}")
-    public CustomDataResponse<Page<ProductAllDTO>> getProductAll(@PathVariable("user-id") long userId, @RequestParam("page") Integer page){
-        PageRequest pageRequest = PageRequest.of(page, 6);
+    public CustomDataResponse<Page<ProductAllDTO>> getProductAll(@PathVariable("user-id") long userId, @RequestParam("page") int page){
+        SearchPageReq searchPageReq = new SearchPageReq(page);
+        PageRequest pageRequest = PageRequest.of(searchPageReq.getPageIndex(),
+                searchPageReq.getPageSizeForProduct(),
+                Sort.by(searchPageReq.getSortStdForProduct()).descending()
+        );
         return responseService.getDataResponse(productService.findProductAll(userId, pageRequest), RESPONSE_SUCCESS);
     }
 
@@ -64,7 +76,11 @@ public class ProductController {
     /* 카테고리별 조회 */
     @GetMapping("/categories/{category-id}/{user-id}")
     public CustomDataResponse<Page<ProductAllDTO>> getCateProductAll(@PathVariable("user-id") long userId, @PathVariable("category-id") long categoryId, @RequestParam("page") Integer page){
-        PageRequest pageRequest = PageRequest.of(page, 6);
+        SearchPageReq searchPageReq = new SearchPageReq(page);
+        PageRequest pageRequest = PageRequest.of(searchPageReq.getPageIndex(),
+                searchPageReq.getPageSizeForProduct(),
+                Sort.by(searchPageReq.getSortStdForProduct()).descending()
+        );
         return responseService.getDataResponse(productService.findCateProductAll(categoryId, userId, pageRequest), RESPONSE_SUCCESS);
     }
 
