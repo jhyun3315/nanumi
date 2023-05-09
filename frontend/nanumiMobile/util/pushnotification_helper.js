@@ -19,6 +19,7 @@ async function getFCMToken() {
   if (!fcmtoken) {
     try {
       const fcmtoken = await messaging().getToken();
+      console.log(fcmtoken, '새로발급받은');
       if (fcmtoken) {
         await AsynStorage.setItem('fcmtoken', fcmtoken);
       } else {

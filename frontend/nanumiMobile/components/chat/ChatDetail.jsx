@@ -46,6 +46,8 @@ const ChatDetail = ({navigation, productId, chatRoomId}) => {
     () => requestGetDetailProduct(productId),
   );
 
+  // watchposition으로 위도경도 변할때마다 백엔드에쪽에 위도경도 보낸다 이 때 return값을 확인.
+
   const {showModal, hideModal} = useModal();
   const [user] = useRecoilState(userState);
   const client = useRef(null);
@@ -104,6 +106,8 @@ const ChatDetail = ({navigation, productId, chatRoomId}) => {
     refetch();
     chatLogRefetch();
   };
+
+  const handleStartTransaction = () => {};
 
   const handleCloseAndBack = () => {
     hideModal();
@@ -221,47 +225,50 @@ const ChatDetail = ({navigation, productId, chatRoomId}) => {
   if (error || chatLogError) return <ErrorModal handlePress={handleRefetch} />;
 
   return (
-    <GestureHandlerRootView style={{flex: 1}}>
-      <BottomSheetModalProvider>
-        <SafeAreaView style={{flex: 1, backgroundColor: COLORS.white}}>
-          <ChatHeader
-            navigation={navigation}
-            handlePresentModalPress={handlePresentModalPress}
-          />
-          <ChatProductInfo data={data?.result} />
-          <GiftedChat
-            messages={transformChatData}
-            onSend={newMessage => handleSend(newMessage)}
-            placeholder="메시지를 입력해주세요..."
-            user={{_id: user.userId}}
-            renderBubble={renderBubble}
-            renderSend={renderSend}
-            scrollToBottom
-            renderLoading={renderLoading}
-          />
-        </SafeAreaView>
+    <>
+      <GestureHandlerRootView style={{flex: 1}}>
         <GlobalModal />
-        <BottomSheetModal
-          isBackDropDismisByPress={true}
-          ref={bottomSheetModalRef}
-          index={0}
-          snapPoints={snapPoints}
-          backdropComponent={renderBackDrop}
-          animationConfigs={{
-            duration: 200,
-          }}>
-          <ChatOptions
-            navigation={navigation}
-            handleCloseBottomModal={handleCloseBottomModal}
-            handleOpenBlockUserModal={handleOpenBlockUserModal}
-            handleOpenChatExitModal={handleOpenChatExitModal}
-            handleOpenTransactionCompleteModal={
-              handleOpenTransactionCompleteModal
-            }
-          />
-        </BottomSheetModal>
-      </BottomSheetModalProvider>
-    </GestureHandlerRootView>
+        <BottomSheetModalProvider>
+          <SafeAreaView style={{flex: 1, backgroundColor: COLORS.white}}>
+            <ChatHeader
+              navigation={navigation}
+              handlePresentModalPress={handlePresentModalPress}
+            />
+            <ChatProductInfo data={data?.result} />
+            <GiftedChat
+              messages={transformChatData}
+              onSend={newMessage => handleSend(newMessage)}
+              placeholder="메시지를 입력해주세요..."
+              user={{_id: user.userId}}
+              renderBubble={renderBubble}
+              renderSend={renderSend}
+              scrollToBottom
+              renderLoading={renderLoading}
+            />
+          </SafeAreaView>
+
+          <BottomSheetModal
+            isBackDropDismisByPress={true}
+            ref={bottomSheetModalRef}
+            index={0}
+            snapPoints={snapPoints}
+            backdropComponent={renderBackDrop}
+            animationConfigs={{
+              duration: 200,
+            }}>
+            <ChatOptions
+              navigation={navigation}
+              handleCloseBottomModal={handleCloseBottomModal}
+              handleOpenBlockUserModal={handleOpenBlockUserModal}
+              handleOpenChatExitModal={handleOpenChatExitModal}
+              handleOpenTransactionCompleteModal={
+                handleOpenTransactionCompleteModal
+              }
+            />
+          </BottomSheetModal>
+        </BottomSheetModalProvider>
+      </GestureHandlerRootView>
+    </>
   );
 };
 

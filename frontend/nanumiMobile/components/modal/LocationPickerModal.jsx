@@ -1,22 +1,25 @@
 import React, {useCallback} from 'react';
-import {View, Text, SafeAreaView, Dimensions, StyleSheet} from 'react-native';
+import {View, Text, Modal, Dimensions, StyleSheet} from 'react-native';
 import {useLocationPermission} from '../../hooks/useLocationPermission';
-import {BackHeader} from '../../ui/BackHeader';
+import {CloseHeader} from '../../ui/BackHeader';
 import {Fallback} from '../../ui/Fallback';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import {COLORS, FONTS, SHADOWS, SIZES} from '../../constants';
 import {getAddressFromCoords} from '../../api/kakao';
 import {showErrorAlert} from '../../ui/Alert';
 import {RectButton} from '../../ui/Button';
+import {useNavigation} from '@react-navigation/native';
+import {useModal} from '../../hooks/useModal';
 
 const {width, height} = Dimensions.get('window');
 
-const LocationPicker = ({navigation}) => {
-  console.log('렌더링');
+const LocationPickerModal = () => {
+  const navigation = useNavigation();
+  const {modal, hideModal} = useModal();
+
   const {coordinate, setCoordinate, addressName, setAddressName} =
     useLocationPermission();
 
-  console.log('coordintae', coordinate, 'addressName', addressName);
   const handleRegion = useCallback(
     async region => {
       const {address} = await getAddressFromCoords(region);
@@ -48,9 +51,11 @@ const LocationPicker = ({navigation}) => {
     return <Fallback />;
 
   return (
-    <SafeAreaView style={styles.container}>
-      <BackHeader navigation={navigation}>거래장소선택</BackHeader>
-
+    <Modal
+      visible={modal?.modalProps?.visible}
+      style={styles.container}
+      animationType="slide">
+      <CloseHeader handlePress={hideModal}>거래장소선택</CloseHeader>
       <MapView
         provider={PROVIDER_GOOGLE}
         style={styles.mapView}
@@ -71,15 +76,15 @@ const LocationPicker = ({navigation}) => {
           fontSize={SIZES.font}
           {...SHADOWS.dark}
           isDisable={false}
-          handlePress={() => {}}>
-          거래시작
+          handlePress={() => modal?.modalProps?.onConfirm(coordinate)}>
+          장소확정
         </RectButton>
       </View>
-    </SafeAreaView>
+    </Modal>
   );
 };
 
-export default LocationPicker;
+export default LocationPickerModal;
 
 const styles = StyleSheet.create({
   container: {

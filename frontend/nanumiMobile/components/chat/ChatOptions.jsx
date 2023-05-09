@@ -1,6 +1,9 @@
 import React from 'react';
 import {View, Text, StyleSheet, Pressable} from 'react-native';
 import {FONTS, SIZES, COLORS} from '../../constants';
+import {useModal} from '../../hooks/useModal';
+import {useRecoilState} from 'recoil';
+import {transactionLocationState} from '../../state/transactionLocation';
 
 export const ChatOptions = ({
   navigation,
@@ -9,6 +12,11 @@ export const ChatOptions = ({
   handleOpenChatExitModal,
   handleOpenTransactionCompleteModal,
 }) => {
+  const {showModal, hideModal} = useModal();
+  const [transactionLocation, setTransactionLocation] = useRecoilState(
+    transactionLocationState,
+  );
+
   const handleCloseAndNavigateChatOptionsModal = () => {
     handleCloseBottomModal();
     setTimeout(() => {
@@ -16,10 +24,23 @@ export const ChatOptions = ({
     }, 300);
   };
 
+  const handleConfirmLocation = coordinate => {
+    console.log('실행');
+    setTransactionLocation(prev => coordinate);
+    hideModal();
+  };
+
   const handleCloseAndNavigateLocationPickerModal = () => {
     handleCloseBottomModal();
     setTimeout(() => {
-      navigation.navigate('LocationPicker');
+      showModal({
+        modalType: 'LocationPickerModal',
+        modalProps: {
+          visible: true,
+          onConfirm: handleConfirmLocation,
+          oncancel: hideModal,
+        },
+      });
     }, 300);
   };
 
