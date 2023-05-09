@@ -27,6 +27,7 @@ import {requestGetTop20ChatLog} from '../../api/chat';
 import {convertDate} from '../../util/formatDate';
 import {decodeJson} from './../../util/decodeBinaryData';
 import * as StompJs from '@stomp/stompjs';
+import {Client} from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
 import ErrorModal from '../modal/ErrorModal';
 import DataErrorModal from '../modal/DataErrorModal';
@@ -83,17 +84,38 @@ const ChatDetail = ({navigation, productId, chatRoomId}) => {
   };
 
   const connect = () => {
+    // client.current = new Client({
+    //   brokerURL: 'ws://172.30.1.18:8080/ws-stomp',
+
+    //   connectHeaders: {
+    //     Authorization: `Bearer ${user.access_token}`,
+    //   },
+
+    //   debug: str => {
+    //     console.log(new Date(), str);
+    //   },
+
+    //   onConnect: () => {
+    //     console.log('연결됨');
+
+    //     subscribe();
+    //   },
+    // });
     client.current = new StompJs.Client({
-      webSocketFactory: () =>
-        new SockJS(`https://k8b103.p.ssafy.io/api/ws-stomp`),
+      webSocketFactory: () => new SockJS(`http://172.30.1.18:8080/ws-stomp`),
+      // webSocketFactory: () =>
+      //   new SockJS(`https://k8b103.p.ssafy.io/api/ws-stomp`),
       connectHeaders: {
         Authorization: `Bearer ${user.access_token}`,
       },
 
-      beforeConnect: () => {
-        console.log('beforeConnect');
+      debug: str => {
+        console.log(new Date(), str);
       },
 
+      onWebSocketClose: frame => {
+        console.log('frame', frame);
+      },
       onConnect: () => {
         console.log('연결됨');
 
