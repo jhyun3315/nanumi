@@ -7,14 +7,12 @@ import HomeCategoryModal from './HomeCategoryModal';
 import CreateCategoryModal from './CreateCategoryModal';
 import OneButtonModal from './OneButtonModal';
 import TwoButtonModal from './TwoButtonModal';
-import LocationPickerModal from './LocationPickerModal';
 
 const MODAL_TYPES = {
   TransactionCompleteModal: 'TransactionCompleteModal',
   MatchingUserModal: 'MatchingUserModal',
   HomeCategoryModal: 'HomeCategoryModal',
   CreateCategoryModal: 'CreateCategoryModal',
-  LocationPickerModal: 'LocationPickerModal',
   OneButtonModal: 'OneButtonModal',
   TwoButtonModal: 'TwoButtonModal',
 };
@@ -26,7 +24,6 @@ const MODAL_COMPONENTS = {
   [MODAL_TYPES.CreateCategoryModal]: CreateCategoryModal,
   [MODAL_TYPES.OneButtonModal]: OneButtonModal,
   [MODAL_TYPES.TwoButtonModal]: TwoButtonModal,
-  [MODAL_TYPES.LocationPickerModal]: LocationPickerModal,
 };
 
 const GlobalModal = () => {

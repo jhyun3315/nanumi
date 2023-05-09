@@ -1,9 +1,6 @@
 import React from 'react';
 import {View, Text, StyleSheet, Pressable} from 'react-native';
 import {FONTS, SIZES, COLORS} from '../../constants';
-import {useModal} from '../../hooks/useModal';
-import {useRecoilState} from 'recoil';
-import {transactionLocationState} from '../../state/transactionLocation';
 
 export const ChatOptions = ({
   navigation,
@@ -12,11 +9,6 @@ export const ChatOptions = ({
   handleOpenChatExitModal,
   handleOpenTransactionCompleteModal,
 }) => {
-  const {showModal, hideModal} = useModal();
-  const [transactionLocation, setTransactionLocation] = useRecoilState(
-    transactionLocationState,
-  );
-
   const handleCloseAndNavigateChatOptionsModal = () => {
     handleCloseBottomModal();
     setTimeout(() => {
@@ -24,41 +16,15 @@ export const ChatOptions = ({
     }, 300);
   };
 
-  const handleConfirmLocation = coordinate => {
-    console.log('실행');
-    setTransactionLocation(prev => coordinate);
-    hideModal();
-  };
-
-  const handleCloseAndNavigateLocationPickerModal = () => {
-    handleCloseBottomModal();
-    setTimeout(() => {
-      showModal({
-        modalType: 'LocationPickerModal',
-        modalProps: {
-          visible: true,
-          onConfirm: handleConfirmLocation,
-          oncancel: hideModal,
-        },
-      });
-    }, 300);
-  };
-
   return (
     <View style={styles.optionContainer}>
       <Pressable
         style={styles.option}
-        onPress={handleCloseAndNavigateLocationPickerModal}>
-        <Text style={styles.optionText}>거래장소선택</Text>
-      </Pressable>
-
-      <Pressable style={styles.option} onPress={handleOpenBlockUserModal}>
-        <Text style={styles.optionText}>차단하기</Text>
-      </Pressable>
-      <Pressable
-        style={styles.option}
         onPress={handleOpenTransactionCompleteModal}>
         <Text style={styles.optionText}>거래완료</Text>
+      </Pressable>
+      <Pressable style={styles.option} onPress={handleOpenBlockUserModal}>
+        <Text style={styles.optionText}>차단하기</Text>
       </Pressable>
       <Pressable
         style={styles.option}
