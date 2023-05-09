@@ -3,6 +3,7 @@ package com.ssafy.nanumi.config.security;
 import com.ssafy.nanumi.config.jwt.JwtAuthenticationFilter;
 import com.ssafy.nanumi.config.jwt.JwtProvider;
 import lombok.RequiredArgsConstructor;
+import org.json.JSONObject;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.AccessDeniedException;
@@ -67,8 +68,15 @@ public class SecurityConfig {
                         // 권한 문제가 발생했을 때 이 부분을 호출한다.
                         response.setStatus(403);
                         response.setCharacterEncoding("utf-8");
-                        response.setContentType("text/html; charset=UTF-8");
-                        response.getWriter().write("권한이 없는 사용자입니다.");
+                        response.setContentType("application/json; charset=UTF-8");
+
+                        // JSON 객체 생성
+                        JSONObject jsonResponse = new JSONObject();
+                        jsonResponse.put("code", 403);
+                        jsonResponse.put("message", "권한이 없는 사용자입니다.");
+
+                        // JSON 객체를 문자열로 변환하고 응답에 쓰기
+                        response.getWriter().write(jsonResponse.toString());
                     }
                 })
                 .authenticationEntryPoint(new AuthenticationEntryPoint() {
@@ -77,8 +85,15 @@ public class SecurityConfig {
                         // 인증문제가 발생했을 때 이 부분을 호출한다.
                         response.setStatus(401);
                         response.setCharacterEncoding("utf-8");
-                        response.setContentType("text/html; charset=UTF-8");
-                        response.getWriter().write("인증되지 않은 사용자입니다.");
+                        response.setContentType("application/json; charset=UTF-8");
+
+                        // JSON 객체 생성
+                        JSONObject jsonResponse = new JSONObject();
+                        jsonResponse.put("code", 403);
+                        jsonResponse.put("message", "인증되지 않은 사용자입니다.");
+
+                        // JSON 객체를 문자열로 변환하고 응답에 쓰기
+                        response.getWriter().write(jsonResponse.toString());
                     }
                 });
 
