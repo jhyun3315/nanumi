@@ -56,7 +56,7 @@ const Register = () => {
 
     // 유효성 검사를 통해 다음 버튼 활성화 여부를 결정
     if (
-      userInfo.validCode === validCode &&
+      userInfo.validCode == validCode &&
       userInfo.password.length >= 4 &&
       userInfo.password.length <= 16 &&
       userInfo.password === userInfo.confirmPassword &&
@@ -68,6 +68,7 @@ const Register = () => {
     }
   }, [userInfo, validCode]);
 
+  // console.log(userInfo.validCode === val);
   const checkEmailDuplicate = async email => {
     try {
       const response = await requestEmailDuplicateCheck(email);

@@ -32,7 +32,7 @@ const Map = ({navigation, userInfo}) => {
 
     const response = await requestSignup(data);
     if (response.code === 200) {
-      navigation.navigate('BottomTabs', {screen: 'Home'});
+      navigation.navigate('Login');
     } else {
       showErrorAlert('회원가입에 실패했습니다.', navigation);
     }

@@ -31,9 +31,8 @@ const Login = () => {
     const response = await requestLogin(data);
     if (response.code === 200) {
       console.log(response);
-      // 로그인에 성공했을 경우
-      await AsyncStorage.setItem('user', JSON.stringify(response.result));
       setUser(response.result);
+      await AsyncStorage.setItem('user', JSON.stringify(response.result));
       setUserInfo({username: '', password: ''});
       navigation.navigate('BottomTabs');
     } else {

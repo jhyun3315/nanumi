@@ -1,6 +1,7 @@
 import {API_END_POINT} from './constant';
 
 import axios from 'axios';
+import axiosInstance from './interceptor';
 
 export const requestEmailDuplicateCheck = async email => {
   const response = await axios.get(`${API_END_POINT}/users/check/${email}`);
@@ -18,21 +19,31 @@ export const requestLogin = async data => {
 };
 
 export const requestGetProfile = async userId => {
-  const response = await axios.get(`${API_END_POINT}/users/${userId}`);
-  return response.data;
+  try {
+    const response = await axiosInstance.get(
+      `${API_END_POINT}/users/${userId}`,
+    );
+    return response.data;
+  } catch (error) {
+    console.log('e', error.response);
+  }
 };
 
 export const requestProfileUpdate = async (userId, data) => {
-  const response = await axios.patch(`${API_END_POINT}/users/${userId}`, data, {
-    headers: {
-      'Content-Type': 'multipart/form-data',
+  const response = await axiosInstance.patch(
+    `${API_END_POINT}/users/${userId}`,
+    data,
+    {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
     },
-  });
+  );
   return response.data;
 };
 
 export const requsetUpdateCoordinate = async (userId, data) => {
-  const response = await axios.patch(
+  const response = await axiosInstance.patch(
     `${API_END_POINT}/users/address/${userId}`,
     data,
   );

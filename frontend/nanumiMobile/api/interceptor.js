@@ -11,10 +11,12 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
   async config => {
-    const token = await AsyncStorage.getItem('jwtToken');
-    if (token) {
-      config.headers['Authorization'] = `Bearer ${token}`;
+    const user = JSON.parse(await AsyncStorage.getItem('user'));
+
+    if (user) {
+      config.headers['Authorization'] = `Bearer ${user.access_token}`;
     }
+    console.log('config', config);
     return config;
   },
   error => {
