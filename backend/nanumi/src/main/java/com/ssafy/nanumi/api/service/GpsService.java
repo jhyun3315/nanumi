@@ -54,7 +54,4 @@ public class GpsService {
             gpsRepository.save(gpsUser);
         }
     }
-
-    public void sendPushNotification() {
-    }
 }

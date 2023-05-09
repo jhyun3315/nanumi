@@ -1,6 +1,9 @@
 package com.ssafy.nanumi.db.entity;
 
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -66,16 +69,12 @@ public class UserInfo {
     @Column(name = "refresh_token", columnDefinition = "VARCHAR(255)")
     private String refreshToken;
 
-    @Column(name="fcm_token", columnDefinition="VARCHAR(255)")
-    @Setter
-    private String fcmToken;
-
     @OneToOne(mappedBy = "userInfo")
     @JoinColumn(name = "user_id")
     private User user;
 
     @Builder
-    public UserInfo(long id, int starTotal, int starCount, int ratingTotal, int ratingCount, String tier, double temperature, long visitCount, int giveCount, int givenCount, int reportedTotalCount, LocalDateTime stopDate, String refreshToken, User user, String fcmToken) {
+    public UserInfo(long id, int starTotal, int starCount, int ratingTotal, int ratingCount, String tier, double temperature, long visitCount, int giveCount, int givenCount, int reportedTotalCount, LocalDateTime stopDate, String refreshToken, User user) {
         this.id = id;
         this.starTotal = starTotal;
         this.starCount = starCount;
@@ -89,7 +88,6 @@ public class UserInfo {
         this.reportedTotalCount = reportedTotalCount;
         this.stopDate = stopDate;
         this.refreshToken = refreshToken;
-        this.fcmToken = fcmToken;
         this.user = user;
     }
 

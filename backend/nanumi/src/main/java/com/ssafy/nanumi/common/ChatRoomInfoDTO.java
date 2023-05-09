@@ -14,6 +14,4 @@ public class ChatRoomInfoDTO {
     private String lastMessage;
     private LocalDateTime lastMessageTime;
     private long productId;
-    private long opponentId;
-    private long UserId;
 }

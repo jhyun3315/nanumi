@@ -6,10 +6,11 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.Optional;
 
-import java.util.Optional;
-
 public interface UserInfoRepository extends JpaRepository<UserInfo, Long> {
-    Optional<UserInfo> findById(long userinfoId);
 
-    String getTokenByUserId(long opponentId);
+    @Query(value = "select ui.reportedTotalCount " +
+            "from User u " +
+            "left join u.userInfo ui " +
+            "where u.id = :userId AND u.isDeleted = false")
+    Optional<Integer> findUserInfoIdByUserId(long userId);
 }

@@ -15,10 +15,5 @@ public interface ChatRoomRepository extends MongoRepository<ChatRoomEntity, Stri
     List<ChatRoomEntity> findAllByUserListContaining(long user);
 
     ChatRoomEntity findByUserListContainingAndProductId(long sendUser, long productId);
-
-    ChatRoomEntity findByUserEmail(String userEmail);
-
-    ChatRoomEntity findByUserListContaining(long userId);
-
 }
 

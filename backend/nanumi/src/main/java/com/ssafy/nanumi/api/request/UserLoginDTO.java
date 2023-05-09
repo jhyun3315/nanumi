@@ -10,12 +10,9 @@ public class UserLoginDTO {
     private String id;
     private String password;
 
-    private String fcmToken;
-
     @Builder
-    public UserLoginDTO(String id, String password, String fcmToken) {
+    public UserLoginDTO(String id, String password) {
         this.id = id;
         this.password = password;
-        this.fcmToken = fcmToken;
     }
 }
