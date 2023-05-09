@@ -53,6 +53,7 @@ public class SecurityConfig {
                 .antMatchers("/users/join", "/users/login", "/users/isRTValid", "/users/check/**", "/api/v2/**", "/health", "/swagger-ui.html", "/swagger/**",
                         "/swagger-ui/**","/swagger-resources/**", "/webjars/**", "/v2/api-docs").permitAll()
                 .antMatchers("/users/**").hasAnyRole("브론즈", "실버", "골드", "플레티넘", "다이아")
+
                 .anyRequest().authenticated()
 
                 .and()

@@ -119,7 +119,7 @@ public class JwtProvider {
             String RT = request.getRefreshToken();
             UserInfo userInfo = userInfoRepository.findByRefreshToken(RT)
                     .orElseThrow(() -> new CustomException(NOT_FOUND_USER_INFO));
-            User user = userRepository.findById(userInfo.getId())
+            User user = userRepository.findByEmail(request.getEmail())
                     .orElseThrow(() -> new CustomException(NOT_FOUND_USER_INFO));
             String userInfo_RT = userInfo.getRefreshToken();
             if (!RT.equals(userInfo_RT)) {
