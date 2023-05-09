@@ -18,9 +18,12 @@ public class UserLoginResDTO {
     private String gugun;
     private String dong;
 
+    private String access_token;
+    private String refresh_token;
+
 
     @Builder
-    public UserLoginResDTO(User user) {
+    public UserLoginResDTO(User user, String AT, String RT) {
         Address address = user.getAddress();
         this.userId = user.getId();
         this.nickname = user.getNickname();
@@ -30,5 +33,7 @@ public class UserLoginResDTO {
         this.si = address.getSi();
         this.gugun = address.getGuGun();
         this.dong = address.getDong();
+        this.access_token = AT;
+        this.refresh_token = RT;
     }
 }
