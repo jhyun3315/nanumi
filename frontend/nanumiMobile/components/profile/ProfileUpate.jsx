@@ -89,7 +89,7 @@ const ProfileUpate = ({navigation, nickname, profileUrl}) => {
       } else if (response.code === 400)
         showErrorAlert('존재하는 유저가 아닙니다.', navigation);
     } catch (error) {
-      showErrorAlert('알 수 없는 에러가 발생했습니다.', navigation);
+      showErrorAlert('토큰이 만료됐습니다.', navigation);
     }
   };
   return (

@@ -1,2 +1,2 @@
-// export const API_END_POINT = 'https://k8b103.p.ssafy.io/api';
-// export const API_END_POINT = 'http://192.168/.137.1:8080';
+export const API_END_POINT = 'https://k8b103.p.ssafy.io/api';
+// export const API_END_POINT = 'http://172.30.1.18:8080';

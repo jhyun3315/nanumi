@@ -86,13 +86,12 @@ const ChatDetail = ({navigation, productId, chatRoomId}) => {
     client.current = new StompJs.Client({
       webSocketFactory: () =>
         new SockJS(`https://k8b103.p.ssafy.io/api/ws-stomp`),
+      connectHeaders: {
+        Authorization: `Bearer ${user.access_token}`,
+      },
 
       beforeConnect: () => {
         console.log('beforeConnect');
-      },
-
-      connectHeaders: {
-        Authorization: `Bearer ${user.access_token}`,
       },
 
       onConnect: () => {

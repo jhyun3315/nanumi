@@ -38,7 +38,7 @@ const Profile = ({navigation}) => {
 
   const {data, error, isLoading, refetch} = useQuery(
     ['profile', user.userId],
-    () => requestGetProfile(user.userId),
+    () => requestGetProfile(user.userId, user, setUser, navigation),
   );
 
   const handleOpenLogoutModal = () => {
