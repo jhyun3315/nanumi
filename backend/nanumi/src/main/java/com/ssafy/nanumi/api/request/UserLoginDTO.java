@@ -9,10 +9,14 @@ import lombok.RequiredArgsConstructor;
 public class UserLoginDTO {
     private String email;
     private String password;
+    private String fcmToken;
+
 
     @Builder
     public UserLoginDTO(String email, String password) {
         this.email = email;
         this.password = password;
+        this.fcmToken = fcmToken;
+
     }
 }
