@@ -13,4 +13,8 @@ public interface UserInfoRepository extends JpaRepository<UserInfo, Long> {
             "left join u.userInfo ui " +
             "where u.id = :userId AND u.isDeleted = false")
     Optional<Integer> findUserInfoIdByUserId(long userId);
+
+    Optional<UserInfo> findById(long userinfoId);
+
+    String getTokenByUserId(long opponentId);
 }
