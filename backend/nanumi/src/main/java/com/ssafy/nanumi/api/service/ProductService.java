@@ -133,31 +133,5 @@ public class ProductService {
                 .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_PRODUCT));
         product.delete();
     }
-    public MatchSuccessDto applicationProduct(Long productId, User user) {
-        Product product = productRepository.findById(productId)
-                .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_PRODUCT));
-        if ((long) product.getMatches().size() < 3){
-            Match match = Match.builder()
-                    .isMatching(false)
-                    .product(product)
-                    .user(user)
-                    .build();
-            Match newMatch = matchRepository.save(match);
-            if (product.getMatches().size() == 2) {
-                product.setClosed(true);
-            }
-            return MatchSuccessDto.builder()
-                    .result(true)
-                    .resultMessage("신청 되었습니다.")
-                    .matchId(newMatch.getId())
-                    .build();
-        }
-        else {
-            return MatchSuccessDto.builder()
-                    .result(false)
-                    .resultMessage("인원이 다 찼습니다.")
-                    .matchId(null)
-                    .build();
-        }
-    }
+
 }
