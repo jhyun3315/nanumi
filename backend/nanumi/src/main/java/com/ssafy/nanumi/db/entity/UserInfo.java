@@ -63,7 +63,7 @@ public class UserInfo {
     @Column(name = "reported_total_count", columnDefinition = "INT", nullable = false)
     private int reportedTotalCount;
 
-    @Column(name = "stop_date", nullable = true)
+    @Column(name = "stop_date", columnDefinition = "TIMESTAMP", nullable = true)
     private LocalDateTime stopDate;
 
     @Column(name = "refresh_token", columnDefinition = "VARCHAR(255)")
