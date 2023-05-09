@@ -15,7 +15,7 @@ const Register = () => {
   const [emailErrorMessage, setEmailErrorMessage] = useState('');
   const [userInfo, setUserInfo] = useState({
     email: '',
-    validCode: '',
+    validCode: '인증코드를 입력해주세요',
     nickname: '',
     password: '',
     confirmPassword: '',
@@ -59,7 +59,8 @@ const Register = () => {
       userInfo.validCode === validCode &&
       userInfo.password.length >= 4 &&
       userInfo.password.length <= 16 &&
-      userInfo.password === userInfo.confirmPassword
+      userInfo.password === userInfo.confirmPassword &&
+      userInfo.nickname.length !== 0
     ) {
       setIsNextButtonDisable(false);
     } else {
