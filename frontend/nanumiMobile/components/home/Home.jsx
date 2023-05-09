@@ -20,7 +20,7 @@ const Home = ({navigation}) => {
   return (
     <SafeAreaView style={styles.container}>
       <GlobalModal />
-      <ProductList isSearch={false} />
+      {/* <ProductList isSearch={false} /> */}
       <CategoryButton minwidth={48} handlePress={handleOpenCategoryModal} />
     </SafeAreaView>
   );
