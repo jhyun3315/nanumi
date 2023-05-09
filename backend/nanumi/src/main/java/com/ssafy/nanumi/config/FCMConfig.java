@@ -16,7 +16,7 @@ import java.util.List;
 public class FCMConfig {
     @Bean
     FirebaseMessaging firebaseMessaging() throws IOException{
-        ClassPathResource resource = new ClassPathResource("google-services.json");
+        ClassPathResource resource = new ClassPathResource("google-service.json");
 
         InputStream refreshToken = resource.getInputStream();
 

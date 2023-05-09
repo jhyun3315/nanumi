@@ -3,6 +3,7 @@ package com.ssafy.nanumi.config.security;
 import com.ssafy.nanumi.config.jwt.JwtAuthenticationFilter;
 import com.ssafy.nanumi.config.jwt.JwtProvider;
 import lombok.RequiredArgsConstructor;
+import org.json.JSONObject;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.AccessDeniedException;
@@ -50,9 +51,10 @@ public class SecurityConfig {
                 // 회원가입과 로그인은 모두 승인
 
                 .antMatchers("/test").hasAnyRole("브론즈", "실버", "골드", "플레티넘", "다이아")
-                .antMatchers("/users/join", "/users/login", "/users/isRTValid", "/api/v2/**", "/health", "/swagger-ui.html", "/swagger/**",
+                .antMatchers("/users/join", "/users/login", "/users/isRTValid", "/users/check/**", "/api/v2/**", "/health", "/swagger-ui.html", "/swagger/**",
                         "/swagger-ui/**","/swagger-resources/**", "/webjars/**", "/v2/api-docs").permitAll()
                 .antMatchers("/users/**").hasAnyRole("브론즈", "실버", "골드", "플레티넘", "다이아")
+
                 .anyRequest().authenticated()
 
                 .and()
@@ -66,8 +68,15 @@ public class SecurityConfig {
                         // 권한 문제가 발생했을 때 이 부분을 호출한다.
                         response.setStatus(403);
                         response.setCharacterEncoding("utf-8");
-                        response.setContentType("text/html; charset=UTF-8");
-                        response.getWriter().write("권한이 없는 사용자입니다.");
+                        response.setContentType("application/json; charset=UTF-8");
+
+                        // JSON 객체 생성
+                        JSONObject jsonResponse = new JSONObject();
+                        jsonResponse.put("code", 403);
+                        jsonResponse.put("message", "권한이 없는 사용자입니다.");
+
+                        // JSON 객체를 문자열로 변환하고 응답에 쓰기
+                        response.getWriter().write(jsonResponse.toString());
                     }
                 })
                 .authenticationEntryPoint(new AuthenticationEntryPoint() {
@@ -76,8 +85,15 @@ public class SecurityConfig {
                         // 인증문제가 발생했을 때 이 부분을 호출한다.
                         response.setStatus(401);
                         response.setCharacterEncoding("utf-8");
-                        response.setContentType("text/html; charset=UTF-8");
-                        response.getWriter().write("인증되지 않은 사용자입니다.");
+                        response.setContentType("application/json; charset=UTF-8");
+
+                        // JSON 객체 생성
+                        JSONObject jsonResponse = new JSONObject();
+                        jsonResponse.put("code", 403);
+                        jsonResponse.put("message", "인증되지 않은 사용자입니다.");
+
+                        // JSON 객체를 문자열로 변환하고 응답에 쓰기
+                        response.getWriter().write(jsonResponse.toString());
                     }
                 });
 

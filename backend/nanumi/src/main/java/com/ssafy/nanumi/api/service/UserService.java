@@ -56,7 +56,7 @@ public class UserService {
         // Refresh Token
         String RT = jwtProvider.createRefreshToken(user.getEmail(), user.getTiers());
 
-        UserInfo userInfo =userInfoRepository.findById(user.getId()).orElseThrow(() -> new CustomException(NOT_FOUND_USER_INFO));
+        UserInfo userInfo =userInfoRepository.findById(user.getUserInfo().getId()).orElseThrow(() -> new CustomException(NOT_FOUND_USER_INFO));
         userInfo.setRefreshToken(RT);
 
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
