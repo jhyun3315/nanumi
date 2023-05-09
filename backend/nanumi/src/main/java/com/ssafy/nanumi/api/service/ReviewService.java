@@ -2,7 +2,6 @@ package com.ssafy.nanumi.api.service;
 
 import com.ssafy.nanumi.api.request.UserReviewDTO;
 import com.ssafy.nanumi.config.response.exception.CustomException;
-import com.ssafy.nanumi.config.response.exception.CustomExceptionStatus;
 import com.ssafy.nanumi.db.entity.Match;
 import com.ssafy.nanumi.db.entity.Review;
 import com.ssafy.nanumi.db.entity.User;
@@ -14,6 +13,7 @@ import com.ssafy.nanumi.db.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -30,9 +30,9 @@ public class ReviewService {
     private final MatchRepository matchRepository;
 
     /* 거래한 상대방 평가 */
+    @Transactional(readOnly = false)
     public void saveUserReview(UserReviewDTO userReviewDTO, long writerId, long matchId) {
 
-        // TODO : rating 계산로직 수정
         // TODO : writerId는 JWT에서, receiverId는 products table에서, matchId는 Pathvariable에서
 
         // 리뷰 작성자 유저 검증
@@ -44,8 +44,9 @@ public class ReviewService {
                 .orElseThrow(() -> new CustomException(REQUEST_ERROR)); // 예외처리 필요
 
         // Product 테이블에서 나누미(리뷰 대상자) id 조회 (query 테스트 필요)
-        long receiverId = reviewRepository.findReceiverIdByMatchId(match.getId())
+        long receiverId = reviewRepository.findReceiverIdByMatchId(matchId)
                 .orElseThrow(() -> new CustomException(REQUEST_ERROR)); // 예외처리 필요
+
 
         // 리뷰 대상자 유저 검증
         User receiver = userRepository.findById(receiverId)
@@ -55,7 +56,7 @@ public class ReviewService {
         List<Integer> rating = userReviewDTO.getRating();
         int totalRating = 0;
         for (int r : rating) {
-            totalRating += r * 10; // 수정해야함
+            totalRating += 1; // 수정해야함
         }
 
         // 리뷰 저장, starPoint가 0이 아닐때만
@@ -79,5 +80,11 @@ public class ReviewService {
         receiverInfo.updateRating(totalRating);
 
         // 온도 계산
+        double temperature;
+        temperature = ((userReviewDTO.getStarPoint() + totalRating) / 2 - 3) * 0.15;
+        temperature = Math.floor(temperature * 100) / 100.0;
+
+        // 리뷰 대상자 온도 업데이트
+        receiverInfo.updateTemperature(temperature);
     }
 }

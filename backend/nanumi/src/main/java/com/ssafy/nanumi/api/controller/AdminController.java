@@ -25,8 +25,10 @@ public class AdminController {
     private final ResponseService responseService;
 
     /* 관리자 로그인 */
-    @PostMapping("/admin")
+    @PostMapping("/admin/login")
     public CustomResponse adminLogin(@RequestBody AdminLoginDTO adminLoginDTO) {
+
+        // TODO : 관리자 ID 검증부분, password match해주는 로직 추가
 
         adminService.adminLogin(adminLoginDTO.getEmail(), adminLoginDTO.getPassword());
 
@@ -36,6 +38,8 @@ public class AdminController {
     /* 신고 목록 조회 */
     @GetMapping("/admin")
     public CustomDataResponse<List<ReportAllDTO>> findReportList() {
+
+        // TODO : 아직 처리되지 않은 신고 목록만 뿌려줘야하는지 고민
 
         List<ReportAllDTO> reportAllDTOS = adminService.findReportAll();
 

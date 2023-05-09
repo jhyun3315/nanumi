@@ -17,16 +17,18 @@ public class ReportAllDTO {
     private long reportedId;
     private String content;
     private boolean status;
+    private int reportedCount;
     private int stopDate;
     private String reportDate; // 신고한 날짜
 
     @Builder
-    public ReportAllDTO(long id, long reporterId, long reportedId, String content, boolean status, int stopDate, String reportDate) {
+    public ReportAllDTO(long id, long reporterId, long reportedId, String content, boolean status, int reportedCount, int stopDate, String reportDate) {
         this.id = id;
         this.reporterId = reporterId;
         this.reportedId = reportedId;
         this.content = content;
         this.status = status;
+        this.reportedCount = reportedCount;
         this.stopDate = stopDate;
         this.reportDate = reportDate;
     }

@@ -12,6 +12,7 @@ import java.util.ArrayList;
 public interface MatchRepository extends CrudRepository<Match, Long> {
     @Query(value =
             "SELECT users.id AS UserId, " +
+                    "users.nickname As UserNickName, "+
                     "matches.create_date AS CreateDate, " +
                     "matches.id AS MatchId, " +
                     "matches.product_id AS ProductId, " +

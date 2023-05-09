@@ -111,4 +111,8 @@ public class UserInfo {
         this.ratingCount += 1;
         this.ratingTotal += ratingCount;
     }
+
+    public void updateTemperature(double temperature) {
+        this.temperature += temperature;
+    }
 }

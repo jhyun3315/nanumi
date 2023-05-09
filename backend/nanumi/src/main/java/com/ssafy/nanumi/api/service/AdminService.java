@@ -4,7 +4,6 @@ import com.ssafy.nanumi.api.request.ReportUserDTO;
 import com.ssafy.nanumi.api.request.UserBanDTO;
 import com.ssafy.nanumi.api.response.ReportAllDTO;
 import com.ssafy.nanumi.config.response.exception.CustomException;
-import com.ssafy.nanumi.config.response.exception.CustomExceptionStatus;
 import com.ssafy.nanumi.db.entity.Report;
 import com.ssafy.nanumi.db.entity.User;
 import com.ssafy.nanumi.db.entity.UserInfo;
@@ -13,6 +12,7 @@ import com.ssafy.nanumi.db.repository.UserInfoRepository;
 import com.ssafy.nanumi.db.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,7 +41,9 @@ public class AdminService {
         User adminUser = userRepository.findByEmail(email)
                 .orElseThrow(() -> new CustomException(REQUEST_ERROR));
 
-        if (!password.equals(adminUser.getPassword())) {
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+
+        if (!encoder.matches(password, adminUser.getPassword())) {
             throw new CustomException(REQUEST_ERROR);
         }
     }
@@ -56,6 +58,10 @@ public class AdminService {
 
         for (Report report : reportList) {
 
+            // 신고 대상자 신고 누적 횟수 조회
+            int reportedCount = userInfoRepository.findUserInfoIdByUserId(report.getReported().getId())
+                    .orElseThrow(() -> new CustomException(NOT_FOUND_USER));
+
             reportAllDTOS.add(
                     ReportAllDTO.builder()
                             .id(report.getId())
@@ -63,6 +69,7 @@ public class AdminService {
                             .reportedId(report.getReported().getId())
                             .content(report.getContent())
                             .status(report.isStatus())
+                            .reportedCount(reportedCount)
                             .stopDate(report.getStopDate())
                             .reportDate(report.getCreateDate().toString())
                             .build()
