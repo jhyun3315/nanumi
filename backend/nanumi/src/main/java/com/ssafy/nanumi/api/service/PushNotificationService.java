@@ -10,15 +10,8 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class PushNotificationService {
-    private final FirebaseMessaging firebaseMessaging;
-    private final UserRepository userRepository;
-
 
     public void sendPushNotification(String targetToken, String title, String body) {
-
-        // TODO 변경 되어야함
-        //Optional<User> user = userRepository.findByEmail(String.valueOf(notificationDTO.getTargetUserId()));
-
 
         Notification notification = Notification.builder()
                 .setTitle(title)
