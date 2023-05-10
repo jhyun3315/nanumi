@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 
 public interface MatchRepository extends CrudRepository<Match, Long> {
@@ -25,4 +26,11 @@ public interface MatchRepository extends CrudRepository<Match, Long> {
             , nativeQuery = true)
     ArrayList<MatchInterface> getMatchListByProduct(@Param("productId") long productId);
 
+    @Query(value =
+            "SELECT m " +
+            "FROM Match m " +
+            "WHERE m.isMatching=true " +
+            "AND m.product.id=:productId"
+            )
+    Optional<Match> findMatch(@Param("productId") long productId);
 }

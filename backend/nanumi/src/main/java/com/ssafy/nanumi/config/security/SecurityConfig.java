@@ -56,6 +56,7 @@ public class SecurityConfig {
                 .antMatchers("/users/**").hasAnyRole("브론즈", "실버", "골드", "플레티넘", "다이아")
 
                 .anyRequest().authenticated()
+//                .anyRequest().permitAll()
 
                 .and()
                 // JWT 인증 필터 적용

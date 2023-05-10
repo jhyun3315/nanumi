@@ -59,6 +59,7 @@ public class ChatController {
 
     @GetMapping("/chat/end/{product-id}")
     public CustomResponse endChat(@PathVariable("product-id") Long productId) {
+        System.out.println("!!!!!!!!!!!! "+productId);
         return responseService.getDataResponse(chatService.chatEndMatch(productId),RESPONSE_SUCCESS);
     }
 }
