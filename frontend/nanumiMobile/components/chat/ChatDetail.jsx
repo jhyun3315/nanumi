@@ -31,7 +31,6 @@ import * as StompJs from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
 import ErrorModal from '../modal/ErrorModal';
 import DataErrorModal from '../modal/DataErrorModal';
-import {showErrorAlert} from '../../ui/Alert';
 
 const ChatDetail = ({navigation, productId, chatRoomId, opponentId}) => {
   const {
@@ -43,7 +42,6 @@ const ChatDetail = ({navigation, productId, chatRoomId, opponentId}) => {
     requestGetTop20ChatLog(chatRoomId),
   );
 
-  console.log(chatLogData);
   const {data, isLoading, error, refetch} = useQuery(
     ['product', productId],
     () => requestGetDetailProduct(productId),
@@ -122,6 +120,7 @@ const ChatDetail = ({navigation, productId, chatRoomId, opponentId}) => {
     }
   };
 
+  const handleReportUser = async () => {};
   const handleRefetch = () => {
     refetch();
     chatLogRefetch();
