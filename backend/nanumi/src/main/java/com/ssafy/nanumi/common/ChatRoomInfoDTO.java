@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 @Setter
 public class ChatRoomInfoDTO {
     private long chatRoomId;
+    private long opponentId;
     private String opponentNickname;
     private String opponentProfileImage;
     private String lastMessage;
