@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 
 public interface MatchRepository extends CrudRepository<Match, Long> {
@@ -24,5 +25,16 @@ public interface MatchRepository extends CrudRepository<Match, Long> {
                     "LIMIT 3"
             , nativeQuery = true)
     ArrayList<MatchInterface> getMatchListByProduct(@Param("productId") long productId);
+
+    @Query(value =
+            "SELECT m " +
+                    "FROM Match m " +
+                    "WHERE m.product.id = :productId " +
+                    "AND (m.user.id = :sendUserId OR m.user.id = :receiveUserId) " +
+                    "AND m.isMatching = true"
+    )
+    Optional<Match> findMatchByProductAndUsers(@Param("productId") long productId,
+                                               @Param("sendUserId") long sendUserId,
+                                               @Param("receiveUserId") long receiveUserId);
 
 }

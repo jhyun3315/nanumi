@@ -4,6 +4,7 @@ import com.ssafy.nanumi.config.jwt.JwtAuthenticationFilter;
 import com.ssafy.nanumi.config.jwt.JwtProvider;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONObject;
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.AccessDeniedException;
@@ -54,7 +55,7 @@ public class SecurityConfig {
                 .antMatchers("/users/join", "/users/login", "/users/isRTValid", "/users/check/**", "/api/v2/**", "/health", "/swagger-ui.html", "/swagger/**",
                         "/swagger-ui/**","/swagger-resources/**", "/webjars/**", "/v2/api-docs","/ws-stomp/**").permitAll()
                 .antMatchers("/users/**").hasAnyRole("브론즈", "실버", "골드", "플레티넘", "다이아")
-
+                .antMatchers("/actuator/health").permitAll()
                 .anyRequest().authenticated()
 
                 .and()
