@@ -22,24 +22,32 @@ public interface UserRepository extends JpaRepository<User,Long> {
 
     @Query(value = "select p " +
             "from Product p " +
-            "where p.isDeleted = false and p.user.id = :userId and p.isMatched = true ")
+            "where p.user.id = :userId " +
+            "and p.isDeleted = false " +
+            "and p.isMatched = true ")
     Page<ProductAllDTO> getAllReceiveProduct(@Param("userId") long userId, Pageable pageable);
 
     @Query(value = "select p " +
             "from Product p " +
-            "where p.isDeleted = false and p.isMatched = false and p.user.id = :userId")
+            "where p.user.id = :userId " +
+            "and p.isDeleted = false "+
+            "and p.isMatched = false ")
     Page<ProductAllDTO> getAllMatchProduct(@Param("userId") long userId, Pageable pageable);
 
     @Query(value = "select p " +
             "from Product p " +
-            "where p.Matches.size > 0 and p.isDeleted = false and p.isMatched = false and p.user.id = :userId"
+            "where p.user.id = :userId " +
+            "and p.Matches.size > 0 " +
+            "and p.isDeleted = false " +
+            "and p.isMatched = false "
     )
     Page<ProductAllDTO> getAllMatchingProduct(@Param("userId") long userId, Pageable pageable);
 
     @Query(value = "select p " +
             "from Product p " +
             "left join p.Matches m " +
-            "where m.user.id = :userId and m.isMatching = true "
+            "where m.user.id = :userId " +
+            "and m.isMatching = true "
     )
     Page<ProductAllDTO> getAllGivenProduct(@Param("userId") long userId, Pageable pageable);
 }
