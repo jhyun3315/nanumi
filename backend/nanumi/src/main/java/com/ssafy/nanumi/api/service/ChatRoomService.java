@@ -1,12 +1,15 @@
 package com.ssafy.nanumi.api.service;
 
+import com.ssafy.nanumi.api.response.MatchInterface;
 import com.ssafy.nanumi.common.ChatRoomInfoDTO;
 import com.ssafy.nanumi.common.CreateChatRoomDTO;
 import com.ssafy.nanumi.db.entity.ChatMessageEntity;
 import com.ssafy.nanumi.db.entity.ChatRoomEntity;
+import com.ssafy.nanumi.db.entity.Match;
 import com.ssafy.nanumi.db.entity.User;
 import com.ssafy.nanumi.db.repository.ChatRepository;
 import com.ssafy.nanumi.db.repository.ChatRoomRepository;
+import com.ssafy.nanumi.db.repository.MatchRepository;
 import com.ssafy.nanumi.db.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -32,6 +32,8 @@ public class ChatRoomService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private MatchRepository matchRepository;
     //TODO 채팅방 생성 메서드
     @Transactional
     public ResponseEntity<?> CreateChatRoom(CreateChatRoomDTO DTO) {
@@ -40,8 +42,8 @@ public class ChatRoomService {
         long productId = DTO.getProductId();
 
         // 이미 존재하는 채팅방인지 확인
-        ChatRoomEntity existingChatRoom = chatRoomRepository.findByUserListContainingAndProductId(sendUser, productId);
-        if (existingChatRoom != null) {
+        Optional<Match> existingMatch = matchRepository.findMatchByProductAndUsers(productId, sendUser, receiveUser);
+        if (existingMatch.isPresent()) {
             return new ResponseEntity<>(Collections.singletonMap("error", "Chat room already exists"), HttpStatus.OK);
         }
 
