@@ -22,6 +22,7 @@ public enum CustomExceptionStatus {
     NOT_FOUND_PRODUCT(false, 404, "상품을 찾을 수 없습니다." ),
     NOT_FOUND_CATEGORY(false, 404, "카테고리를 찾을 수 없습니다."),
     NOT_FOUND_ADDRESS(false, 404, "주소를 찾을 수 없습니다."),
+    NOT_SUPPORTED_FORMAT(false, 404, "지원하지 않는 format 입니다."),
     ;
 
     private final boolean isSuccess;

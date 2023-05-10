@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -31,21 +32,22 @@ public class ProductService {
     private final ProductImageRepository productImageRepository;
     private final MatchRepository matchRepository;
     private final UserRepository userRepository;
+    private final S3Service s3Service;
 
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
     private final AmazonS3 amazonS3;
 
-    public Page<ProductAllDTO> searchProductByWords(long userId, String words, PageRequest pageRequest){
-        User user = userRepository.findById(userId).orElseThrow(() ->  new CustomException(NOT_FOUND_USER));
-        Address address = addressRepository.findById(user.getAddress().getId()).orElseThrow( () ->  new CustomException(NOT_FOUND_ADDRESS_CODE));
+    public Page<ProductAllDTO> searchProductByWords(long userId, String words, PageRequest pageRequest) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new CustomException(NOT_FOUND_USER));
+        Address address = addressRepository.findById(user.getAddress().getId()).orElseThrow(() -> new CustomException(NOT_FOUND_ADDRESS_CODE));
 
         return productRepository.searchAll(address.getId(), words, pageRequest);
     }
 
     public Page<ProductAllDTO> findProductAll(long userId, PageRequest pageRequest) {
         User user = userRepository.findById(userId)
-                .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_USER));
+                .orElseThrow(() -> new CustomException(CustomExceptionStatus.NOT_FOUND_USER));
 
         Long addressId = user.getAddress().getId();
         return productRepository.findAllProduct(addressId, pageRequest);
@@ -53,7 +55,7 @@ public class ProductService {
 
     public ProductDetailDTO findByProductId(Long productId) {
         Product product = productRepository.findById(productId)
-                .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_PRODUCT));
+                .orElseThrow(() -> new CustomException(CustomExceptionStatus.NOT_FOUND_PRODUCT));
         if (product.isDeleted()) {
             throw new CustomException(CustomExceptionStatus.NOT_FOUND_PRODUCT);
         }
@@ -62,17 +64,17 @@ public class ProductService {
 
     public Page<ProductAllDTO> findCateProductAll(Long categoryId, long userId, Pageable pageRequest) {
         User user = userRepository.findById(userId)
-                .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_USER));
+                .orElseThrow(() -> new CustomException(CustomExceptionStatus.NOT_FOUND_USER));
 
         categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new CustomException(CustomExceptionStatus.NOT_FOUND_CATEGORY));
         Long addressId = user.getAddress().getId();
-        return productRepository.findAllCategoryProduct(addressId,categoryId, pageRequest);
-}
+        return productRepository.findAllCategoryProduct(addressId, categoryId, pageRequest);
+    }
 
-    public void createProduct(MultipartFile[] images,String name,String content,Long categoryId, User user) throws IOException {
+    public void createProduct(MultipartFile[] images, String name, String content, Long categoryId, User user) throws IOException {
         Category category = categoryRepository.findById(categoryId)
-                .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_CATEGORY));
+                .orElseThrow(() -> new CustomException(CustomExceptionStatus.NOT_FOUND_CATEGORY));
         Address address = user.getAddress();
         Product product = Product.builder()
                 .name(name)
@@ -84,59 +86,39 @@ public class ProductService {
                 .address(address)
                 .build();
         Product createProduct = productRepository.save(product);
-
-        for(MultipartFile file : images) {
-            String s3FileName = UUID.randomUUID() + "-" + file.getOriginalFilename();
-            ObjectMetadata objMeta = new ObjectMetadata();
-            objMeta.setContentLength(file.getInputStream().available());
-            amazonS3.putObject(bucket, s3FileName, file.getInputStream(), objMeta);
-            String imageString = amazonS3.getUrl(bucket, s3FileName).toString();
-            ProductImage productImage = ProductImage.builder()
-                    .imageUrl(imageString)
-                    .product(createProduct)
-                    .build();
-            productImageRepository.save(productImage);
-        }
+        s3Service.imageSave(images, createProduct);
     }
+
     public void updateProduct(Long productId,
                               MultipartFile[] images,
                               String name,
                               String content,
                               Long categoryId) throws IOException {
         Product product = productRepository.findById(productId)
-                .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_PRODUCT));
+                .orElseThrow(() -> new CustomException(CustomExceptionStatus.NOT_FOUND_PRODUCT));
         Category category = categoryRepository.findById(categoryId)
-                .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_CATEGORY));
+                .orElseThrow(() -> new CustomException(CustomExceptionStatus.NOT_FOUND_CATEGORY));
 
         List<ProductImage> beforeImages = product.getProductImages();
         productImageRepository.deleteAll(beforeImages);
-
-        for(MultipartFile file : images) {
-            String s3FileName = UUID.randomUUID() + "-" + file.getOriginalFilename();
-            ObjectMetadata objMeta = new ObjectMetadata();
-            objMeta.setContentLength(file.getInputStream().available());
-            amazonS3.putObject(bucket, s3FileName, file.getInputStream(), objMeta);
-            String imageString = amazonS3.getUrl(bucket, s3FileName).toString();
-            ProductImage productImage = ProductImage.builder()
-                    .imageUrl(imageString)
-                    .product(product)
-                    .build();
-            productImageRepository.save(productImage);
-        }
+        s3Service.imageSave(images, product);
         product.setName(name);
         product.setContent(content);
         product.setCategory(category);
+        s3Service.imageSave(images, product);
 
     }
-    public void deleteProduct(Long productId){
+
+    public void deleteProduct(Long productId) {
         Product product = productRepository.findById(productId)
-                .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_PRODUCT));
+                .orElseThrow(() -> new CustomException(CustomExceptionStatus.NOT_FOUND_PRODUCT));
         product.delete();
     }
+
     public MatchSuccessDto applicationProduct(Long productId, User user) {
         Product product = productRepository.findById(productId)
-                .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_PRODUCT));
-        if ((long) product.getMatches().size() < 3){
+                .orElseThrow(() -> new CustomException(CustomExceptionStatus.NOT_FOUND_PRODUCT));
+        if ((long) product.getMatches().size() < 3) {
             Match match = Match.builder()
                     .isMatching(false)
                     .product(product)
@@ -151,8 +133,7 @@ public class ProductService {
                     .resultMessage("신청 되었습니다.")
                     .matchId(newMatch.getId())
                     .build();
-        }
-        else {
+        } else {
             return MatchSuccessDto.builder()
                     .result(false)
                     .resultMessage("인원이 다 찼습니다.")
