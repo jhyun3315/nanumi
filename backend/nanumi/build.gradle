@@ -42,12 +42,20 @@ dependencies {
 	// swagger
 	implementation group: 'io.springfox', name: 'springfox-boot-starter', version: '3.0.0'
 
+	// security & jwt
+	implementation 'org.springframework.security:spring-security-core:5.6.2'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.security:spring-security-test'
+	implementation group: 'com.auth0', name: 'java-jwt', version: '4.0.0'
+
+	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+	implementation 'io.jsonwebtoken:jjwt-impl:0.11.5'
+	implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+
 	// email auth
 	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: '2.6.3'
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 
-	// elastic search
-//	implementation 'org.springframework.boot:spring-boot-starter-data-elasticsearch:2.6.2'
 
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'com.mysql:mysql-connector-j'
@@ -63,12 +71,12 @@ dependencies {
 	// Socket
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
 
-	// Redis
-	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
-//	implementation 'org.redisson:redisson-spring-boot-starter:3.16.2'
-	implementation 'org.redisson:redisson-spring-boot-starter:3.17.4'
+	//FireBase
+	implementation 'com.google.firebase:firebase-admin:9.1.1'
 
-
+	// Retrofit2
+	implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+	implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
 }
 
 tasks.named('test') {
