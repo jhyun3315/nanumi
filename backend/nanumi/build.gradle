@@ -42,7 +42,9 @@ dependencies {
 	// swagger
 	implementation group: 'io.springfox', name: 'springfox-boot-starter', version: '3.0.0'
 
+	// actuator / prometheus
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	runtimeOnly 'io.micrometer:micrometer-registry-prometheus'
 
 	// security & jwt
 	implementation 'org.springframework.security:spring-security-core:5.6.2'
