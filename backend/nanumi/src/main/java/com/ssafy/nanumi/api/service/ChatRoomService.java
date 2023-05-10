@@ -9,6 +9,7 @@ import com.ssafy.nanumi.db.repository.ChatRepository;
 import com.ssafy.nanumi.db.repository.ChatRoomRepository;
 import com.ssafy.nanumi.db.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
@@ -28,6 +29,8 @@ public class ChatRoomService {
     private final ChatRoomRepository chatRoomRepository;
     private final SimpMessageSendingOperations messageTemplate;
     private final ChatRepository chatRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     //TODO 채팅방 생성 메서드
     @Transactional
@@ -78,21 +81,24 @@ public class ChatRoomService {
                     .findFirst()
                     .orElse(0L);
 
-            // 상대방 정보를 chatRoomEntity에서 가져오기
-            String opponentNickname = chatRoomEntity.getOpponentNickname();
-            String opponentProfileImage = chatRoomEntity.getOpponentProfileImage();
+            // 상대방 정보를 UserRepository에서 가져오기 (MySQL)
+            User opponent = userRepository.findById(opponentId).orElse(null);
+            if (opponent != null) {
+                chatRoomInfoDTO.setOpponentNickname(opponent.getNickname());
+                chatRoomInfoDTO.setOpponentProfileImage(opponent.getProfileUrl());
+            } else {
+                System.err.println("Opponent not found with ID: " + opponentId);
+                continue; // 다음 chatRoomEntity로 이동
+            }
 
             // 마지막 메시지 정보 가져오기
             List<ChatMessageEntity> lastMessages = chatRepository.findTop1ByRoomIdOrderBySendTimeDesc(chatRoomEntity.getChatroomSeq());
             ChatMessageEntity lastMessage = lastMessages.isEmpty() ? null : lastMessages.get(0);
 
             chatRoomInfoDTO.setChatRoomId(chatRoomEntity.getChatroomSeq());
-            chatRoomInfoDTO.setOpponentNickname(opponentNickname);
-            chatRoomInfoDTO.setOpponentProfileImage(opponentProfileImage);
             chatRoomInfoDTO.setProductId(chatRoomEntity.getProductId());
             if (lastMessage != null) {
                 chatRoomInfoDTO.setLastMessage(lastMessage.getMessage());
-                //chatRoomInfoDTO.setLastMessageTime(LocalDateTime.parse(lastMessage.getSendTime()));
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd a hh:mm ss:SSS");
                 chatRoomInfoDTO.setLastMessageTime(LocalDateTime.parse(lastMessage.getSendTime(), formatter));
             }
@@ -101,7 +107,6 @@ public class ChatRoomService {
         }
 
         return chatRoomInfoDTOs;
-
     }
 
 

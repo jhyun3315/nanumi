@@ -30,10 +30,7 @@ public class ChatRoomController {
 //        return new ResponseEntity<>(chatRoomService.FindRoom(), HttpStatus.OK);
 //    }
 
-    //    @GetMapping("findmyroom")
-//    public ResponseEntity<List<ChatRoomEntity>> findMyRoom(@RequestParam long user) {
-//        return new ResponseEntity<>(chatRoomService.FindMyChatRooms(user), HttpStatus.OK);
-//    }
+
     @GetMapping("findmyroom")
     public ResponseEntity<List<ChatRoomInfoDTO>> findMyRoom(@RequestParam long user) {
         return new ResponseEntity<>(chatRoomService.FindMyChatRooms(user), HttpStatus.OK);
