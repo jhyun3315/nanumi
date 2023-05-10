@@ -32,7 +32,7 @@ import SockJS from 'sockjs-client';
 import ErrorModal from '../modal/ErrorModal';
 import DataErrorModal from '../modal/DataErrorModal';
 
-const ChatDetail = ({navigation, productId, chatRoomId}) => {
+const ChatDetail = ({navigation, productId, chatRoomId, opponentId}) => {
   const {
     data: chatLogData,
     isLoading: chatLogIsLoading,

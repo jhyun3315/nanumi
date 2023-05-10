@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useRef} from 'react';
 import ProductDetailScreen from '../screens/ProductDetailScreen';
 import SearchScreen from '../screens/SearchScreen';
 import LoginScreen from './../screens/LoginScreen';
@@ -24,11 +24,12 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {COLORS} from '../constants';
 
 const Stack = createNativeStackNavigator();
-export const NavigationContext = React.createContext(null);
+
+export const navigationRef = React.createRef();
 
 const StackNavigator = () => {
   return (
-    <NavigationContainer>
+    <NavigationContainer ref={navigationRef}>
       <FocusedStatusBar backgroundColor={COLORS.primary} />
       <Stack.Navigator
         screenOptions={{
@@ -86,6 +87,10 @@ const StackNavigator = () => {
       </Stack.Navigator>
     </NavigationContainer>
   );
+};
+
+export const navigate = (name, params) => {
+  navigationRef.current?.navigate(name, params);
 };
 
 export default StackNavigator;

@@ -1,7 +1,7 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {API_END_POINT} from './constant';
-import StackNavigator from '../navigator/StackNavigator';
+import {navigationRef} from '../navigator/StackNavigator';
 
 const axiosInstance = axios.create({
   baseURL: API_END_POINT,
@@ -9,6 +9,8 @@ const axiosInstance = axios.create({
     'Content-Type': 'application/json',
   },
 });
+
+const source = axios.CancelToken.source();
 
 axiosInstance.interceptors.request.use(
   async config => {
@@ -42,7 +44,7 @@ axiosInstance.interceptors.response.use(
           `${API_END_POINT}/users/isRTValid`,
           data,
         );
-        if (response.status === 200) {
+        if (response.data.accessToken) {
           const updateUser = {
             ...user,
             access_token: response.data.accessToken,
@@ -53,16 +55,19 @@ axiosInstance.interceptors.response.use(
           axiosInstance.defaults.headers.common[
             'Authorization'
           ] = `Bearer ${updateUser.access_token}`;
+          source.cancel('previous request cancelled');
           return axiosInstance(originalRequest);
         }
         if (response.data.code === 400) {
+          source.cancel('previous request cancelled');
           await AsyncStorage.removeItem('user');
           console.log('리프레시도 만료');
-          StackNavigator.navigate('Login');
+          navigationRef.current?.navigate('Login');
           return Promise.reject(error);
         }
       } catch (error) {
         console.log('토큰 재발급 실패', error);
+        source.cancel('previous request cancelled');
         return Promise.reject(error);
       }
     }

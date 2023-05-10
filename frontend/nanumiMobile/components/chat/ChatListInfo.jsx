@@ -11,7 +11,7 @@ export const ChatListItem = ({data, navigation}) => {
           navigation.navigate('ChatDetail', {
             productId: data?.productId,
             chatRoomId: data?.chatRoomId,
-            opponentId: opponentId,
+            opponentId: data?.opponentId,
           });
         }}>
         <View style={[styles.imageContainer]}>
