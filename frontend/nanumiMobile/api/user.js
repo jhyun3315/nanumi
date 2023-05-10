@@ -47,3 +47,11 @@ export const requsetUpdateCoordinate = async (userId, data) => {
   );
   return response.data;
 };
+
+export const requestBlockUser = async (userId, data) => {
+  const response = await axiosInstance.post(
+    `${API_END_POINT}/block/${userId}`,
+    data,
+  );
+  return response.data;
+};

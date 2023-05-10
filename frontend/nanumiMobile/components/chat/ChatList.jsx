@@ -21,7 +21,7 @@ const ChatList = ({navigation}) => {
   useFocusEffect(
     useCallback(() => {
       refetch();
-    }, []),
+    }, [refetch]),
   );
 
   if (isLoading) return <Fallback />;

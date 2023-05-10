@@ -89,7 +89,7 @@ const DivideProduct = ({navigation, type, userId}) => {
   }, [data, error, isLoading, hasNextPage]);
 
   const content =
-    productList?.data?.pages?.flatMap(page => page.result.content) ?? [];
+    productList?.data?.pages?.flatMap(page => page?.result?.content) ?? [];
 
   if (error) return <ErrorModal handlePress={refetch} />;
   if (isLoading) return <Fallback />;

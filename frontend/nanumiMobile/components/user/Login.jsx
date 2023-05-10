@@ -79,17 +79,7 @@ const Login = () => {
             onChangeText={value => handleInputChange('password', value)}
           />
         </View>
-        <View>
-          <Text
-            style={{
-              fontFamily: FONTS.medium,
-              fontSize: SIZES.font,
-              color: COLORS.primary,
-              alignSelf: 'flex-end',
-            }}>
-            비밀번호를 잊으셨나요?
-          </Text>
-        </View>
+
         <Pressable
           style={{
             padding: SIZES.base * 2,
@@ -127,7 +117,7 @@ const Login = () => {
           </Text>
         </Pressable>
 
-        <View
+        {/* <View
           style={{
             marginVertical: SIZES.base * 2,
           }}>
@@ -164,7 +154,7 @@ const Login = () => {
               />
             </Pressable>
           </View>
-        </View>
+        </View> */}
       </View>
     </SafeAreaView>
   );

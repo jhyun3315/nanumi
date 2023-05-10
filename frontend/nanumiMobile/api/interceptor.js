@@ -50,7 +50,6 @@ axiosInstance.interceptors.response.use(
             access_token: response.data.accessToken,
             refresh_token: response.data.refreshToken,
           };
-          console.log('재발급', updateUser);
           await AsyncStorage.setItem('user', JSON.stringify(updateUser));
           axiosInstance.defaults.headers.common[
             'Authorization'
@@ -61,12 +60,10 @@ axiosInstance.interceptors.response.use(
         if (response.data.code === 400) {
           source.cancel('previous request cancelled');
           await AsyncStorage.removeItem('user');
-          console.log('리프레시도 만료');
           navigationRef.current?.navigate('Login');
           return Promise.reject(error);
         }
       } catch (error) {
-        console.log('토큰 재발급 실패', error);
         source.cancel('previous request cancelled');
         return Promise.reject(error);
       }

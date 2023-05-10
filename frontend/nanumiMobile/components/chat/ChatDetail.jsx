@@ -1,5 +1,5 @@
 import React, {useState, useCallback, useMemo, useEffect, useRef} from 'react';
-import {SafeAreaView} from 'react-native';
+import {Alert, SafeAreaView} from 'react-native';
 import {
   ChatHeader,
   ChatProductInfo,
@@ -24,13 +24,14 @@ import GlobalModal from '../modal/GlobalModal';
 import {useRecoilState} from 'recoil';
 import {userState} from '../../state/user';
 import {requestGetTop20ChatLog} from '../../api/chat';
+import {requestBlockUser} from '../../api/user';
 import {convertDate} from '../../util/formatDate';
 import {decodeJson} from './../../util/decodeBinaryData';
 import * as StompJs from '@stomp/stompjs';
-import {Client} from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
 import ErrorModal from '../modal/ErrorModal';
 import DataErrorModal from '../modal/DataErrorModal';
+import {showErrorAlert} from '../../ui/Alert';
 
 const ChatDetail = ({navigation, productId, chatRoomId, opponentId}) => {
   const {
@@ -47,12 +48,13 @@ const ChatDetail = ({navigation, productId, chatRoomId, opponentId}) => {
     ['product', productId],
     () => requestGetDetailProduct(productId),
   );
-  // watchposition으로 위도경도 변할때마다 백엔드에쪽에 위도경도 보낸다 이 때 return값을 확인.
 
   const {showModal, hideModal} = useModal();
   const [user] = useRecoilState(userState);
   const client = useRef(null);
   const [transformChatData, setTransformChatData] = useState([]);
+  // 차단 시 연결끊음, 연결이 끊어져있을 때는 메시지를 못보내도록
+  const [isDisconnect, setIsDisconnet] = useState(false);
 
   const bottomSheetModalRef = useRef(null);
   const snapPoints = useMemo(() => ['30%', '55%'], []);
@@ -81,6 +83,7 @@ const ChatDetail = ({navigation, productId, chatRoomId, opponentId}) => {
 
   const disconnect = () => {
     client.current.deactivate();
+    setIsDisconnet(true);
     console.log('연결 끊어짐');
   };
 
@@ -93,6 +96,7 @@ const ChatDetail = ({navigation, productId, chatRoomId, opponentId}) => {
         console.log('연결됨');
 
         subscribe();
+        isDisconnect(true);
       },
 
       onDisconnect: () => {
@@ -101,6 +105,22 @@ const ChatDetail = ({navigation, productId, chatRoomId, opponentId}) => {
     });
 
     client.current.activate();
+  };
+
+  const handleBlockUser = async () => {
+    const data = {
+      targetId: opponentId,
+    };
+    const response = await requestBlockUser(user.userId, data);
+    if (response.code === 200) {
+      disconnect();
+      hideModal();
+    } else if (response.code === 400) {
+      hideModal();
+      Alert.alert('존재하지 않는 유저입니다');
+    } else {
+      Alert.alert('알 수 없는 에러 발생');
+    }
   };
 
   const handleRefetch = () => {
@@ -127,7 +147,7 @@ const ChatDetail = ({navigation, productId, chatRoomId, opponentId}) => {
           content:
             '차단시 상대방과의 거래가 취소되고 서로의 게시글을 확인하거나 채팅을 할 수 없어요. 차단하실래요?',
           visible: true,
-          onConfirm: hideModal,
+          onConfirm: handleBlockUser,
           onCancel: hideModal,
         },
       });
@@ -181,7 +201,6 @@ const ChatDetail = ({navigation, productId, chatRoomId, opponentId}) => {
     } else {
       console.warn('STOMP client is not connected');
     }
-    // setMessages(GiftedChat.append(messages, newMessage));
   };
 
   const renderBackDrop = useCallback(props => {
@@ -237,10 +256,15 @@ const ChatDetail = ({navigation, productId, chatRoomId, opponentId}) => {
             <GiftedChat
               messages={transformChatData}
               onSend={newMessage => handleSend(newMessage)}
-              placeholder="메시지를 입력해주세요..."
+              placeholder={
+                isDisconnect
+                  ? '메시지를 보낼 수 없습니다'
+                  : '메시지를 입력해주세요...'
+              }
               user={{_id: user.userId}}
               renderBubble={renderBubble}
               renderSend={renderSend}
+              textInputProps={{editable: isDisconnect ? false : true}}
               scrollToBottom
               renderLoading={renderLoading}
             />

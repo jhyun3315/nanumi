@@ -68,7 +68,7 @@ const CategoryProduct = ({categoryKey, categoryName}) => {
     }));
   }, [data, error, isLoading, hasNextPage]);
 
-  const content = data?.pages.flatMap(page => page.result.content) ?? [];
+  const content = data?.pages.flatMap(page => page?.result?.content) ?? [];
 
   if (isError) return <ErrorModal handlePress={refetch} />;
   if (isLoading) return <Fallback />;

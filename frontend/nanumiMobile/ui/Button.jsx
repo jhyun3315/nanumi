@@ -41,7 +41,7 @@ export const RectButton = ({
     <Pressable
       style={{
         minWidth: minWidth,
-        backgroundColor: isDisable ? COLORS.opacityBlue : COLORS.blue,
+        backgroundColor: isDisable ? COLORS.disable : COLORS.violet,
         borderRadius: SIZES.extraLarge,
         padding: SIZES.small,
         ...props,
@@ -61,6 +61,37 @@ export const RectButton = ({
   );
 };
 
+export const DuplicateButton = ({
+  minWidth,
+  fontSize,
+  handlePress,
+  children,
+  isDisable,
+  ...props
+}) => {
+  return (
+    <Pressable
+      style={{
+        minWidth: minWidth,
+        backgroundColor: isDisable ? COLORS.opacityBlue : COLORS.blue,
+        borderRadius: SIZES.extraLarge,
+        padding: SIZES.small,
+        ...props,
+      }}
+      onPress={handlePress}
+      disabled={isDisable}>
+      <Text
+        style={{
+          fontFamily: FONTS.medium,
+          fontSize: fontSize,
+          color: COLORS.white,
+          textAlign: 'center',
+        }}>
+        {children}
+      </Text>
+    </Pressable>
+  );
+};
 export const CategoryButton = ({minWidth, handlePress}) => {
   return (
     <Pressable

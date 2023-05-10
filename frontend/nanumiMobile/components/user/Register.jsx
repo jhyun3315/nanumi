@@ -3,7 +3,7 @@ import {Text, SafeAreaView, View, Pressable, Alert} from 'react-native';
 import {COLORS, SIZES, FONTS} from '../../constants';
 import {useNavigation} from '@react-navigation/native';
 import {requestEmailDuplicateCheck} from '../../api/user';
-import {RectButton} from '../../ui/Button';
+import {DuplicateButton, RectButton} from '../../ui/Button';
 
 import UserTextInput from './UserTextInput';
 
@@ -116,13 +116,13 @@ const Register = () => {
               width={'75%'}
             />
 
-            <RectButton
+            <DuplicateButton
               minWidth={48}
               borderRadius={3}
               isDisable={!handleValidateEmail(userInfo.email)}
               handlePress={() => checkEmailDuplicate(userInfo.email)}>
               중복확인
-            </RectButton>
+            </DuplicateButton>
           </View>
           <Text
             style={{
