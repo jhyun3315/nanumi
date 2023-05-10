@@ -60,6 +60,7 @@ const ChatDetail = ({navigation, productId, chatRoomId, opponentId}) => {
   const snapPoints = useMemo(() => ['30%', '55%'], []);
 
   const subscribe = () => {
+    setIsDisconnet(false);
     client.current.subscribe(`/sub/chat/room/${chatRoomId}`, message => {
       const receivedChatTransform = decodeJson(message._binaryBody);
       setTransformChatData(prevChatData => {
@@ -94,9 +95,7 @@ const ChatDetail = ({navigation, productId, chatRoomId, opponentId}) => {
 
       onConnect: () => {
         console.log('연결됨');
-
         subscribe();
-        isDisconnect(true);
       },
 
       onDisconnect: () => {
@@ -237,6 +236,7 @@ const ChatDetail = ({navigation, productId, chatRoomId, opponentId}) => {
     }
   }, [chatLogData]);
 
+  console.log(isDisconnect);
   if (data?.code === 404)
     return <DataErrorModal handlePress={handleCloseAndBack} />;
   if (isLoading || chatLogIsLoading) return <Fallback />;
