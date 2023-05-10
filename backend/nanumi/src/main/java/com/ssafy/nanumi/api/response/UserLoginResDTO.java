@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 public class UserLoginResDTO {
     private long userId;
     private String nickname;
+    private String email;
     private String tier;
     private String userProfileUrl;
     private long addressId;
@@ -27,6 +28,7 @@ public class UserLoginResDTO {
         Address address = user.getAddress();
         this.userId = user.getId();
         this.nickname = user.getNickname();
+        this.email = user.getEmail();
         this.tier = user.getUserInfo().getTier();
         this.userProfileUrl = user.getProfileUrl();
         this.addressId = address.getId();
