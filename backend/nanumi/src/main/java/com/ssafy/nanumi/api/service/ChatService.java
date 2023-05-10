@@ -3,14 +3,17 @@ package com.ssafy.nanumi.api.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.nanumi.common.ChatMessageDTO;
+import com.ssafy.nanumi.common.ChatRoomInfoDTO;
 import com.ssafy.nanumi.config.response.CustomResponse;
 import com.ssafy.nanumi.config.response.ResponseService;
 import com.ssafy.nanumi.config.response.exception.CustomException;
 import com.ssafy.nanumi.config.response.exception.CustomExceptionStatus;
 import com.ssafy.nanumi.db.entity.ChatMessageEntity;
+import com.ssafy.nanumi.db.entity.ChatRoomEntity;
 import com.ssafy.nanumi.db.entity.Product;
 import com.ssafy.nanumi.db.entity.User;
 import com.ssafy.nanumi.db.repository.ChatRepository;
+import com.ssafy.nanumi.db.repository.ChatRoomRepository;
 import com.ssafy.nanumi.db.repository.ProductRepository;
 import com.ssafy.nanumi.db.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +23,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -32,11 +37,27 @@ public class ChatService {
     private final ProductRepository productRepository;
     private final ResponseService responseService;
     private final UserRepository userRepository;
+    private final ChatRoomEntity chatRoomEntity;
+    private final ChatRoomRepository chatRoomRepository;
 
 
     // TODO DTO 객체를 입력으로 받아서, 채팅 메시지를 저장하고 해당 채팅방에 전송한다.
     @Transactional
     public void CreateChat(ChatMessageDTO DTO) {
+
+        long user = DTO.getSender();
+
+        List<ChatRoomEntity> chatRoomEntities = chatRoomRepository.findAllByUserListContaining(user);
+        List<ChatRoomInfoDTO> chatRoomInfoDTOs = new ArrayList<>();
+
+
+        long opponentId = Arrays.stream(chatRoomEntity.getUserList())
+                .filter(id -> id != user)
+                .findFirst()
+                .orElse(0L);
+
+        // 상대방 정보를 UserRepository에서 가져오기 (MySQL)
+        User opponent = userRepository.findById(opponentId).orElse(null);
 
         // sender의 프로필 URL을 가져옵니다.
         User senderUser = userRepository.findById(DTO.getSender())
@@ -55,6 +76,7 @@ public class ChatService {
                 .message(DTO.getMessage())
                 //.profileUrl(profileUrl)
                 .sendTime(df.format(new Date()))
+                .opponentID(opponent.getId())
                 .build();
         chatRepository.save(chatEntity);
 
