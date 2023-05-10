@@ -1,10 +1,12 @@
 package com.ssafy.nanumi.api.controller;
 
 import com.ssafy.nanumi.api.request.AddressDTO;
+import com.ssafy.nanumi.api.request.TokenInfoDTO;
 import com.ssafy.nanumi.api.request.UserJoinDTO;
 import com.ssafy.nanumi.api.request.UserLoginDTO;
 import com.ssafy.nanumi.api.response.*;
 import com.ssafy.nanumi.api.service.UserService;
+import com.ssafy.nanumi.common.SearchPageReq;
 import com.ssafy.nanumi.config.response.CustomDataResponse;
 import com.ssafy.nanumi.config.response.CustomResponse;
 import com.ssafy.nanumi.config.response.ResponseService;
@@ -16,6 +18,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import javax.mail.MessagingException;
@@ -32,18 +37,30 @@ public class UserController {
     private final UserRepository userRepository;
     private final ResponseService responseService;
 
-    /* 로컬 로그인 (야매) */
-    @PostMapping("/users/login")
-    public CustomDataResponse login(@RequestBody UserLoginDTO userLoginDTO){
-       UserLoginResDTO userLoginResDTO = userService.login(userLoginDTO);
-       return responseService.getDataResponse(userLoginResDTO, RESPONSE_SUCCESS);
-    }
-
     /* 로컬 회원가입 */
     @PostMapping("/users/join")
     public CustomResponse join(@RequestBody UserJoinDTO userJoinDTO) {
         userService.join(userJoinDTO);
         return responseService.getSuccessResponse();
+    }
+
+    /* 로컬 로그인 */
+    @PostMapping("/users/login")
+    public CustomDataResponse login(@RequestBody UserLoginDTO userLoginDTO){
+        UserLoginResDTO userLoginResDTO = userService.login(userLoginDTO);
+        return responseService.getDataResponse(userLoginResDTO, RESPONSE_SUCCESS);
+    }
+
+    /* AT, RT 유효성 검사 */
+    @PostMapping(value="/users/isRTValid")
+    public ResponseEntity<TokenInfoResDTO> isRTValid(@RequestBody TokenInfoDTO request) throws Exception {
+        return new ResponseEntity<>(userService.isRTValid(request), HttpStatus.OK);
+    }
+
+    /* 권한에 대한 테스트 용 */
+    @PostMapping("/test")
+    public String test() {
+        return "success";
     }
 
     @GetMapping("/users/check/{email}")
@@ -70,7 +87,7 @@ public class UserController {
 
 
     /* 회원 정보 조회 */
-    @GetMapping("users/{user-id}")
+    @GetMapping("/users/{user-id}")
     public CustomDataResponse<UserDetailDTO> findDetailUser(@PathVariable("user-id") Long userId) {
         return responseService.getDataResponse(userService.findDetailUser(userId), RESPONSE_SUCCESS);
     }
@@ -115,19 +132,46 @@ public class UserController {
 
     /* 매칭 목록 (현재 진행중 "나눔" 목록) */
     @GetMapping("/users/matches/{user-id}")
-    public CustomDataResponse<Page<ProductAllDTO>> getMatchingProduct(@PathVariable("user-id") Long userId, @RequestParam("page") Integer page){
+    public CustomDataResponse<Page<ProductAllDTO>> getMatchProduct(@PathVariable("user-id") Long userId, @RequestParam("page") Integer page){
         User user = userRepository.findById(userId)
                 .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_USER));
-        PageRequest pageRequest = PageRequest.of(page, 6);
+
+        SearchPageReq searchPageReq = new SearchPageReq(page);
+        PageRequest pageRequest = PageRequest.of(searchPageReq.getPageIndex(),
+                searchPageReq.getPageSizeForProduct(),
+                Sort.by(searchPageReq.getSortStdForProduct()).descending()
+        );
+
+        return responseService.getDataResponse(userService.getMatchProduct(user, pageRequest),RESPONSE_SUCCESS);
+    }
+
+    /* 매칭 중인 상품 목록 조회 */
+    @GetMapping("/users/matching/{user-id}")
+    public CustomDataResponse<Page<ProductAllDTO>> getMatchingeProduct(@PathVariable("user-id") Long userId, @RequestParam("page") Integer page ){
+        User user = userRepository.findById(userId)
+                .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_USER));
+
+        SearchPageReq searchPageReq = new SearchPageReq(page);
+        PageRequest pageRequest = PageRequest.of(searchPageReq.getPageIndex(),
+                searchPageReq.getPageSizeForProduct(),
+                Sort.by(searchPageReq.getSortStdForProduct()).descending()
+        );
+
         return responseService.getDataResponse(userService.getMatchingProduct(user, pageRequest),RESPONSE_SUCCESS);
     }
 
     /* 나눔 받은 상품 목록 조회 */
-    @GetMapping("users/given/{user-id}")
+    @GetMapping("/users/given/{user-id}")
     public CustomDataResponse<Page<ProductAllDTO>> getGivenProduct(@PathVariable("user-id") Long userId, @RequestParam("page") Integer page){
         User user = userRepository.findById(userId)
                 .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_USER));
-        PageRequest pageRequest = PageRequest.of(page, 6);
+
+        SearchPageReq searchPageReq = new SearchPageReq(page);
+        PageRequest pageRequest = PageRequest.of(searchPageReq.getPageIndex(),
+                searchPageReq.getPageSizeForProduct(),
+                Sort.by(searchPageReq.getSortStdForProduct()).descending()
+        );
+
         return responseService.getDataResponse(userService.getGivenProduct(user, pageRequest), RESPONSE_SUCCESS);
     }
 }

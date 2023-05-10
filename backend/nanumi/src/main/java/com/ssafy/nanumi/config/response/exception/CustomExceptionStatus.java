@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 public enum CustomExceptionStatus {
 
     /* common error */
+    REQUEST_LOGIN(false, 400, "로그인을 다시 하세요."),
     REQUEST_ERROR(false, 400, "잘못된 요청입니다."),
     RESPONSE_EMAIL_EXISTED(false, 400,"이미 존재하는 이메일 입니다."),
     NOT_MATCHED_PASSWORD(false, 400,"비밀번호가 올바르지 않습니다."),
@@ -21,7 +22,11 @@ public enum CustomExceptionStatus {
     NOT_FOUND_PRODUCT(false, 404, "상품을 찾을 수 없습니다." ),
     NOT_FOUND_CATEGORY(false, 404, "카테고리를 찾을 수 없습니다."),
     NOT_FOUND_ADDRESS(false, 404, "주소를 찾을 수 없습니다."),
+    NOT_SUPPORTED_FORMAT(false, 404, "지원하지 않는 format 입니다."),
+
+    NOT_FOUND_CHAT_ROOM(false,404, "Not found chat room"),
     ;
+
 
     private final boolean isSuccess;
     private final int code;

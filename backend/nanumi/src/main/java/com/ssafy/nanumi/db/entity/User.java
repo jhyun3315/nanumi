@@ -9,9 +9,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Builder
 @Getter
+@Setter
 @Table(name="users")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class User extends BaseTimeEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,6 +36,10 @@ public class User extends BaseTimeEntity {
     @ColumnDefault("0")
     @Column(name="is_deleted", columnDefinition = "TINYINT", nullable = false)
     private boolean isDeleted;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @Builder.Default
+    private List<Authority> tiers = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="address_id")
@@ -74,5 +81,14 @@ public class User extends BaseTimeEntity {
     public void updateUserInfo(String nickname, String profileUrl){
         this.profileUrl = profileUrl;
         this.nickname = nickname;
+    }
+
+    public void setRoles(List<Authority> tier) {
+        this.tiers = tier;
+        tier.forEach(o -> o.setUser(this));
+    }
+
+    public String getProfileUrl() {
+        return profileUrl;
     }
 }

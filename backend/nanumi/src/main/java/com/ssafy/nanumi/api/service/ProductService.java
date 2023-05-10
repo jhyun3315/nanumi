@@ -67,7 +67,7 @@ public class ProductService {
         categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new CustomException(CustomExceptionStatus.NOT_FOUND_CATEGORY));
         Long addressId = user.getAddress().getId();
-        return productRepository.findAllCategoryProuduct(addressId,categoryId, pageRequest);
+        return productRepository.findAllCategoryProduct(addressId,categoryId, pageRequest);
 }
 
     public void createProduct(MultipartFile[] images,String name,String content,Long categoryId, User user) throws IOException {
@@ -133,29 +133,5 @@ public class ProductService {
                 .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_PRODUCT));
         product.delete();
     }
-    public MatchSuccessDto applicationProduct(Long productId, User user) {
-        Product product = productRepository.findById(productId)
-                .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_PRODUCT));
-        if ((long) product.getMatches().size() < 3){
-            Match match = Match.builder()
-                    .isMatching(false)
-                    .product(product)
-                    .user(user)
-                    .build();
-            Match newMatch = matchRepository.save(match);
-            return MatchSuccessDto.builder()
-                    .result(true)
-                    .resultMessage("신청 되었습니다.")
-                    .matchId(newMatch.getId())
-                    .build();
-        }
-        else {
-            product.setClosed(true);
-            return MatchSuccessDto.builder()
-                    .result(false)
-                    .resultMessage("인원이 다 찼습니다.")
-                    .matchId(null)
-                    .build();
-        }
-    }
+
 }

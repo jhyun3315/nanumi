@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: org.elasticsearch:elasticsearch-geo:7.17.9">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.elasticsearch/elasticsearch-geo/7.17.9/58f1011a9e5f0b9f1218d806ae129b93b83366ab/elasticsearch-geo-7.17.9.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.elasticsearch/elasticsearch-geo/7.17.9/388e59d69e033d5c89508c3c500a39379b239630/elasticsearch-geo-7.17.9-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
