@@ -88,6 +88,7 @@ public class ChatRoomService {
             if (opponent != null) {
                 chatRoomInfoDTO.setOpponentNickname(opponent.getNickname());
                 chatRoomInfoDTO.setOpponentProfileImage(opponent.getProfileUrl());
+                chatRoomInfoDTO.setOpponentId(opponentId);
             } else {
                 System.err.println("Opponent not found with ID: " + opponentId);
                 continue; // 다음 chatRoomEntity로 이동
@@ -96,7 +97,6 @@ public class ChatRoomService {
             // 마지막 메시지 정보 가져오기
             List<ChatMessageEntity> lastMessages = chatRepository.findTop1ByRoomIdOrderBySendTimeDesc(chatRoomEntity.getChatroomSeq());
             ChatMessageEntity lastMessage = lastMessages.isEmpty() ? null : lastMessages.get(0);
-
             chatRoomInfoDTO.setChatRoomId(chatRoomEntity.getChatroomSeq());
             chatRoomInfoDTO.setProductId(chatRoomEntity.getProductId());
             if (lastMessage != null) {
