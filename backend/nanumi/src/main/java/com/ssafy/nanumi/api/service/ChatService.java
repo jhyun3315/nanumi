@@ -106,7 +106,7 @@ public class ChatService {
     @Transactional
     public CustomResponse chatEndMatch(Long productId) {
         Product product = productRepository.findById(productId)
-                .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_USER));
+                .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_PRODUCT));
         product.matchedEnd();
         return responseService.getSuccessResponse();
     }
