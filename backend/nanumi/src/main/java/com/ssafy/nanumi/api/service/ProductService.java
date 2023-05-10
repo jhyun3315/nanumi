@@ -87,18 +87,6 @@ public class ProductService {
                 .build();
         Product createProduct = productRepository.save(product);
         s3Service.imageSave(images, createProduct);
-//        for (MultipartFile file : images) {
-//            String s3FileName = UUID.randomUUID() + "-" + file.getOriginalFilename();
-//            ObjectMetadata objMeta = new ObjectMetadata();
-//            objMeta.setContentLength(file.getInputStream().available());
-//            amazonS3.putObject(bucket, s3FileName, file.getInputStream(), objMeta);
-//            String imageString = amazonS3.getUrl(bucket, s3FileName).toString();
-//            ProductImage productImage = ProductImage.builder()
-//                    .imageUrl(imageString)
-//                    .product(createProduct)
-//                    .build();
-//            productImageRepository.save(productImage);
-//        }
     }
 
     public void updateProduct(Long productId,
@@ -113,22 +101,11 @@ public class ProductService {
 
         List<ProductImage> beforeImages = product.getProductImages();
         productImageRepository.deleteAll(beforeImages);
-
-        for (MultipartFile file : images) {
-            String s3FileName = UUID.randomUUID() + "-" + file.getOriginalFilename();
-            ObjectMetadata objMeta = new ObjectMetadata();
-            objMeta.setContentLength(file.getInputStream().available());
-            amazonS3.putObject(bucket, s3FileName, file.getInputStream(), objMeta);
-            String imageString = amazonS3.getUrl(bucket, s3FileName).toString();
-            ProductImage productImage = ProductImage.builder()
-                    .imageUrl(imageString)
-                    .product(product)
-                    .build();
-            productImageRepository.save(productImage);
-        }
+        s3Service.imageSave(images, product);
         product.setName(name);
         product.setContent(content);
         product.setCategory(category);
+        s3Service.imageSave(images, product);
 
     }
 

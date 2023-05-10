@@ -40,6 +40,11 @@ public class S3Service {
             saveDBImage(imageString, product);
         }
     }
+    public String stringImage(MultipartFile image) throws IOException {
+        checkSupportedformat(image);
+        MultipartFile resizeImageFile = resizeImageFile(image);
+        return saveS3Image(resizeImageFile);
+    }
 
     private void checkSupportedformat(MultipartFile file) {
         String originFilename = Objects.requireNonNull(file.getOriginalFilename()).replaceAll(" ", "");
@@ -70,7 +75,7 @@ public class S3Service {
         int originWidth = inputImage.getWidth();
         int originHeight = inputImage.getHeight();
         // 변경할 가로 길이
-        int newWidth = 500;
+        int newWidth = 100;
         if (originWidth > newWidth) {
             // 기존 이미지 비율을 유지하여 세로 길이 설정
             int newHeight = (originHeight * newWidth) / originWidth;
