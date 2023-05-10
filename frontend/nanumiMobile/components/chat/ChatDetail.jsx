@@ -42,6 +42,7 @@ const ChatDetail = ({navigation, productId, chatRoomId}) => {
     requestGetTop20ChatLog(chatRoomId),
   );
 
+  console.log(chatLogData);
   const {data, isLoading, error, refetch} = useQuery(
     ['product', productId],
     () => requestGetDetailProduct(productId),

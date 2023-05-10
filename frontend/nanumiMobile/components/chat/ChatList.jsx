@@ -1,6 +1,6 @@
 import React, {useCallback} from 'react';
 import {FlatList, SafeAreaView} from 'react-native';
-import {COLORS, assets} from '../../constants';
+import {COLORS} from '../../constants';
 import {ChatListItem} from './ChatListInfo';
 import {useQuery} from '@tanstack/react-query';
 import {useRecoilState} from 'recoil';
@@ -18,7 +18,6 @@ const ChatList = ({navigation}) => {
     () => requestGetMyChatRoom(user.userId),
   );
 
-  console.log('채팅방조회', data);
   useFocusEffect(
     useCallback(() => {
       refetch();

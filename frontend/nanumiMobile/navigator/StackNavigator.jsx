@@ -17,13 +17,14 @@ import BottomTabs from './BottomTabs';
 import ProfileUpdateScreen from '../screens/ProfileUpdateScreen';
 import CategoryProductScreen from '../screens/CategoryProductScreen';
 import FocusedStatusBar from '../ui/FocusedStatusBar';
-import {NavigationContainer} from '@react-navigation/native';
 import PostUpdateFormScreen from '../screens/PostUpdateFormScreen';
 import OtherProfileScreen from '../screens/OtherProfileScreen';
+import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {COLORS} from '../constants';
 
 const Stack = createNativeStackNavigator();
+export const NavigationContext = React.createContext(null);
 
 const StackNavigator = () => {
   return (
