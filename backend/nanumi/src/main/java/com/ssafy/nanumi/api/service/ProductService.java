@@ -67,7 +67,7 @@ public class ProductService {
         categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new CustomException(CustomExceptionStatus.NOT_FOUND_CATEGORY));
         Long addressId = user.getAddress().getId();
-        return productRepository.findAllCategoryProuduct(addressId,categoryId, pageRequest);
+        return productRepository.findAllCategoryProduct(addressId,categoryId, pageRequest);
 }
 
     public void createProduct(MultipartFile[] images,String name,String content,Long categoryId, User user) throws IOException {

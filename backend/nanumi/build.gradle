@@ -77,6 +77,19 @@ dependencies {
 	// Retrofit2
 	implementation 'com.squareup.retrofit2:retrofit:2.9.0'
 	implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+
+	// Redis
+//	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+//	implementation 'org.redisson:redisson-spring-boot-starter:3.17.4'
+	implementation ('org.springframework.boot:spring-boot-starter-data-redis') {
+		exclude group: 'io.lettuce', module: 'lettuce-core'
+	}
+	implementation ('org.redisson:redisson-spring-boot-starter:3.17.4') {
+		exclude group: 'io.lettuce', module: 'lettuce-core'
+	}
+
+
+
 }
 
 tasks.named('test') {
