@@ -84,38 +84,10 @@ const ChatDetail = ({navigation, productId, chatRoomId}) => {
   };
 
   const connect = () => {
-    // client.current = new Client({
-    //   brokerURL: 'ws://172.30.1.18:8080/ws-stomp',
-
-    //   connectHeaders: {
-    //     Authorization: `Bearer ${user.access_token}`,
-    //   },
-
-    //   debug: str => {
-    //     console.log(new Date(), str);
-    //   },
-
-    //   onConnect: () => {
-    //     console.log('연결됨');
-
-    //     subscribe();
-    //   },
-    // });
     client.current = new StompJs.Client({
-      webSocketFactory: () => new SockJS(`http://172.30.1.18:8080/ws-stomp`),
-      // webSocketFactory: () =>
-      //   new SockJS(`https://k8b103.p.ssafy.io/api/ws-stomp`),
-      connectHeaders: {
-        Authorization: `Bearer ${user.access_token}`,
-      },
+      webSocketFactory: () =>
+        new SockJS(`https://k8b103.p.ssafy.io/api/ws-stomp`),
 
-      debug: str => {
-        console.log(new Date(), str);
-      },
-
-      onWebSocketClose: frame => {
-        console.log('frame', frame);
-      },
       onConnect: () => {
         console.log('연결됨');
 

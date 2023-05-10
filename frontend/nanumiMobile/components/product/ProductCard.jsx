@@ -11,14 +11,14 @@ const ProductCard = ({data}) => {
     <View style={styles.container}>
       <View style={styles.imageContainer}>
         <Image
-          source={{uri: data.productImageUrl}}
+          source={{uri: data?.productImageUrl}}
           resizeMode="stretch"
           style={styles.image}
         />
       </View>
       <SubInfo />
       <View style={styles.textContainer}>
-        <ProductTitle title={data.name} titlSize={SIZES.large} />
+        <ProductTitle title={data?.name} titlSize={SIZES.large} />
         <View style={styles.priceButtonContainer}>
           <ProductPrice />
           <RectButton

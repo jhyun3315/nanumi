@@ -29,7 +29,6 @@ const Login = () => {
       password: userInfo.password,
     };
     const response = await requestLogin(data);
-    console.log(response);
     if (response.code === 200) {
       console.log(response);
       setUser(response.result);
