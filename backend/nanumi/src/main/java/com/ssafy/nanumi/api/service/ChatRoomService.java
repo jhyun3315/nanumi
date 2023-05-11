@@ -3,6 +3,8 @@ package com.ssafy.nanumi.api.service;
 import com.ssafy.nanumi.api.response.MatchInterface;
 import com.ssafy.nanumi.common.ChatRoomInfoDTO;
 import com.ssafy.nanumi.common.CreateChatRoomDTO;
+import com.ssafy.nanumi.config.response.exception.CustomException;
+import com.ssafy.nanumi.config.response.exception.CustomExceptionStatus;
 import com.ssafy.nanumi.db.entity.*;
 import com.ssafy.nanumi.db.repository.*;
 import lombok.RequiredArgsConstructor;
@@ -41,7 +43,7 @@ public class ChatRoomService {
         // Check if the chatroom already exists
         List<ChatRoomEntity> existingChatRooms = chatRoomRepository.findByOpponentIdAndProductId(receiveUser, productId);
         if (!existingChatRooms.isEmpty()) {
-            return new ResponseEntity<>("Chat room already exists", HttpStatus.BAD_REQUEST);
+            throw new CustomException(CustomExceptionStatus.NOT_FOUND_CHAT_ROOM);
         }
 
         long[] users = new long[]{sendUser, receiveUser}; // 나랑 상대방 배열에 저장
