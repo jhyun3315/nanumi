@@ -46,6 +46,7 @@ public class ChatRoomService {
 //        if (existingMatch.isPresent()) {
 //            return new ResponseEntity<>(Collections.singletonMap("error", "Chat room already exists"), HttpStatus.OK);
 //        }
+        //test
 
         long[] users = new long[]{sendUser, receiveUser};
 
