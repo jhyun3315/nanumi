@@ -23,5 +23,6 @@ public class ChatMessageEntity {
     private long sender;
     private String message;
     private String sendTime;
+    private Long opponentID;
 
 }

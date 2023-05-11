@@ -43,6 +43,7 @@ public class UserService {
     private final ProductRepository productRepository;
     private final LoginProviderRepository loginProviderRepository;
     private final EmailService emailService;
+    private final S3Service s3Service;
     private final JwtProvider jwtProvider;
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
@@ -232,11 +233,7 @@ public class UserService {
             userNickname = nickname;
         }
         if(profileImg != null) {
-            String s3FileName = UUID.randomUUID() + "-" + profileImg.getOriginalFilename();
-            ObjectMetadata objMeta = new ObjectMetadata();
-            objMeta.setContentLength(profileImg.getInputStream().available());
-            amazonS3.putObject(bucket, s3FileName, profileImg.getInputStream(), objMeta);
-            imageString = amazonS3.getUrl(bucket, s3FileName).toString();
+            imageString = s3Service.stringImage(profileImg);
         }
         user.updateUserInfo(userNickname, imageString);
         return new UserSimpleDTO(user);

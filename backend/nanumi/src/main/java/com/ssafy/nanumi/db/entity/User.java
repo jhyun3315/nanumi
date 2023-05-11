@@ -88,4 +88,7 @@ public class User extends BaseTimeEntity {
         tier.forEach(o -> o.setUser(this));
     }
 
+    public String getProfileUrl() {
+        return profileUrl;
+    }
 }

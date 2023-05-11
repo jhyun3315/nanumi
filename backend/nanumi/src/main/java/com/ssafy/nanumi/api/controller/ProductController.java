@@ -1,8 +1,10 @@
 package com.ssafy.nanumi.api.controller;
 
+import com.ssafy.nanumi.NanumiApplication;
 import com.ssafy.nanumi.api.response.MatchSuccessDto;
 import com.ssafy.nanumi.api.response.ProductAllDTO;
 import com.ssafy.nanumi.api.response.ProductDetailDTO;
+import com.ssafy.nanumi.api.service.NanumService;
 import com.ssafy.nanumi.api.service.ProductService;
 import com.ssafy.nanumi.common.SearchPageReq;
 import com.ssafy.nanumi.config.response.CustomDataResponse;
@@ -32,6 +34,7 @@ public class ProductController {
     private final ProductService productService;
     private final UserRepository userRepository;
     private final ResponseService responseService;
+    private final NanumService nanumService;
 
     /* 검색어가 없는 경우 전체 조회 */
     @GetMapping("/search/{page}/{user-id}")
@@ -118,6 +121,7 @@ public class ProductController {
     public CustomDataResponse<MatchSuccessDto> applicationProduct(@PathVariable("user-id") long userId, @PathVariable("product-id") long productId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_USER));
-        return responseService.getDataResponse(productService.applicationProduct(productId, user),RESPONSE_SUCCESS);
+        return responseService.getDataResponse(nanumService.registerNanum(productId, user),RESPONSE_SUCCESS);
     }
+
 }

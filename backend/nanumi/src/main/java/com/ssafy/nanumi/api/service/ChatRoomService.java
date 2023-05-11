@@ -1,14 +1,18 @@
 package com.ssafy.nanumi.api.service;
 
+import com.ssafy.nanumi.api.response.MatchInterface;
 import com.ssafy.nanumi.common.ChatRoomInfoDTO;
 import com.ssafy.nanumi.common.CreateChatRoomDTO;
 import com.ssafy.nanumi.db.entity.ChatMessageEntity;
 import com.ssafy.nanumi.db.entity.ChatRoomEntity;
+import com.ssafy.nanumi.db.entity.Match;
 import com.ssafy.nanumi.db.entity.User;
 import com.ssafy.nanumi.db.repository.ChatRepository;
 import com.ssafy.nanumi.db.repository.ChatRoomRepository;
+import com.ssafy.nanumi.db.repository.MatchRepository;
 import com.ssafy.nanumi.db.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
@@ -17,10 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -28,7 +29,11 @@ public class ChatRoomService {
     private final ChatRoomRepository chatRoomRepository;
     private final SimpMessageSendingOperations messageTemplate;
     private final ChatRepository chatRepository;
+    @Autowired
+    private UserRepository userRepository;
 
+    @Autowired
+    private MatchRepository matchRepository;
     //TODO 채팅방 생성 메서드
     @Transactional
     public ResponseEntity<?> CreateChatRoom(CreateChatRoomDTO DTO) {
@@ -37,8 +42,8 @@ public class ChatRoomService {
         long productId = DTO.getProductId();
 
         // 이미 존재하는 채팅방인지 확인
-        ChatRoomEntity existingChatRoom = chatRoomRepository.findByUserListContainingAndProductId(sendUser, productId);
-        if (existingChatRoom != null) {
+        Optional<Match> existingMatch = matchRepository.findMatchByProductAndUsers(productId, sendUser, receiveUser);
+        if (existingMatch.isPresent()) {
             return new ResponseEntity<>(Collections.singletonMap("error", "Chat room already exists"), HttpStatus.OK);
         }
 
@@ -78,21 +83,24 @@ public class ChatRoomService {
                     .findFirst()
                     .orElse(0L);
 
-            // 상대방 정보를 chatRoomEntity에서 가져오기
-            String opponentNickname = chatRoomEntity.getOpponentNickname();
-            String opponentProfileImage = chatRoomEntity.getOpponentProfileImage();
+            // 상대방 정보를 UserRepository에서 가져오기 (MySQL)
+            User opponent = userRepository.findById(opponentId).orElse(null);
+            if (opponent != null) {
+                chatRoomInfoDTO.setOpponentNickname(opponent.getNickname());
+                chatRoomInfoDTO.setOpponentProfileImage(opponent.getProfileUrl());
+                chatRoomInfoDTO.setOpponentId(opponentId);
+            } else {
+                System.err.println("Opponent not found with ID: " + opponentId);
+                continue; // 다음 chatRoomEntity로 이동
+            }
 
             // 마지막 메시지 정보 가져오기
             List<ChatMessageEntity> lastMessages = chatRepository.findTop1ByRoomIdOrderBySendTimeDesc(chatRoomEntity.getChatroomSeq());
             ChatMessageEntity lastMessage = lastMessages.isEmpty() ? null : lastMessages.get(0);
-
             chatRoomInfoDTO.setChatRoomId(chatRoomEntity.getChatroomSeq());
-            chatRoomInfoDTO.setOpponentNickname(opponentNickname);
-            chatRoomInfoDTO.setOpponentProfileImage(opponentProfileImage);
             chatRoomInfoDTO.setProductId(chatRoomEntity.getProductId());
             if (lastMessage != null) {
                 chatRoomInfoDTO.setLastMessage(lastMessage.getMessage());
-                //chatRoomInfoDTO.setLastMessageTime(LocalDateTime.parse(lastMessage.getSendTime()));
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd a hh:mm ss:SSS");
                 chatRoomInfoDTO.setLastMessageTime(LocalDateTime.parse(lastMessage.getSendTime(), formatter));
             }
@@ -101,7 +109,6 @@ public class ChatRoomService {
         }
 
         return chatRoomInfoDTOs;
-
     }
 
 
