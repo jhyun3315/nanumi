@@ -37,14 +37,21 @@ public class BlacklistService {
         User target = userRepository.findById(blockDTO.getTargetId())
                 .orElseThrow(() -> new CustomException(NOT_FOUND_USER));
 
-        // 사용자 차단
-        Blacklist blacklist = Blacklist.builder()
-                .blocker(blocker)
-                .target(target)
-                .isBlocked(true)
-                .build();
+        // 차단 목록 조회
+        boolean checkBlacklist = blacklistRepository.findByBlockIdAndTargetId(blockerId, blockDTO.getTargetId()).isEmpty();
 
-        blacklistRepository.save(blacklist);
+        if (checkBlacklist) { // 차단한적 없는 경우에만
+            // 사용자 차단
+            Blacklist blacklist = Blacklist.builder()
+                    .blocker(blocker)
+                    .target(target)
+                    .isBlocked(true)
+                    .build();
+
+            blacklistRepository.save(blacklist);
+        } else {
+            throw new CustomException(EXIST_BLACKLIST);
+        }
     }
 
     /* 사용자 차단 해제 */
