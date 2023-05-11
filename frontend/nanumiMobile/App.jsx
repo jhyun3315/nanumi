@@ -11,8 +11,8 @@ import {
 const queryClient = new QueryClient();
 const App = () => {
   useEffect(() => {
-    requestUserPermission();
-    NotificationListener();
+    // requestUserPermission();
+    // NotificationListener();
   }, []);
   // useEffect(() => {
   //   const isUser = async () => {

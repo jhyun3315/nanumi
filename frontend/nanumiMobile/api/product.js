@@ -112,9 +112,12 @@ export const requestGetMatchingUsers = async (productId, userId) => {
 };
 
 // 채팅창에서 매칭 ID 가져오기
-export const requestGetMatchingId = async (productId, userId, receiverId) => {
+export const requestGetMatchingId = async (opponentId, productId, userId) => {
+  console.log('productId', productId);
+  console.log('userId', userId);
+  console.log('사애', opponentId);
   const response = await axiosInstance.get(
-    `${API_END_POINT}/matches/${productId}/${userId}/${receiverId}`,
+    `${API_END_POINT}/matches/${opponentId}/${productId}/${userId}`,
   );
   return response.data;
 };

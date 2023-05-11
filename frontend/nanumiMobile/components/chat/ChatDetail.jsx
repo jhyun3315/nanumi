@@ -68,15 +68,15 @@ const ChatDetail = ({
     () => requestGetDetailProduct(productId),
   );
 
-  // const {
-  //   data: mathingData,
-  //   isLoading: mathingLoading,
-  //   error: mathingError,
-  //   refetch: mathingRefetch,
-  // } = useQuery(['matchId', productId, user.userId, opponentId], () =>
-  //   requestGetMatchingId(productId, user.userId, opponentId),
-  // );
-  // console.log(mathingData);
+  const {
+    data: mathingData,
+    isLoading: mathingLoading,
+    error: mathingError,
+    refetch: mathingRefetch,
+  } = useQuery(['matchId', productId, user.userId, opponentId], () =>
+    requestGetMatchingId(opponentId, productId, user.userId),
+  );
+  console.log(mathingData);
 
   const subscribe = () => {
     if (client.current) {
