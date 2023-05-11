@@ -91,7 +91,7 @@ public class SecurityConfig {
 
                         // JSON 객체 생성
                         JSONObject jsonResponse = new JSONObject();
-                        jsonResponse.put("code", 403);
+                        jsonResponse.put("code", 401);
                         jsonResponse.put("message", "인증되지 않은 사용자입니다.");
 
                         // JSON 객체를 문자열로 변환하고 응답에 쓰기
