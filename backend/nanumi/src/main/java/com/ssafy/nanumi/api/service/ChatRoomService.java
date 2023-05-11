@@ -3,14 +3,10 @@ package com.ssafy.nanumi.api.service;
 import com.ssafy.nanumi.api.response.MatchInterface;
 import com.ssafy.nanumi.common.ChatRoomInfoDTO;
 import com.ssafy.nanumi.common.CreateChatRoomDTO;
-import com.ssafy.nanumi.db.entity.ChatMessageEntity;
-import com.ssafy.nanumi.db.entity.ChatRoomEntity;
-import com.ssafy.nanumi.db.entity.Match;
-import com.ssafy.nanumi.db.entity.User;
-import com.ssafy.nanumi.db.repository.ChatRepository;
-import com.ssafy.nanumi.db.repository.ChatRoomRepository;
-import com.ssafy.nanumi.db.repository.MatchRepository;
-import com.ssafy.nanumi.db.repository.UserRepository;
+import com.ssafy.nanumi.config.response.exception.CustomException;
+import com.ssafy.nanumi.config.response.exception.CustomExceptionStatus;
+import com.ssafy.nanumi.db.entity.*;
+import com.ssafy.nanumi.db.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -34,21 +30,23 @@ public class ChatRoomService {
 
     @Autowired
     private MatchRepository matchRepository;
+
+    @Autowired
+    BlacklistRepository blacklistRepository;
     //TODO 채팅방 생성 메서드
     @Transactional
     public ResponseEntity<?> CreateChatRoom(CreateChatRoomDTO DTO) {
-        long sendUser = DTO.getSendUser();
-        long receiveUser = DTO.getOpponentId();
-        long productId = DTO.getProductId();
+        long sendUser = DTO.getSendUser(); // 나 자신
+        long receiveUser = DTO.getOpponentId(); // 상대방
+        long productId = DTO.getProductId(); // 상품 아이디
 
-        // 이미 존재하는 채팅방인지 확인
-//        Optional<Match> existingMatch = matchRepository.findMatchByProductAndUsers(productId, sendUser, receiveUser);
-//        if (existingMatch.isPresent()) {
-//            return new ResponseEntity<>(Collections.singletonMap("error", "Chat room already exists"), HttpStatus.OK);
-//        }
-        //test
+        // Check if the chatroom already exists
+        List<ChatRoomEntity> existingChatRooms = chatRoomRepository.findByOpponentIdAndProductId(receiveUser, productId);
+        if (!existingChatRooms.isEmpty()) {
+            throw new CustomException(CustomExceptionStatus.NOT_FOUND_CHAT_ROOM);
+        }
 
-        long[] users = new long[]{sendUser, receiveUser};
+        long[] users = new long[]{sendUser, receiveUser}; // 나랑 상대방 배열에 저장
 
         try {
             ChatRoomEntity chatRoomEntity = ChatRoomEntity.builder()
@@ -83,6 +81,11 @@ public class ChatRoomService {
                     .filter(id -> id != user)
                     .findFirst()
                     .orElse(0L);
+
+            // 차단 목록 true/ false 리턴
+            List<Blacklist> blockedUsers = blacklistRepository.findByBlockerIdAndIsBlockedTrue(user);
+            boolean isOpponentBlocked = blockedUsers.stream().anyMatch(blacklist -> blacklist.getTarget().getId() == opponentId);
+            chatRoomInfoDTO.setBlocked(isOpponentBlocked);
 
             // 상대방 정보를 UserRepository에서 가져오기 (MySQL)
             User opponent = userRepository.findById(opponentId).orElse(null);

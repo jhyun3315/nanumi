@@ -102,6 +102,7 @@ public class ProductService {
             productImageRepository.save(productImage);
         }
     }
+
     public void updateProduct(Long productId,
                               MultipartFile[] images,
                               String name,
