@@ -42,10 +42,11 @@ public class ChatRoomService {
         long productId = DTO.getProductId();
 
         // 이미 존재하는 채팅방인지 확인
-        Optional<Match> existingMatch = matchRepository.findMatchByProductAndUsers(productId, sendUser, receiveUser);
-        if (existingMatch.isPresent()) {
-            return new ResponseEntity<>(Collections.singletonMap("error", "Chat room already exists"), HttpStatus.OK);
-        }
+//        Optional<Match> existingMatch = matchRepository.findMatchByProductAndUsers(productId, sendUser, receiveUser);
+//        if (existingMatch.isPresent()) {
+//            return new ResponseEntity<>(Collections.singletonMap("error", "Chat room already exists"), HttpStatus.OK);
+//        }
+        //test
 
         long[] users = new long[]{sendUser, receiveUser};
 
