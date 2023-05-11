@@ -1,4 +1,4 @@
-import React, {useRef} from 'react';
+import React from 'react';
 import ProductDetailScreen from '../screens/ProductDetailScreen';
 import SearchScreen from '../screens/SearchScreen';
 import LoginScreen from './../screens/LoginScreen';
@@ -6,7 +6,6 @@ import RegisterScreen from '../screens/RegisterScreen';
 import PostCreateFormScreen from '../screens/PostCreateFormScreen';
 import ChatDetailScreen from '../screens/ChatDetailScreen';
 import MapScreen from '../screens/MapScreen';
-import ProfileToChatScreen from '../screens/ProfileToChatScreen';
 import BlockUserScreen from '../screens/BlockUserScreen';
 import MatchingProductScreen from '../screens/MatchingProductScreen';
 import DivideProductScreen from '../screens/DivideProductScreen';
@@ -48,7 +47,6 @@ const StackNavigator = () => {
         <Stack.Screen name="Register" component={RegisterScreen} />
         <Stack.Screen name="ChatDetail" component={ChatDetailScreen} />
         <Stack.Screen name="Map" component={MapScreen} />
-        <Stack.Screen name="ProfileToChat" component={ProfileToChatScreen} />
         <Stack.Screen name="BlockUser" component={BlockUserScreen} />
         <Stack.Screen name="Review" component={ReviewScreen} />
         <Stack.Screen name="DivideProduct" component={DivideProductScreen} />
