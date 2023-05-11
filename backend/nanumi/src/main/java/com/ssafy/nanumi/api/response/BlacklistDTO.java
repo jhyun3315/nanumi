@@ -11,12 +11,14 @@ import lombok.Setter;
 public class BlacklistDTO {
 
     private long id;
+    private long targetId;
     private String nickname;
     private String profileUrl;
 
     @Builder
-    public BlacklistDTO(long id, String nickname, String profileUrl) {
+    public BlacklistDTO(long id, long targetId, String nickname, String profileUrl) {
         this.id = id;
+        this.targetId = targetId;
         this.nickname = nickname;
         this.profileUrl = profileUrl;
     }
