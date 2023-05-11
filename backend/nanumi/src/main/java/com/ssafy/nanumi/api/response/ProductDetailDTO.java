@@ -19,6 +19,8 @@ public class ProductDetailDTO {
     private final String userNickname;
     private final String userProfileUrl;
 
+    //private final
+
     public ProductDetailDTO(Product product){
         id = product.getId();
         name = product.getName();
