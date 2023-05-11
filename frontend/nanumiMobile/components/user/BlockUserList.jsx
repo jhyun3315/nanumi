@@ -6,6 +6,7 @@ import {
   FlatList,
   StyleSheet,
   Image,
+  Alert,
 } from 'react-native';
 import {COLORS, FONTS, SIZES} from '../../constants';
 import {RectButton} from '../../ui/Button';
@@ -37,7 +38,7 @@ const renderItem = ({item, handleClearBlockUser}) => {
       <RectButton
         minWidth={48}
         fontSize={SIZES.small}
-        handlePress={() => handleClearBlockUser(item?.target_id)}>
+        handlePress={() => handleClearBlockUser(item?.targetId)}>
         차단해제
       </RectButton>
     </View>
@@ -52,8 +53,13 @@ const BlockUserList = ({navigation}) => {
   );
 
   const handleClearBlockUser = async targetId => {
-    const response = await requestClearBlockUser(user.userId, targetId);
-    console.log(response);
+    const data = {
+      targetId: targetId,
+    };
+    const response = await requestClearBlockUser(user.userId, data);
+    if (response.code === 200) {
+      refetch();
+    } else if (response.code === 400) Alert.alert('차단 실패');
   };
 
   if (isLoading) return <Fallback />;

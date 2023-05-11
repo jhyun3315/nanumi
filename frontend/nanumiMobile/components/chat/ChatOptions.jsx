@@ -4,6 +4,7 @@ import {FONTS, SIZES, COLORS} from '../../constants';
 
 export const ChatOptions = ({
   navigation,
+  opponentId,
   handleCloseBottomModal,
   handleOpenBlockUserModal,
   handleOpenChatExitModal,
@@ -12,7 +13,7 @@ export const ChatOptions = ({
   const handleCloseAndNavigateChatOptionsModal = () => {
     handleCloseBottomModal();
     setTimeout(() => {
-      navigation.navigate('Report');
+      navigation.navigate('Report', {opponentId: opponentId});
     }, 300);
   };
 

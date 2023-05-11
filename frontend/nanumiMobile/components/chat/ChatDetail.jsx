@@ -24,7 +24,7 @@ import GlobalModal from '../modal/GlobalModal';
 import {useRecoilState} from 'recoil';
 import {userState} from '../../state/user';
 import {requestGetTop20ChatLog} from '../../api/chat';
-import {requestBlockUser} from '../../api/user';
+import {requestBlockUser, requestReportUser} from '../../api/user';
 import {convertDate} from '../../util/formatDate';
 import {decodeJson} from './../../util/decodeBinaryData';
 import * as StompJs from '@stomp/stompjs';
@@ -110,6 +110,7 @@ const ChatDetail = ({navigation, productId, chatRoomId, opponentId}) => {
     const data = {
       targetId: opponentId,
     };
+
     const response = await requestBlockUser(user.userId, data);
     if (response.code === 200) {
       disconnect();
@@ -122,7 +123,9 @@ const ChatDetail = ({navigation, productId, chatRoomId, opponentId}) => {
     }
   };
 
-  const handleReportUser = async () => {};
+  const handleReportUser = async reportContent => {
+    const response = await requestReportUser(user.userId);
+  };
   const handleRefetch = () => {
     refetch();
     chatLogRefetch();
@@ -177,6 +180,13 @@ const ChatDetail = ({navigation, productId, chatRoomId, opponentId}) => {
       showModal({
         modalType: 'TransactionCompleteModal',
       });
+    }, 300);
+  };
+
+  const handleCloseAndNavigateChatOptionsModal = () => {
+    handleCloseBottomModal();
+    setTimeout(() => {
+      navigation.navigate('Report', {targetId: opponentId});
     }, 300);
   };
 
@@ -284,6 +294,7 @@ const ChatDetail = ({navigation, productId, chatRoomId, opponentId}) => {
             }}>
             <ChatOptions
               navigation={navigation}
+              opponentId={opponentId}
               handleCloseBottomModal={handleCloseBottomModal}
               handleOpenBlockUserModal={handleOpenBlockUserModal}
               handleOpenChatExitModal={handleOpenChatExitModal}
