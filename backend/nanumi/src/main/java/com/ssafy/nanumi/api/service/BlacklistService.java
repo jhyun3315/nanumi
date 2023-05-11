@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static com.ssafy.nanumi.config.response.exception.CustomExceptionStatus.*;
 
@@ -37,10 +38,9 @@ public class BlacklistService {
         User target = userRepository.findById(blockDTO.getTargetId())
                 .orElseThrow(() -> new CustomException(NOT_FOUND_USER));
 
-        // 차단 목록 조회
-        boolean checkBlacklist = blacklistRepository.findByBlockIdAndTargetId(blockerId, blockDTO.getTargetId()).isEmpty();
+        Optional<Blacklist> findBlacklist = blacklistRepository.findByBlockIdAndTargetId(blockerId, blockDTO.getTargetId());
 
-        if (checkBlacklist) { // 차단한적 없는 경우에만
+        if (findBlacklist.isEmpty()) { // 차단한 적이 없는 경우
             // 사용자 차단
             Blacklist blacklist = Blacklist.builder()
                     .blocker(blocker)
@@ -49,8 +49,11 @@ public class BlacklistService {
                     .build();
 
             blacklistRepository.save(blacklist);
-        } else {
-            throw new CustomException(EXIST_BLACKLIST);
+        } else { // 차단한 적이 있는 경우
+            Blacklist blacklist = findBlacklist
+                    .orElseThrow(() -> new CustomException(REQUEST_ERROR));
+
+            blacklist.blockUser();
         }
     }
 
