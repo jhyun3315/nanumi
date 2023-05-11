@@ -29,13 +29,7 @@ export const CircleButton = ({imgUrl, handlePress, ...props}) => {
   );
 };
 
-export const RectButton = ({
-  minWidth,
-  fontSize,
-  handlePress,
-  children,
-  ...props
-}) => {
+export const RectButton = ({minWidth, fontSize, handlePress, ...props}) => {
   return (
     <Pressable
       style={{
@@ -53,7 +47,7 @@ export const RectButton = ({
           color: COLORS.white,
           textAlign: 'center',
         }}>
-        {children}
+        상세정보
       </Text>
     </Pressable>
   );

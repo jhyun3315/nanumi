@@ -2,19 +2,11 @@ import React from 'react';
 import {View, Image, Text} from 'react-native';
 import {SIZES, COLORS, SHADOWS, assets, FONTS} from '../../constants';
 
-export const ProductTitle = ({title, titleSize, subTitle, subTitleSize}) => {
+export const ProductTitle = ({title, titleSize}) => {
   return (
     <View>
       <Text style={{fontFamily: FONTS.medium, fontSize: titleSize}}>
         {title}
-      </Text>
-      <Text
-        style={{
-          fontFamily: FONTS.regular,
-          fontSize: subTitleSize,
-          color: COLORS.primary,
-        }}>
-        {subTitle}
       </Text>
     </View>
   );
@@ -44,7 +36,7 @@ export const ProductPrice = () => {
   );
 };
 
-export const ImageCmp = ({imgUrl}) => {
+export const ImageCmp = ({imgUrl, index}) => {
   return (
     <Image
       source={imgUrl}

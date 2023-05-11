@@ -1,12 +1,13 @@
 import React from 'react';
 import {View, Image, Text} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import {COLORS, SIZES, SHADOWS} from '../../constants';
+import {COLORS, SIZES, SHADOWS, assets} from '../../constants';
 import {ProductPrice, ProductTitle, SubInfo} from './SubInfo';
 import {RectButton} from '../../ui/Button';
 
 const ProductCard = ({data}) => {
   const navigation = useNavigation();
+
   return (
     <View
       style={{
@@ -18,10 +19,8 @@ const ProductCard = ({data}) => {
       }}>
       <View style={{width: '100%', height: 250}}>
         <Image
-          source={{
-            uri: data.image,
-          }}
-          resizeMode="contain"
+          source={data.image}
+          resizeMode="cover"
           style={{
             width: '100%',
             height: '100%',
@@ -44,9 +43,8 @@ const ProductCard = ({data}) => {
           <RectButton
             minWidth={120}
             fontSize={SIZES.font}
-            handlePress={() => navigation.navigate('Detail', {data})}>
-            상세정보
-          </RectButton>
+            handlePress={() => navigation.navigate('Details', {data})}
+          />
         </View>
       </View>
     </View>
