@@ -82,12 +82,10 @@ public class ChatRoomService {
                     .findFirst()
                     .orElse(0L);
 
-
-            // TODO 이거 추가 해야해
-            // Check if the opponent is blocked by the current user
-//            List<Blacklist> blockedUsers = blacklistRepository.findByBlockerIdAndIsBlockedTrue(user);
-//            boolean isOpponentBlocked = blockedUsers.stream().anyMatch(blacklist -> blacklist.getTarget().getId() == opponentId);
-//            chatRoomInfoDTO.setBlocked(isOpponentBlocked);
+            // 차단 목록 true/ false 리턴
+            List<Blacklist> blockedUsers = blacklistRepository.findByBlockerIdAndIsBlockedTrue(user);
+            boolean isOpponentBlocked = blockedUsers.stream().anyMatch(blacklist -> blacklist.getTarget().getId() == opponentId);
+            chatRoomInfoDTO.setBlocked(isOpponentBlocked);
 
             // 상대방 정보를 UserRepository에서 가져오기 (MySQL)
             User opponent = userRepository.findById(opponentId).orElse(null);
