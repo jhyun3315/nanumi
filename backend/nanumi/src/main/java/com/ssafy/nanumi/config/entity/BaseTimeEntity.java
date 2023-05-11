@@ -9,6 +9,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.Column;
 import javax.persistence.EntityListeners;
 import javax.persistence.MappedSuperclass;
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 
 @Getter
@@ -24,4 +25,7 @@ public class BaseTimeEntity {
     @Column(name = "update_date", columnDefinition = "TIMESTAMP")
     private LocalDateTime updateDate;
 
+    public void updateDate(LocalDateTime updateDate) {
+        this.updateDate = updateDate;
+    }
 }
