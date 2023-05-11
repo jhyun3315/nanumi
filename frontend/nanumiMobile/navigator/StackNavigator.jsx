@@ -1,4 +1,5 @@
-import React from 'react';
+import React, {useRef} from 'react';
+import analytics from '@react-native-firebase/analytics';
 import ProductDetailScreen from '../screens/ProductDetailScreen';
 import SearchScreen from '../screens/SearchScreen';
 import LoginScreen from './../screens/LoginScreen';
@@ -27,8 +28,26 @@ const Stack = createNativeStackNavigator();
 export const navigationRef = React.createRef();
 
 const StackNavigator = () => {
+  const routeNameRef = useRef();
+
   return (
-    <NavigationContainer ref={navigationRef}>
+    <NavigationContainer
+      ref={navigationRef}
+      onReady={() =>
+        (routeNameRef.current = navigationRef.current.getCurrentRoute().name)
+      }
+      onStateChange={async () => {
+        const previousRouteName = routeNameRef.current;
+        const currentRouteName = navigationRef.current.getCurrentRoute().name;
+
+        if (previousRouteName !== currentRouteName) {
+          await analytics().logScreenView({
+            screen_name: currentRouteName,
+            screen_class: currentRouteName,
+          });
+        }
+        routeNameRef.current = currentRouteName;
+      }}>
       <FocusedStatusBar backgroundColor={COLORS.primary} />
       <Stack.Navigator
         screenOptions={{
