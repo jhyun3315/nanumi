@@ -68,9 +68,7 @@ public class UserService {
                 userInfo.updateFcmToken(userLoginDTO.getFcmToken());
             }
 
-
             LocalDateTime now = LocalDateTime.now();
-
             LocalDateTime modifiedDate = user.getUpdateDate();
             int nowMonth = now.getMonthValue();
             int nowDay = now.getDayOfMonth();
@@ -117,8 +115,6 @@ public class UserService {
             }
 
             user.updateDate(now);
-//            userRepository.save(user);
-//            userInfoRepository.save(userInfo);
             return new UserLoginResDTO(user,AT, RT);
         }else{
             throw new CustomException(NOT_MATCHED_PASSWORD);

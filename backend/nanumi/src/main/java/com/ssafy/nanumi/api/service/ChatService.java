@@ -120,140 +120,104 @@ public class ChatService {
     }
 
     @Transactional
-    public CustomResponse chatEndMatch(Long productId) {
+    public CustomResponse chatEndMatch(Long productId, Long giverId, Long givenerId) {
         Product product = productRepository.findById(productId)
                 .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_PRODUCT));
         product.matchedEnd();
 
-        System.out.println("@@@ product id: "+product.getId());
-        System.out.println("@@@ product user: "+product.getUser());
         // 나눠준 사용자, 나눔받은 사용자의 give_count, given_count 증가
         // 나눠준 사람
-        User give_user = userRepository.findById(product.getUser().getId())
+        User giver = userRepository.findById(giverId)
                 .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_USER));
 
-        System.out.println("@#@# user id : "+give_user.getId());
-        System.out.println("@#@# user email : "+give_user.getEmail());
-        System.out.println("@#@# user tier : "+give_user.getUserInfo().getTier());
-
-        Match match = matchRepository.findMatch(product.getId())
-                .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_MATCH));
-
-        System.out.println("$$$$ Match id: "+match.getId());
-        System.out.println("$$$ Match user : "+match.getUser());
+        UserInfo giver_info = userInfoRepository.findById(giver.getUserInfo().getId())
+                        .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_USER_INFO));
+        giver_info.updateGiveCount(giver_info.getGiveCount()+1);
 
         // 나눔받은 사람
-        User given_user = userRepository.findById(match.getUser().getId())
+        User givener = userRepository.findById(givenerId)
                 .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_USER));
-
-        // 나눔이 info
-        UserInfo give_userinfo = userInfoRepository.findById(give_user.getUserInfo().getId())
+        UserInfo givener_info = userInfoRepository.findById(givener.getUserInfo().getId())
                 .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_USER_INFO));
-        give_userinfo.updateGiveCount(give_userinfo.getGiveCount()+1);
-
-        // 나눔받은이 info
-        UserInfo given_userinfo = userInfoRepository.findById(given_user.getUserInfo().getId())
-                .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_USER_INFO));
-        given_userinfo.updateGivenCount(given_userinfo.getGivenCount()+1);
-
-        System.out.println("### given user id : "+given_user.getId());
-        System.out.println("### given user email : "+given_user.getEmail());
-        System.out.println("#$#$ given userinfo id : "+given_userinfo.getId());
-        System.out.println("#$#$ given userinfo tier : "+given_userinfo.getTier());
+        givener_info.updateGivenCount(givener_info.getGivenCount()+1);
 
         // 티어 계산
         // 나눠준 사람 티어
-        String giver_tier = give_userinfo.getTier();
-        int giver_give_count = give_userinfo.getGiveCount();
-        int giver_given_count = given_userinfo.getGivenCount();
-        long giver_visit = give_userinfo.getVisitCount();
-        double giver_temperature = give_userinfo.getTemperature();
-
-        System.out.println("#$#$ giver tier : "+giver_tier);
+        String giver_tier = giver_info.getTier();
+        int giver_give_count = giver_info.getGiveCount();
+        int giver_given_count = giver_info.getGivenCount();
+        long giver_visit = giver_info.getVisitCount();
+        double giver_temperature = giver_info.getTemperature();
 
         switch (giver_tier) {
             case "브론즈" :
                 if(giver_visit>=2 && giver_give_count>=2 && giver_given_count>=2) {
-                    give_user.setRoles(Collections.singletonList(Authority.builder().name("ROLE_실버").build()));
-                    give_userinfo.updateTier("실버");
+                    giver.setRoles(Collections.singletonList(Authority.builder().name("ROLE_실버").build()));
+                    giver_info.updateTier("실버");
                 }
                 break;
             case "실버" :
                 if(giver_visit>=10 && giver_give_count>=10) {
-                    give_user.setRoles(Collections.singletonList(Authority.builder().name("ROLE_골드").build()));
-                    give_userinfo.updateTier("골드");
+                    giver.setRoles(Collections.singletonList(Authority.builder().name("ROLE_골드").build()));
+                    giver_info.updateTier("골드");
                 }
                 break;
             case "골드" :
                 if(giver_visit>=50 && giver_give_count>=50) {
-                    give_user.setRoles(Collections.singletonList(Authority.builder().name("ROLE_플레티넘").build()));
-                    give_userinfo.updateTier("플레티넘");
+                    giver.setRoles(Collections.singletonList(Authority.builder().name("ROLE_플레티넘").build()));
+                    giver_info.updateTier("플레티넘");
                 }
                 break;
             case "플레티넘" :
                 System.out.println("Giver는 플레티넘입니당.");
                 if(giver_visit>=50 && giver_give_count>=50 && giver_temperature>=40) {
                     System.out.println("다이아로 승급합니다.");
-                    give_userinfo.updateTier("다이아");
-                    give_user.setRoles(Collections.singletonList(Authority.builder().name("ROLE_다이아").build()));
-
+                    giver_info.updateTier("다이아");
+                    giver.setRoles(Collections.singletonList(Authority.builder().name("ROLE_다이아").build()));
                 }
                 break;
             default:
         }
-        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@");
-//        userRepository.save(give_user);
-//        userInfoRepository.save(give_userinfo);
-
-        System.out.println("최종 Giver ID : "+give_userinfo.getId());
-        System.out.println("최종 Giver 티어: "+give_userinfo.getTier());
 
         // 나눔받은 사람 티어
         // given_user, given_userinfo
-        String givener_tier = given_userinfo.getTier();
-        int givener_give_count = given_userinfo.getGiveCount();
-        int givener_given_count = given_userinfo.getGivenCount();
-        long givener_visit = given_userinfo.getVisitCount();
-        double givener_temperature = given_userinfo.getTemperature();
-
-        System.out.println("Givener 티어 : "+givener_tier);
+        String givener_tier = givener_info.getTier();
+        int givener_give_count = givener_info.getGiveCount();
+        int givener_given_count = givener_info.getGivenCount();
+        long givener_visit = givener_info.getVisitCount();
+        double givener_temperature = givener_info.getTemperature();
 
         switch (givener_tier) {
             case "브론즈" :
                 System.out.println("아직 브론즈입니다.");
                 if(givener_visit>=2 && givener_give_count>=2 && givener_given_count>=2) {
                     System.out.println("실버로 승급합니다.");
-                    given_userinfo.updateTier("실버");
-                    given_user.setRoles(Collections.singletonList(Authority.builder().name("ROLE_실버").build()));
+                    givener_info.updateTier("실버");
+                    givener.setRoles(Collections.singletonList(Authority.builder().name("ROLE_실버").build()));
 
                 }
                 break;
             case "실버" :
                 if(givener_visit>=10 && givener_give_count>=10) {
-                    given_user.setRoles(Collections.singletonList(Authority.builder().name("ROLE_골드").build()));
-                    given_userinfo.updateTier("골드");
+                    givener.setRoles(Collections.singletonList(Authority.builder().name("ROLE_골드").build()));
+                    givener_info.updateTier("골드");
                 }
                 break;
             case "골드" :
                 if(givener_visit>=50 && givener_give_count>=50) {
-                    given_user.setRoles(Collections.singletonList(Authority.builder().name("ROLE_플레티넘").build()));
-                    given_userinfo.updateTier("플레티넘");
+                    givener.setRoles(Collections.singletonList(Authority.builder().name("ROLE_플레티넘").build()));
+                    givener_info.updateTier("플레티넘");
                 }
                 break;
             case "플레티넘" :
                 if(givener_visit>=100 && givener_give_count>=100 && givener_temperature>=40) {
-                    given_user.setRoles(Collections.singletonList(Authority.builder().name("ROLE_다이아").build()));
-                    given_userinfo.updateTier("다이아");
+                    givener.setRoles(Collections.singletonList(Authority.builder().name("ROLE_다이아").build()));
+                    givener_info.updateTier("다이아");
                 }
                 break;
             default:
         }
 
-//        userRepository.save(given_user);
-//        userInfoRepository.save(given_userinfo);
-
-        System.out.println("최종 Giver ID : "+given_user.getId());
-        System.out.println("최종 Giver 티어 : "+given_userinfo.getTier());
 
         return responseService.getSuccessResponse();
     }
