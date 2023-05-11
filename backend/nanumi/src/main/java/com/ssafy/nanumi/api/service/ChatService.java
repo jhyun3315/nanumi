@@ -155,8 +155,8 @@ public class ChatService {
                 break;
             case "나무" :
                 if(giver_visit>=10 && giver_give_count>=10) {
-                    giver.setRoles(Collections.singletonList(Authority.builder().name("ROLE_골드나무").build()));
-                    giver_info.updateTier("골드나무");
+                    giver.setRoles(Collections.singletonList(Authority.builder().name("ROLE_나누미나무").build()));
+                    giver_info.updateTier("나누미나무");
                 }
                 break;
             default:
@@ -179,8 +179,8 @@ public class ChatService {
                 break;
             case "나무" :
                 if(givener_visit>=10 && givener_give_count>=10) {
-                    givener.setRoles(Collections.singletonList(Authority.builder().name("ROLE_골드나무").build()));
-                    givener_info.updateTier("골드나무");
+                    givener.setRoles(Collections.singletonList(Authority.builder().name("ROLE_나누미나무").build()));
+                    givener_info.updateTier("나누미나무");
                 }
                 break;
 

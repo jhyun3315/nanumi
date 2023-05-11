@@ -51,11 +51,11 @@ public class SecurityConfig {
                 .authorizeRequests()
                 // 회원가입과 로그인은 모두 승인
 
-                .antMatchers("/test").hasAnyRole( "나무", "골드나무")
+                .antMatchers("/test").hasAnyRole( "나무", "나누미나무")
                 .antMatchers("/users/join", "/users/login", "/users/isRTValid", "/users/check/**", "/api/v2/**", "/health", "/swagger-ui.html", "/swagger/**",
                         "/swagger-ui/**","/swagger-resources/**", "/webjars/**", "/v2/api-docs","/ws-stomp/**").permitAll()
-                .antMatchers("/product/search/**").hasAnyRole("나무","골드나무")
-                .antMatchers("/users/**").hasAnyRole("새싹", "나무", "골드나무")
+                .antMatchers("/product/search/**").hasAnyRole("나무","나누미나무")
+                .antMatchers("/users/**").hasAnyRole("새싹", "나무", "나누미나무")
                 .antMatchers("/actuator/**").permitAll()
                 .anyRequest().authenticated()
 //                .anyRequest().permitAll()

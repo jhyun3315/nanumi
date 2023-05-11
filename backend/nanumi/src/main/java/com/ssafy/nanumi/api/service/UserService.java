@@ -96,8 +96,8 @@ public class UserService {
                         break;
                     case "나무" :
                         if(present_visit>=10 && give_count>=10) {
-                            user.setRoles(Collections.singletonList(Authority.builder().name("ROLE_골드나무").build()));
-                            userInfo.updateTier("골드나무");
+                            user.setRoles(Collections.singletonList(Authority.builder().name("ROLE_나누미나무").build()));
+                            userInfo.updateTier("나누미나무");
                         }
                         break;
 
