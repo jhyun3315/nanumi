@@ -55,3 +55,16 @@ export const requestBlockUser = async (userId, data) => {
   );
   return response.data;
 };
+
+export const requsetGetBlockUser = async userId => {
+  const response = await axiosInstance.get(`${API_END_POINT}/block/${userId}`);
+  return response.data;
+};
+
+export const requestClearBlockUser = async (userId, data) => {
+  const response = await axiosInstance.patch(
+    `${API_END_POINT}/block/${userId}`,
+    data,
+  );
+  return response.data;
+};
