@@ -2,7 +2,6 @@ import React from 'react';
 import {View, Text, Pressable, StyleSheet, Image} from 'react-native';
 import {COLORS, FONTS, SIZES} from '../../constants';
 export const ChatListItem = ({data, navigation}) => {
-  console.log(data);
   return (
     <View style={styles.chatContainer}>
       <Pressable

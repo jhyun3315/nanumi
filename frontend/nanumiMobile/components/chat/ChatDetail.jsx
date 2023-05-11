@@ -58,32 +58,34 @@ const ChatDetail = ({navigation, productId, chatRoomId, opponentId}) => {
   const snapPoints = useMemo(() => ['30%', '55%'], []);
 
   const subscribe = () => {
-    setIsDisconnet(false);
-    client.current.subscribe(`/sub/chat/room/${chatRoomId}`, message => {
-      const receivedChatTransform = decodeJson(message._binaryBody);
-      setTransformChatData(prevChatData => {
-        const newChatData = [
-          {
-            _id: receivedChatTransform?._id,
-            text: receivedChatTransform?.message,
-            createdAt: convertDate(receivedChatTransform?.sendTime),
-            user: {
-              _id: receivedChatTransform?.sender,
-              name: receivedChatTransform?.senderName,
-              // avatar: receivedChatTransform?.senderAvatarUrl,
+    if (client.current) {
+      client.current.subscribe(`/sub/chat/room/${chatRoomId}`, message => {
+        const receivedChatTransform = decodeJson(message._binaryBody);
+        setTransformChatData(prevChatData => {
+          const newChatData = [
+            {
+              _id: receivedChatTransform?._id,
+              text: receivedChatTransform?.message,
+              createdAt: convertDate(receivedChatTransform?.sendTime),
+              user: {
+                _id: receivedChatTransform?.sender,
+                name: receivedChatTransform?.senderName,
+                // avatar: receivedChatTransform?.senderAvatarUrl,
+              },
             },
-          },
-          ...prevChatData,
-        ];
-        return newChatData;
+            ...prevChatData,
+          ];
+          return newChatData;
+        });
       });
-    });
+    }
   };
 
   const disconnect = () => {
-    client.current.deactivate();
-    setIsDisconnet(true);
-    console.log('연결 끊어짐');
+    if (client.current && client.current.connected) {
+      setIsDisconnet(true);
+      client.current.deactivate();
+    }
   };
 
   const connect = () => {
@@ -92,7 +94,7 @@ const ChatDetail = ({navigation, productId, chatRoomId, opponentId}) => {
         new SockJS(`https://k8b103.p.ssafy.io/api/ws-stomp`),
 
       onConnect: () => {
-        console.log('연결됨');
+        setIsDisconnet(false);
         subscribe();
       },
 
@@ -215,8 +217,11 @@ const ChatDetail = ({navigation, productId, chatRoomId, opponentId}) => {
 
   useEffect(() => {
     connect();
-
-    return () => client.current.deactivate();
+    return () => {
+      if (client.current && client.current.connected) {
+        client.current.deactivate();
+      }
+    };
   }, []);
 
   useEffect(() => {
@@ -235,7 +240,6 @@ const ChatDetail = ({navigation, productId, chatRoomId, opponentId}) => {
     }
   }, [chatLogData]);
 
-  console.log(isDisconnect);
   if (data?.code === 404)
     return <DataErrorModal handlePress={handleCloseAndBack} />;
   if (isLoading || chatLogIsLoading) return <Fallback />;
