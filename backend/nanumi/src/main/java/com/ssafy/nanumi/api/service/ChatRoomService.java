@@ -1,8 +1,9 @@
 package com.ssafy.nanumi.api.service;
 
-import com.ssafy.nanumi.api.response.MatchInterface;
 import com.ssafy.nanumi.common.ChatRoomInfoDTO;
 import com.ssafy.nanumi.common.CreateChatRoomDTO;
+import com.ssafy.nanumi.config.response.exception.CustomException;
+import com.ssafy.nanumi.config.response.exception.CustomExceptionStatus;
 import com.ssafy.nanumi.db.entity.*;
 import com.ssafy.nanumi.db.repository.*;
 import lombok.RequiredArgsConstructor;
@@ -39,9 +40,9 @@ public class ChatRoomService {
         long productId = DTO.getProductId(); // 상품 아이디
 
         // Check if the chatroom already exists
-        Optional<ChatRoomEntity> existingChatRoom = chatRoomRepository.findByOpponentIdAndProductId(receiveUser, productId);
-        if (existingChatRoom.isPresent()) {
-            return new ResponseEntity<>("Chat room already exists", HttpStatus.BAD_REQUEST);
+        List<ChatRoomEntity> existingChatRooms = chatRoomRepository.findByOpponentIdAndProductId(receiveUser, productId);
+        if (!existingChatRooms.isEmpty()) {
+            throw new CustomException(CustomExceptionStatus.NOT_FOUND_CHAT_ROOM);
         }
 
         long[] users = new long[]{sendUser, receiveUser}; // 나랑 상대방 배열에 저장
@@ -80,12 +81,10 @@ public class ChatRoomService {
                     .findFirst()
                     .orElse(0L);
 
-
-            // TODO 이거 추가 해야해
-            // Check if the opponent is blocked by the current user
-//            List<Blacklist> blockedUsers = blacklistRepository.findByBlockerIdAndIsBlockedTrue(user);
-//            boolean isOpponentBlocked = blockedUsers.stream().anyMatch(blacklist -> blacklist.getTarget().getId() == opponentId);
-//            chatRoomInfoDTO.setBlocked(isOpponentBlocked);
+            // 차단 목록 true/ false 리턴
+            List<Blacklist> blockedUsers = blacklistRepository.findByBlockerIdAndIsBlockedTrue(user);
+            boolean isOpponentBlocked = blockedUsers.stream().anyMatch(blacklist -> blacklist.getTarget().getId() == opponentId);
+            chatRoomInfoDTO.setBlocked(isOpponentBlocked);
 
             // 상대방 정보를 UserRepository에서 가져오기 (MySQL)
             User opponent = userRepository.findById(opponentId).orElse(null);
