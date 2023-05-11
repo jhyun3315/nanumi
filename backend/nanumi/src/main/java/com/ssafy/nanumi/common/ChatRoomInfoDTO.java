@@ -15,4 +15,7 @@ public class ChatRoomInfoDTO {
     private String lastMessage;
     private LocalDateTime lastMessageTime;
     private long productId;
+    private boolean isBlocked;
+
+
 }
