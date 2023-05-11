@@ -98,6 +98,7 @@ public class BlacklistService {
             blacklistDTOS.add(
                     BlacklistDTO.builder()
                             .id(blacklist.getId())
+                            .targetId(target.getId())
                             .nickname(target.getNickname())
                             .profileUrl(target.getProfileUrl())
                             .build()
