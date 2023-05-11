@@ -31,13 +31,7 @@ const GlobalModal = () => {
   if (!modal?.modalType) return null;
 
   const ModalComponent = MODAL_COMPONENTS[modal.modalType];
-  return ModalComponent ? (
-    <ModalComponent
-      {...modal?.modalProps}
-      callback={modal?.callback}
-      args={modal?.args}
-    />
-  ) : null;
+  return ModalComponent ? <ModalComponent {...modal?.modalProps} /> : null;
 };
 
 export default GlobalModal;

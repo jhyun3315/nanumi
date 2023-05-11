@@ -109,3 +109,24 @@ export const requestGetMatchingUsers = async (productId, userId) => {
   );
   return response.data;
 };
+
+// 거래완료
+export const requsetCompleteTransaction = async (
+  productId,
+  giverId,
+  givenerId,
+) => {
+  const response = await axiosInstance.get(
+    `${API_END_POINT}/chat/end/${productId}/${giverId}/${givenerId}`,
+  );
+  return response.data;
+};
+
+export const requsetEvaluationTransaction = async (matchId, userId, data) => {
+  console.log('matchid', matchId);
+  const response = await axiosInstance.post(
+    `${API_END_POINT}/matches/${matchId}/reviews/${userId}`,
+    data,
+  );
+  return response.data;
+};

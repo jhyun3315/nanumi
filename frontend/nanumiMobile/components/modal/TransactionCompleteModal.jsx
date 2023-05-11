@@ -33,13 +33,12 @@ const GRADE = [
 ];
 
 const TransactionCompleteModal = () => {
-  const {showModal, hideModal} = useModal();
+  const {modal, hideModal} = useModal();
   const [starPoint, setStarPoint] = useState(5);
   const [comment, setComment] = useState('');
   const [rating, setRating] = useState([]);
   const animation = useRef(new Animated.Value(1)).current;
 
-  console.log(rating);
   const handleStarPoint = star => {
     setStarPoint(star);
   };
@@ -52,29 +51,32 @@ const TransactionCompleteModal = () => {
     }
   };
 
-  const renderGradeButton = grade => {
-    const buttonColor = rating.includes(grade.id)
-      ? COLORS.disable
-      : COLORS.lightGray;
+  const renderGradeButton = useMemo(
+    () => grade => {
+      const buttonColor = rating.includes(grade.id)
+        ? COLORS.disable
+        : COLORS.lightGray;
 
-    return (
-      <View
-        key={grade.id}
-        style={{
-          alignItems: 'center',
-          justifyContent: 'center',
-          marginHorizontal: SIZES.small,
-        }}>
-        <Pressable
+      return (
+        <View
           key={grade.id}
-          style={[styles.badgeButton, {backgroundColor: buttonColor}]}
-          onPress={() => handleRate(grade.id)}>
-          <Image source={grade.badge} style={styles.badgeImage} />
-        </Pressable>
-        <Text style={styles.badgeText}>{grade.desc}</Text>
-      </View>
-    );
-  };
+          style={{
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginHorizontal: SIZES.small,
+          }}>
+          <Pressable
+            key={grade.id}
+            style={[styles.badgeButton, {backgroundColor: buttonColor}]}
+            onPress={() => handleRate(grade.id)}>
+            <Image source={grade.badge} style={styles.badgeImage} />
+          </Pressable>
+          <Text style={styles.badgeText}>{grade.desc}</Text>
+        </View>
+      );
+    },
+    [rating],
+  );
 
   const animateScale = animation.interpolate({
     inputRange: [1, 1.5, 2],
@@ -127,7 +129,10 @@ const TransactionCompleteModal = () => {
   }, [starPoint, handleAnimate]);
 
   return (
-    <Modal visible={true} transparent={true} animationType="slide">
+    <Modal
+      visible={modal?.modalProps?.visible}
+      transparent={true}
+      animationType="fade">
       <Pressable style={styles.modalContainer}>
         <TouchableWithoutFeedback onPress={event => event.stopPropagation()}>
           <KeyboardAvoidingView style={styles.modal}>
@@ -147,21 +152,26 @@ const TransactionCompleteModal = () => {
                     placeholderTextColor={COLORS.primary}
                     multiline={true}
                     style={styles.textArea}
+                    onChangeText={text => setComment(text)}
                   />
                 </View>
                 <View style={styles.buttonContainer}>
                   <RectButton
                     minWidth={120}
                     fontSize={FONTS.font}
-                    handlePress={hideModal}>
+                    handlePress={() =>
+                      modal?.modalProps?.onConfirm(starPoint, rating, comment)
+                    }>
                     완료
                   </RectButton>
                   <RectButton
                     minWidth={120}
                     fontSize={FONTS.font}
                     backgroundColor={COLORS.primary}
-                    handlePress={hideModal}>
-                    다음에 할게요
+                    handlePress={() =>
+                      modal?.modalProps?.onConfirm(0, rating, comment)
+                    }>
+                    다음에할게요
                   </RectButton>
                 </View>
               </View>

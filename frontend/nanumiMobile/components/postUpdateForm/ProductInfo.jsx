@@ -23,7 +23,10 @@ export const ProductCategory = ({selectedCategory, handleCategorySelected}) => {
   const handleOpenCategoryModal = () => {
     showModal({
       modalType: 'CreateCategoryModal',
-      callback: handleCategorySelected,
+      modalProps: {
+        visible: true,
+        onConfirm: handleCategorySelected,
+      },
     });
   };
 

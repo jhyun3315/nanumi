@@ -17,7 +17,11 @@ import {
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {GiftedChat} from 'react-native-gifted-chat';
 import {useModal} from '../../hooks/useModal';
-import {requestGetDetailProduct} from '../../api/product';
+import {
+  requestGetDetailProduct,
+  requsetCompleteTransaction,
+  requsetEvaluationTransaction,
+} from '../../api/product';
 import {Fallback} from '../../ui/Fallback';
 import {useQuery} from '@tanstack/react-query';
 import GlobalModal from '../modal/GlobalModal';
@@ -123,9 +127,6 @@ const ChatDetail = ({navigation, productId, chatRoomId, opponentId}) => {
     }
   };
 
-  const handleReportUser = async reportContent => {
-    const response = await requestReportUser(user.userId);
-  };
   const handleRefetch = () => {
     refetch();
     chatLogRefetch();
@@ -138,6 +139,45 @@ const ChatDetail = ({navigation, productId, chatRoomId, opponentId}) => {
 
   const handleCloseBottomModal = () => {
     bottomSheetModalRef.current?.close();
+  };
+
+  // 거래 평가 API
+  const handleEvaluationTransaction = async (starPoint, rating, content) => {
+    const data = {
+      starPoint: starPoint,
+      rating: rating,
+      content: content,
+    };
+    const response = await requsetEvaluationTransaction(
+      chatRoomId,
+      user.userId,
+      data,
+    );
+
+    if (response.code === 200) {
+      disconnect();
+      hideModal();
+      navigation.navigate('BottomTabs', {screen: 'ChatList'});
+    } else if (response.code === 400) {
+      Alert.alert('오류', '존재하지 않는 유저이거나 채팅입니다.', [
+        {
+          text: '확인',
+          onPress: () => {
+            navigation.goBack();
+          },
+          style: 'cancel',
+        },
+      ]);
+    }
+  };
+
+  const handleCompleteTransaction = async () => {
+    const response = await requsetCompleteTransaction(
+      productId,
+      user.userId,
+      opponentId,
+    );
+    return response;
   };
 
   const handleOpenBlockUserModal = () => {
@@ -174,20 +214,24 @@ const ChatDetail = ({navigation, productId, chatRoomId, opponentId}) => {
     }, 300);
   };
 
-  const handleOpenTransactionCompleteModal = () => {
+  const handleOpenTransactionCompleteModal = async () => {
     handleCloseBottomModal();
-    setTimeout(() => {
-      showModal({
-        modalType: 'TransactionCompleteModal',
-      });
-    }, 300);
-  };
+    const response = await handleCompleteTransaction();
 
-  const handleCloseAndNavigateChatOptionsModal = () => {
-    handleCloseBottomModal();
-    setTimeout(() => {
-      navigation.navigate('Report', {targetId: opponentId});
-    }, 300);
+    if (response.code === 200) {
+      setTimeout(() => {
+        hideModal();
+        showModal({
+          modalType: 'TransactionCompleteModal',
+          modalProps: {
+            visible: true,
+            onConfirm: handleEvaluationTransaction,
+          },
+        });
+      }, 300);
+    } else if (response.code === 400) {
+      Alert.alert('알수없는 에러 발생');
+    }
   };
 
   const handlePresentModalPress = useCallback(() => {
