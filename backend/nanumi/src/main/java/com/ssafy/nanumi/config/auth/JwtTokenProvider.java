@@ -1,8 +1,7 @@
 package com.ssafy.nanumi.config.auth;
 
 import io.jsonwebtoken.*;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -21,6 +20,7 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Component
+@Getter
 public class JwtTokenProvider {
     private final String key;
 

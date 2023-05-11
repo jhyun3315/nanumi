@@ -20,9 +20,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,8 +28,6 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 
 import javax.mail.MessagingException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.UUID;
 
 import static com.ssafy.nanumi.config.response.exception.CustomExceptionStatus.*;
@@ -51,9 +46,8 @@ public class UserService {
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
     private final AmazonS3 amazonS3;
-    private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final JwtTokenProvider jwtTokenProvider;
-
+    private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
     public UserLoginResDTO login(UserLoginDTO userLoginDTO){
         String userEmail = userLoginDTO.getId();

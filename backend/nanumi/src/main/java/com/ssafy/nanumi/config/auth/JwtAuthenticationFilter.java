@@ -1,7 +1,9 @@
 package com.ssafy.nanumi.config.auth;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import javax.servlet.FilterChain;
@@ -12,14 +14,11 @@ import java.io.IOException;
 
 import org.springframework.web.filter.OncePerRequestFilter;
 
-// jwt 인증
+@Component
+@RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtTokenProvider jwtTokenProvider;
-
-    public JwtAuthenticationFilter(JwtTokenProvider jtwTokenProvider) {
-        this.jwtTokenProvider = jtwTokenProvider;
-    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -36,7 +35,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-
     // 헤더에서 토큰 추출
     private String resolveToken(HttpServletRequest request){
         String bearerToken = request.getHeader("Authorization");
@@ -45,5 +43,4 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return bearerToken.substring(7);
         }else return null;
     }
-
 }
