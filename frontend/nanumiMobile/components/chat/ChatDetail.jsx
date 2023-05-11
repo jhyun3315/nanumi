@@ -28,7 +28,7 @@ import GlobalModal from '../modal/GlobalModal';
 import {useRecoilState} from 'recoil';
 import {userState} from '../../state/user';
 import {requestGetTop20ChatLog} from '../../api/chat';
-import {requestBlockUser, requestReportUser} from '../../api/user';
+import {requestBlockUser} from '../../api/user';
 import {convertDate} from '../../util/formatDate';
 import {decodeJson} from './../../util/decodeBinaryData';
 import * as StompJs from '@stomp/stompjs';
@@ -36,7 +36,13 @@ import SockJS from 'sockjs-client';
 import ErrorModal from '../modal/ErrorModal';
 import DataErrorModal from '../modal/DataErrorModal';
 
-const ChatDetail = ({navigation, productId, chatRoomId, opponentId}) => {
+const ChatDetail = ({
+  navigation,
+  productId,
+  chatRoomId,
+  opponentId,
+  isBlocked,
+}) => {
   const {
     data: chatLogData,
     isLoading: chatLogIsLoading,
@@ -314,14 +320,16 @@ const ChatDetail = ({navigation, productId, chatRoomId, opponentId}) => {
               messages={transformChatData}
               onSend={newMessage => handleSend(newMessage)}
               placeholder={
-                isDisconnect
+                isDisconnect || isBlocked
                   ? '메시지를 보낼 수 없습니다'
                   : '메시지를 입력해주세요...'
               }
               user={{_id: user.userId}}
               renderBubble={renderBubble}
               renderSend={renderSend}
-              textInputProps={{editable: isDisconnect ? false : true}}
+              textInputProps={{
+                editable: isDisconnect || isBlocked ? false : true,
+              }}
               scrollToBottom
               renderLoading={renderLoading}
             />
@@ -337,6 +345,7 @@ const ChatDetail = ({navigation, productId, chatRoomId, opponentId}) => {
               duration: 200,
             }}>
             <ChatOptions
+              sellerId={data?.result?.userId}
               navigation={navigation}
               opponentId={opponentId}
               handleCloseBottomModal={handleCloseBottomModal}

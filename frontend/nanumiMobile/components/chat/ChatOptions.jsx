@@ -1,15 +1,19 @@
 import React from 'react';
 import {View, Text, StyleSheet, Pressable} from 'react-native';
 import {FONTS, SIZES, COLORS} from '../../constants';
+import {useRecoilState} from 'recoil';
+import {userState} from '../../state/user';
 
 export const ChatOptions = ({
   navigation,
+  sellerId,
   opponentId,
   handleCloseBottomModal,
   handleOpenBlockUserModal,
   handleOpenChatExitModal,
   handleOpenTransactionCompleteModal,
 }) => {
+  const [user] = useRecoilState(userState);
   const handleCloseAndNavigateChatOptionsModal = () => {
     handleCloseBottomModal();
     setTimeout(() => {
@@ -19,11 +23,13 @@ export const ChatOptions = ({
 
   return (
     <View style={styles.optionContainer}>
-      <Pressable
-        style={styles.option}
-        onPress={handleOpenTransactionCompleteModal}>
-        <Text style={styles.optionText}>거래완료</Text>
-      </Pressable>
+      {sellerId === user.userId && (
+        <Pressable
+          style={styles.option}
+          onPress={handleOpenTransactionCompleteModal}>
+          <Text style={styles.optionText}>거래완료</Text>
+        </Pressable>
+      )}
       <Pressable style={styles.option} onPress={handleOpenBlockUserModal}>
         <Text style={styles.optionText}>차단하기</Text>
       </Pressable>

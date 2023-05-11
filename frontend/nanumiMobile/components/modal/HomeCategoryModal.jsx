@@ -45,7 +45,7 @@ const HomeCategoryModal = () => {
   return (
     <Modal
       style={styles.container}
-      animationType="slide"
+      animationType="fade"
       visible={modal?.modalProps?.visible}>
       <CloseHeader handlePress={hideModal}>카테고리</CloseHeader>
       <View style={styles.categoryContainer}>

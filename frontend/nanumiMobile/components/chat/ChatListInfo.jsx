@@ -11,6 +11,7 @@ export const ChatListItem = ({data, navigation}) => {
             productId: data?.productId,
             chatRoomId: data?.chatRoomId,
             opponentId: data?.opponentId,
+            isBlocked: data?.blocked,
           });
         }}>
         <View style={[styles.imageContainer]}>

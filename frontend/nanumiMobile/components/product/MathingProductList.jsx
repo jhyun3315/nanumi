@@ -31,12 +31,19 @@ const MatchingProductListItem = ({data, navigation}) => {
       opponentProfileImage: opponentProfileImage,
       productId: productId,
     };
-    const response = await requestCreateChatRoom(body);
-    if (response.productId) {
-      hideModal();
-      navigation.navigate('BottomTabs', {screen: 'ChatList'});
-    } else if (response.error) {
-      Alert.alert('이미 존재하는 채팅방입니다.');
+    try {
+      const response = await requestCreateChatRoom(body);
+
+      if (response.productId) {
+        hideModal();
+        navigation.navigate('BottomTabs', {screen: 'ChatList'});
+      }
+      if (response.code === 404) {
+        hideModal();
+        Alert.alert('이미 존재하는 채팅방입니다.');
+      }
+    } catch (e) {
+      Alert.alert('알 수 없는 에러 발생');
     }
   };
 
