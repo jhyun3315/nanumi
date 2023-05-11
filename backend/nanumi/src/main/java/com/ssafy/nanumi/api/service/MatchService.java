@@ -3,6 +3,7 @@ package com.ssafy.nanumi.api.service;
 import com.ssafy.nanumi.api.response.MatchInterface;
 import com.ssafy.nanumi.api.response.MatchResDTO;
 import com.ssafy.nanumi.config.response.exception.CustomException;
+import com.ssafy.nanumi.db.entity.Match;
 import com.ssafy.nanumi.db.entity.Product;
 import com.ssafy.nanumi.db.entity.User;
 import com.ssafy.nanumi.db.repository.MatchRepository;
@@ -27,10 +28,12 @@ public class MatchService {
     private final ProductRepository productRepository;
     private final UserRepository userRepository;
 
-    public long getMachId(long opponentId , long productId, long userId){
+    public long getMachId(long opponentId, long productId, long userId){
         User user =  userRepository.findById(userId).orElseThrow(() -> new CustomException(NOT_FOUND_USER));
         Product product = productRepository.findById(productId).orElseThrow(() -> new CustomException(NOT_FOUND_PRODUCT));
-        return matchRepository.getMatchId(opponentId, productId, userId).getId();
+        Match match = matchRepository.getMatchId(opponentId, productId, userId).orElseThrow( () -> new CustomException(NOT_FOUND_MATCH));
+
+        return match.getId();
     }
 
     public List<MatchResDTO> getMatchList(long productId, long userId){
