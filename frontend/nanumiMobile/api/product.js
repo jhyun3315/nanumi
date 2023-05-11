@@ -103,9 +103,18 @@ export const requestDonationReceived = async (productId, userId) => {
   return response.data;
 };
 
+// 매칭후보
 export const requestGetMatchingUsers = async (productId, userId) => {
   const response = await axiosInstance.get(
     `${API_END_POINT}/matches/${productId}/${userId}`,
+  );
+  return response.data;
+};
+
+// 채팅창에서 매칭 ID 가져오기
+export const requestGetMatchingId = async (productId, userId, receiverId) => {
+  const response = await axiosInstance.get(
+    `${API_END_POINT}/matches/${productId}/${userId}/${receiverId}`,
   );
   return response.data;
 };

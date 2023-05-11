@@ -19,6 +19,7 @@ import {GiftedChat} from 'react-native-gifted-chat';
 import {useModal} from '../../hooks/useModal';
 import {
   requestGetDetailProduct,
+  requestGetMatchingId,
   requsetCompleteTransaction,
   requsetEvaluationTransaction,
 } from '../../api/product';
@@ -43,6 +44,16 @@ const ChatDetail = ({
   opponentId,
   isBlocked,
 }) => {
+  const {showModal, hideModal} = useModal();
+  const [user] = useRecoilState(userState);
+  const client = useRef(null);
+  const [transformChatData, setTransformChatData] = useState([]);
+  // 차단 시 연결끊음, 연결이 끊어져있을 때는 메시지를 못보내도록
+  const [isDisconnect, setIsDisconnet] = useState(false);
+
+  const bottomSheetModalRef = useRef(null);
+  const snapPoints = useMemo(() => ['30%', '55%'], []);
+
   const {
     data: chatLogData,
     isLoading: chatLogIsLoading,
@@ -57,15 +68,15 @@ const ChatDetail = ({
     () => requestGetDetailProduct(productId),
   );
 
-  const {showModal, hideModal} = useModal();
-  const [user] = useRecoilState(userState);
-  const client = useRef(null);
-  const [transformChatData, setTransformChatData] = useState([]);
-  // 차단 시 연결끊음, 연결이 끊어져있을 때는 메시지를 못보내도록
-  const [isDisconnect, setIsDisconnet] = useState(false);
-
-  const bottomSheetModalRef = useRef(null);
-  const snapPoints = useMemo(() => ['30%', '55%'], []);
+  // const {
+  //   data: mathingData,
+  //   isLoading: mathingLoading,
+  //   error: mathingError,
+  //   refetch: mathingRefetch,
+  // } = useQuery(['matchId', productId, user.userId, opponentId], () =>
+  //   requestGetMatchingId(productId, user.userId, opponentId),
+  // );
+  // console.log(mathingData);
 
   const subscribe = () => {
     if (client.current) {
