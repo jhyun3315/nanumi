@@ -3,11 +3,12 @@ package com.ssafy.nanumi.api.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.nanumi.common.ChatMessageDTO;
-import com.ssafy.nanumi.common.ChatRoomInfoDTO;
 import com.ssafy.nanumi.config.response.CustomResponse;
 import com.ssafy.nanumi.config.response.ResponseService;
 import com.ssafy.nanumi.config.response.exception.CustomException;
 import com.ssafy.nanumi.config.response.exception.CustomExceptionStatus;
+import com.ssafy.nanumi.db.entity.*;
+import com.ssafy.nanumi.db.repository.*;
 import com.ssafy.nanumi.db.entity.ChatMessageEntity;
 import com.ssafy.nanumi.db.entity.ChatRoomEntity;
 import com.ssafy.nanumi.db.entity.Product;
@@ -16,36 +17,40 @@ import com.ssafy.nanumi.db.repository.ChatRepository;
 import com.ssafy.nanumi.db.repository.ChatRoomRepository;
 import com.ssafy.nanumi.db.repository.ProductRepository;
 import com.ssafy.nanumi.db.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
 import java.util.*;
 
 @Service
 public class ChatService {
-    // 웹 소켓 메시지를 전송하는데 사용되는 인터페이스
     // 웹 소켓 메시지를 전송하는데 사용되는 인터페이스
     private final SimpMessageSendingOperations messageTemplate;
     private final ChatRepository chatRepository;
     private final ProductRepository productRepository;
     private final ResponseService responseService;
     private final UserRepository userRepository;
+    private final UserInfoRepository userInfoRepository;
+    private final MatchRepository matchRepository;
     private final ChatRoomRepository chatRoomRepository;
 
-    public ChatService(SimpMessageSendingOperations messageTemplate, ChatRepository chatRepository, ProductRepository productRepository, ResponseService responseService, UserRepository userRepository, ChatRoomRepository chatRoomRepository) {
+    public ChatService(SimpMessageSendingOperations messageTemplate, ChatRepository chatRepository, ProductRepository productRepository, ResponseService responseService, UserRepository userRepository, UserInfoRepository userInfoRepository, ChatRoomRepository chatRoomRepository, MatchRepository matchRepository) {
         this.messageTemplate = messageTemplate;
         this.chatRepository = chatRepository;
         this.productRepository = productRepository;
         this.responseService = responseService;
         this.userRepository = userRepository;
+        this.userInfoRepository = userInfoRepository;
         this.chatRoomRepository = chatRoomRepository;
+        this.matchRepository = matchRepository;
     }
+
 
 
     // TODO DTO 객체를 입력으로 받아서, 채팅 메시지를 저장하고 해당 채팅방에 전송한다.
@@ -115,10 +120,105 @@ public class ChatService {
     }
 
     @Transactional
-    public CustomResponse chatEndMatch(Long productId) {
+    public CustomResponse chatEndMatch(Long productId, Long giverId, Long givenerId) {
         Product product = productRepository.findById(productId)
                 .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_PRODUCT));
         product.matchedEnd();
+
+        // 나눠준 사용자, 나눔받은 사용자의 give_count, given_count 증가
+        // 나눠준 사람
+        User giver = userRepository.findById(giverId)
+                .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_USER));
+
+        UserInfo giver_info = userInfoRepository.findById(giver.getUserInfo().getId())
+                        .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_USER_INFO));
+        giver_info.updateGiveCount(giver_info.getGiveCount()+1);
+
+        // 나눔받은 사람
+        User givener = userRepository.findById(givenerId)
+                .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_USER));
+        UserInfo givener_info = userInfoRepository.findById(givener.getUserInfo().getId())
+                .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_USER_INFO));
+        givener_info.updateGivenCount(givener_info.getGivenCount()+1);
+
+        // 티어 계산
+        // 나눠준 사람 티어
+        String giver_tier = giver_info.getTier();
+        int giver_give_count = giver_info.getGiveCount();
+        int giver_given_count = giver_info.getGivenCount();
+        long giver_visit = giver_info.getVisitCount();
+        double giver_temperature = giver_info.getTemperature();
+
+        switch (giver_tier) {
+            case "브론즈" :
+                if(giver_visit>=2 && giver_give_count>=2 && giver_given_count>=2) {
+                    giver.setRoles(Collections.singletonList(Authority.builder().name("ROLE_실버").build()));
+                    giver_info.updateTier("실버");
+                }
+                break;
+            case "실버" :
+                if(giver_visit>=10 && giver_give_count>=10) {
+                    giver.setRoles(Collections.singletonList(Authority.builder().name("ROLE_골드").build()));
+                    giver_info.updateTier("골드");
+                }
+                break;
+            case "골드" :
+                if(giver_visit>=50 && giver_give_count>=50) {
+                    giver.setRoles(Collections.singletonList(Authority.builder().name("ROLE_플레티넘").build()));
+                    giver_info.updateTier("플레티넘");
+                }
+                break;
+            case "플레티넘" :
+                System.out.println("Giver는 플레티넘입니당.");
+                if(giver_visit>=50 && giver_give_count>=50 && giver_temperature>=40) {
+                    System.out.println("다이아로 승급합니다.");
+                    giver_info.updateTier("다이아");
+                    giver.setRoles(Collections.singletonList(Authority.builder().name("ROLE_다이아").build()));
+                }
+                break;
+            default:
+        }
+
+        // 나눔받은 사람 티어
+        // given_user, given_userinfo
+        String givener_tier = givener_info.getTier();
+        int givener_give_count = givener_info.getGiveCount();
+        int givener_given_count = givener_info.getGivenCount();
+        long givener_visit = givener_info.getVisitCount();
+        double givener_temperature = givener_info.getTemperature();
+
+        switch (givener_tier) {
+            case "브론즈" :
+                System.out.println("아직 브론즈입니다.");
+                if(givener_visit>=2 && givener_give_count>=2 && givener_given_count>=2) {
+                    System.out.println("실버로 승급합니다.");
+                    givener_info.updateTier("실버");
+                    givener.setRoles(Collections.singletonList(Authority.builder().name("ROLE_실버").build()));
+
+                }
+                break;
+            case "실버" :
+                if(givener_visit>=10 && givener_give_count>=10) {
+                    givener.setRoles(Collections.singletonList(Authority.builder().name("ROLE_골드").build()));
+                    givener_info.updateTier("골드");
+                }
+                break;
+            case "골드" :
+                if(givener_visit>=50 && givener_give_count>=50) {
+                    givener.setRoles(Collections.singletonList(Authority.builder().name("ROLE_플레티넘").build()));
+                    givener_info.updateTier("플레티넘");
+                }
+                break;
+            case "플레티넘" :
+                if(givener_visit>=100 && givener_give_count>=100 && givener_temperature>=40) {
+                    givener.setRoles(Collections.singletonList(Authority.builder().name("ROLE_다이아").build()));
+                    givener_info.updateTier("다이아");
+                }
+                break;
+            default:
+        }
+
+
         return responseService.getSuccessResponse();
     }
 }

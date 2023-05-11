@@ -39,6 +39,10 @@ public class Blacklist extends BaseTimeEntity {
         this.target = target;
     }
 
+    public void blockUser() {
+        this.isBlocked = true;
+    }
+
     public void blockCancel() {
         this.isBlocked = false;
     }

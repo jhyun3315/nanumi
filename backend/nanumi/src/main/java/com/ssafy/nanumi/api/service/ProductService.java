@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -31,6 +32,7 @@ public class ProductService {
     private final ProductImageRepository productImageRepository;
     private final MatchRepository matchRepository;
     private final UserRepository userRepository;
+    private final UserInfoRepository userInfoRepository;
 
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;

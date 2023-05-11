@@ -58,11 +58,63 @@ public class UserService {
         String RT = jwtProvider.createRefreshToken(user.getEmail(), user.getTiers());
 
         UserInfo userInfo =userInfoRepository.findById(user.getUserInfo().getId()).orElseThrow(() -> new CustomException(NOT_FOUND_USER_INFO));
-        userInfo.setRefreshToken(RT);
+        userInfo.updateRefreshToken(RT);
 
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         // 입력받은 비밀번호와 저장된 비밀번호 비교
         if(encoder.matches(userLoginDTO.getPassword(), user.getPassword())){
+
+            if(userInfo.getFcmToken()==null) {
+                userInfo.updateFcmToken(userLoginDTO.getFcmToken());
+            }
+
+            LocalDateTime now = LocalDateTime.now();
+            LocalDateTime modifiedDate = user.getUpdateDate();
+            int nowMonth = now.getMonthValue();
+            int nowDay = now.getDayOfMonth();
+
+            int modifiedMonth = modifiedDate.getMonthValue();
+            int modifiedDay = modifiedDate.getDayOfMonth();
+
+            if (nowMonth != modifiedMonth || nowDay != modifiedDay) { // 월, 일의 변동
+                String tier = userInfo.getTier();
+                int give_count = userInfo.getGiveCount();
+                int given_count = userInfo.getGivenCount();
+                long present_visit = userInfo.getVisitCount();
+                double temperature = userInfo.getTemperature();
+
+                userInfo.updateVisitCount(present_visit+1);
+
+                switch (tier) {
+                    case "브론즈" :
+                        if(present_visit>=2 && given_count>=2 && give_count>=2) {
+                            user.setRoles(Collections.singletonList(Authority.builder().name("ROLE_실버").build()));
+                            userInfo.updateTier("실버");
+                        }
+                        break;
+                    case "실버" :
+                        if(present_visit>=10 && give_count>=10) {
+                            user.setRoles(Collections.singletonList(Authority.builder().name("ROLE_골드").build()));
+                            userInfo.updateTier("골드");
+                        }
+                        break;
+                    case "골드" :
+                        if(present_visit>=50 && give_count>=50) {
+                            user.setRoles(Collections.singletonList(Authority.builder().name("ROLE_플레티넘").build()));
+                            userInfo.updateTier("플레티넘");
+                        }
+                        break;
+                    case "플레티넘" :
+                        if(present_visit>=50 && give_count>=50 && temperature>=40) {
+                            user.setRoles(Collections.singletonList(Authority.builder().name("ROLE_다이아").build()));
+                            userInfo.updateTier("다이아");
+                        }
+                        break;
+                    default :
+                }
+            }
+
+            user.updateDate(now);
             return new UserLoginResDTO(user,AT, RT);
         }else{
             throw new CustomException(NOT_MATCHED_PASSWORD);
@@ -147,6 +199,7 @@ public class UserService {
     }
 
     public UserDetailDTO findDetailUser(long userId) {
+
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(NOT_FOUND_USER));
 

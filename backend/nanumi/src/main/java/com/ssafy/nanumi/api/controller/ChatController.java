@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
+import retrofit2.http.Path;
 
 
 import java.util.List;
@@ -57,8 +57,8 @@ public class ChatController {
 //        return new ResponseEntity<>(chatRoomService.FindMyChatRooms(user), HttpStatus.OK);
 //    }
 
-    @GetMapping("/chat/end/{product-id}")
-    public CustomResponse endChat(@PathVariable("product-id") Long productId) {
-        return responseService.getDataResponse(chatService.chatEndMatch(productId),RESPONSE_SUCCESS);
+    @GetMapping("/chat/end/{product-id}/{giver-id}/{givener-id}")
+    public CustomResponse endChat(@PathVariable("product-id") Long productId, @PathVariable("giver-id") Long giverId, @PathVariable("givener-id") Long givenerId) {
+        return responseService.getDataResponse(chatService.chatEndMatch(productId, giverId, givenerId),RESPONSE_SUCCESS);
     }
 }
