@@ -123,10 +123,16 @@ export const requsetCompleteTransaction = async (
 };
 
 export const requsetEvaluationTransaction = async (matchId, userId, data) => {
-  console.log('matchid', matchId);
   const response = await axiosInstance.post(
     `${API_END_POINT}/matches/${matchId}/reviews/${userId}`,
     data,
+  );
+  return response.data;
+};
+
+export const requestGetReview = async (userId, page) => {
+  const response = await axiosInstance.get(
+    `${API_END_POINT}/users/reviews/${userId}/?page=${page}`,
   );
   return response.data;
 };

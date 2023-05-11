@@ -82,7 +82,7 @@ const CategoryProduct = ({categoryKey, categoryName}) => {
         <FlatList
           data={content}
           renderItem={({item}) => <ProductCard data={item} />}
-          keyExtractor={item => item.id.toString()}
+          keyExtractor={item => item?.id.toString()}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.contentContainerStyle}
           onEndReached={handleLoadMore}

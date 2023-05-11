@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   SafeAreaView,
   Text,
@@ -9,28 +9,13 @@ import {
 } from 'react-native';
 import {BackHeader} from '../../ui/BackHeader';
 import {COLORS, FONTS, SIZES, assets} from '../../constants';
+import {useRecoilState} from 'recoil';
+import {userState} from '../../state/user';
+import {requestGetReview} from '../../api/product';
+import {Fallback} from '../../ui/Fallback';
+import {useInfiniteQuery, useQuery} from '@tanstack/react-query';
 import Icon from 'react-native-ionicons';
-
-const reviews = [
-  {
-    id: '1',
-    content: '미쳤따!',
-    stars: 5,
-    profileImage: assets.person01,
-  },
-  {
-    id: '2',
-    content: '좋은 물건 주셔서 감사합니다.! 감사히 잘 쓰겠습니다.',
-    stars: 3,
-    profileImage: assets.person02,
-  },
-  {
-    id: '3',
-    content: '감사합니다',
-    stars: 1,
-    profileImage: assets.person03,
-  },
-];
+import ErrorModal from '../modal/ErrorModal';
 
 const renderReview = ({item}) => (
   <View style={styles.reviewContainer}>
@@ -55,15 +40,75 @@ const renderReview = ({item}) => (
 );
 
 const Review = ({navigation}) => {
+  const [user] = useRecoilState(userState);
+  const [review, setReview] = useState({});
+  const {
+    data,
+    error,
+    isError,
+    isLoading,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    refetch,
+  } = useInfiniteQuery(
+    ['review'],
+    ({pageParam = 0}) => requestGetReview(user.userId, pageParam),
+    {
+      getNextPageParam: (lastPage, pages) => {
+        if (
+          !lastPage?.result?.content?.length ||
+          (pages &&
+            pages.length > 0 &&
+            pages[pages.length - 1].result &&
+            pages[pages.length - 1].result.last)
+        ) {
+          return undefined;
+        }
+        return pages ? pages?.length : undefined;
+      },
+    },
+  );
+
+  const handleLoadMore = () => {
+    if (!isLoading && hasNextPage) fetchNextPage();
+  };
+
+  useEffect(() => {
+    setReview(prev => ({
+      ...prev,
+      isFetchingNextPage: isFetchingNextPage,
+    }));
+  }, [isFetchingNextPage]);
+
+  useEffect(() => {
+    setReview(prev => ({
+      ...prev,
+      data: data,
+      error: error,
+      isLoading: isLoading,
+      hasNextPage: hasNextPage,
+    }));
+  }, [data, error, isLoading, hasNextPage]);
+
+  const content =
+    review?.data?.pages?.flatMap(page => page?.result?.content) ?? [];
+  console.log('reviewdata', content);
+
+  if (isError) return <ErrorModal handlePress={refetch} />;
+  if (isLoading) return <Fallback />;
+
   return (
     <SafeAreaView style={styles.container}>
       <BackHeader navigation={navigation}>리뷰목록</BackHeader>
       <FlatList
-        data={reviews}
+        data={content}
         renderItem={renderReview}
-        keyExtractor={item => item.id}
+        keyExtractor={item => item?.id.toString()}
         style={styles.list}
         contentContainerStyle={styles.listContent}
+        onEndReached={handleLoadMore}
+        onEndReachedThreshold={2}
       />
     </SafeAreaView>
   );
