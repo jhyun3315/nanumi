@@ -7,11 +7,13 @@ import com.ssafy.nanumi.api.request.UserLoginDTO;
 import com.ssafy.nanumi.api.response.*;
 import com.ssafy.nanumi.api.service.UserService;
 import com.ssafy.nanumi.common.SearchPageReq;
+import com.ssafy.nanumi.common.provider.Provider;
 import com.ssafy.nanumi.config.response.CustomDataResponse;
 import com.ssafy.nanumi.config.response.CustomResponse;
 import com.ssafy.nanumi.config.response.ResponseService;
 import com.ssafy.nanumi.config.response.exception.CustomException;
 import com.ssafy.nanumi.config.response.exception.CustomExceptionStatus;
+import com.ssafy.nanumi.db.entity.LoginProvider;
 import com.ssafy.nanumi.db.entity.User;
 import com.ssafy.nanumi.db.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -36,11 +38,12 @@ public class UserController {
     private final UserService userService;
     private final UserRepository userRepository;
     private final ResponseService responseService;
+    private final String LOCAL = "local";
 
     /* 로컬 회원가입 */
     @PostMapping("/users/join")
     public CustomResponse join(@RequestBody UserJoinDTO userJoinDTO) {
-        userService.join(userJoinDTO);
+        userService.join(userJoinDTO, Provider.local);
         return responseService.getSuccessResponse();
     }
 
@@ -55,12 +58,6 @@ public class UserController {
     @PostMapping(value="/users/isRTValid")
     public ResponseEntity<TokenInfoResDTO> isRTValid(@RequestBody TokenInfoDTO request) throws Exception {
         return new ResponseEntity<>(userService.isRTValid(request), HttpStatus.OK);
-    }
-
-    /* 권한에 대한 테스트 용 */
-    @PostMapping("/test")
-    public String test() {
-        return "success";
     }
 
     @GetMapping("/users/check/{email}")
