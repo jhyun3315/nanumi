@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface ProductRepository extends JpaRepository<Product,Long> {
@@ -27,8 +28,9 @@ public interface ProductRepository extends JpaRepository<Product,Long> {
             "where p.address.id = :addressId " +
             "and p.isClosed = false " +
             "and p.isDeleted = false " +
-            "and p.isMatched = false ")
-    Page<ProductAllDTO> findAllProduct(@Param("addressId") Long addressId, Pageable pageable);
+            "and p.isMatched = false " +
+            "and p.user.id NOT IN :test")
+    Page<ProductAllDTO> findAllProduct(@Param("addressId") Long addressId, Pageable pageable, List<Long> test);
 
     @Query(value = "select p " +
             "from Product p " +

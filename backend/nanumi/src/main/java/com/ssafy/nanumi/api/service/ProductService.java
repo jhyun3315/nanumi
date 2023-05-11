@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
@@ -50,7 +51,8 @@ public class ProductService {
                 .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_USER));
 
         Long addressId = user.getAddress().getId();
-        return productRepository.findAllProduct(addressId, pageRequest);
+        List<Long> test = Arrays.asList(3L, 4L);
+        return productRepository.findAllProduct(addressId, pageRequest, test);
     }
 
     public ProductDetailDTO findByProductId(Long productId) {
