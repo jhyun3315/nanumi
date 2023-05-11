@@ -109,9 +109,6 @@ public class ChatService {
         messageTemplate.convertAndSend("/sub/chat/room/" + DTO.getRoomId(), chatEntityJson);
     }
 
-
-
-
     // TODO roomSeq를 입력으로 받아서 해당 채팅방의 최근 20개의 채팅 로그를 반환한다.
     @Transactional
     public List<ChatMessageEntity> GetChatLogLimit20(long roomSeq) {
@@ -150,30 +147,16 @@ public class ChatService {
         double giver_temperature = giver_info.getTemperature();
 
         switch (giver_tier) {
-            case "브론즈" :
+            case "새싹" :
                 if(giver_visit>=2 && giver_give_count>=2 && giver_given_count>=2) {
-                    giver.setRoles(Collections.singletonList(Authority.builder().name("ROLE_실버").build()));
-                    giver_info.updateTier("실버");
+                    giver.setRoles(Collections.singletonList(Authority.builder().name("ROLE_나무").build()));
+                    giver_info.updateTier("나무");
                 }
                 break;
-            case "실버" :
+            case "나무" :
                 if(giver_visit>=10 && giver_give_count>=10) {
-                    giver.setRoles(Collections.singletonList(Authority.builder().name("ROLE_골드").build()));
-                    giver_info.updateTier("골드");
-                }
-                break;
-            case "골드" :
-                if(giver_visit>=50 && giver_give_count>=50) {
-                    giver.setRoles(Collections.singletonList(Authority.builder().name("ROLE_플레티넘").build()));
-                    giver_info.updateTier("플레티넘");
-                }
-                break;
-            case "플레티넘" :
-                System.out.println("Giver는 플레티넘입니당.");
-                if(giver_visit>=50 && giver_give_count>=50 && giver_temperature>=40) {
-                    System.out.println("다이아로 승급합니다.");
-                    giver_info.updateTier("다이아");
-                    giver.setRoles(Collections.singletonList(Authority.builder().name("ROLE_다이아").build()));
+                    giver.setRoles(Collections.singletonList(Authority.builder().name("ROLE_골드나무").build()));
+                    giver_info.updateTier("골드나무");
                 }
                 break;
             default:
@@ -188,36 +171,21 @@ public class ChatService {
         double givener_temperature = givener_info.getTemperature();
 
         switch (givener_tier) {
-            case "브론즈" :
-                System.out.println("아직 브론즈입니다.");
+            case "새싹" :
                 if(givener_visit>=2 && givener_give_count>=2 && givener_given_count>=2) {
-                    System.out.println("실버로 승급합니다.");
-                    givener_info.updateTier("실버");
-                    givener.setRoles(Collections.singletonList(Authority.builder().name("ROLE_실버").build()));
-
+                    givener_info.updateTier("나무");
+                    givener.setRoles(Collections.singletonList(Authority.builder().name("ROLE_나무").build()));
                 }
                 break;
-            case "실버" :
+            case "나무" :
                 if(givener_visit>=10 && givener_give_count>=10) {
-                    givener.setRoles(Collections.singletonList(Authority.builder().name("ROLE_골드").build()));
-                    givener_info.updateTier("골드");
+                    givener.setRoles(Collections.singletonList(Authority.builder().name("ROLE_골드나무").build()));
+                    givener_info.updateTier("골드나무");
                 }
                 break;
-            case "골드" :
-                if(givener_visit>=50 && givener_give_count>=50) {
-                    givener.setRoles(Collections.singletonList(Authority.builder().name("ROLE_플레티넘").build()));
-                    givener_info.updateTier("플레티넘");
-                }
-                break;
-            case "플레티넘" :
-                if(givener_visit>=100 && givener_give_count>=100 && givener_temperature>=40) {
-                    givener.setRoles(Collections.singletonList(Authority.builder().name("ROLE_다이아").build()));
-                    givener_info.updateTier("다이아");
-                }
-                break;
+
             default:
         }
-
 
         return responseService.getSuccessResponse();
     }
