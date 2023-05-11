@@ -27,6 +27,12 @@ public class MatchService {
     private final ProductRepository productRepository;
     private final UserRepository userRepository;
 
+    public long getMachId(long opponentId , long productId, long userId){
+        User user =  userRepository.findById(userId).orElseThrow(() -> new CustomException(NOT_FOUND_USER));
+        Product product = productRepository.findById(productId).orElseThrow(() -> new CustomException(NOT_FOUND_PRODUCT));
+        return matchRepository.getMatchId(opponentId, productId, userId).getId();
+    }
+
     public List<MatchResDTO> getMatchList(long productId, long userId){
         User user =  userRepository.findById(userId).orElseThrow(() -> new CustomException(NOT_FOUND_USER));
         Product product = productRepository.findById(productId).orElseThrow(() -> new CustomException(NOT_FOUND_PRODUCT));

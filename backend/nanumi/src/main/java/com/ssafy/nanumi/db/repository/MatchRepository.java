@@ -11,6 +11,12 @@ import java.util.Optional;
 
 
 public interface MatchRepository extends CrudRepository<Match, Long> {
+    @Query("SELECT m.id AS matchId " +
+            "FROM Match m " +
+            "WHERE m.product.id=:productId " +
+            "AND (m.user.id =:opponentId OR m.user.id=:userId)")
+    Match getMatchId(@Param("opponentId")long opponentId ,@Param("productId") long productId, @Param("userId")long userId);
+
     @Query(value =
             "SELECT users.id AS UserId, " +
                     "users.nickname As UserNickName, " +
