@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.nanumi.api.request.UserJoinDTO;
+import com.ssafy.nanumi.api.request.UserLoginDTO;
 import com.ssafy.nanumi.api.request.kakaoLoginReqDTO;
 import com.ssafy.nanumi.api.response.UserLoginResDTO;
 import com.ssafy.nanumi.common.Image;
@@ -65,8 +66,8 @@ public class KakaoOauthService {
         User user = getKakaoUserInfo(req.getKakaoAccessTocken());
 
         // 3. 로그인 처리
-        // UserLoginDTO(String email, String password)
-        return userService.login();
+        // UserLoginDTO(String email, String password, String fcmToken)
+        return userService.login(new UserLoginDTO(user.getEmail(), user.getPassword(), req.getFcmToken()));
     }
 
     private void kakaoUsersAuthorizationInput(Authentication authentication, HttpServletResponse response) {
