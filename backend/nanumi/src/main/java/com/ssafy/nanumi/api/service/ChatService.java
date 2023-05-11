@@ -154,7 +154,7 @@ public class ChatService {
                 }
                 break;
             case "나무" :
-                if(giver_visit>=10 && giver_give_count>=10) {
+                if(giver_visit>=10 && giver_give_count>=10 && giver_temperature>=40) {
                     giver.setRoles(Collections.singletonList(Authority.builder().name("ROLE_나누미나무").build()));
                     giver_info.updateTier("나누미나무");
                 }
@@ -178,7 +178,7 @@ public class ChatService {
                 }
                 break;
             case "나무" :
-                if(givener_visit>=10 && givener_give_count>=10) {
+                if(givener_visit>=10 && givener_give_count>=10 && givener_temperature>=40) {
                     givener.setRoles(Collections.singletonList(Authority.builder().name("ROLE_나누미나무").build()));
                     givener_info.updateTier("나누미나무");
                 }
