@@ -1,6 +1,5 @@
 package com.ssafy.nanumi.api.service;
 
-import com.ssafy.nanumi.api.response.MatchInterface;
 import com.ssafy.nanumi.common.ChatRoomInfoDTO;
 import com.ssafy.nanumi.common.CreateChatRoomDTO;
 import com.ssafy.nanumi.config.response.exception.CustomException;

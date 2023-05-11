@@ -2,7 +2,6 @@ package com.ssafy.nanumi.api.service;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.ssafy.nanumi.api.response.MatchSuccessDto;
 import com.ssafy.nanumi.api.response.ProductAllDTO;
 import com.ssafy.nanumi.api.response.ProductDetailDTO;
 import com.ssafy.nanumi.config.response.exception.CustomException;
@@ -16,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
-import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
