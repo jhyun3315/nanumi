@@ -39,8 +39,8 @@ public class ChatRoomService {
         long productId = DTO.getProductId(); // 상품 아이디
 
         // Check if the chatroom already exists
-        Optional<ChatRoomEntity> existingChatRoom = chatRoomRepository.findByOpponentIdAndProductId(receiveUser, productId);
-        if (existingChatRoom.isPresent()) {
+        List<ChatRoomEntity> existingChatRooms = chatRoomRepository.findByOpponentIdAndProductId(receiveUser, productId);
+        if (!existingChatRooms.isEmpty()) {
             return new ResponseEntity<>("Chat room already exists", HttpStatus.BAD_REQUEST);
         }
 
