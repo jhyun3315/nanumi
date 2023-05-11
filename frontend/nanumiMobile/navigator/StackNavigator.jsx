@@ -1,7 +1,10 @@
 import React from 'react';
 import BottomTabs from './BottomTabs';
 import ProductDetailScreen from '../screens/ProductDetailScreen';
+import SearchScreen from '../screens/SearchScreen';
+import LoginScreen from './../screens/LoginScreen';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import RegisterScreen from '../screens/RegisterScreen';
 import {NavigationContainer} from '@react-navigation/native';
 
 const Stack = createNativeStackNavigator();
@@ -13,9 +16,12 @@ const StackNavigator = () => {
         screenOptions={{
           headerShown: false,
         }}
-        initialRouteName="BottomTabs">
+        initialRouteName="Login">
         <Stack.Screen name="BottomTabs" component={BottomTabs} />
         <Stack.Screen name="Detail" component={ProductDetailScreen} />
+        <Stack.Screen name="Search" component={SearchScreen} />
+        <Stack.Screen name="Login" component={LoginScreen} />
+        <Stack.Screen name="Register" component={RegisterScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
