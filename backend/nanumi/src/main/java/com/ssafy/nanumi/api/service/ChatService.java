@@ -126,7 +126,6 @@ public class ChatService {
         // 나눠준 사람
         User giver = userRepository.findById(giverId)
                 .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_USER));
-
         UserInfo giver_info = userInfoRepository.findById(giver.getUserInfo().getId())
                         .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_USER_INFO));
         giver_info.updateGiveCount(giver_info.getGiveCount()+1);

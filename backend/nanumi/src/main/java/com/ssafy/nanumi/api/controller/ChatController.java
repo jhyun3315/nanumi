@@ -59,6 +59,7 @@ public class ChatController {
 
     @GetMapping("/chat/end/{product-id}/{giver-id}/{givener-id}")
     public CustomResponse endChat(@PathVariable("product-id") Long productId, @PathVariable("giver-id") Long giverId, @PathVariable("givener-id") Long givenerId) {
+        // TODO : dev_be에 PUSH 아직 안했음.
         return responseService.getDataResponse(chatService.chatEndMatch(productId, giverId, givenerId),RESPONSE_SUCCESS);
     }
 }
