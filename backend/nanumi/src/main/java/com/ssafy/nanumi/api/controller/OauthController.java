@@ -17,17 +17,16 @@ import java.io.IOException;
 public class OauthController {
     private final KakaoOauthService kakaoOauthService;
 
-//    @GetMapping("/login")
-//    public void kakaoLogin(HttpServletResponse response) throws IOException {
-//
-//        response.sendRedirect(kakaoOauthService.loginPage()); // 로그인 페이지로 리다이렉트
-//    }
-
-    /* 카카오 로그인 */
-    @PostMapping("/login")
-    public UserLoginResDTO kakaoLoginCallback(@RequestBody kakaoLoginReqDTO kakaoLoginReqDTO, HttpServletResponse response) throws JsonProcessingException {
-
-        return kakaoOauthService.kakaoLogin(kakaoLoginReqDTO, response);
+    @GetMapping("/login")
+    public void kakaoLogin(HttpServletResponse response) throws IOException {
+        response.sendRedirect(kakaoOauthService.loginPage()); // 로그인 페이지로 리다이렉트
     }
 
+    /* 카카오 로그인 */
+    @GetMapping("/callback")
+//    public UserLoginResDTO kakaoLogin(@RequestBody kakaoLoginReqDTO kakaoLoginReqDTO) throws JsonProcessingException {
+    public UserLoginResDTO kakaoLogin(@RequestParam("code") String code) throws JsonProcessingException {
+        System.out.println("이게 인가 코드 !! "+code);
+        return kakaoOauthService.kakaoLogin(code);
+    }
 }

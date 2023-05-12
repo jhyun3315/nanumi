@@ -50,6 +50,7 @@ public class UserController {
     /* 로컬 로그인 */
     @PostMapping("/users/login")
     public CustomDataResponse login(@RequestBody UserLoginDTO userLoginDTO){
+        userLoginDTO.ifLocalLogin();
         UserLoginResDTO userLoginResDTO = userService.login(userLoginDTO);
         return responseService.getDataResponse(userLoginResDTO, RESPONSE_SUCCESS);
     }

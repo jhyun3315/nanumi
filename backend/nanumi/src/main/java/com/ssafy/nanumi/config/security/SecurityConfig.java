@@ -37,6 +37,11 @@ public class SecurityConfig {
     private final JwtProvider jwtProvider;
 
     @Bean
+    public PasswordEncoder passwordEncoder() {
+        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+    }
+
+    @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 // ID, Password 문자열을 Base64로 인코딩하여 전달하는 구조
@@ -51,11 +56,11 @@ public class SecurityConfig {
                 .authorizeRequests()
                 // 회원가입과 로그인은 모두 승인
 
-                .antMatchers("/test").hasAnyRole("브론즈", "실버", "골드", "플레티넘", "다이아")
+//                .antMatchers("/test").hasAnyRole("브론즈", "실버", "골드", "플레티넘", "다이아")
                 .antMatchers("/users/join", "/users/login", "/users/isRTValid", "/users/check/**", "/api/v2/**", "/health", "/swagger-ui.html", "/swagger/**",
                         "/swagger-ui/**","/swagger-resources/**", "/webjars/**", "/v2/api-docs","/ws-stomp/**").permitAll()
-                .antMatchers("/users/**").hasAnyRole("브론즈", "실버", "골드", "플레티넘", "다이아")
-                .antMatchers("/actuator/**","/**").permitAll()
+//                .antMatchers("/users/**").hasAnyRole("브론즈", "실버", "골드", "플레티넘", "다이아")
+                .antMatchers("/actuator/**","/oauth/kakao/**").permitAll()
                 .anyRequest().authenticated()
 //                .anyRequest().permitAll()
 
@@ -102,8 +107,4 @@ public class SecurityConfig {
         return http.build();
     }
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
-    }
 }

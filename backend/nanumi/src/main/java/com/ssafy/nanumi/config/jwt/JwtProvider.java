@@ -73,6 +73,7 @@ public class JwtProvider {
 
         return Jwts.builder() // refresh token
                 .setIssuedAt(now)
+                .setSubject(account)
                 .setExpiration(new Date(now.getTime() + rt_exp))
                 .signWith(secretKey, SignatureAlgorithm.HS256)
                 .compact();
@@ -121,7 +122,7 @@ public class JwtProvider {
             String RT = request.getRefreshToken();
             UserInfo userInfo = userInfoRepository.findByRefreshToken(RT)
                     .orElseThrow(() -> new CustomException(NOT_FOUND_USER_INFO));
-            User user = userRepository.findByEmail(request.getEmail())
+            User user = userRepository.findById(request.getId())
                     .orElseThrow(() -> new CustomException(NOT_FOUND_USER_INFO));
             String userInfo_RT = userInfo.getRefreshToken();
             if (!RT.equals(userInfo_RT)) {

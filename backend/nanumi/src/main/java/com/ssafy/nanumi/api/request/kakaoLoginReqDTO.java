@@ -8,13 +8,13 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public class kakaoLoginReqDTO {
-    private String kakaoAccessTocken;
+    private String kakaoAccessToken;
     private String fcmToken;
     private Provider provider;
 
     @Builder
-    public kakaoLoginReqDTO(String kakaoAccessTocken, String fcmToken) {
-        this.kakaoAccessTocken = kakaoAccessTocken;
+    public kakaoLoginReqDTO(String kakaoAccessToken, String fcmToken) {
+        this.kakaoAccessToken = kakaoAccessToken;
         this.fcmToken = fcmToken;
         this.provider = Provider.kakao;
     }

@@ -21,16 +21,16 @@ public class User extends BaseTimeEntity {
     @Column(name = "id", nullable = false)
     private long id;
 
-    @Column(name = "email", columnDefinition = "VARCHAR(50)", nullable = false)
+    @Column(name = "email", columnDefinition = "VARCHAR(225)", nullable = false)
     private String email;
 
     @Column(name="nickname", columnDefinition="VARCHAR(20)", nullable = false)
     private String nickname;
 
-    @Column(name="profile_url", columnDefinition="VARCHAR(150)")
+    @Column(name="profile_url")
     private String profileUrl;
 
-    @Column(name ="password", columnDefinition = "VARCHAR(64)", nullable = false)
+    @Column(name ="password", columnDefinition = "VARCHAR(225)", nullable = false)
     private String password;
 
     @ColumnDefault("0")

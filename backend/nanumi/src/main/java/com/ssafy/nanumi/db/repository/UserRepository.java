@@ -2,17 +2,21 @@ package com.ssafy.nanumi.db.repository;
 
 import com.ssafy.nanumi.api.response.ProductAllDTO;
 import com.ssafy.nanumi.api.response.ReviewReadDTO;
+import com.ssafy.nanumi.common.provider.Provider;
+import com.ssafy.nanumi.db.entity.LoginProvider;
 import com.ssafy.nanumi.db.entity.User;
 import io.lettuce.core.dynamic.annotation.Param;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.security.core.parameters.P;
 
 import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User,Long> {
 
+    Optional<User> findByEmailAndLoginProvider(String email, LoginProvider provider);
     Optional<User> findByEmail(String email);
 
     @Query(value = "select p " +

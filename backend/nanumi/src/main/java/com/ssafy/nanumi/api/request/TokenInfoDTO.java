@@ -1,10 +1,13 @@
 package com.ssafy.nanumi.api.request;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
-@Data
+@Getter
+@RequiredArgsConstructor
 public class TokenInfoDTO {
-    private String email;
-    private String accessToken;
-    private String refreshToken;
+    private final long id;
+    private final String accessToken;
+    private final String refreshToken;
 }

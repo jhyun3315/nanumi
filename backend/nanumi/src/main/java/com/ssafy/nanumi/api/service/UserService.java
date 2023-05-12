@@ -1,14 +1,12 @@
 package com.ssafy.nanumi.api.service;
 
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.ssafy.nanumi.api.request.TokenInfoDTO;
 import com.ssafy.nanumi.api.request.UserJoinDTO;
 import com.ssafy.nanumi.api.request.UserLoginDTO;
 import com.ssafy.nanumi.api.response.*;
 import com.ssafy.nanumi.common.Image;
 import com.ssafy.nanumi.common.provider.Provider;
-import com.ssafy.nanumi.config.entity.BaseTimeEntity;
 import com.ssafy.nanumi.config.jwt.JwtProvider;
 import com.ssafy.nanumi.config.response.exception.CustomException;
 import com.ssafy.nanumi.db.entity.*;
@@ -27,14 +25,12 @@ import javax.mail.MessagingException;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Collections;
-import java.util.Date;
-import java.util.UUID;
 
 import static com.ssafy.nanumi.config.response.exception.CustomExceptionStatus.*;
 
 @Slf4j
 @Service
-@Transactional(readOnly = false)
+@Transactional
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
@@ -42,31 +38,35 @@ public class UserService {
     private final AddressRepository addressRepository;
     private final ProductRepository productRepository;
     private final LoginProviderRepository loginProviderRepository;
+
+    private BCryptPasswordEncoder encoder;
     private final EmailService emailService;
     private final S3Service s3Service;
     private final JwtProvider jwtProvider;
+
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
     private final AmazonS3 amazonS3;
 
-
     public UserLoginResDTO login(UserLoginDTO userLoginDTO){
-        User user = userRepository.findByEmail(userLoginDTO.getEmail()).orElseThrow(() -> new CustomException(NOT_FOUND_USER));
+        LoginProvider loginProvider = loginProviderRepository
+                .findByProvider(userLoginDTO.getProvider()).orElseThrow(() -> new CustomException(NOT_FOUND_LOGIN_PROVIDER));
+        User user = userRepository
+                .findByEmailAndLoginProvider(userLoginDTO.getEmail(), loginProvider).orElseThrow(() -> new CustomException(NOT_FOUND_USER));
+
         // Access Token
-        String AT = jwtProvider.createAccessToken(user.getEmail(), user.getTiers());
+        String AT = jwtProvider.createAccessToken(String.valueOf(user.getId()), user.getTiers());
         // Refresh Token
-        String RT = jwtProvider.createRefreshToken(user.getEmail(), user.getTiers());
+        String RT = jwtProvider.createRefreshToken(String.valueOf(user.getId()), user.getTiers());
 
         UserInfo userInfo =userInfoRepository.findById(user.getUserInfo().getId()).orElseThrow(() -> new CustomException(NOT_FOUND_USER_INFO));
         userInfo.updateRefreshToken(RT);
-
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        encoder = new BCryptPasswordEncoder();
         // 입력받은 비밀번호와 저장된 비밀번호 비교
-        if(encoder.matches(userLoginDTO.getPassword(), user.getPassword())){
 
-            if(userInfo.getFcmToken()==null) {
-                userInfo.updateFcmToken(userLoginDTO.getFcmToken());
-            }
+        if (encoder.matches(userLoginDTO.getPassword(), user.getPassword())) {
+
+            userInfo.updateFcmToken(userLoginDTO.getFcmToken());
 
             LocalDateTime now = LocalDateTime.now();
             LocalDateTime modifiedDate = user.getUpdateDate();
@@ -125,84 +125,71 @@ public class UserService {
         LoginProvider loginProvider = loginProviderRepository.findByProvider(provider)
                 .orElseThrow(() -> new CustomException(NOT_FOUND_LOGIN_PROVIDER));
 
+        encoder = new BCryptPasswordEncoder();
+        System.out.println("<회원가입> loginProvider : "+loginProvider.getProvider());
         String email = userJoinDTO.getEmail();
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        System.out.println("<회원가입> email: "+email);
 
-        String profileImage = provider.getValue().equals("local") ? Image.DefaultImage.getValue() : userJoinDTO.getProfileUrl();
+        // 이미 존재하는 계정이라면 예외 발생
+        if(userRepository.findByEmailAndLoginProvider(email, loginProvider).isPresent()) throw new CustomException(RESPONSE_ACCOUNT_EXISTED);
 
-        if( userRepository.findByEmail(email).isPresent() ){
-            throw new CustomException(RESPONSE_EMAIL_EXISTED);
-        }else{
-            UserInfo userInfo =
-                    UserInfo.builder()
-                    .stopDate(null)
-                    .refreshToken(null)
-                    .build();
+        String profileImage = provider.equals(Provider.local) ? Image.DefaultImage.getValue() : userJoinDTO.getProfileUrl();
 
-            UserInfo userInfoSaved  = userInfoRepository.save(userInfo);
-            if(addressRepository.findById(userJoinDTO.getAddressId()).isEmpty()){
-                throw new CustomException(NOT_FOUND_ADDRESS_CODE);
-            }else{
-                User user = User.builder()
-                        .email(userJoinDTO.getEmail())
-                        .nickname(userJoinDTO.getNickname())
-                        .profileUrl(profileImage)
-                        .password(passwordEncoder.encode(userJoinDTO.getPassword()))
-                        .loginProvider(loginProvider)
-                        .address(addressRepository.getById(userJoinDTO.getAddressId()))
-                        .userInfo(userInfoSaved)
+        UserInfo userInfo =
+                UserInfo.builder()
+                        .stopDate(null)
+                        .refreshToken(null)
                         .build();
 
-                // Security 일반사용자 권한 추가
-                user.setRoles(Collections.singletonList(Authority.builder().name("ROLE_브론즈").build()));
+        UserInfo updatedUserInfo = userInfoRepository.save(userInfo);
 
-                return userRepository.save(user);
-            }
-        }
+        Address address = addressRepository.findById(
+                userJoinDTO.getAddressId()).orElseThrow(() -> new CustomException(NOT_FOUND_ADDRESS_CODE));
+
+        System.out.println("<회원가입> profileImage: "+profileImage);
+        System.out.println("<회원가입> userInfo: "+updatedUserInfo.getId());
+        System.out.println("<회원가입> address : "+ address.getId());
+        System.out.println("<회원가입 nickname : " + userJoinDTO.getNickname());
+
+        User user = User.builder()
+                .email(email)
+                .nickname(userJoinDTO.getNickname())
+                .profileUrl(profileImage)
+                .password(encoder.encode(userJoinDTO.getPassword()))
+                .loginProvider(loginProvider)
+                .address(address)
+                .userInfo(updatedUserInfo)
+                .build();
+
+        // Security 일반사용자 권한 추가
+        user.setRoles(Collections.singletonList(Authority.builder().name("ROLE_브론즈").build()));
+        User createdUser = userRepository.save(user);
+        return createdUser;
     }
 
+    @Transactional(readOnly = true)
     public EmailCheckResDTO checkEmail(String email) throws MessagingException, IOException {
-        String code = "";
-
-        if( userRepository.findByEmail(email).isPresent() ){
-            throw new CustomException(RESPONSE_EMAIL_EXISTED);
-        }else{
-            code = emailService.sendEmail(email);
-        }
-        return new EmailCheckResDTO(code);
+        userRepository.findByEmail(email).orElseThrow(() ->  new CustomException(RESPONSE_EMAIL_EXISTED));
+        return new EmailCheckResDTO( emailService.sendEmail(email));
     }
 
     public AddressResDTO updateUserAddress(long addressCode, long userId){
-       if(addressRepository.findById(addressCode).isEmpty()){
-           throw new CustomException(NOT_FOUND_ADDRESS_CODE);
-       }else{
-           User user = userRepository.findById(userId).orElseThrow(
-                   () -> new CustomException(NOT_FOUND_USER)
-           );
-           user.updateAddress(addressRepository.getById(addressCode));
-          return new AddressResDTO(user.getAddress());
-       }
+        Address address = addressRepository.findById(addressCode).orElseThrow(
+                () -> new CustomException(NOT_FOUND_ADDRESS_CODE));
+        User user = userRepository.findById(userId).orElseThrow(
+                () -> new CustomException(NOT_FOUND_USER));
+        user.updateAddress(address);
+        return new AddressResDTO(address);
     }
-
-    public AddressResDTO getUserAddress(long user_id){
-        if(userRepository.findById(user_id).isEmpty()){
-            throw new CustomException(NOT_FOUND_USER_INFO);
-        }else{
-            User user = userRepository.getById(user_id);
+    @Transactional(readOnly = true)
+    public AddressResDTO getUserAddress(long userId){
+            User user = userRepository.findById(userId).orElseThrow(()-> new CustomException(NOT_FOUND_USER));
             long addressCode = user.getAddress().getId();
-
-            if(addressRepository.findById(addressCode).isEmpty()){
-                throw new CustomException(NOT_FOUND_ADDRESS_CODE);
-            }else{
-                Address address = addressRepository.getById(addressCode);
-                return new AddressResDTO(address);
-            }
-
-        }
+            Address address = addressRepository.findById(addressCode).orElseThrow(() -> new CustomException(NOT_FOUND_ADDRESS_CODE));
+            return new AddressResDTO(address);
     }
-
+    @Transactional(readOnly = true)
     public UserDetailDTO findDetailUser(long userId) {
-
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(NOT_FOUND_USER));
 
