@@ -33,8 +33,10 @@ const PostCreateForm = () => {
         selectedAssets: [],
         isExportThumbnail: true,
         maxSelectedAssets: 10 - images.length,
+        isPreview: false,
         usedCameraButton: true,
       });
+
       const paths = response.map(image => {
         const nameParts = image.fileName.split('.');
         const format = nameParts[nameParts.length - 1];
@@ -47,7 +49,7 @@ const PostCreateForm = () => {
       });
       setImages([...images, ...paths]);
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
   };
 
