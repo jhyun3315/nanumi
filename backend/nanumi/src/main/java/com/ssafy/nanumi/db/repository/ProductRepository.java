@@ -23,7 +23,7 @@ public interface ProductRepository extends JpaRepository<Product,Long> {
         "AND p.name Like %:name% " +
         "AND p.user.id NOT IN :blockers " +
         "AND p.user.id NOT IN :targets")
-    Page<ProductAllDTO> searchAll(@Param("addressId") long addressId, @Param("blockers") List<Long> blockers, @Param("targets") List<Long> targets, String name, Pageable pageable);
+    Page<ProductAllDTO> searchAll(@Param("addressId") long addressId, @Param("blockers") List<Long> blockers, @Param("targets") List<Long> targets, @Param("name") String name, Pageable pageable);
 
     @Query(value = "select p " +
             "from Product p " +
