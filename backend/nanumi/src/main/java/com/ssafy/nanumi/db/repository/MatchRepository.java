@@ -51,4 +51,5 @@ public interface MatchRepository extends CrudRepository<Match, Long> {
 
     Optional<Match> findMatchByProductAndUsers(@Param("productId")long productId, @Param("sendUserId")long sendUser, @Param("receiveUserId")long receiveUser);
     List<Match> findAllByProductId(@Param("productId")long productId);
+    boolean existsByProductIdAndUserId(long productId, long userId);
 }
