@@ -43,7 +43,15 @@ public class ProductService {
         User user = userRepository.findById(userId).orElseThrow(() ->  new CustomException(NOT_FOUND_USER));
         Address address = addressRepository.findById(user.getAddress().getId()).orElseThrow( () ->  new CustomException(NOT_FOUND_ADDRESS_CODE));
 
-        return productRepository.searchAll(address.getId(), words, pageRequest);
+        // 차단자 조회
+        List<Long> blockers = blacklistRepository.findBlockerId(user.getId());
+        blockers.add(0L);
+
+        // 차단대상자 조회
+        List<Long> targets = blacklistRepository.findTargetId(user.getId());
+        targets.add(0L);
+
+        return productRepository.searchAll(address.getId(), blockers, targets, words, pageRequest);
     }
 
     public Page<ProductAllDTO> findProductAll(long userId, PageRequest pageRequest) {
