@@ -86,8 +86,18 @@ public class ProductService {
 
         categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new CustomException(CustomExceptionStatus.NOT_FOUND_CATEGORY));
+
         Long addressId = user.getAddress().getId();
-        return productRepository.findAllCategoryProduct(addressId,categoryId, pageRequest);
+
+        // 차단자 조회
+        List<Long> blockers = blacklistRepository.findBlockerId(user.getId());
+        blockers.add(0L);
+
+        // 차단대상자 조회
+        List<Long> targets = blacklistRepository.findTargetId(user.getId());
+        targets.add(0L);
+
+        return productRepository.findAllCategoryProduct(addressId,categoryId, blockers, targets, pageRequest);
 }
 
     public void createProduct(MultipartFile[] images,String name,String content,Long categoryId, User user) throws IOException {
