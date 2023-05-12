@@ -66,7 +66,6 @@ const Profile = ({navigation}) => {
     });
   };
 
-  console.log('리패치');
   useFocusEffect(
     useCallback(() => {
       refetch();
