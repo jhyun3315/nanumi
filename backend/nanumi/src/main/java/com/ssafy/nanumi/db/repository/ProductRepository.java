@@ -13,15 +13,17 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ProductRepository extends JpaRepository<Product,Long> {
-@Query(value =
+    @Query(value =
         "SELECT p " +
         "FROM Product p " +
         "WHERE p.address.id = :addressId " +
         "AND p.isClosed = false " +
         "AND p.isMatched = false " +
         "AND p.isDeleted = false " +
-        "AND p.name Like %:name%")
-    Page<ProductAllDTO> searchAll(@Param("addressId") long addressId, String name, Pageable pageable);
+        "AND p.name Like %:name% " +
+        "AND p.user.id NOT IN :blockers " +
+        "AND p.user.id NOT IN :targets")
+    Page<ProductAllDTO> searchAll(@Param("addressId") long addressId, @Param("blockers") List<Long> blockers, @Param("targets") List<Long> targets, String name, Pageable pageable);
 
     @Query(value = "select p " +
             "from Product p " +
