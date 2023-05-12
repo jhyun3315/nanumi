@@ -29,8 +29,9 @@ public interface ProductRepository extends JpaRepository<Product,Long> {
             "and p.isClosed = false " +
             "and p.isDeleted = false " +
             "and p.isMatched = false " +
-            "and p.user.id NOT IN :test")
-    Page<ProductAllDTO> findAllProduct(@Param("addressId") Long addressId, Pageable pageable, List<Long> test);
+            "and p.user.id NOT IN :blockers " +
+            "and p.user.id NOT IN :targets")
+    Page<ProductAllDTO> findAllProduct(@Param("addressId") Long addressId, @Param("blockers") List<Long> blockers, @Param("targets") List<Long> targets, Pageable pageable);
 
     @Query(value = "select p " +
             "from Product p " +
