@@ -30,9 +30,7 @@ public class ProductService {
     private final CategoryRepository categoryRepository;
     private final AddressRepository addressRepository;
     private final ProductImageRepository productImageRepository;
-    private final MatchRepository matchRepository;
     private final UserRepository userRepository;
-    private final UserInfoRepository userInfoRepository;
     private final BlacklistRepository blacklistRepository;
 
     @Value("${cloud.aws.s3.bucket}")
@@ -40,7 +38,9 @@ public class ProductService {
     private final AmazonS3 amazonS3;
 
     public Page<ProductAllDTO> searchProductByWords(long userId, String words, PageRequest pageRequest){
+
         User user = userRepository.findById(userId).orElseThrow(() ->  new CustomException(NOT_FOUND_USER));
+
         Address address = addressRepository.findById(user.getAddress().getId()).orElseThrow( () ->  new CustomException(NOT_FOUND_ADDRESS_CODE));
 
         // 차단자 조회
@@ -55,6 +55,7 @@ public class ProductService {
     }
 
     public Page<ProductAllDTO> findProductAll(long userId, PageRequest pageRequest) {
+
         User user = userRepository.findById(userId)
                 .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_USER));
 
@@ -72,8 +73,10 @@ public class ProductService {
     }
 
     public ProductDetailDTO findByProductId(Long productId) {
+
         Product product = productRepository.findById(productId)
                 .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_PRODUCT));
+
         if (product.isDeleted()) {
             throw new CustomException(CustomExceptionStatus.NOT_FOUND_PRODUCT);
         }
@@ -81,6 +84,7 @@ public class ProductService {
     }
 
     public Page<ProductAllDTO> findCateProductAll(Long categoryId, long userId, Pageable pageRequest) {
+
         User user = userRepository.findById(userId)
                 .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_USER));
 
@@ -101,9 +105,12 @@ public class ProductService {
 }
 
     public void createProduct(MultipartFile[] images,String name,String content,Long categoryId, User user) throws IOException {
+
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_CATEGORY));
+
         Address address = user.getAddress();
+
         Product product = Product.builder()
                 .name(name)
                 .content(content)
@@ -134,8 +141,10 @@ public class ProductService {
                               String name,
                               String content,
                               Long categoryId) throws IOException {
+
         Product product = productRepository.findById(productId)
                 .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_PRODUCT));
+
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_CATEGORY));
 
@@ -160,8 +169,10 @@ public class ProductService {
 
     }
     public void deleteProduct(Long productId){
+        
         Product product = productRepository.findById(productId)
                 .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_PRODUCT));
+
         product.delete();
     }
 
