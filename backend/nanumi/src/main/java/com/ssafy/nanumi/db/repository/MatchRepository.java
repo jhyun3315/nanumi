@@ -11,6 +11,12 @@ import java.util.Optional;
 
 
 public interface MatchRepository extends CrudRepository<Match, Long> {
+    @Query("SELECT m " +
+            "FROM Match m " +
+            "WHERE m.product.id=:productId " +
+            "AND (m.user.id =:opponentId OR m.user.id=:userId)")
+    Optional<Match> getMatchId(@Param("opponentId")long opponentId , @Param("productId") long productId, @Param("userId")long userId);
+
     @Query(value =
             "SELECT users.id AS UserId, " +
                     "users.nickname As UserNickName, " +
@@ -30,8 +36,7 @@ public interface MatchRepository extends CrudRepository<Match, Long> {
             "SELECT m " +
                     "FROM Match m " +
                     "WHERE m.isMatching=true " +
-                    "AND m.product.id=:productId"
-    )
+                    "AND m.product.id=:productId")
     Optional<Match> findMatch(@Param("productId") long productId);
 
     @Query(value =
@@ -42,6 +47,6 @@ public interface MatchRepository extends CrudRepository<Match, Long> {
                     "AND m.isMatching = true"
     )
 
-    Optional<Match> findMatchByProductAndUsers(long productId, long sendUser, long receiveUser);
+    Optional<Match> findMatchByProductAndUsers(@Param("productId")long productId, @Param("sendUserId")long sendUser, @Param("receiveUserId")long receiveUser);
 }
 

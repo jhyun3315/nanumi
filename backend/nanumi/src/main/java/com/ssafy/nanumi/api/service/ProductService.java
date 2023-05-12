@@ -2,7 +2,8 @@ package com.ssafy.nanumi.api.service;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.ssafy.nanumi.api.response.*;
+import com.ssafy.nanumi.api.response.ProductAllDTO;
+import com.ssafy.nanumi.api.response.ProductDetailDTO;
 import com.ssafy.nanumi.config.response.exception.CustomException;
 import com.ssafy.nanumi.config.response.exception.CustomExceptionStatus;
 import com.ssafy.nanumi.db.entity.*;
