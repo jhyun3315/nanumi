@@ -82,8 +82,20 @@ public class ChatRoomService {
                     .orElse(0L);
 
             // 차단 목록 true/ false 리턴
-            List<Blacklist> blockedUsers = blacklistRepository.findByBlockerIdAndIsBlockedTrue(user);
-            boolean isOpponentBlocked = blockedUsers.stream().anyMatch(blacklist -> blacklist.getTarget().getId() == opponentId);
+//            List<Blacklist> blockedUsers = blacklistRepository.findByBlockerIdAndIsBlockedTrue(user);
+            List<Long> blacklists = new ArrayList<>();
+
+            List<Long> blockers = blacklistRepository.findBlockerId(user);
+            for (long blocker : blockers) {
+                blacklists.add(blocker);
+            }
+
+            List<Long> targets = blacklistRepository.findTargetId(user);
+            for (long target : targets) {
+                blacklists.add(target);
+            }
+
+            boolean isOpponentBlocked = blacklists.stream().anyMatch(blacklist -> blacklist == opponentId);
             chatRoomInfoDTO.setBlocked(isOpponentBlocked);
 
             // 상대방 정보를 UserRepository에서 가져오기 (MySQL)
