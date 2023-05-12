@@ -9,21 +9,23 @@ import com.ssafy.nanumi.config.response.exception.CustomExceptionStatus;
 import com.ssafy.nanumi.db.entity.*;
 import com.ssafy.nanumi.db.repository.*;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 import static com.ssafy.nanumi.config.response.exception.CustomExceptionStatus.*;
 
+@Slf4j
 @Service
 @Transactional
 @RequiredArgsConstructor
 public class ProductService {
+
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
     private final AddressRepository addressRepository;
@@ -31,6 +33,7 @@ public class ProductService {
     private final MatchRepository matchRepository;
     private final UserRepository userRepository;
     private final UserInfoRepository userInfoRepository;
+    private final BlacklistRepository blacklistRepository;
 
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
@@ -48,7 +51,16 @@ public class ProductService {
                 .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_USER));
 
         Long addressId = user.getAddress().getId();
-        return productRepository.findAllProduct(addressId, pageRequest);
+
+        // 차단자 조회
+        List<Long> blockers = blacklistRepository.findBlockerId(user.getId());
+        blockers.add(0L);
+
+        // 차단대상자 조회
+        List<Long> targets = blacklistRepository.findTargetId(user.getId());
+        targets.add(0L);
+
+        return productRepository.findAllProduct(addressId, blockers, targets, pageRequest);
     }
 
     public ProductDetailDTO findByProductId(Long productId) {

@@ -1,6 +1,7 @@
 package com.ssafy.nanumi.db.repository;
 
 import com.ssafy.nanumi.db.entity.Blacklist;
+import io.lettuce.core.dynamic.annotation.Param;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -18,4 +19,14 @@ public interface BlacklistRepository extends JpaRepository<Blacklist, Long> {
             "from Blacklist b " +
             "where b.blocker.id = :userId and b.isBlocked = true")
     List<Blacklist> findByBlockerIdAndIsBlockedTrue(long userId);
+
+    @Query(value = "select b.blocker.id " +
+            "from Blacklist b " +
+            "where b.target.id = :userId and b.isBlocked = true")
+    List<Long> findBlockerId(@Param("userId") long userId);
+
+    @Query(value = "select b.target.id " +
+            "from Blacklist b " +
+            "where b.blocker.id = :userId and b.isBlocked = true")
+    List<Long> findTargetId(@Param("userId") long userId);
 }
