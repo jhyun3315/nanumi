@@ -3,10 +3,12 @@ package com.ssafy.nanumi.db.repository;
 import com.ssafy.nanumi.api.response.MatchInterface;
 import com.ssafy.nanumi.db.entity.Match;
 import io.lettuce.core.dynamic.annotation.Param;
+import org.apache.catalina.LifecycleState;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -48,5 +50,5 @@ public interface MatchRepository extends CrudRepository<Match, Long> {
     )
 
     Optional<Match> findMatchByProductAndUsers(@Param("productId")long productId, @Param("sendUserId")long sendUser, @Param("receiveUserId")long receiveUser);
+    List<Match> findAllByProductId(@Param("productId")long productId);
 }
-

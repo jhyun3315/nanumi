@@ -206,17 +206,18 @@ public class UserService {
         UserInfo userInfo = userInfoRepository.findById(user.getUserInfo().getId())
                 .orElseThrow(() -> new CustomException(NOT_FOUND_USER_INFO));
 
-        int givingCount = productRepository.findGivingCount(userId)
-                .orElseThrow(() -> new CustomException(REQUEST_ERROR));
+        int giveCount = userRepository.countAllReceiveProduct(userId);
+        int givingCount = userRepository.countAllMatchProduct(userId);
+        int givenCount = userRepository.countAllGivenProduct(userId);
 
         return UserDetailDTO.builder()
                 .id(user.getId())
                 .nickname(user.getNickname())
                 .profileUrl(user.getProfileUrl())
                 .isDeleted(user.isDeleted())
-                .giveCount(userInfo.getGiveCount())
+                .giveCount(giveCount)
                 .givingCount(givingCount)
-                .givenCount(userInfo.getGivenCount())
+                .givenCount(givenCount)
                 .tier(userInfo.getTier())
                 .temperature(userInfo.getTemperature())
                 .build();
