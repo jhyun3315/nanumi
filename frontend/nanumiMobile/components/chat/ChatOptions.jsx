@@ -23,7 +23,7 @@ export const ChatOptions = ({
 
   return (
     <View style={styles.optionContainer}>
-      {sellerId === user.userId && (
+      {sellerId !== user.userId && (
         <Pressable
           style={styles.option}
           onPress={handleOpenTransactionCompleteModal}>

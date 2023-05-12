@@ -20,6 +20,7 @@ import {Fallback} from '../../ui/Fallback';
 import ErrorModal from '../modal/ErrorModal';
 import ProgressBar from './ProgressBar';
 import GlobalModal from '../modal/GlobalModal';
+import {useFocusEffect} from '@react-navigation/native';
 const {width} = Dimensions.get('window');
 
 const Profile = ({navigation}) => {
@@ -65,6 +66,12 @@ const Profile = ({navigation}) => {
     });
   };
 
+  console.log('리패치');
+  useFocusEffect(
+    useCallback(() => {
+      refetch();
+    }, []),
+  );
   if (error) return <ErrorModal handlePress={refetch} />;
   if (isLoading) return <Fallback />;
 

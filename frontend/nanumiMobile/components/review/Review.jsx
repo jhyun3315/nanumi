@@ -8,36 +8,42 @@ import {
   Image,
 } from 'react-native';
 import {BackHeader} from '../../ui/BackHeader';
-import {COLORS, FONTS, SIZES, assets} from '../../constants';
+import {COLORS, FONTS, SIZES} from '../../constants';
 import {useRecoilState} from 'recoil';
 import {userState} from '../../state/user';
 import {requestGetReview} from '../../api/product';
 import {Fallback} from '../../ui/Fallback';
-import {useInfiniteQuery, useQuery} from '@tanstack/react-query';
+import {useInfiniteQuery} from '@tanstack/react-query';
 import Icon from 'react-native-ionicons';
 import ErrorModal from '../modal/ErrorModal';
 
-const renderReview = ({item}) => (
-  <View style={styles.reviewContainer}>
-    <View style={styles.profileContainer}>
-      <Image source={item.profileImage} style={styles.profileImage} />
-    </View>
-    <View style={styles.reviewContent}>
-      <Text style={styles.reviewText}>{item.content}</Text>
-      <View style={styles.starContainer}>
-        {[...Array(item.stars)].map((_, i) => (
-          <Icon
-            key={i}
-            name="star"
-            size={SIZES.large}
-            color={COLORS.yellow}
-            style={{marginRight: SIZES.small / 2}}
-          />
-        ))}
+const renderReview = ({item}) => {
+  return (
+    <View style={styles.reviewContainer}>
+      <View style={styles.profileContainer}>
+        <Image
+          source={{uri: item?.writerProfileUrl}}
+          style={styles.profileImage}
+        />
+        <Text style={styles.profileText}>{item?.writerNickname}</Text>
+      </View>
+      <View style={styles.reviewContent}>
+        <Text style={styles.reviewText}>{item?.content}</Text>
+        <View style={styles.starContainer}>
+          {[...Array(item?.starPoint)].map((_, i) => (
+            <Icon
+              key={i}
+              name="star"
+              size={SIZES.large}
+              color={COLORS.yellow}
+              style={{marginRight: SIZES.small / 2}}
+            />
+          ))}
+        </View>
       </View>
     </View>
-  </View>
-);
+  );
+};
 
 const Review = ({navigation}) => {
   const [user] = useRecoilState(userState);
@@ -93,7 +99,6 @@ const Review = ({navigation}) => {
 
   const content =
     review?.data?.pages?.flatMap(page => page?.result?.content) ?? [];
-  console.log('reviewdata', content);
 
   if (isError) return <ErrorModal handlePress={refetch} />;
   if (isLoading) return <Fallback />;
@@ -133,15 +138,16 @@ const styles = StyleSheet.create({
     padding: SIZES.large,
   },
   profileContainer: {
-    width: SIZES.extraLarge * 1.6,
-    height: SIZES.extraLarge * 1.6,
-    borderRadius: SIZES.extraLarge,
-    overflow: 'hidden',
-    marginRight: SIZES.large,
+    width: SIZES.extraLarge * 3,
+    height: SIZES.extraLarge * 3,
+    borderRadius: SIZES.extraLarge * 5,
+    alignContent: 'center',
   },
   profileImage: {
-    width: '100%',
-    height: '100%',
+    width: SIZES.extraLarge * 1.9,
+    height: SIZES.extraLarge * 1.9,
+    borderRadius: SIZES.extraLarge * 1.9,
+    marginBottom: SIZES.base,
   },
   reviewContent: {
     flex: 1,
@@ -150,6 +156,12 @@ const styles = StyleSheet.create({
     color: COLORS.primary,
     fontFamily: FONTS.bold,
     fontSize: SIZES.font,
+    marginBottom: SIZES.base,
+  },
+  profileText: {
+    color: COLORS.primary,
+    fontFamily: FONTS.medium,
+    fontSize: SIZES.small,
     marginBottom: SIZES.base,
   },
   starContainer: {

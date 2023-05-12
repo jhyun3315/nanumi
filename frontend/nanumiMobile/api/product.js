@@ -132,6 +132,9 @@ export const requsetCompleteTransaction = async (
 };
 
 export const requsetEvaluationTransaction = async (matchId, userId, data) => {
+  console.log('matchId', matchId);
+  console.log('userId', userId);
+  console.log('data', data);
   const response = await axiosInstance.post(
     `${API_END_POINT}/matches/${matchId}/reviews/${userId}`,
     data,
