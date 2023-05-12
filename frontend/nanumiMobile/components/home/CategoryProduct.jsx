@@ -8,7 +8,6 @@ import {COLORS} from '../../constants';
 import {Fallback} from '../../ui/Fallback';
 import {BackHeader} from './../../ui/BackHeader';
 import {useNavigation} from '@react-navigation/native';
-import {useModal} from '../../hooks/useModal';
 import ProductCard from './../product/ProductCard';
 import EmptyState from '../../ui/EmptyState';
 import ErrorModal from '../modal/ErrorModal';

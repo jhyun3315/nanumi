@@ -1,5 +1,4 @@
-import React, {useRef} from 'react';
-import analytics from '@react-native-firebase/analytics';
+import React, {useEffect, useRef} from 'react';
 import ProductDetailScreen from '../screens/ProductDetailScreen';
 import SearchScreen from '../screens/SearchScreen';
 import LoginScreen from './../screens/LoginScreen';
@@ -19,41 +18,41 @@ import CategoryProductScreen from '../screens/CategoryProductScreen';
 import FocusedStatusBar from '../ui/FocusedStatusBar';
 import PostUpdateFormScreen from '../screens/PostUpdateFormScreen';
 import OtherProfileScreen from '../screens/OtherProfileScreen';
+import SplashScreen from 'react-native-splash-screen';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {COLORS} from '../constants';
+import {useRecoilState} from 'recoil';
+import {userState} from '../state/user';
 
 const Stack = createNativeStackNavigator();
 
 export const navigationRef = React.createRef();
 
 const StackNavigator = () => {
-  const routeNameRef = useRef();
+  const [user, setUser] = useRecoilState(userState);
 
-  return (
-    <NavigationContainer
-      ref={navigationRef}
-      onReady={() =>
-        (routeNameRef.current = navigationRef.current.getCurrentRoute().name)
+  useEffect(() => {
+    const isUser = async () => {
+      const asynUser = await AsyncStorage.getItem('user');
+      if (asynUser) {
+        setUser(JSON.parse(asynUser));
+        navigationRef.current?.navigate('Login');
       }
-      onStateChange={async () => {
-        const previousRouteName = routeNameRef.current;
-        const currentRouteName = navigationRef.current.getCurrentRoute().name;
+    };
 
-        if (previousRouteName !== currentRouteName) {
-          await analytics().logScreenView({
-            screen_name: currentRouteName,
-            screen_class: currentRouteName,
-          });
-        }
-        routeNameRef.current = currentRouteName;
-      }}>
+    isUser();
+    SplashScreen.hide();
+  }, []);
+  return (
+    <NavigationContainer>
       <FocusedStatusBar backgroundColor={COLORS.primary} />
       <Stack.Navigator
         screenOptions={{
           headerShown: false,
         }}
-        initialRouteName="Login">
+        initialRouteName="BottomTabs">
         <Stack.Screen name="BottomTabs" component={BottomTabs} />
 
         <Stack.Screen

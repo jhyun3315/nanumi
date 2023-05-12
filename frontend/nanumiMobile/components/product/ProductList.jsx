@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {COLORS} from '../../constants';
 import {View, FlatList, StyleSheet} from 'react-native';
 import {useInfiniteQuery} from '@tanstack/react-query';
@@ -14,8 +14,9 @@ import ErrorModal from '../modal/ErrorModal';
 import EmptyState from '../../ui/EmptyState';
 
 const ProductList = ({isSearch}) => {
+  console.log('렌더링');
   const [user] = useRecoilState(userState);
-  const [productList, setProductList] = useRecoilState(productState);
+
   const {
     data,
     error,
@@ -25,8 +26,8 @@ const ProductList = ({isSearch}) => {
     isFetchingNextPage,
     refetch,
   } = useInfiniteQuery(
-    ['products'],
-    ({pageParam = 0}) => requestGetAllProduct(user.userId, pageParam),
+    [user?.userId],
+    ({pageParam = 0}) => requestGetAllProduct(user?.userId, pageParam),
     {
       getNextPageParam: (lastPage, pages) => {
         if (
@@ -42,7 +43,7 @@ const ProductList = ({isSearch}) => {
       },
     },
   );
-
+  console.log(data);
   const handleLoadMore = () => {
     if (!isLoading && hasNextPage) fetchNextPage();
   };
@@ -54,24 +55,30 @@ const ProductList = ({isSearch}) => {
   );
 
   useEffect(() => {
-    setProductList({
-      ...productList,
-      isFetchingNextPage: isFetchingNextPage,
-    });
-  }, [isFetchingNextPage]);
+    refetch();
+  }, []);
 
-  useEffect(() => {
-    setProductList({
-      ...productList,
-      data: data,
-      error: error,
-      isLoading: isLoading,
-      hasNextPage: hasNextPage,
-    });
-  }, [data, error, isLoading, hasNextPage]);
+  // useEffect(() => {
+  //   setProductList({
+  //     ...productList,
+  //     isFetchingNextPage: isFetchingNextPage,
+  //   });
+  // }, [isFetchingNextPage]);
+
+  // useEffect(() => {
+  //   setProductList(prevProductList => ({
+  //     ...prevProductList,
+  //     data: data,
+  //     error: error,
+  //     isLoading: isLoading,
+  //     hasNextPage: hasNextPage,
+  //   }));
+  // }, [data, error, isLoading, hasNextPage]);
 
   const content =
-    productList?.data?.pages?.flatMap(page => page?.result?.content) ?? [];
+    data?.pages
+      .flatMap(page => page?.result?.content)
+      .filter(item => item !== undefined) ?? [];
 
   if (error) return <ErrorModal handlePress={refetch} />;
   if (isLoading) return <Fallback />;
@@ -90,9 +97,7 @@ const ProductList = ({isSearch}) => {
           onEndReachedThreshold={2}
         />
       </View>
-      {productList?.data?.pages[0]?.result?.content.length === 0 && (
-        <EmptyState />
-      )}
+      {content.length === 0 && <EmptyState />}
       <View style={styles.backgroundWrapper}>
         <View style={styles.backgroundTop} />
         <View style={styles.backgroundBottom} />
