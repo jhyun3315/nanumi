@@ -13,12 +13,12 @@ public interface BlacklistRepository extends JpaRepository<Blacklist, Long> {
     @Query(value = "select b " +
             "from Blacklist b " +
             "where b.blocker.id = :blockerId and b.target.id = :targetId")
-    Optional<Blacklist> findByBlockIdAndTargetId(long blockerId, long targetId);
+    Optional<Blacklist> findByBlockIdAndTargetId(@Param("blockerId") long blockerId, @Param("targetId") long targetId);
 
     @Query(value = "select b " +
             "from Blacklist b " +
             "where b.blocker.id = :userId and b.isBlocked = true")
-    List<Blacklist> findByBlockerIdAndIsBlockedTrue(long userId);
+    List<Blacklist> findByBlockerIdAndIsBlockedTrue(@Param("userId") long userId);
 
     @Query(value = "select b.blocker.id " +
             "from Blacklist b " +
