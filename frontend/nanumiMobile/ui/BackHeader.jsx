@@ -59,7 +59,12 @@ export const CloseHeader = ({handlePress, children}) => {
   );
 };
 
-export const CreateHeader = ({navigation, handlePress, children}) => (
+export const CreateHeader = ({
+  navigation,
+  handlePress,
+  children,
+  isDisable,
+}) => (
   <View
     style={{
       width: '100%',
@@ -76,6 +81,7 @@ export const CreateHeader = ({navigation, handlePress, children}) => (
       top={StatusBar.currentHeight - 16}
     />
     <RectButton
+      isDisable={isDisable}
       minWidth={64}
       handlePress={handlePress}
       position={'absolute'}

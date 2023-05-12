@@ -20,6 +20,8 @@ const PostCreateForm = () => {
   const [images, setImages] = useState([]);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  const isDisable =
+    !title || !selectedCategory || !description || !images.length > 0;
 
   const handleCategorySelected = useCallback((categoryId, categoryName) => {
     setSelectedCategory({categoryId, categoryName});
@@ -94,14 +96,17 @@ const PostCreateForm = () => {
       showErrorAlert('알 수 없는 에러 발생', navigation);
     }
   };
-
+  console.log('is', isDisable);
   const renderItem = ({item}) => (
     <ImageContainer data={item} handlePress={handleImageDelete} />
   );
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: COLORS.white}}>
-      <CreateHeader navigation={navigation} handlePress={handleCreateProduct}>
+      <CreateHeader
+        navigation={navigation}
+        handlePress={handleCreateProduct}
+        isDisable={isDisable}>
         등록
       </CreateHeader>
       <View style={styles.container}>

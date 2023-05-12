@@ -20,6 +20,7 @@ const PostUpdateForm = ({navigation, productId}) => {
   const {data, isLoading, error} = useQuery(['product', productId], () =>
     requestGetDetailProduct(productId),
   );
+
   const {hideModal} = useModal();
   const [selectedCategory, setSelectedCategory] = useState({
     categoryId: data?.result?.categoryId,
@@ -35,7 +36,8 @@ const PostUpdateForm = ({navigation, productId}) => {
 
   const [title, setTitle] = useState(data?.result?.name);
   const [description, setDescription] = useState(data?.result?.content);
-
+  const isDisable =
+    !title || !selectedCategory || !description || !images.length > 0;
   const handleCategorySelected = useCallback((categoryId, categoryName) => {
     setSelectedCategory({categoryId, categoryName});
   }, []);
@@ -130,7 +132,10 @@ const PostUpdateForm = ({navigation, productId}) => {
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: COLORS.white}}>
-      <CreateHeader navigation={navigation} handlePress={handleUpdateProduct}>
+      <CreateHeader
+        navigation={navigation}
+        handlePress={handleUpdateProduct}
+        isDisable={isDisable}>
         수정
       </CreateHeader>
       <View style={styles.container}>

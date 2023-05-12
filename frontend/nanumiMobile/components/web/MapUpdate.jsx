@@ -29,7 +29,7 @@ const initialState = {
   newAddressName: '',
   newCode: '',
 };
-
+const source = axios.CancelToken.source();
 const reducer = (state, action) => {
   switch (action.type) {
     case 'SET_NEW_COORDINATE':
@@ -45,6 +45,12 @@ const reducer = (state, action) => {
         newCode: action.payload.code,
         newAddressName: action.payload.addressName,
       };
+    case 'RESET':
+      return {
+        newCoordinate: {},
+        newAddressName: '',
+        newCode: '',
+      };
     default:
       return state;
   }
@@ -53,29 +59,31 @@ const MapUpdate = ({navigation}) => {
   const {coordinate, code, addressName} = useLocationPermission();
   const [user, setUser] = useRecoilState(userState);
   const [state, dispatch] = useReducer(reducer, initialState);
-
   const handleUpdateCoordinate = async () => {
     const response = await requsetUpdateCoordinate(user.userId, {
       addressId: state.newCode,
     });
 
-    if (response.code === 200) {
-      const asyncUser = await AsyncStorage.getItem('user');
-      const parsedUser = JSON.parse(asyncUser);
-      const updateUser = {
-        ...parsedUser,
-        addressId: response.result.addressId,
-        si: response.result.si,
-        gugun: response.result.gugun,
-        dong: response.result.dong,
-      };
-      await AsyncStorage.setItem('user', JSON.stringify(updateUser));
-      setUser(updateUser);
-      navigation.navigate('BottomTabs', {screen: 'Home'});
-    } else {
-      showErrorAlert(response.message, navigation);
+    if (isMounted) {
+      if (response.code === 200) {
+        const asyncUser = await AsyncStorage.getItem('user');
+        const parsedUser = JSON.parse(asyncUser);
+        const updateUser = {
+          ...parsedUser,
+          addressId: response.result.addressId,
+          si: response.result.si,
+          gugun: response.result.gugun,
+          dong: response.result.dong,
+        };
+        await AsyncStorage.setItem('user', JSON.stringify(updateUser));
+        setUser(updateUser);
+        navigation.navigate('BottomTabs', {screen: 'Home'});
+      } else {
+        showErrorAlert(response.message, navigation);
+      }
     }
   };
+
   const getCityName = async coordinate => {
     try {
       const response = await axios.get(
@@ -84,13 +92,19 @@ const MapUpdate = ({navigation}) => {
           headers: {
             Authorization: `KakaoAK c22bf545a0b497a95ef7e5417534f704`,
           },
+          cancelToken: source.token, // 요청에 Cancel token 추가
         },
       );
       const dongCode = response.data.documents[0].code;
       const address = response.data.documents[0].address_name;
       return {dongCode, address};
     } catch (error) {
-      Alert.alert('도시 정보를 얻어오는데 실패했습니다.');
+      if (axios.isCancel(error)) {
+        // Cancel token 에러 체크
+        console.log('요청이 취소되었습니다.');
+      } else {
+        Alert.alert('도시 정보를 얻어오는데 실패했습니다.');
+      }
     }
   };
 
@@ -125,8 +139,11 @@ const MapUpdate = ({navigation}) => {
     }
   };
 
+  console.log('렌더링');
   useEffect(() => {
     dispatch({type: 'SET_ALL_DATA', payload: {coordinate, code, addressName}});
+
+    return () => {};
   }, [coordinate, addressName, code]);
 
   if (!state.newCoordinate.latitude || !state.newCoordinate.longitude)

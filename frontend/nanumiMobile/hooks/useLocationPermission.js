@@ -69,6 +69,10 @@ export const useLocationPermission = () => {
 
   useEffect(() => {
     requestPermissions();
+
+    return () => {
+      Geolocation.stopObserving();
+    };
   }, [requestPermissions]);
 
   return {
