@@ -41,8 +41,10 @@ public interface ProductRepository extends JpaRepository<Product,Long> {
             "and p.category.id = :categoryId " +
             "and p.isDeleted = false " +
             "and p.isClosed = false " +
-            "and p.isMatched = false ")
-    Page<ProductAllDTO> findAllCategoryProduct(@Param("addressId") Long addressId, @Param("categoryId") Long categoryId, Pageable pageable);
+            "and p.isMatched = false " +
+            "and p.user.id NOT IN :blockers " +
+            "and p.user.id NOT IN :targets")
+    Page<ProductAllDTO> findAllCategoryProduct(@Param("addressId") Long addressId, @Param("categoryId") Long categoryId, @Param("blockers") List<Long> blockers, @Param("targets") List<Long> targets, Pageable pageable);
 
     @Query(value = "select count(p) " +
             "from Product p " +
