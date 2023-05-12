@@ -34,7 +34,7 @@ const PostCreateForm = () => {
         isExportThumbnail: true,
         maxSelectedAssets: 10 - images.length,
         isPreview: false,
-        usedCameraButton: true,
+        usedCameraButton: false,
       });
 
       const paths = response.map(image => {

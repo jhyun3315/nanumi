@@ -48,7 +48,8 @@ const PostUpdateForm = ({navigation, productId}) => {
         selectedAssets: [],
         isExportThumbnail: true,
         maxSelectedAssets: 10 - images.length,
-        usedCameraButton: true,
+        isPreview: false,
+        usedCameraButton: false,
       });
       const paths = response.map(image => {
         const nameParts = image.fileName.split('.');
