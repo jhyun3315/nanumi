@@ -150,7 +150,7 @@ const ProductDetail = ({route, navigation}) => {
         modalType: 'OneButtonModal',
         modalProps: {
           title: '신청 실패',
-          content: '신청인원이 가득찼습니다.',
+          content: `${response?.result?.resultMessage}`,
           buttonText: '확인',
           visible: true,
           onConfirm: handleCloseAndBack,

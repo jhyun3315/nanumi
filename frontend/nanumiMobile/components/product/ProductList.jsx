@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React from 'react';
 import {COLORS} from '../../constants';
 import {View, FlatList, StyleSheet} from 'react-native';
 import {useInfiniteQuery} from '@tanstack/react-query';
@@ -6,15 +6,12 @@ import {requestGetAllProduct} from './../../api/product';
 import {Fallback} from '../../ui/Fallback';
 import {useRecoilState} from 'recoil';
 import {userState} from '../../state/user';
-import {productState} from '../../state/product';
-import {useFocusEffect} from '@react-navigation/native';
 import ProductCard from './ProductCard';
 import Header from '../../ui/Header';
 import ErrorModal from '../modal/ErrorModal';
 import EmptyState from '../../ui/EmptyState';
 
 const ProductList = ({isSearch}) => {
-  console.log('렌더링');
   const [user] = useRecoilState(userState);
 
   const {
@@ -43,37 +40,9 @@ const ProductList = ({isSearch}) => {
       },
     },
   );
-  console.log(data);
   const handleLoadMore = () => {
     if (!isLoading && hasNextPage) fetchNextPage();
   };
-
-  useFocusEffect(
-    useCallback(() => {
-      refetch();
-    }, []),
-  );
-
-  useEffect(() => {
-    refetch();
-  }, []);
-
-  // useEffect(() => {
-  //   setProductList({
-  //     ...productList,
-  //     isFetchingNextPage: isFetchingNextPage,
-  //   });
-  // }, [isFetchingNextPage]);
-
-  // useEffect(() => {
-  //   setProductList(prevProductList => ({
-  //     ...prevProductList,
-  //     data: data,
-  //     error: error,
-  //     isLoading: isLoading,
-  //     hasNextPage: hasNextPage,
-  //   }));
-  // }, [data, error, isLoading, hasNextPage]);
 
   const content =
     data?.pages

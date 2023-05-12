@@ -1,8 +1,8 @@
 import React from 'react';
-import {RecoilRoot} from 'recoil';
+import {RecoilRoot, useRecoilState} from 'recoil';
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
-import StackNavigator from './navigator/StackNavigator';
 import * as encoding from 'text-encoding';
+import StackNavigator, {navigationRef} from './navigator/StackNavigator';
 
 const queryClient = new QueryClient();
 const App = () => {

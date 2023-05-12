@@ -13,7 +13,6 @@ import {COLORS, FONTS, SIZES, SHADOWS, assets} from '../../constants';
 import {useQuery} from '@tanstack/react-query';
 import {requestGetProfile} from '../../api/user';
 import {Fallback} from '../../ui/Fallback';
-import {useFocusEffect} from '@react-navigation/native';
 import ErrorModal from '../modal/ErrorModal';
 import ProgressBar from './ProgressBar';
 import GlobalModal from '../modal/GlobalModal';
@@ -23,12 +22,6 @@ const {width} = Dimensions.get('window');
 const OtherProfile = ({navigation, userId}) => {
   const {data, error, isLoading, refetch} = useQuery(['profile', userId], () =>
     requestGetProfile(userId),
-  );
-
-  useFocusEffect(
-    useCallback(() => {
-      refetch();
-    }, []),
   );
 
   if (error) return <ErrorModal handlePress={refetch} />;

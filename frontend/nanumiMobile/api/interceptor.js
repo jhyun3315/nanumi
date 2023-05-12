@@ -16,7 +16,7 @@ axiosInstance.interceptors.request.use(
   async config => {
     const user = JSON.parse(await AsyncStorage.getItem('user'));
 
-    if (user) {
+    if (user && user.access_token) {
       config.headers['Authorization'] = `Bearer ${user.access_token}`;
     }
     return config;

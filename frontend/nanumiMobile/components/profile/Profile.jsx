@@ -17,12 +17,9 @@ import {requestGetProfile} from '../../api/user';
 import {useRecoilState} from 'recoil';
 import {userState} from './../../state/user';
 import {Fallback} from '../../ui/Fallback';
-import {useFocusEffect} from '@react-navigation/native';
 import ErrorModal from '../modal/ErrorModal';
 import ProgressBar from './ProgressBar';
 import GlobalModal from '../modal/GlobalModal';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
 const {width} = Dimensions.get('window');
 
 const Profile = ({navigation}) => {
@@ -32,13 +29,14 @@ const Profile = ({navigation}) => {
   const handleLogout = async () => {
     hideModal();
     navigation.navigate('Login');
-    setUser({});
-    await AsyncStorage.removeItem('user');
   };
 
   const {data, error, isLoading, refetch} = useQuery(
     ['profile', user.userId],
-    () => requestGetProfile(user.userId, user, setUser, navigation),
+    () => requestGetProfile(user.userId),
+    {
+      enabled: !!user.userId,
+    },
   );
 
   const handleOpenLogoutModal = () => {
@@ -66,12 +64,6 @@ const Profile = ({navigation}) => {
       },
     });
   };
-
-  useFocusEffect(
-    useCallback(() => {
-      refetch();
-    }, []),
-  );
 
   if (error) return <ErrorModal handlePress={refetch} />;
   if (isLoading) return <Fallback />;

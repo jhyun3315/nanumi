@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Text, SafeAreaView, View, Pressable, Image, Alert} from 'react-native';
 import {COLORS, SIZES, FONTS} from '../../constants';
 import {useNavigation} from '@react-navigation/native';
@@ -30,15 +30,24 @@ const Login = () => {
     };
     const response = await requestLogin(data);
     if (response.code === 200) {
-      console.log(response);
       setUser(response.result);
       await AsyncStorage.setItem('user', JSON.stringify(response.result));
       setUserInfo({username: '', password: ''});
-      navigation.navigate('BottomTabs');
+      navigation.navigate('BottomTabs', {screen: 'Home'});
     } else {
       Alert.alert(response.message);
     }
   };
+
+  const handleInit = async () => {
+    await AsyncStorage.removeItem('user');
+    setUser({});
+  };
+
+  useEffect(() => {
+    handleInit();
+  }, []);
+
   return (
     <SafeAreaView>
       <View

@@ -38,7 +38,8 @@ const StackNavigator = () => {
       const asynUser = await AsyncStorage.getItem('user');
       if (asynUser) {
         setUser(JSON.parse(asynUser));
-        navigationRef.current?.navigate('Login');
+      } else {
+        navigationRef.current ? navigationRef.current.navigate('Login') : null;
       }
     };
 
@@ -46,7 +47,7 @@ const StackNavigator = () => {
     SplashScreen.hide();
   }, []);
   return (
-    <NavigationContainer>
+    <NavigationContainer ref={navigationRef}>
       <FocusedStatusBar backgroundColor={COLORS.primary} />
       <Stack.Navigator
         screenOptions={{

@@ -54,29 +54,32 @@ const ChatDetail = ({
   const bottomSheetModalRef = useRef(null);
   const snapPoints = useMemo(() => ['30%', '55%'], []);
 
+  const chatLogQuery = useMemo(() => ['chatLog', chatRoomId], [chatRoomId]);
+  const productQuery = useMemo(() => ['product', productId], [productId]);
+  const matchingQuery = useMemo(
+    () => ['matchId', productId, user.userId, opponentId],
+    [productId, user.userId, opponentId],
+  );
+
   const {
     data: chatLogData,
     isLoading: chatLogIsLoading,
     error: chatLogError,
     refetch: chatLogRefetch,
-  } = useQuery(['chatLog', chatRoomId], () =>
-    requestGetTop20ChatLog(chatRoomId),
-  );
+  } = useQuery(chatLogQuery, () => requestGetTop20ChatLog(chatRoomId));
 
-  const {data, isLoading, error, refetch} = useQuery(
-    ['product', productId],
-    () => requestGetDetailProduct(productId),
+  const {data, isLoading, error, refetch} = useQuery(productQuery, () =>
+    requestGetDetailProduct(productId),
   );
 
   const {
-    data: mathingData,
-    isLoading: mathingLoading,
-    error: mathingError,
-    refetch: mathingRefetch,
-  } = useQuery(['matchId', productId, user.userId, opponentId], () =>
+    data: matchingData,
+    isLoading: matchingLoading,
+    error: matchingError,
+    refetch: matchingRefetch,
+  } = useQuery(matchingQuery, () =>
     requestGetMatchingId(opponentId, productId, user.userId),
   );
-  console.log(mathingData);
 
   const subscribe = () => {
     if (client.current) {
@@ -147,6 +150,7 @@ const ChatDetail = ({
   const handleRefetch = () => {
     refetch();
     chatLogRefetch();
+    matchingRefetch();
   };
 
   const handleCloseAndBack = () => {
@@ -165,7 +169,7 @@ const ChatDetail = ({
       content: content,
     };
     const response = await requsetEvaluationTransaction(
-      chatRoomId,
+      matchingData?.result,
       user.userId,
       data,
     );
@@ -315,8 +319,9 @@ const ChatDetail = ({
 
   if (data?.code === 404)
     return <DataErrorModal handlePress={handleCloseAndBack} />;
-  if (isLoading || chatLogIsLoading) return <Fallback />;
-  if (error || chatLogError) return <ErrorModal handlePress={handleRefetch} />;
+  if (isLoading || chatLogIsLoading || matchingLoading) return <Fallback />;
+  if (error || chatLogError || matchingError)
+    return <ErrorModal handlePress={handleRefetch} />;
 
   return (
     <>

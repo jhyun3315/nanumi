@@ -12,7 +12,6 @@ export const handleApiError = async (error, user, setUser, navigation) => {
     console.log('resposne', data);
     const response = await axios.post(`${API_END_POINT}/users/isRTValid`, data);
     if (response.status === 200) {
-      console.log(response);
       const updateUser = {
         ...user,
         access_token: response.data.accessToken,

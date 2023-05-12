@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react';
+import React from 'react';
 import {FlatList, SafeAreaView} from 'react-native';
 import {COLORS} from '../../constants';
 import {ChatListItem} from './ChatListInfo';
@@ -8,7 +8,6 @@ import {userState} from '../../state/user';
 import {requestGetMyChatRoom} from '../../api/chat';
 import {Fallback} from '../../ui/Fallback';
 import ErrorModal from '../modal/ErrorModal';
-import {useFocusEffect} from '@react-navigation/native';
 
 const ChatList = ({navigation}) => {
   const [user] = useRecoilState(userState);
@@ -16,12 +15,6 @@ const ChatList = ({navigation}) => {
   const {data, isLoading, error, refetch} = useQuery(
     ['mychat', user.userId],
     () => requestGetMyChatRoom(user.userId),
-  );
-
-  useFocusEffect(
-    useCallback(() => {
-      refetch();
-    }, [refetch]),
   );
 
   if (isLoading) return <Fallback />;
