@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 public class NanumService {
     private final NanumRegisterService nanumRegisterService;
     private static final String NANUM_KEY_PREFIX = "NANUM_";
-    public MatchSuccessDto registerNanum(Long productId, User user){
+    public MatchSuccessDto registerNanum(Long productId, User user)  {
         String key = NANUM_KEY_PREFIX + productId.toString();
         return nanumRegisterService.register(key, productId, user);
     }
