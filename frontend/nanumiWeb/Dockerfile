@@ -1,7 +1,7 @@
 FROM    node:16-alpine
-COPY    ./package* /usr/src/app/
+COPY    . .
 WORKDIR /usr/src/app
-RUN     yarn install
+RUN     npm install
 COPY . /usr/src/app
 EXPOSE 3000
-CMD    yarn build
+CMD    npm build
