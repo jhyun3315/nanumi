@@ -4,5 +4,5 @@ COPY . .
 RUN npm install
 RUN npm run build
 
-EXPOSE 80
+EXPOSE 3001
 CMD ["npm", "run", "build"]
