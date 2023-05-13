@@ -1,19 +1,12 @@
-import React from 'react';
-import {
-  FlatList,
-  StyleSheet,
-  Pressable,
-  Image,
-  Text,
-  Modal,
-} from 'react-native';
+import React, {useMemo} from 'react';
+import {StyleSheet, Pressable, Image, Text, Modal} from 'react-native';
 import {COLORS, SIZES, FONTS} from '../../constants';
 import {CloseHeader} from '../../ui/BackHeader';
 import {CATEGORIES} from '../../constants/category';
 import {useModal} from '../../hooks/useModal';
 
-const RenderCategory = ({item}) => {
-  const {modal, hideModal} = useModal();
+const RenderCategory = ({item, modal, hideModal}) => {
+  console.log(item);
   return (
     <Pressable
       style={styles.categoryItem}
@@ -29,18 +22,24 @@ const RenderCategory = ({item}) => {
 
 const CreateCategoryModal = () => {
   const {modal, hideModal} = useModal();
+
+  const memoizedCategories = useMemo(() => CATEGORIES, []);
+
   return (
     <Modal
       style={styles.categoryContainer}
       visible={modal?.modalProps?.visible}
       animationType="fade">
       <CloseHeader handlePress={hideModal} />
-      <FlatList
-        data={CATEGORIES}
-        initialNumToRender={20}
-        renderItem={({item}) => <RenderCategory item={item} />}
-        keyExtractor={item => item.key.toString()}
-      />
+
+      {memoizedCategories.map(item => (
+        <RenderCategory
+          key={item.key}
+          item={item}
+          modal={modal}
+          hideModal={hideModal}
+        />
+      ))}
     </Modal>
   );
 };

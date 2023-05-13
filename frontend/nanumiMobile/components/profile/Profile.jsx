@@ -25,7 +25,7 @@ const {width} = Dimensions.get('window');
 
 const Profile = ({navigation}) => {
   const {showModal, hideModal} = useModal();
-  const [user, setUser] = useRecoilState(userState);
+  const [user] = useRecoilState(userState);
 
   const handleLogout = async () => {
     hideModal();

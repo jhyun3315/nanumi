@@ -1,3 +1,4 @@
+import {useMemo} from 'react';
 import {useRecoilState} from 'recoil';
 import {modalState} from './../state/modal';
 
@@ -9,8 +10,16 @@ export const useModal = () => {
   };
 
   const hideModal = () => {
-    setModal(null);
+    setModal({
+      modalType: null,
+      modalProps: {
+        visible: false,
+      },
+    });
   };
 
-  return {modal, setModal, showModal, hideModal};
+  return useMemo(
+    () => ({modal, setModal, showModal, hideModal}),
+    [modal, setModal],
+  );
 };

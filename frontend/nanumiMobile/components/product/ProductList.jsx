@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import {COLORS} from '../../constants';
 import {View, FlatList, StyleSheet} from 'react-native';
 import {useInfiniteQuery} from '@tanstack/react-query';
@@ -10,36 +10,30 @@ import ProductCard from './ProductCard';
 import Header from '../../ui/Header';
 import ErrorModal from '../modal/ErrorModal';
 import EmptyState from '../../ui/EmptyState';
+import {useFocusEffect} from '@react-navigation/native';
 
 const ProductList = ({isSearch}) => {
   const [user] = useRecoilState(userState);
 
-  const {
-    data,
-    error,
-    isLoading,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-    refetch,
-  } = useInfiniteQuery(
-    [user?.userId],
-    ({pageParam = 0}) => requestGetAllProduct(user?.userId, pageParam),
-    {
-      getNextPageParam: (lastPage, pages) => {
-        if (
-          !lastPage?.result?.content?.length ||
-          (pages &&
-            pages.length > 0 &&
-            pages[pages.length - 1].result &&
-            pages[pages.length - 1].result.last)
-        ) {
-          return undefined;
-        }
-        return pages ? pages?.length : undefined;
+  const {data, error, isLoading, fetchNextPage, hasNextPage, refetch} =
+    useInfiniteQuery(
+      [user?.userId],
+      ({pageParam = 0}) => requestGetAllProduct(user?.userId, pageParam),
+      {
+        getNextPageParam: (lastPage, pages) => {
+          if (
+            !lastPage?.result?.content?.length ||
+            (pages &&
+              pages.length > 0 &&
+              pages[pages.length - 1].result &&
+              pages[pages.length - 1].result.last)
+          ) {
+            return undefined;
+          }
+          return pages ? pages?.length : undefined;
+        },
       },
-    },
-  );
+    );
   const handleLoadMore = () => {
     if (!isLoading && hasNextPage) fetchNextPage();
   };
@@ -48,6 +42,12 @@ const ProductList = ({isSearch}) => {
     data?.pages
       .flatMap(page => page?.result?.content)
       .filter(item => item !== undefined) ?? [];
+
+  useFocusEffect(
+    useCallback(() => {
+      refetch();
+    }, []),
+  );
 
   if (error) return <ErrorModal handlePress={refetch} />;
   if (isLoading) return <Fallback />;
