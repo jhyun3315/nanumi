@@ -20,6 +20,7 @@ import PostUpdateFormScreen from '../screens/PostUpdateFormScreen';
 import OtherProfileScreen from '../screens/OtherProfileScreen';
 import SplashScreen from 'react-native-splash-screen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import analytics from '@react-native-firebase/analytics';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {COLORS} from '../constants';
@@ -31,6 +32,7 @@ const Stack = createNativeStackNavigator();
 export const navigationRef = React.createRef();
 
 const StackNavigator = () => {
+  const routeNameRef = useRef();
   const [user, setUser] = useRecoilState(userState);
 
   useEffect(() => {
@@ -47,7 +49,31 @@ const StackNavigator = () => {
     SplashScreen.hide();
   }, []);
   return (
-    <NavigationContainer ref={navigationRef}>
+    <NavigationContainer
+      ref={navigationRef}
+      independent={true}
+      onReady={() =>
+        (routeNameRef.current = navigationRef.current.getCurrentRoute().name)
+      }
+      onStateChange={() => {
+        const previousRouteName = routeNameRef.current;
+        const currentRouteName = navigationRef.current.getCurrentRoute().name;
+
+        if (previousRouteName !== currentRouteName) {
+          analytics()
+            .logScreenView({
+              screen_name: currentRouteName,
+              screen_class: currentRouteName,
+            })
+            .then(() => {
+              console.log('로그 남기기');
+            })
+            .catch(err => {
+              console.warn(err);
+            });
+        }
+        routeNameRef.current = currentRouteName;
+      }}>
       <FocusedStatusBar backgroundColor={COLORS.primary} />
       <Stack.Navigator
         screenOptions={{

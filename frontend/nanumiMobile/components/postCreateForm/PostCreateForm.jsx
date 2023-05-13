@@ -96,7 +96,6 @@ const PostCreateForm = () => {
       showErrorAlert('알 수 없는 에러 발생', navigation);
     }
   };
-  console.log('is', isDisable);
   const renderItem = ({item}) => (
     <ImageContainer data={item} handlePress={handleImageDelete} />
   );

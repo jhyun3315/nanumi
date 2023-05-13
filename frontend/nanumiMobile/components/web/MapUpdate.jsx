@@ -139,7 +139,6 @@ const MapUpdate = ({navigation}) => {
     }
   };
 
-  console.log('렌더링');
   useEffect(() => {
     dispatch({type: 'SET_ALL_DATA', payload: {coordinate, code, addressName}});
 

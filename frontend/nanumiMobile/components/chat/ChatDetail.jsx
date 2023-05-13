@@ -36,6 +36,7 @@ import * as StompJs from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
 import ErrorModal from '../modal/ErrorModal';
 import DataErrorModal from '../modal/DataErrorModal';
+import axiosInstance from '../../api/interceptor';
 
 const ChatDetail = ({
   navigation,
@@ -49,7 +50,7 @@ const ChatDetail = ({
   const client = useRef(null);
   const [transformChatData, setTransformChatData] = useState([]);
   // 차단 시 연결끊음, 연결이 끊어져있을 때는 메시지를 못보내도록
-  const [isDisconnect, setIsDisconnet] = useState(false);
+  const [isDisconnect, setIsDisconnet] = useState(true);
 
   const bottomSheetModalRef = useRef(null);
   const snapPoints = useMemo(() => ['30%', '55%'], []);
@@ -295,9 +296,7 @@ const ChatDetail = ({
   useEffect(() => {
     connect();
     return () => {
-      if (client.current && client.current.connected) {
-        client.current.deactivate();
-      }
+      client.current.deactivate();
     };
   }, []);
 
