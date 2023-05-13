@@ -6,7 +6,6 @@ import {CATEGORIES} from '../../constants/category';
 import {useModal} from '../../hooks/useModal';
 
 const RenderCategory = ({item, modal, hideModal}) => {
-  console.log(item);
   return (
     <Pressable
       style={styles.categoryItem}
