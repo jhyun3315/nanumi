@@ -26,14 +26,13 @@ const ProfileUpate = ({navigation, nickname, profileUrl}) => {
   const handleImageSelection = async () => {
     try {
       const response = await openPicker({
-        usedCameraButton: false,
         mediaType: 'image',
         doneTitle: '완료',
         selectedAssets: [],
         isExportThumbnail: true,
         maxSelectedAssets: 1,
         isCrop: false,
-        usedCameraButton: true,
+        usedCameraButton: false,
       });
       const path = response.map(image => {
         const nameParts = image.fileName.split('.');

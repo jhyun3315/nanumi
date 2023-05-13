@@ -30,7 +30,7 @@ const BottomTabs = ({navigation}) => {
       <Tab.Screen
         name="Home"
         component={HomeScreen}
-        options={({}) => ({
+        options={() => ({
           title: '홈',
           headerShown: false,
           tabBarIcon: ({color, size}) => (
@@ -41,7 +41,7 @@ const BottomTabs = ({navigation}) => {
       <Tab.Screen
         name="ChatList"
         component={ChatListScreen}
-        options={({}) => ({
+        options={() => ({
           title: '채팅',
           tabBarIcon: ({color, size}) => (
             <Icon name="chatboxes" color={color} size={size} />
@@ -52,7 +52,7 @@ const BottomTabs = ({navigation}) => {
       <Tab.Screen
         name="PostCreateForm"
         component={PostCreateFormScreen}
-        options={({a}) => ({
+        options={() => ({
           title: '게시글 작성',
           tabBarIcon: ({color, size}) => (
             <Icon name="add-circle-outline" color={color} size={size} />
@@ -68,7 +68,7 @@ const BottomTabs = ({navigation}) => {
       <Tab.Screen
         name="Profile"
         component={ProfileScreen}
-        options={({}) => ({
+        options={() => ({
           title: '프로필',
           headerShown: false,
           tabBarIcon: ({color, size}) => (

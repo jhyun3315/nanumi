@@ -40,8 +40,10 @@ const StackNavigator = () => {
       const asynUser = await AsyncStorage.getItem('user');
       if (asynUser) {
         setUser(JSON.parse(asynUser));
+        return true;
       } else {
         navigationRef.current ? navigationRef.current.navigate('Login') : null;
+        return false;
       }
     };
 

@@ -33,7 +33,7 @@ const GRADE = [
 ];
 
 const TransactionCompleteModal = () => {
-  const {modal, hideModal} = useModal();
+  const {modal} = useModal();
   const [starPoint, setStarPoint] = useState(5);
   const [comment, setComment] = useState('');
   const [rating, setRating] = useState([]);
@@ -114,7 +114,8 @@ const TransactionCompleteModal = () => {
       <Pressable
         key={i + 1}
         onPress={() => {
-          handleStarPoint(i + 1), handleAnimate();
+          handleStarPoint(i + 1);
+          handleAnimate();
         }}>
         <Animated.View style={i + 1 <= starPoint ? animationStyle : null}>
           <Icon
