@@ -1,6 +1,7 @@
 FROM    node:16-alpine
-WORKDIR /usr/src/app
+WORKDIR /nanumi/react
 COPY    . .
-RUN     npm install
+RUN    npm install
+RUN    npm run build
 
 CMD ["npm", "run", "build"]
