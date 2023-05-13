@@ -16,8 +16,6 @@ import ErrorModal from '../modal/ErrorModal';
 import EmptyState from '../../ui/EmptyState';
 
 const DivideProduct = ({navigation, type, userId}) => {
-  const [productList, setProductList] = useState([]);
-
   const queryFn = useMemo(() => {
     switch (type) {
       case 'divided':
@@ -40,18 +38,8 @@ const DivideProduct = ({navigation, type, userId}) => {
     }
   }, [type]);
 
-  const {
-    data,
-    error,
-    isLoading,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-    refetch,
-  } = useInfiniteQuery(
-    [type],
-    ({pageParam = 0}) => queryFn(userId, pageParam),
-    {
+  const {data, error, isLoading, fetchNextPage, hasNextPage, refetch} =
+    useInfiniteQuery([type], ({pageParam = 0}) => queryFn(userId, pageParam), {
       getNextPageParam: (lastPage, pages) => {
         if (
           !lastPage?.result?.content?.length ||
@@ -64,32 +52,13 @@ const DivideProduct = ({navigation, type, userId}) => {
         }
         return pages ? pages?.length : undefined;
       },
-    },
-  );
+    });
 
   const handleLoadMore = () => {
     if (!isLoading && hasNextPage) fetchNextPage();
   };
 
-  useEffect(() => {
-    setProductList({
-      ...productList,
-      isFetchingNextPage: isFetchingNextPage,
-    });
-  }, [isFetchingNextPage]);
-
-  useEffect(() => {
-    setProductList({
-      ...productList,
-      data: data,
-      error: error,
-      isLoading: isLoading,
-      hasNextPage: hasNextPage,
-    });
-  }, [data, error, isLoading, hasNextPage]);
-
-  const content =
-    productList?.data?.pages?.flatMap(page => page?.result?.content) ?? [];
+  const content = data?.pages?.flatMap(page => page?.result?.content) ?? [];
 
   if (error) return <ErrorModal handlePress={refetch} />;
   if (isLoading) return <Fallback />;
@@ -108,9 +77,7 @@ const DivideProduct = ({navigation, type, userId}) => {
           onEndReachedThreshold={2}
         />
       </View>
-      {productList?.data?.pages[0]?.result?.content.length === 0 && (
-        <EmptyState />
-      )}
+      {data?.pages[0]?.result?.content.length === 0 && <EmptyState />}
       <View style={styles.backgroundWrapper}>
         <View style={styles.backgroundTop} />
         <View style={styles.backgroundBottom} />

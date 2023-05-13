@@ -12,7 +12,6 @@ import EmptyState from '../../ui/EmptyState';
 
 const SearchList = ({words}) => {
   const [user] = useRecoilState(userState);
-  const [productList, setProductList] = useState([]);
 
   const {
     data,
@@ -44,25 +43,7 @@ const SearchList = ({words}) => {
     if (!isLoading && hasNextPage) fetchNextPage();
   };
 
-  useEffect(() => {
-    setProductList({
-      ...productList,
-      isFetchingNextPage: isFetchingNextPage,
-    });
-  }, [isFetchingNextPage]);
-
-  useEffect(() => {
-    setProductList({
-      ...productList,
-      data: data,
-      error: error,
-      isLoading: isLoading,
-      hasNextPage: hasNextPage,
-    });
-  }, [data, error, isLoading, hasNextPage]);
-
-  const content =
-    productList?.data?.pages?.flatMap(page => page?.result?.content) ?? [];
+  const content = data?.pages?.flatMap(page => page?.result?.content) ?? [];
 
   if (error) return <ErrorModal handlePress={fetchNextPage} />;
   if (isLoading) return <Fallback />;
@@ -80,9 +61,7 @@ const SearchList = ({words}) => {
           onEndReachedThreshold={0.5}
         />
       </View>
-      {productList?.data?.pages[0]?.result?.content.length === 0 && (
-        <EmptyState />
-      )}
+      {data?.pages[0]?.result?.content.length === 0 && <EmptyState />}
       <View style={styles.backgroundWrapper}>
         <View style={styles.backgroundTop} />
         <View style={styles.backgroundBottom} />

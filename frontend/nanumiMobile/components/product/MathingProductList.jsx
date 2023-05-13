@@ -93,59 +93,33 @@ const MatchingProductListItem = ({data, navigation}) => {
 
 const MatchingProductList = ({navigation}) => {
   const [user] = useRecoilState(userState);
-  const [productList, setProductList] = useState({});
 
-  const {
-    data,
-    error,
-    isLoading,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-    refetch,
-  } = useInfiniteQuery(
-    ['dividing'],
-    ({pageParam = 0}) =>
-      requestGetDonationingProductList(user.userId, pageParam),
-    {
-      getNextPageParam: (lastPage, pages) => {
-        if (
-          !lastPage?.result?.content?.length ||
-          (pages &&
-            pages.length > 0 &&
-            pages[pages.length - 1].result &&
-            pages[pages.length - 1].result.last)
-        ) {
-          return undefined;
-        }
-        return pages ? pages?.length : undefined;
+  const {data, error, isLoading, fetchNextPage, hasNextPage, refetch} =
+    useInfiniteQuery(
+      ['dividing'],
+      ({pageParam = 0}) =>
+        requestGetDonationingProductList(user.userId, pageParam),
+      {
+        getNextPageParam: (lastPage, pages) => {
+          if (
+            !lastPage?.result?.content?.length ||
+            (pages &&
+              pages.length > 0 &&
+              pages[pages.length - 1].result &&
+              pages[pages.length - 1].result.last)
+          ) {
+            return undefined;
+          }
+          return pages ? pages?.length : undefined;
+        },
       },
-    },
-  );
-
-  useEffect(() => {
-    setProductList({
-      ...productList,
-      isFetchingNextPage: isFetchingNextPage,
-    });
-  }, [isFetchingNextPage]);
-
-  useEffect(() => {
-    setProductList({
-      ...productList,
-      data: data,
-      error: error,
-      isLoading: isLoading,
-      hasNextPage: hasNextPage,
-    });
-  }, [data, error, isLoading, hasNextPage]);
+    );
 
   const handleLoadMore = () => {
     if (!isLoading && hasNextPage) fetchNextPage();
   };
 
-  const content =
-    productList?.data?.pages?.flatMap(page => page.result.content) ?? [];
+  const content = data?.pages?.flatMap(page => page.result.content) ?? [];
 
   if (error) return <ErrorModal handlePress={refetch} />;
   if (isLoading) return <Fallback />;
@@ -159,7 +133,7 @@ const MatchingProductList = ({navigation}) => {
           renderItem={({item}) => (
             <MatchingProductListItem data={item} navigation={navigation} />
           )}
-          keyExtractor={item => item.id.toString()}
+          keyExtractor={item => item?.id.toString()}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.contentContainerStyle}
           onEndReached={handleLoadMore}

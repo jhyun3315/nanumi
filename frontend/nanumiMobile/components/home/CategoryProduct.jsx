@@ -16,60 +16,34 @@ const CategoryProduct = ({categoryKey, categoryName}) => {
   const [user] = useRecoilState(userState);
   const navigation = useNavigation();
 
-  const [productList, setProductList] = useState({});
-  const {
-    data,
-    error,
-    isError,
-    isLoading,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-    refetch,
-  } = useInfiniteQuery(
-    ['category'],
-    ({pageParam = 0}) =>
-      requestGetCategoryProduct(categoryKey, user.userId, pageParam),
-    {
-      getNextPageParam: (lastPage, pages) => {
-        if (
-          !lastPage?.result?.content?.length ||
-          (pages &&
-            pages.length > 0 &&
-            pages[pages.length - 1].result &&
-            pages[pages.length - 1].result.last)
-        ) {
-          return undefined;
-        }
-        return pages ? pages?.length : undefined;
+  const {data, error, isLoading, fetchNextPage, hasNextPage, refetch} =
+    useInfiniteQuery(
+      ['category'],
+      ({pageParam = 0}) =>
+        requestGetCategoryProduct(categoryKey, user.userId, pageParam),
+      {
+        getNextPageParam: (lastPage, pages) => {
+          if (
+            !lastPage?.result?.content?.length ||
+            (pages &&
+              pages.length > 0 &&
+              pages[pages.length - 1].result &&
+              pages[pages.length - 1].result.last)
+          ) {
+            return undefined;
+          }
+          return pages ? pages?.length : undefined;
+        },
       },
-    },
-  );
+    );
 
   const handleLoadMore = () => {
     if (!isLoading && hasNextPage) fetchNextPage();
   };
 
-  useEffect(() => {
-    setProductList(prev => ({
-      ...prev,
-      isFetchingNextPage: isFetchingNextPage,
-    }));
-  }, [isFetchingNextPage]);
-
-  useEffect(() => {
-    setProductList(prev => ({
-      ...prev,
-      data: data,
-      error: error,
-      isLoading: isLoading,
-      hasNextPage: hasNextPage,
-    }));
-  }, [data, error, isLoading, hasNextPage]);
-
   const content = data?.pages.flatMap(page => page?.result?.content) ?? [];
 
-  if (isError) return <ErrorModal handlePress={refetch} />;
+  if (error) return <ErrorModal handlePress={refetch} />;
   if (isLoading) return <Fallback />;
 
   return (
