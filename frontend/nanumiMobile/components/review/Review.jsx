@@ -9,8 +9,6 @@ import {
 } from 'react-native';
 import {BackHeader} from '../../ui/BackHeader';
 import {COLORS, FONTS, SIZES} from '../../constants';
-import {useRecoilState} from 'recoil';
-import {userState} from '../../state/user';
 import {requestGetReview} from '../../api/product';
 import {Fallback} from '../../ui/Fallback';
 import {useInfiniteQuery} from '@tanstack/react-query';
@@ -45,8 +43,7 @@ const renderReview = ({item}) => {
   );
 };
 
-const Review = ({navigation}) => {
-  const [user] = useRecoilState(userState);
+const Review = ({navigation, userId}) => {
   const [review, setReview] = useState({});
   const {
     data,
@@ -59,7 +56,7 @@ const Review = ({navigation}) => {
     refetch,
   } = useInfiniteQuery(
     ['review'],
-    ({pageParam = 0}) => requestGetReview(user.userId, pageParam),
+    ({pageParam = 0}) => requestGetReview(userId, pageParam),
     {
       getNextPageParam: (lastPage, pages) => {
         if (

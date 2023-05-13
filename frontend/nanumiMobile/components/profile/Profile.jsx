@@ -194,7 +194,7 @@ const Profile = ({navigation}) => {
         <Pressable
           style={styles.list}
           onPress={() => {
-            navigation.navigate('Review');
+            navigation.navigate('Review', {userId: user.userId});
           }}>
           <Text style={styles.text}>리뷰 목록</Text>
         </Pressable>
