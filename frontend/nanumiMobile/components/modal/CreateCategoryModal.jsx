@@ -1,5 +1,12 @@
 import React, {useMemo} from 'react';
-import {StyleSheet, Pressable, Image, Text, Modal} from 'react-native';
+import {
+  StyleSheet,
+  Pressable,
+  Image,
+  Text,
+  Modal,
+  ScrollView,
+} from 'react-native';
 import {COLORS, SIZES, FONTS} from '../../constants';
 import {CloseHeader} from '../../ui/BackHeader';
 import {CATEGORIES} from '../../constants/category';
@@ -30,15 +37,16 @@ const CreateCategoryModal = () => {
       visible={modal?.modalProps?.visible}
       animationType="fade">
       <CloseHeader handlePress={hideModal} />
-
-      {memoizedCategories.map(item => (
-        <RenderCategory
-          key={item.key}
-          item={item}
-          modal={modal}
-          hideModal={hideModal}
-        />
-      ))}
+      <ScrollView>
+        {memoizedCategories.map(item => (
+          <RenderCategory
+            key={item.key}
+            item={item}
+            modal={modal}
+            hideModal={hideModal}
+          />
+        ))}
+      </ScrollView>
     </Modal>
   );
 };
