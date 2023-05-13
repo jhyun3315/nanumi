@@ -27,7 +27,8 @@ const Map = ({navigation, userInfo}) => {
       email: email,
       nickname: nickname,
       password: password,
-      addressId: code,
+      // addressId: code,
+      addressId: 3020011300,
     };
 
     const response = await requestSignup(data);
