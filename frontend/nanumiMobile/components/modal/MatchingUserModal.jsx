@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {
   Modal,
   View,
@@ -9,7 +9,7 @@ import {
   StyleSheet,
   TouchableWithoutFeedback,
 } from 'react-native';
-import {COLORS, FONTS, SIZES, assets} from '../../constants';
+import {COLORS, FONTS, SIZES} from '../../constants';
 import {useModal} from '../../hooks/useModal';
 import {RectButton} from '../../ui/Button';
 import {useQuery} from '@tanstack/react-query';

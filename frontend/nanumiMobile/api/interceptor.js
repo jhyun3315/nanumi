@@ -10,8 +10,6 @@ const axiosInstance = axios.create({
   },
 });
 
-const source = axios.CancelToken.source();
-
 axiosInstance.interceptors.request.use(
   async config => {
     const user = JSON.parse(await AsyncStorage.getItem('user'));
@@ -54,17 +52,14 @@ axiosInstance.interceptors.response.use(
           axiosInstance.defaults.headers.common[
             'Authorization'
           ] = `Bearer ${updateUser.access_token}`;
-          source.cancel('previous request cancelled');
           return axiosInstance(originalRequest);
         }
         if (response.data.code === 400) {
-          source.cancel('previous request cancelled');
           await AsyncStorage.removeItem('user');
           navigationRef.current?.navigate('Login');
           return Promise.reject(error);
         }
       } catch (error) {
-        source.cancel('previous request cancelled');
         return Promise.reject(error);
       }
     }

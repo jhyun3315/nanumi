@@ -1,14 +1,7 @@
-import React, {useState} from 'react';
+import React from 'react';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import {useLocationPermission} from '../../hooks/useLocationPermission';
-import {
-  Dimensions,
-  SafeAreaView,
-  StyleSheet,
-  View,
-  Text,
-  Alert,
-} from 'react-native';
+import {Dimensions, SafeAreaView, StyleSheet, View, Text} from 'react-native';
 import {Fallback} from '../../ui/Fallback';
 import {SIZES, SHADOWS, COLORS, FONTS} from '../../constants';
 import {BackHeader} from '../../ui/BackHeader';

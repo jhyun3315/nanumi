@@ -4,7 +4,6 @@ import ChatListScreen from '../screens/ChatListScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import PostCreateFormScreen from '../screens/PostCreateFormScreen';
 import Icon from 'react-native-ionicons';
-import {Platform} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {COLORS} from '../constants';
 

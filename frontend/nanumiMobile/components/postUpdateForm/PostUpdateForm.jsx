@@ -7,7 +7,6 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {CreateHeader} from '../../ui/BackHeader';
 import {openPicker} from '@baronha/react-native-multiple-image-picker';
 import {generateUniqueKey} from '../../util/uniqueId';
-import {userState} from '../../state/user';
 import {useQuery} from '@tanstack/react-query';
 import {requestGetDetailProduct, requestUpdateProduct} from '../../api/product';
 import {Fallback} from '../../ui/Fallback';

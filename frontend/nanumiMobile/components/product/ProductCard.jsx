@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Image, Text, StyleSheet, Dimensions} from 'react-native';
+import {View, Image, StyleSheet} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {COLORS, SIZES, SHADOWS} from '../../constants';
 import {ProductPrice, ProductTitle, SubInfo} from './SubInfo';

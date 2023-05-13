@@ -1,4 +1,3 @@
-import axios from 'axios';
 import axiosInstance from './interceptor';
 import {API_END_POINT} from './constant';
 

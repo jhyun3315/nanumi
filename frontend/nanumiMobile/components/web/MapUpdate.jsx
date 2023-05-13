@@ -141,8 +141,6 @@ const MapUpdate = ({navigation}) => {
 
   useEffect(() => {
     dispatch({type: 'SET_ALL_DATA', payload: {coordinate, code, addressName}});
-
-    return () => {};
   }, [coordinate, addressName, code]);
 
   if (!state.newCoordinate.latitude || !state.newCoordinate.longitude)

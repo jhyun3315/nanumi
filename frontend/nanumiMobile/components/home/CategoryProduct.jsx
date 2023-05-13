@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useCallback} from 'react';
+import React from 'react';
 import {useInfiniteQuery} from '@tanstack/react-query';
 import {View, FlatList, StyleSheet} from 'react-native';
 import {requestGetCategoryProduct} from '../../api/product';

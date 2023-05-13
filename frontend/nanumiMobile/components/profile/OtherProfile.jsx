@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react';
+import React from 'react';
 import {
   View,
   Text,
@@ -9,7 +9,7 @@ import {
   ScrollView,
   Dimensions,
 } from 'react-native';
-import {COLORS, FONTS, SIZES, SHADOWS, assets} from '../../constants';
+import {COLORS, FONTS, SIZES, assets} from '../../constants';
 import {useQuery} from '@tanstack/react-query';
 import {requestGetProfile} from '../../api/user';
 import {Fallback} from '../../ui/Fallback';

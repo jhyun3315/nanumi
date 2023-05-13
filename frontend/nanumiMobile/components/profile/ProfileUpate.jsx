@@ -33,6 +33,7 @@ const ProfileUpate = ({navigation, nickname, profileUrl}) => {
         maxSelectedAssets: 1,
         isCrop: false,
         usedCameraButton: false,
+        isPreView: false,
       });
       const path = response.map(image => {
         const nameParts = image.fileName.split('.');
@@ -87,6 +88,7 @@ const ProfileUpate = ({navigation, nickname, profileUrl}) => {
         navigation.navigate('BottomTabs', {screen: 'Profile'});
       } else if (response.code === 400)
         showErrorAlert('존재하는 유저가 아닙니다.', navigation);
+      else showErrorAlert('알 수 없는 에러 발생', navigation);
     } catch (error) {
       showErrorAlert('토큰이 만료됐습니다.', navigation);
     }

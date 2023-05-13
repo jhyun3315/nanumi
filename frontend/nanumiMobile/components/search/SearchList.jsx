@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import {COLORS} from '../../constants';
 import {View, FlatList, StyleSheet} from 'react-native';
 import {useInfiniteQuery} from '@tanstack/react-query';
@@ -13,14 +13,7 @@ import EmptyState from '../../ui/EmptyState';
 const SearchList = ({words}) => {
   const [user] = useRecoilState(userState);
 
-  const {
-    data,
-    error,
-    isLoading,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-  } = useInfiniteQuery(
+  const {data, error, isLoading, fetchNextPage, hasNextPage} = useInfiniteQuery(
     ['search', words],
     ({pageParam = 0}) => requestSearchProduct(words, user.userId, pageParam),
     {

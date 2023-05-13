@@ -1,10 +1,8 @@
-import React, {useState, useEffect, useMemo} from 'react';
+import React, {useMemo} from 'react';
 import {COLORS} from '../../constants';
 import {View, FlatList, StyleSheet} from 'react-native';
-import {useRecoilState} from 'recoil';
 import {BackHeader} from '../../ui/BackHeader';
 import {useInfiniteQuery} from '@tanstack/react-query';
-import {userState} from '../../state/user';
 import {
   requsetGetDividingProduct,
   requestGetDividedProductList,

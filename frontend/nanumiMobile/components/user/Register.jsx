@@ -3,7 +3,7 @@ import {Text, SafeAreaView, View, Pressable, Alert} from 'react-native';
 import {COLORS, SIZES, FONTS} from '../../constants';
 import {useNavigation} from '@react-navigation/native';
 import {requestEmailDuplicateCheck} from '../../api/user';
-import {DuplicateButton, RectButton} from '../../ui/Button';
+import {DuplicateButton} from '../../ui/Button';
 
 import UserTextInput from './UserTextInput';
 

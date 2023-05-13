@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import {View, FlatList, StyleSheet, Image, Alert} from 'react-native';
 import {ProductPrice, ProductTitle, SubInfo} from './SubInfo';
 import {COLORS, SHADOWS, SIZES} from '../../constants';
