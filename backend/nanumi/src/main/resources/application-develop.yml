@@ -1,0 +1,73 @@
+spring:
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
+  datasource:
+    url: "jdbc:mysql://localhost:3306/nanumi?serverTimezone=UTC&characterEncoding=UTF-8"
+    username: "root"
+    password: "1234"
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  data:
+    mongodb:  #몽고DB
+      host: localhost
+      port: 27017
+      database: nanumi
+
+  # naver smtp server 사용
+  mail:
+    host: smtp.naver.com #smtp 서버 주소
+    port: 465 # 메일 인증서버 포트
+    username: "nanumib23" #네이버 아이디
+    password: "fightingnanumi" #네이버 비밀번호
+    properties:
+      mail:
+        smtp:
+          starttls:
+            enable: true
+          #            required: true
+          auth: true
+          #          connectiontimeout: 5000
+          #          timeout: 5000
+          #          writetimeout: 5000
+          ssl:
+            #trust: smtp.naver.com
+            enable: true #반드시 필요 -> SSL 필요로 되어있으면# naver smtp server 사용
+
+
+  jpa:
+    database:
+    hibernate:
+      ddl_auto: update
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+
+  redis:
+    host: k8b103.p.ssafy.io
+    port: 2521
+    password: L14qAYBx6B1tjxmWPCbQFCzxetgQoO
+
+jwt:
+  secret:
+    key: x!A%D*G-KaPdSgVkYp3s5v8y/B?E(H+M
+
+cloud:
+  aws:
+    credentials:
+      accessKey: AKIAUFHKRHLFI5MY6FPT
+      secretKey: 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
+    s3:
+      bucket: nanumi
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, matrics, prometheus, refresh

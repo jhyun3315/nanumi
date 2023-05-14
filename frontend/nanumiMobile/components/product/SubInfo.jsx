@@ -3,7 +3,7 @@ import {View, Image, Text, Pressable} from 'react-native';
 import {SIZES, COLORS, SHADOWS, assets, FONTS} from '../../constants';
 import {useNavigation} from '@react-navigation/native';
 
-export const ProductTitle = ({title, titleSize, subTitle, subTitleSize}) => {
+export const ProductTitle = ({title, titleSize}) => {
   return (
     <View>
       <Text
@@ -13,14 +13,6 @@ export const ProductTitle = ({title, titleSize, subTitle, subTitleSize}) => {
           color: COLORS.primary,
         }}>
         {title}
-      </Text>
-      <Text
-        style={{
-          fontFamily: FONTS.regular,
-          fontSize: subTitleSize,
-          color: COLORS.primary,
-        }}>
-        {subTitle}
       </Text>
     </View>
   );
@@ -50,7 +42,7 @@ export const ProductPrice = () => {
   );
 };
 
-export const ImageCmp = ({imgUrl}) => {
+export const ImageCmp = ({imgUrl, index}) => {
   return (
     <Image
       source={imgUrl}

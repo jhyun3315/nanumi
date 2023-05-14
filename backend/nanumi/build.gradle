@@ -1,13 +1,7 @@
-
-
 plugins {
 	id 'java'
 	id 'org.springframework.boot' version '2.7.10'
 	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
-}
-
-jar{
-	enabled=false
 }
 
 group = 'com.ssafy'
@@ -18,9 +12,6 @@ configurations {
 	compileOnly {
 		extendsFrom annotationProcessor
 	}
-//	all {
-//		exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
-//	}
 }
 
 repositories {
@@ -28,67 +19,16 @@ repositories {
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation "com.amazonaws:aws-java-sdk-s3:1.12.281"
-
-	// logging - aop
-//	implementation 'org.springframework.boot:spring-boot-starter-log4j2'
-	implementation 'org.springframework.boot:spring-boot-starter-aop'
-	implementation 'org.json:json:20220320'
-
-	// swagger
-	implementation group: 'io.springfox', name: 'springfox-boot-starter', version: '3.0.0'
-
-	// actuator / prometheus
-	implementation 'org.springframework.boot:spring-boot-starter-actuator'
-	runtimeOnly 'io.micrometer:micrometer-registry-prometheus'
-
-	// security & jwt
-	implementation 'org.springframework.security:spring-security-core:5.6.2'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
-	implementation 'org.springframework.security:spring-security-test'
-	implementation group: 'com.auth0', name: 'java-jwt', version: '4.0.0'
-
-	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
-	implementation 'io.jsonwebtoken:jjwt-impl:0.11.5'
-	implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5'
-
-	// email auth
-	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: '2.6.3'
-	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
-
-
+	implementation 'org.springframework.boot:spring-boot-starter-web'
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'com.mysql:mysql-connector-j'
 	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
-
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
-
-	// MongoDB
-	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
-
-	// Socket
-	implementation 'org.springframework.boot:spring-boot-starter-websocket'
-
-	//FireBase
-	implementation 'com.google.firebase:firebase-admin:9.1.1'
-
-	// Retrofit2
-	implementation 'com.squareup.retrofit2:retrofit:2.9.0'
-	implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
-
-	// Redis
-	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
-//	implementation 'org.redisson:redisson-spring-boot-starter:3.17.4'
-	implementation 'org.redisson:redisson-spring-boot-starter:3.17.7'
-
-
-
 }
 
 tasks.named('test') {
