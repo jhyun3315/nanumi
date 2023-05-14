@@ -11,11 +11,8 @@ const HomeScreen = ({navigation}) => {
     } else {
       ToastAndroid.show('한 번 더 누르면 종료됩니다', ToastAndroid.SHORT);
       setExitApp(true);
-
-      setTimeout(() => {
-        setExitApp(false);
-      }, 2000);
     }
+
     return true;
   };
 
@@ -25,7 +22,19 @@ const HomeScreen = ({navigation}) => {
       handleBackPress,
     );
 
-    return () => backHandler.remove();
+    return () => {
+      backHandler.remove();
+    };
+  }, [exitApp]);
+
+  useEffect(() => {
+    let timerId;
+    if (exitApp) {
+      timerId = setTimeout(() => {
+        setExitApp(false);
+      }, 2000);
+    }
+    return () => clearTimeout(timerId);
   }, [exitApp]);
 
   return <Home navigation={navigation} />;

@@ -134,6 +134,7 @@ const ProductDetail = ({route, navigation}) => {
       user.userId,
     );
 
+    console.log(response);
     if (response?.result?.result) {
       showModal({
         modalType: 'OneButtonModal',
