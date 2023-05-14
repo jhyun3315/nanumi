@@ -9,6 +9,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,8 +25,9 @@ public interface ProductRepository extends JpaRepository<Product,Long> {
         "AND p.isDeleted = false " +
         "AND p.name Like %:name% " +
         "AND p.user.id NOT IN :blockers " +
-        "AND p.user.id NOT IN :targets")
-    Page<ProductAllDTO> searchAll(@Param("addressId") long addressId, @Param("blockers") List<Long> blockers, @Param("targets") List<Long> targets, @Param("name") String name, Pageable pageable);
+        "AND p.user.id NOT IN :targets " +
+        "AND p.createDate >= :cutoffDateTime")
+    Page<ProductAllDTO> searchAll(@Param("addressId") long addressId, @Param("blockers") List<Long> blockers, @Param("targets") List<Long> targets, @Param("name") String name,@Param("cutoffDateTime") LocalDateTime cutoffDateTime, Pageable pageable);
 
     @Query(value = "select p " +
             "from Product p " +
@@ -32,8 +36,10 @@ public interface ProductRepository extends JpaRepository<Product,Long> {
             "and p.isDeleted = false " +
             "and p.isMatched = false " +
             "and p.user.id NOT IN :blockers " +
-            "and p.user.id NOT IN :targets")
-    Page<ProductAllDTO> findAllProduct(@Param("addressId") Long addressId, @Param("blockers") List<Long> blockers, @Param("targets") List<Long> targets, Pageable pageable);
+            "and p.user.id NOT IN :targets " +
+            "and p.createDate >= :cutoffDateTime")
+
+    Page<ProductAllDTO> findAllProduct(@Param("addressId") Long addressId, @Param("blockers") List<Long> blockers, @Param("targets") List<Long> targets, @Param("cutoffDateTime") LocalDateTime cutoffDateTime , Pageable pageable);
 
     @Query(value = "select p " +
             "from Product p " +
@@ -43,8 +49,9 @@ public interface ProductRepository extends JpaRepository<Product,Long> {
             "and p.isClosed = false " +
             "and p.isMatched = false " +
             "and p.user.id NOT IN :blockers " +
-            "and p.user.id NOT IN :targets")
-    Page<ProductAllDTO> findAllCategoryProduct(@Param("addressId") Long addressId, @Param("categoryId") Long categoryId, @Param("blockers") List<Long> blockers, @Param("targets") List<Long> targets, Pageable pageable);
+            "and p.user.id NOT IN :targets " +
+            "and p.createDate >= :cutoffDateTime")
+    Page<ProductAllDTO> findAllCategoryProduct(@Param("addressId") Long addressId, @Param("categoryId") Long categoryId, @Param("blockers") List<Long> blockers, @Param("targets") List<Long> targets,@Param("cutoffDateTime") LocalDateTime cutoffDateTime, Pageable pageable);
 
     @Query(value = "select count(p) " +
             "from Product p " +
