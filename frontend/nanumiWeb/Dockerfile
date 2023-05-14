@@ -1,4 +1,4 @@
-FROM node:18.16.0 as builder
+FROM node:18.16.0 as build
 
 # set working directory
 WORKDIR /app
@@ -17,4 +17,4 @@ RUN npm run build
 EXPOSE 3001
 
 # start the app
-CMD ["npm", "start"]
+CMD ["npm", "run", "start", "--", "--port", "3001"]
