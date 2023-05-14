@@ -13,8 +13,16 @@ COPY . .
 # build the app
 RUN npm run build
 
-# expose port
-EXPOSE 3001
 
-# start the app
-CMD ["npm", "run", "start", "--", "--port", "3001"]
+# Install Nginx
+FROM nginx:1.21.0-alpine
+COPY --from=build /app/build /usr/share/nginx/html
+
+# Copy Nginx configuration
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+# Expose port 80
+EXPOSE 80
+
+# Start Nginx
+CMD ["nginx", "-g", "daemon off;"]
