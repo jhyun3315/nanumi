@@ -8,19 +8,22 @@ import {
   Pressable,
   ScrollView,
   Dimensions,
+  Alert,
 } from 'react-native';
 import {COLORS, FONTS, SIZES, SHADOWS, assets} from '../../constants';
 import {RectButton} from '../../ui/Button';
 import {useModal} from '../../hooks/useModal';
 import {useQuery} from '@tanstack/react-query';
-import {requestGetProfile} from '../../api/user';
+import {requestDeleteUser, requestGetProfile} from '../../api/user';
 import {useRecoilState} from 'recoil';
 import {userState} from './../../state/user';
 import {Fallback} from '../../ui/Fallback';
+import {useFocusEffect} from '@react-navigation/native';
 import ErrorModal from '../modal/ErrorModal';
 import ProgressBar from './ProgressBar';
 import GlobalModal from '../modal/GlobalModal';
-import {useFocusEffect} from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 const {width} = Dimensions.get('window');
 
 const Profile = ({navigation}) => {
@@ -40,6 +43,24 @@ const Profile = ({navigation}) => {
     },
   );
 
+  const handleDeleteUser = async () => {
+    const response = await requestDeleteUser(user.userId);
+    if (response.code === 200) {
+      Alert.alert('성공', '탈퇴되었습니다.', [
+        {
+          text: '확인',
+          onPress: async () => {
+            await AsyncStorage.removeItem('user');
+            hideModal();
+            navigation.navigate('Login');
+          },
+          style: 'cancel',
+        },
+      ]);
+    } else {
+      Alert.alert('탈퇴에 실패했습니다');
+    }
+  };
   const handleOpenLogoutModal = () => {
     showModal({
       modalType: 'TwoButtonModal',
@@ -60,7 +81,7 @@ const Profile = ({navigation}) => {
         title: '회원탈퇴',
         content: '정말 탈퇴하시겠어요?',
         visible: true,
-        onConfirm: hideModal,
+        onConfirm: handleDeleteUser,
         onCancel: hideModal,
       },
     });

@@ -76,3 +76,10 @@ export const requestReportUser = async (userId, data) => {
   );
   return response.data;
 };
+
+export const requestDeleteUser = async userId => {
+  const response = await axiosInstance.delete(
+    `${API_END_POINT}/users/${userId}`,
+  );
+  return response.data;
+};
