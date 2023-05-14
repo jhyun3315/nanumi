@@ -3,10 +3,13 @@ package com.ssafy.nanumi.api.service;
 import com.ssafy.nanumi.api.request.ReportUserDTO;
 import com.ssafy.nanumi.api.request.UserBanDTO;
 import com.ssafy.nanumi.api.response.ReportAllDTO;
+import com.ssafy.nanumi.api.response.ReportedUserDTO;
 import com.ssafy.nanumi.config.response.exception.CustomException;
+import com.ssafy.nanumi.db.entity.Address;
 import com.ssafy.nanumi.db.entity.Report;
 import com.ssafy.nanumi.db.entity.User;
 import com.ssafy.nanumi.db.entity.UserInfo;
+import com.ssafy.nanumi.db.repository.AddressRepository;
 import com.ssafy.nanumi.db.repository.ReportRepository;
 import com.ssafy.nanumi.db.repository.UserInfoRepository;
 import com.ssafy.nanumi.db.repository.UserRepository;
@@ -31,6 +34,7 @@ public class AdminService {
     private final UserRepository userRepository;
     private final UserInfoRepository userInfoRepository;
     private final ReportRepository reportRepository;
+    private final AddressRepository addressRepository;
 
     /* 관리자 로그인 */
     public void adminLogin(String email, String password) {
@@ -62,11 +66,27 @@ public class AdminService {
             int reportedCount = userInfoRepository.findUserInfoIdByUserId(report.getReported().getId())
                     .orElseThrow(() -> new CustomException(NOT_FOUND_USER));
 
+            // 신고 대상자 조회
+            User reported = userRepository.findById(report.getReported().getId())
+                    .orElseThrow(() -> new CustomException(NOT_FOUND_USER));
+
+            Address address = addressRepository.findById(reported.getAddress().getId())
+                    .orElseThrow(() -> new CustomException(NOT_FOUND_ADDRESS_CODE));
+
+            ReportedUserDTO reportedUserDTO = ReportedUserDTO.builder()
+                    .id(reported.getId())
+                    .nickname(reported.getNickname())
+                    .profile_url(reported.getProfileUrl())
+                    .si(address.getSi())
+                    .gugun(address.getGuGun())
+                    .dong(address.getDong())
+                    .build();
+
             reportAllDTOS.add(
                     ReportAllDTO.builder()
                             .id(report.getId())
                             .reporterId(report.getReporter().getId())
-                            .reportedId(report.getReported().getId())
+                            .reported(reportedUserDTO)
                             .content(report.getContent())
                             .status(report.isStatus())
                             .reportedCount(reportedCount)
