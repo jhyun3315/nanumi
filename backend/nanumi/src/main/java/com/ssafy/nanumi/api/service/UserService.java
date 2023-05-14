@@ -150,9 +150,13 @@ public class UserService {
                         .userInfo(userInfoSaved)
                         .build();
 
-                // Security 일반사용자 권한 추가
-                user.setRoles(Collections.singletonList(Authority.builder().name("ROLE_브론즈").build()));
-
+                // Security 관리자 권한 추가
+                if(userJoinDTO.getNickname().equals("adminssafy"))
+                    user.setRoles(Collections.singletonList(Authority.builder().name("ROLE_관리자").build()));
+                else {
+                    // Security 일반사용자 권한 추가
+                    user.setRoles(Collections.singletonList(Authority.builder().name("ROLE_브론즈").build()));
+                }
                 userRepository.save(user);
             }
         }
