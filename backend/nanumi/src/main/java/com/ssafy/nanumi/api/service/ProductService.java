@@ -16,6 +16,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 import static com.ssafy.nanumi.config.response.exception.CustomExceptionStatus.*;
@@ -37,6 +41,7 @@ public class ProductService {
     private String bucket;
     private final AmazonS3 amazonS3;
 
+
     public Page<ProductAllDTO> searchProductByWords(long userId, String words, PageRequest pageRequest){
 
         User user = userRepository.findById(userId).orElseThrow(() ->  new CustomException(NOT_FOUND_USER));
@@ -51,7 +56,7 @@ public class ProductService {
         List<Long> targets = blacklistRepository.findTargetId(user.getId());
         targets.add(0L);
 
-        return productRepository.searchAll(address.getId(), blockers, targets, words, pageRequest);
+        return productRepository.searchAll(address.getId(), blockers, targets, words, calCutoffDateTime(), pageRequest);
     }
 
     public Page<ProductAllDTO> findProductAll(long userId, PageRequest pageRequest) {
@@ -69,7 +74,7 @@ public class ProductService {
         List<Long> targets = blacklistRepository.findTargetId(user.getId());
         targets.add(0L);
 
-        return productRepository.findAllProduct(addressId, blockers, targets, pageRequest);
+        return productRepository.findAllProduct(addressId, blockers, targets, calCutoffDateTime() ,pageRequest);
     }
 
     public ProductDetailDTO findByProductId(Long productId) {
@@ -101,10 +106,18 @@ public class ProductService {
         List<Long> targets = blacklistRepository.findTargetId(user.getId());
         targets.add(0L);
 
-        return productRepository.findAllCategoryProduct(addressId,categoryId, blockers, targets, pageRequest);
+
+        return productRepository.findAllCategoryProduct(addressId,categoryId, blockers, targets, calCutoffDateTime(), pageRequest);
 }
 
     public void createProduct(MultipartFile[] images,String name,String content,Long categoryId, User user) throws IOException {
+
+        // 서버시간 확인.
+        LocalTime currentTime = LocalTime.now();
+        // 오후 2시에서 3시 사이 확인
+        if (currentTime.isAfter(LocalTime.of(15, 0)) & currentTime.isBefore(LocalTime.of(16, 0))){
+            throw new CustomException(CustomExceptionStatus.NOT_ALLOWED_CREATE);
+        }
 
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_CATEGORY));
@@ -175,5 +188,30 @@ public class ProductService {
 
         product.delete();
     }
+    private LocalDateTime calCutoffDateTime(){
+        // Local time 체크
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        LocalDateTime cutoffDateTime;
 
+        // 로그
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String formattedDateTime = currentDateTime.format(formatter);
+        log.info("Current DateTime: {}", formattedDateTime);
+
+        // cutoffDateTime 계산
+        int time = currentDateTime.toLocalTime().compareTo(LocalTime.of(15, 0));
+        if (time < 0) {
+            // 현재 시간이 오후 3시 이전인 경우 처리 - 전날 3시 ~
+            cutoffDateTime = LocalDateTime.of(currentDateTime.toLocalDate().minusDays(1), LocalTime.of(15, 0));
+        } else {
+            // 현재 시간이 오후 3시 이후인 경우 처리 - 오늘 3시 ~
+            cutoffDateTime = LocalDateTime.of(currentDateTime.toLocalDate(), LocalTime.of(15, 0));
+        }
+
+        //로그
+        String formattedcutoffDateTime = cutoffDateTime.format(formatter);
+        log.info("CutoffDateTime : {}", formattedcutoffDateTime);
+
+        return cutoffDateTime ;
+    }
 }
