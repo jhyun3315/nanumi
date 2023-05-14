@@ -66,7 +66,7 @@ const ProductList = ({isSearch}) => {
           onEndReachedThreshold={2}
         />
       </View>
-      {content.length === 0 && <EmptyState />}
+      {content.length === 0 && <EmptyState>현재 상품이 없습니다</EmptyState>}
       <View style={styles.backgroundWrapper}>
         <View style={styles.backgroundTop} />
         <View style={styles.backgroundBottom} />

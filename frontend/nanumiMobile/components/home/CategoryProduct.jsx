@@ -49,7 +49,9 @@ const CategoryProduct = ({categoryKey, categoryName}) => {
   return (
     <View style={styles.container}>
       <BackHeader navigation={navigation}>{categoryName}</BackHeader>
-      {data?.pages[0]?.result.content.length === 0 && <EmptyState />}
+      {data?.pages[0]?.result.content.length === 0 && (
+        <EmptyState>해당 물품이 없습니다</EmptyState>
+      )}
 
       <View style={styles.flatListWrapper}>
         <FlatList

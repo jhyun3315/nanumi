@@ -75,7 +75,9 @@ const DivideProduct = ({navigation, type, userId}) => {
           onEndReachedThreshold={2}
         />
       </View>
-      {data?.pages[0]?.result?.content.length === 0 && <EmptyState />}
+      {data?.pages[0]?.result?.content.length === 0 && (
+        <EmptyState>해당 상품이 없습니다</EmptyState>
+      )}
       <View style={styles.backgroundWrapper}>
         <View style={styles.backgroundTop} />
         <View style={styles.backgroundBottom} />

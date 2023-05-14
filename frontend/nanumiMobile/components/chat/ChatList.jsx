@@ -9,6 +9,7 @@ import {requestGetMyChatRoom} from '../../api/chat';
 import {Fallback} from '../../ui/Fallback';
 import {useFocusEffect} from '@react-navigation/native';
 import ErrorModal from '../modal/ErrorModal';
+import EmptyState from '../../ui/EmptyState';
 
 const ChatList = ({navigation}) => {
   const [user] = useRecoilState(userState);
@@ -29,6 +30,7 @@ const ChatList = ({navigation}) => {
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: COLORS.white}}>
+      {data.length === 0 && <EmptyState>채팅목록이 없습니다</EmptyState>}
       <FlatList
         data={data ? data : []}
         renderItem={({item}) => (
