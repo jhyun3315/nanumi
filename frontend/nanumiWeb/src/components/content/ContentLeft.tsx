@@ -39,6 +39,7 @@ const Card = ({ bgColor, icon, label, textColor }: CardProps) => {
     </div>
   );
 };
+
 const ContentLeft = () => {
   const [users, setUsers] = useState<User[]>([]);
 

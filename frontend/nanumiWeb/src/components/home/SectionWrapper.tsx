@@ -50,12 +50,7 @@ const SectionWrapper = ({
           >
             {description}
           </p>
-          {showBtn && (
-            <Button
-              assetUrl={assets.logo01}
-              link="https://drive.google.com/file/d/1EDH7hCtWzBh5xGhlkw-6qGIpJxVeByvO/view?usp=sharing"
-            />
-          )}
+          {showBtn && <Button assetUrl={assets.logo01} />}
         </div>
         <div className={`flex-1 ${styles.flexCenter} p-8 sm:px-0`}>
           <img
