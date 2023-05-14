@@ -1,6 +1,7 @@
 package com.ssafy.nanumi.db.entity;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -22,4 +23,9 @@ public class Category {
 
     @OneToMany(mappedBy = "category")
     private List<Product>  products = new ArrayList<>();
+
+    @Builder
+    public Category (String name){
+        this.name = name;
+    }
 }

@@ -51,53 +51,55 @@ public class SecurityConfig {
                 .authorizeRequests()
                 // 회원가입과 로그인은 모두 승인
 
-                .antMatchers("/test").hasAnyRole("브론즈", "실버", "골드", "플레티넘", "다이아")
+//                .antMatchers("/test").hasAnyRole("브론즈", "실버", "골드", "플레티넘", "다이아")
+                .antMatchers("/test").permitAll()
                 .antMatchers("/users/join", "/users/login", "/users/isRTValid", "/users/check/**", "/api/v2/**", "/health", "/swagger-ui.html", "/swagger/**",
                         "/swagger-ui/**","/swagger-resources/**", "/webjars/**", "/v2/api-docs","/ws-stomp/**").permitAll()
-                .antMatchers("/users/**").hasAnyRole("브론즈", "실버", "골드", "플레티넘", "다이아")
+//                .antMatchers("/users/**").hasAnyRole("브론즈", "실버", "골드", "플레티넘", "다이아")
+                .antMatchers("/users/**").permitAll()
                 .antMatchers("/actuator/**","/**").permitAll()
-                .anyRequest().authenticated()
-//                .anyRequest().permitAll()
+//                .anyRequest().authenticated()
+                .anyRequest().permitAll();
 
-                .and()
-                // JWT 인증 필터 적용
-                .addFilterBefore(new JwtAuthenticationFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class)
-                // 에러 핸들링
-                .exceptionHandling()
-                .accessDeniedHandler(new AccessDeniedHandler() {
-                    @Override
-                    public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
-                        // 권한 문제가 발생했을 때 이 부분을 호출한다.
-                        response.setStatus(403);
-                        response.setCharacterEncoding("utf-8");
-                        response.setContentType("application/json; charset=UTF-8");
-
-                        // JSON 객체 생성
-                        JSONObject jsonResponse = new JSONObject();
-                        jsonResponse.put("code", 403);
-                        jsonResponse.put("message", "권한이 없는 사용자입니다.");
-
-                        // JSON 객체를 문자열로 변환하고 응답에 쓰기
-                        response.getWriter().write(jsonResponse.toString());
-                    }
-                })
-                .authenticationEntryPoint(new AuthenticationEntryPoint() {
-                    @Override
-                    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
-                        // 인증문제가 발생했을 때 이 부분을 호출한다.
-                        response.setStatus(401);
-                        response.setCharacterEncoding("utf-8");
-                        response.setContentType("application/json; charset=UTF-8");
-
-                        // JSON 객체 생성
-                        JSONObject jsonResponse = new JSONObject();
-                        jsonResponse.put("code", 401);
-                        jsonResponse.put("message", "인증되지 않은 사용자입니다.");
-
-                        // JSON 객체를 문자열로 변환하고 응답에 쓰기
-                        response.getWriter().write(jsonResponse.toString());
-                    }
-                });
+//                .and()
+//                // JWT 인증 필터 적용
+//                .addFilterBefore(new JwtAuthenticationFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class)
+//                // 에러 핸들링
+//                .exceptionHandling()
+//                .accessDeniedHandler(new AccessDeniedHandler() {
+//                    @Override
+//                    public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
+//                        // 권한 문제가 발생했을 때 이 부분을 호출한다.
+//                        response.setStatus(403);
+//                        response.setCharacterEncoding("utf-8");
+//                        response.setContentType("application/json; charset=UTF-8");
+//
+//                        // JSON 객체 생성
+//                        JSONObject jsonResponse = new JSONObject();
+//                        jsonResponse.put("code", 403);
+//                        jsonResponse.put("message", "권한이 없는 사용자입니다.");
+//
+//                        // JSON 객체를 문자열로 변환하고 응답에 쓰기
+//                        response.getWriter().write(jsonResponse.toString());
+//                    }
+//                })
+//                .authenticationEntryPoint(new AuthenticationEntryPoint() {
+//                    @Override
+//                    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
+//                        // 인증문제가 발생했을 때 이 부분을 호출한다.
+//                        response.setStatus(401);
+//                        response.setCharacterEncoding("utf-8");
+//                        response.setContentType("application/json; charset=UTF-8");
+//
+//                        // JSON 객체 생성
+//                        JSONObject jsonResponse = new JSONObject();
+//                        jsonResponse.put("code", 401);
+//                        jsonResponse.put("message", "인증되지 않은 사용자입니다.");
+//
+//                        // JSON 객체를 문자열로 변환하고 응답에 쓰기
+//                        response.getWriter().write(jsonResponse.toString());
+//                    }
+//                });
 
         return http.build();
     }

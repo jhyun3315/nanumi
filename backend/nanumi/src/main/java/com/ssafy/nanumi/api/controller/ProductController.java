@@ -118,10 +118,9 @@ public class ProductController {
     }
     /* 상품 신청 - 매칭 */
     @GetMapping("/application/{product-id}/{user-id}")
-    public CustomDataResponse<MatchSuccessDto> applicationProduct(@PathVariable("user-id") long userId, @PathVariable("product-id") long productId) {
+    public void applicationProduct(@PathVariable("user-id") long userId, @PathVariable("product-id") long productId) throws InterruptedException {
         User user = userRepository.findById(userId)
                 .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_USER));
-        return responseService.getDataResponse(nanumService.registerNanum(productId, user),RESPONSE_SUCCESS);
+        nanumService.registerNanum(productId, user);
     }
-
 }

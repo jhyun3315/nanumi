@@ -27,5 +27,13 @@ public class Address {
     @Column(name="dong", columnDefinition="VARCHAR(20)", nullable = false)
     private String dong;
 
+    @Builder
+    public Address(long id, String si, String guGun, String dong){
+        this.id = id;
+        this.si = si;
+        this.dong = dong;
+        this.guGun = guGun;
+    }
+
 
 }

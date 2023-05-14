@@ -27,4 +27,7 @@ public class LoginProvider {
         this.id = id;
         this.provider = provider;
     }
+    public enum Provider {
+        GOOGLE, APPLE, ORACLE;
+    }
 }
