@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 const AdminPage = () => {
   const navigate = useNavigate();
   useEffect(() => {
-    const isAuthenticated = localStorage.getItem('isAuthenticated');
+    const isAuthenticated = localStorage.getItem('user');
     if (!isAuthenticated) navigate('/admin/login');
   }, []);
   return (
