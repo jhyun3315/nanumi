@@ -1,29 +1,34 @@
-import { ReactNode } from 'react';
-import {
-  BiCreditCard,
-  BiSearch,
-  BiUser,
-  BiBox,
-  BiBug,
-  BiEdit,
-  BiTrash,
-} from 'react-icons/bi';
+import { ReactNode, useEffect, useState } from 'react';
+import { BiCreditCard, BiSearch, BiUser, BiBox, BiBug } from 'react-icons/bi';
 
-import {
-  LeadingActions,
-  SwipeableList,
-  SwipeableListItem,
-  SwipeAction,
-  TrailingActions,
-  Type,
-} from 'react-swipeable-list';
 import 'react-swipeable-list/dist/styles.css';
+import { requestGetReport } from '../../api/Login';
 
 interface CardProps {
   bgColor: string;
   textColor: string;
   icon: ReactNode;
   label: ReactNode;
+}
+
+interface User {
+  id: number;
+  content: string;
+  nickname: string;
+  profile_url: string;
+  reportedCount: number;
+  reported: {
+    id: number;
+    nickname: string;
+    profile_url: string;
+    si: string;
+    gugun: string;
+    dong: string;
+  };
+  reporterId: number;
+  reportDate: string;
+  status: boolean;
+  stopDate: number;
 }
 
 const Card = ({ bgColor, icon, label, textColor }: CardProps) => {
@@ -37,34 +42,19 @@ const Card = ({ bgColor, icon, label, textColor }: CardProps) => {
   );
 };
 const ContentLeft = () => {
-  const trailingActions = () => (
-    <TrailingActions>
-      <SwipeAction
-        destructive={true}
-        onClick={() => console.info('swipe action triggered')}
-      >
-        <div className="flex items-center px-4">
-          <BiTrash size={25} color="white" />
-        </div>
-      </SwipeAction>
-      <SwipeAction
-        destructive={true}
-        onClick={() => console.info('swipe action triggered')}
-      >
-        <div className="flex items-center px-4">
-          <BiEdit size={25} color="white" />
-        </div>
-      </SwipeAction>
-    </TrailingActions>
-  );
+  const [users, setUsers] = useState<User[]>([]);
+
+  const handleGetReport = async () => {
+    const response = await requestGetReport();
+    setUsers(response);
+  };
+
+  useEffect(() => {
+    handleGetReport();
+  }, []);
 
   return (
     <section className="container-content-left px-16 flex-1 pt-14 h-screen overflow-y-scroll">
-      <div className="border border-gray-300 rounded-lg w-full flex px-3 py-3 items-center">
-        <BiSearch className="mr-2" />
-        <input type={'text'} className="flex-1" placeholder="Search" />
-      </div>
-
       <h3 className="text-xl text-violet-700 my-8">대시보드</h3>
 
       <div className="flex flex-row space-x-6">
@@ -113,28 +103,24 @@ const ContentLeft = () => {
           }
         />
       </div>
-      <div className="mt-20">
-        {Array.from(Array(8)).map((_, index) => (
-          <div key={index} className="rounded-2xl bg-violet-700 mb-4">
-            <SwipeableList threshold={0.9} type={Type.IOS}>
-              <SwipeableListItem trailingActions={trailingActions()}>
-                <div className="bg-white px-8 p-4 rounded-xl border border-gray-200 w-full flex">
-                  <img
-                    src={
-                      'https://nanumi.s3.ap-northeast-2.amazonaws.com/ebd28134-03c0-4980-8d40-47e2c9140487-1680657612511.jpg'
-                    }
-                    alt="user-image"
-                    className="w-8 h-8 rounded-full object-cover mr-3"
-                  />
-                  <div className="text-lg">
-                    <div className="text-gray-900">닉네임</div>
-                    <div className="text-gray-400 text-sm">유저</div>
-                  </div>
-                </div>
-              </SwipeableListItem>
-            </SwipeableList>
-          </div>
-        ))}
+      <div className="mt-20 flex flex-row flex-wrap">
+        {users.map((user) => {
+          return (
+            <div className="w-60 p-2 bg-slate-50 rounded-xl" key={user.id}>
+              <img
+                src={user?.reported?.profile_url}
+                alt=""
+                className="h-40 object-cover rounded-xl"
+              />
+              <div className="p-2">
+                <h2 className="font-bold text-lg">
+                  {user?.reported?.nickname}
+                </h2>
+                <p className="text-sm text-gray-600">{user?.content}</p>
+              </div>
+            </div>
+          );
+        })}
       </div>
     </section>
   );
