@@ -1,13 +1,17 @@
 import React from 'react';
-import {View, Text, StatusBar} from 'react-native';
+import {RecoilRoot} from 'recoil';
+import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
+import * as encoding from 'text-encoding';
 import StackNavigator from './navigator/StackNavigator';
 
+const queryClient = new QueryClient();
 const App = () => {
   return (
-    <>
-      <StatusBar />
-      <StackNavigator />
-    </>
+    <RecoilRoot>
+      <QueryClientProvider client={queryClient}>
+        <StackNavigator />
+      </QueryClientProvider>
+    </RecoilRoot>
   );
 };
 
