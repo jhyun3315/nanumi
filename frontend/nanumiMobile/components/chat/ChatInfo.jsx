@@ -72,7 +72,7 @@ export const renderSend = props => {
   return (
     <Send {...props}>
       <View style={styles.sendingContainer}>
-        <Icon name="send" color={COLORS.gray} size={SIZES.extraLarge} />
+        <Icon name="send" color={COLORS.primary} size={SIZES.extraLarge} />
       </View>
     </Send>
   );

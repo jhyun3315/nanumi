@@ -1,5 +1,5 @@
 import React, {useState, useCallback, useMemo, useEffect, useRef} from 'react';
-import {Alert, SafeAreaView} from 'react-native';
+import {Alert, Dimensions, SafeAreaView} from 'react-native';
 import {
   ChatHeader,
   ChatProductInfo,
@@ -8,7 +8,7 @@ import {
   renderSend,
 } from './ChatInfo';
 import {ChatOptions} from './ChatOptions';
-import {COLORS} from '../../constants';
+import {COLORS, FONTS, SIZES} from '../../constants';
 import {
   BottomSheetBackdrop,
   BottomSheetModal,
@@ -36,7 +36,8 @@ import * as StompJs from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
 import ErrorModal from '../modal/ErrorModal';
 import DataErrorModal from '../modal/DataErrorModal';
-import axiosInstance from '../../api/interceptor';
+
+const {width} = Dimensions.get('window');
 
 const ChatDetail = ({
   navigation,
@@ -345,6 +346,11 @@ const ChatDetail = ({
               renderBubble={renderBubble}
               renderSend={renderSend}
               textInputProps={{
+                style: {
+                  color: COLORS.primary,
+                  width: '90%',
+                  marginLeft: SIZES.base,
+                },
                 editable: isDisconnect || isBlocked ? false : true,
               }}
               scrollToBottom
