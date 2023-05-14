@@ -1,7 +1,5 @@
 import { ReactNode, useEffect, useState } from 'react';
-import { BiCreditCard, BiSearch, BiUser, BiBox, BiBug } from 'react-icons/bi';
-
-import 'react-swipeable-list/dist/styles.css';
+import { BiCreditCard, BiUser, BiBox, BiBug } from 'react-icons/bi';
 import { requestGetReport } from '../../api/Login';
 
 interface CardProps {
