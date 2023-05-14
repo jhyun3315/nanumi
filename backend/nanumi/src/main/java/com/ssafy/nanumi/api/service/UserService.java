@@ -151,7 +151,7 @@ public class UserService {
                         .build();
 
                 // Security 관리자 권한 추가
-                if(userJoinDTO.getNickname().equals("adminssafy"))
+                if(userJoinDTO.getEmail().equals("admin@nanumi.com"))
                     user.setRoles(Collections.singletonList(Authority.builder().name("ROLE_관리자").build()));
                 else {
                     // Security 일반사용자 권한 추가
