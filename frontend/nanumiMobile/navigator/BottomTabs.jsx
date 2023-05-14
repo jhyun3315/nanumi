@@ -47,6 +47,7 @@ const BottomTabs = ({navigation}) => {
           ),
         })}
       />
+
       <Tab.Screen
         name="PostCreateForm"
         component={PostCreateFormScreen}
