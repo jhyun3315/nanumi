@@ -13,7 +13,7 @@ public class UserLoginDTO {
 
 
     @Builder
-    public UserLoginDTO(String email, String password) {
+    public UserLoginDTO(String email, String password, String fcmToken) {
         this.email = email;
         this.password = password;
         this.fcmToken = fcmToken;
