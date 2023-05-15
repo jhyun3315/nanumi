@@ -30,8 +30,6 @@ import java.util.*;
 
 @Service
 public class ChatService {
-
-    private final FCMService fcmService;
     // 웹 소켓 메시지를 전송하는데 사용되는 인터페이스
     private final SimpMessageSendingOperations messageTemplate;
     private final ChatRepository chatRepository;
@@ -42,8 +40,7 @@ public class ChatService {
     private final MatchRepository matchRepository;
     private final ChatRoomRepository chatRoomRepository;
 
-    public ChatService(FCMService fcmService, SimpMessageSendingOperations messageTemplate, ChatRepository chatRepository, ProductRepository productRepository, ResponseService responseService, UserRepository userRepository, UserInfoRepository userInfoRepository, ChatRoomRepository chatRoomRepository, MatchRepository matchRepository) {
-        this.fcmService = fcmService;
+    public ChatService(SimpMessageSendingOperations messageTemplate, ChatRepository chatRepository, ProductRepository productRepository, ResponseService responseService, UserRepository userRepository, UserInfoRepository userInfoRepository, ChatRoomRepository chatRoomRepository, MatchRepository matchRepository) {
         this.messageTemplate = messageTemplate;
         this.chatRepository = chatRepository;
         this.productRepository = productRepository;
@@ -82,9 +79,6 @@ public class ChatService {
         User senderUser = userRepository.findById(DTO.getSender())
                 .orElseThrow(() -> new CustomException(CustomExceptionStatus.NOT_FOUND_USER));
         String profileUrl = senderUser.getProfileUrl();
-
-        // 상대방에게 알림 보내기
-        fcmService.sendNotification("새로운 메시지 도착", DTO.getMessage(), opponent.getFcmToken());
 
         // 날짜 형식 및 포멧터를 직접 설정
         String pattern = "yyyy-MM-dd a KK:mm ss:SSS";
