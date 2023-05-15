@@ -1,16 +1,12 @@
-import React, {useEffect, useState} from 'react';
-import {Text, SafeAreaView, View, Pressable, Image, Alert} from 'react-native';
+import React, {useState} from 'react';
+import {Text, SafeAreaView, View, Pressable, Image} from 'react-native';
 import {COLORS, SIZES, FONTS} from '../../constants';
 import {useNavigation} from '@react-navigation/native';
-import {requestLogin} from '../../api/user';
-import {useSetRecoilState} from 'recoil';
-import {userState} from '../../state/user';
 import UserTextInput from './UserTextInput';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Login = () => {
   const navigation = useNavigation();
-  const setUser = useSetRecoilState(userState);
+
   const [userInfo, setUserInfo] = useState({
     email: '',
     password: '',
@@ -22,31 +18,6 @@ const Login = () => {
       [key]: value,
     });
   };
-
-  const handleLogin = async () => {
-    const data = {
-      email: userInfo.email,
-      password: userInfo.password,
-    };
-    const response = await requestLogin(data);
-    if (response.code === 200) {
-      setUser(response.result);
-      await AsyncStorage.setItem('user', JSON.stringify(response.result));
-      setUserInfo({username: '', password: ''});
-      navigation.navigate('BottomTabs', {screen: 'Home'});
-    } else {
-      Alert.alert(response.message);
-    }
-  };
-
-  const handleInit = async () => {
-    await AsyncStorage.removeItem('user');
-    setUser({});
-  };
-
-  useEffect(() => {
-    handleInit();
-  }, []);
 
   return (
     <SafeAreaView>
@@ -78,17 +49,25 @@ const Login = () => {
         <View style={{marginVertical: SIZES.base * 3}}>
           <UserTextInput
             placeholder="이메일"
-            value={userInfo?.email}
             onChangeText={value => handleInputChange('email', value)}
           />
           <UserTextInput
             placeholder="비밀번호"
-            value={userInfo?.password}
             secureTextEntry={true}
             onChangeText={value => handleInputChange('password', value)}
           />
         </View>
-
+        <View>
+          <Text
+            style={{
+              fontFamily: FONTS.medium,
+              fontSize: SIZES.font,
+              color: COLORS.primary,
+              alignSelf: 'flex-end',
+            }}>
+            비밀번호를 잊으셨나요?
+          </Text>
+        </View>
         <Pressable
           style={{
             padding: SIZES.base * 2,
@@ -98,7 +77,7 @@ const Login = () => {
 
             elevation: 5,
           }}
-          onPress={handleLogin}>
+          onPress={() => navigation.navigate('BottomTabs')}>
           <Text
             style={{
               fontFamily: FONTS.bold,
@@ -126,7 +105,7 @@ const Login = () => {
           </Text>
         </Pressable>
 
-        {/* <View
+        <View
           style={{
             marginVertical: SIZES.base * 2,
           }}>
@@ -163,7 +142,7 @@ const Login = () => {
               />
             </Pressable>
           </View>
-        </View> */}
+        </View>
       </View>
     </SafeAreaView>
   );

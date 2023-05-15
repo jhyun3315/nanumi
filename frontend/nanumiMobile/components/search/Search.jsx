@@ -6,18 +6,24 @@ import {
   TextInput,
   Pressable,
   StyleSheet,
+  FlatList,
   SafeAreaView,
 } from 'react-native';
-import {COLORS, SIZES, assets} from '../../constants';
+import {COLORS, Data, SIZES, assets} from '../../constants';
 import {useNavigation} from '@react-navigation/native';
-import SearchList from './SearchList';
+import ProductList from '../product/ProductList';
+import FocusedStatusBar from '../../ui/FocusedStatusBar';
 
 const Search = () => {
   const navigation = useNavigation();
-  const [words, setWords] = useState('');
+  const [data, setData] = useState();
 
-  const handleWords = text => {
-    setWords(text);
+  const handleSearch = value => {
+    if (!value.length) return setData(Data);
+    const filteredData = Data.filter(item => item.name.includes(value));
+
+    if (filteredData.length) setData(filteredData);
+    else setData(Data);
   };
 
   return (
@@ -43,12 +49,12 @@ const Search = () => {
             <TextInput
               placeholder="검색"
               style={styles.searchInput}
-              onChangeText={handleWords}
+              onChangeText={handleSearch}
             />
           </View>
         </View>
       </View>
-      <SearchList words={words} />
+      <ProductList isSearch={true} data={data} />
     </SafeAreaView>
   );
 };
