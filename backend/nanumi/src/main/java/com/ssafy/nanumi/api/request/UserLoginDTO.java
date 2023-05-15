@@ -7,14 +7,14 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public class UserLoginDTO {
-    private long userId;
+    private String email;
     private String password;
     private String fcmToken;
 
 
     @Builder
-    public UserLoginDTO(long userId, String password, String fcmToken) {
-        this.userId = userId;
+    public UserLoginDTO(String email, String password, String fcmToken) {
+        this.email = email;
         this.password = password;
         this.fcmToken = fcmToken;
 

@@ -62,7 +62,7 @@ public class UserService {
 
 
     public UserLoginResDTO login(UserLoginDTO userLoginDTO){
-        User user = userRepository.findById(userLoginDTO.getUserId()).orElseThrow(() -> new CustomException(NOT_FOUND_USER));
+        User user = userRepository.findByEmail(userLoginDTO.getEmail()).orElseThrow(() -> new CustomException(NOT_FOUND_USER));
         // Access Token
         String AT = jwtProvider.createAccessToken(""+user.getId(), user.getTiers());
         // Refresh Token
