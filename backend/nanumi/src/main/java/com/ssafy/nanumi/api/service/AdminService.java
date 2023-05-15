@@ -2,8 +2,10 @@ package com.ssafy.nanumi.api.service;
 
 import com.ssafy.nanumi.api.request.ReportUserDTO;
 import com.ssafy.nanumi.api.request.UserBanDTO;
+import com.ssafy.nanumi.api.response.AdminLoginResDTO;
 import com.ssafy.nanumi.api.response.ReportAllDTO;
 import com.ssafy.nanumi.api.response.ReportedUserDTO;
+import com.ssafy.nanumi.config.jwt.JwtProvider;
 import com.ssafy.nanumi.config.response.exception.CustomException;
 import com.ssafy.nanumi.db.entity.Address;
 import com.ssafy.nanumi.db.entity.Report;
@@ -35,11 +37,12 @@ public class AdminService {
     private final UserInfoRepository userInfoRepository;
     private final ReportRepository reportRepository;
     private final AddressRepository addressRepository;
+    private final JwtProvider jwtProvider;
 
     /* 관리자 로그인 */
-    public void adminLogin(String email, String password) {
+    public AdminLoginResDTO adminLogin(String email, String password) {
 
-        // TODO : OAuth, JWT, PasswordEncoder 적용해야함.
+        // TODO : OAuth
         // TODO : 예외처리 수정
 
         User adminUser = userRepository.findByEmail(email)
@@ -50,6 +53,18 @@ public class AdminService {
         if (!encoder.matches(password, adminUser.getPassword())) {
             throw new CustomException(REQUEST_ERROR);
         }
+
+        // Access Token
+        String AT = jwtProvider.createAccessToken(adminUser.getEmail(), adminUser.getTiers());
+        // Refresh Token
+        String RT = jwtProvider.createRefreshToken(adminUser.getEmail(), adminUser.getTiers());
+
+        UserInfo userInfo = userInfoRepository.findById(adminUser.getUserInfo().getId())
+                .orElseThrow(() -> new CustomException(NOT_FOUND_USER_INFO));
+        
+        userInfo.updateRefreshToken(RT);
+
+        return new AdminLoginResDTO(adminUser, AT, RT);
     }
 
     /* 신고 목록 조회 */

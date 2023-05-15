@@ -3,6 +3,7 @@ package com.ssafy.nanumi.api.controller;
 import com.ssafy.nanumi.api.request.AdminLoginDTO;
 import com.ssafy.nanumi.api.request.ReportUserDTO;
 import com.ssafy.nanumi.api.request.UserBanDTO;
+import com.ssafy.nanumi.api.response.AdminLoginResDTO;
 import com.ssafy.nanumi.api.response.ReportAllDTO;
 import com.ssafy.nanumi.api.service.AdminService;
 import com.ssafy.nanumi.config.response.CustomDataResponse;
@@ -26,13 +27,13 @@ public class AdminController {
 
     /* 관리자 로그인 */
     @PostMapping("/admin/login")
-    public CustomResponse adminLogin(@RequestBody AdminLoginDTO adminLoginDTO) {
+    public CustomDataResponse<AdminLoginResDTO> adminLogin(@RequestBody AdminLoginDTO adminLoginDTO) {
 
         // TODO : 관리자 ID 검증부분, password match해주는 로직 추가
 
-        adminService.adminLogin(adminLoginDTO.getEmail(), adminLoginDTO.getPassword());
+        AdminLoginResDTO adminLoginResDTO = adminService.adminLogin(adminLoginDTO.getEmail(), adminLoginDTO.getPassword());
 
-        return responseService.getSuccessResponse();
+        return responseService.getDataResponse(adminLoginResDTO, RESPONSE_SUCCESS);
     }
 
     /* 신고 목록 조회 */
