@@ -70,12 +70,11 @@ const ProfileUpate = ({navigation, nickname, profileUrl}) => {
         typeof updateProfileUrl !== 'string' &&
         updateProfileUrl.uri.startsWith('/storage')
           ? updateProfileUrl.name
-          : generateUniqueKey(),
+          : `${generateUniqueKey()}.jpg`,
     });
 
     try {
       const response = await requestProfileUpdate(user.userId, formData);
-      console.log(formData._parts);
       if (response.code === 200) {
         const asyncUser = await AsyncStorage.getItem('user');
         const parsedUser = JSON.parse(asyncUser);

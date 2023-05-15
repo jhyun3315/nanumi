@@ -42,8 +42,8 @@ const Profile = ({navigation}) => {
 
   const handleLogout = async () => {
     hideModal();
-    await AsyncStorage.removeItem('user');
     setUser({});
+    await AsyncStorage.removeItem('user');
     navigation.navigate('Login');
   };
 
