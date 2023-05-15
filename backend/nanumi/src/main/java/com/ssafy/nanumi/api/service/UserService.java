@@ -132,6 +132,7 @@ public class UserService {
             throw new CustomException(RESPONSE_EMAIL_EXISTED);
         }else{
             UserInfo userInfo = UserInfo.builder()
+                    .id(100L)
                     .stopDate(null)
                     .refreshToken(null)
                     .build();
@@ -141,6 +142,7 @@ public class UserService {
                 throw new CustomException(NOT_FOUND_ADDRESS_CODE);
             }else{
                 User user = User.builder()
+                        .id(100L)
                         .email(userJoinDTO.getEmail())
                         .nickname(userJoinDTO.getNickname())
                         .profileUrl(Image.DefaultImage.getValue())
