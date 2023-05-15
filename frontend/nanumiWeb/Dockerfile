@@ -19,7 +19,7 @@ FROM nginx:1.21.0-alpine
 
 RUN rm /etc/nginx/conf.d/default.conf
 
-COPY --from=builder /app/dist /usr/share/nginx/html
+COPY --from=build /app/dist /usr/share/nginx/html
 
 # Copy Nginx configuration
 COPY ./nginx.conf /etc/nginx/sites-available/nginxec2.conf
