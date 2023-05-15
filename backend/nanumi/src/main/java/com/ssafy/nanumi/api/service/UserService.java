@@ -259,4 +259,5 @@ public class UserService {
     public TokenInfoResDTO isRTValid(TokenInfoDTO request) throws Exception {
         return jwtProvider.validateRefreshToken(request);
     }
+
 }
