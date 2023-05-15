@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: com.google.api:gax-httpjson:0.104.4">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.api/gax-httpjson/0.104.4/d21b4946d68ea260ba4064060a6270ce00c9a9f8/gax-httpjson-0.104.4.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.api/gax-httpjson/0.104.4/8c137ac67bd23074667f8c8dfd68adf55d07adc/gax-httpjson-0.104.4-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
