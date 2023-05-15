@@ -1,6 +1,7 @@
 package com.ssafy.nanumi.db.repository;
 
 import com.ssafy.nanumi.db.entity.UserInfo;
+import io.lettuce.core.dynamic.annotation.Param;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -14,7 +15,7 @@ public interface UserInfoRepository extends JpaRepository<UserInfo, Long> {
             "from User u " +
             "left join u.userInfo ui " +
             "where u.id = :userId AND u.isDeleted = false")
-    Optional<Integer> findUserInfoIdByUserId(long userId);
+    Optional<Integer> findUserInfoIdByUserId(@Param("userId") long userId);
 
     //Optional<UserInfo> findById(long userinfoId);
 

@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -14,7 +15,7 @@ public class ReportAllDTO {
 
     private long id;
     private long reporterId;
-    private long reportedId;
+    private ReportedUserDTO reported;
     private String content;
     private boolean status;
     private int reportedCount;
@@ -22,10 +23,10 @@ public class ReportAllDTO {
     private String reportDate; // 신고한 날짜
 
     @Builder
-    public ReportAllDTO(long id, long reporterId, long reportedId, String content, boolean status, int reportedCount, int stopDate, String reportDate) {
+    public ReportAllDTO(long id, long reporterId, ReportedUserDTO reported, String content, boolean status, int reportedCount, int stopDate, String reportDate) {
         this.id = id;
         this.reporterId = reporterId;
-        this.reportedId = reportedId;
+        this.reported = reported;
         this.content = content;
         this.status = status;
         this.reportedCount = reportedCount;

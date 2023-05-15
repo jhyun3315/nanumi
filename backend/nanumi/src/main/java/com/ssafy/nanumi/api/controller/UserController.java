@@ -63,6 +63,11 @@ public class UserController {
         return "success";
     }
 
+    @PostMapping("/admintest")
+    public String admintest() {
+        return "admin access success";
+    }
+
     @GetMapping("/users/check/{email}")
     public CustomDataResponse emailCheck(@PathVariable("email") String email) throws MessagingException, IOException {
         // 이메일 중복 처리, 인증 처리

@@ -1,14 +1,12 @@
 package com.ssafy.nanumi.db.entity;
 
 import com.ssafy.nanumi.config.entity.BaseTimeEntity;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name="matches")
 public class Match extends BaseTimeEntity{

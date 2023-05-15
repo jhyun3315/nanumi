@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Image, Text} from 'react-native';
+import {View, Image, StyleSheet} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {COLORS, SIZES, SHADOWS} from '../../constants';
 import {ProductPrice, ProductTitle, SubInfo} from './SubInfo';
@@ -8,38 +8,18 @@ import {RectButton} from '../../ui/Button';
 const ProductCard = ({data}) => {
   const navigation = useNavigation();
   return (
-    <View
-      style={{
-        backgroundColor: COLORS.white,
-        borderRadius: SIZES.font,
-        marginBottom: SIZES.extraLarge,
-        margin: SIZES.base,
-        ...SHADOWS.dark,
-      }}>
-      <View style={{width: '100%', height: 250}}>
+    <View style={styles.container}>
+      <View style={styles.imageContainer}>
         <Image
-          source={{
-            uri: data.image,
-          }}
-          resizeMode="contain"
-          style={{
-            width: '100%',
-            height: '100%',
-            borderTopLeftRadius: SIZES.font,
-            borderTopRightRadius: SIZES.font,
-          }}
+          source={{uri: data?.productImageUrl}}
+          resizeMode="stretch"
+          style={styles.image}
         />
       </View>
       <SubInfo />
-      <View style={{width: '100%', padding: SIZES.font}}>
-        <ProductTitle title={data.name} titlSize={SIZES.large} />
-        <View
-          style={{
-            marginTop: SIZES.font,
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-          }}>
+      <View style={styles.textContainer}>
+        <ProductTitle title={data?.name} titlSize={SIZES.large} />
+        <View style={styles.priceButtonContainer}>
           <ProductPrice />
           <RectButton
             minWidth={120}
@@ -52,5 +32,35 @@ const ProductCard = ({data}) => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: COLORS.white,
+    borderRadius: SIZES.font,
+    marginBottom: SIZES.extraLarge,
+    margin: SIZES.base,
+    ...SHADOWS.dark,
+  },
+  imageContainer: {
+    width: '100%',
+    height: 230,
+  },
+  image: {
+    width: '100%',
+    height: '100%',
+    borderTopLeftRadius: SIZES.font,
+    borderTopRightRadius: SIZES.font,
+  },
+  textContainer: {
+    width: '100%',
+    padding: SIZES.font,
+  },
+  priceButtonContainer: {
+    marginTop: SIZES.font,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+});
 
 export default ProductCard;

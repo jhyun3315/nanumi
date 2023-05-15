@@ -25,7 +25,7 @@ public class ReviewController {
                                          @PathVariable("match-id") long matchId,
                                          @PathVariable("user-id") long userId) {
 
-        // TODO : writerId는 JWT에서, receiverId는 products table에서, matchId는 Pathvariable에서
+        // TODO : writerId는 JWT에서, receiverId는 products table에서
 
         long writerId = userId;
 
