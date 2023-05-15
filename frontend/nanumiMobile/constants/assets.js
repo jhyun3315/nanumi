@@ -3,12 +3,16 @@ import eth from '../assets/icons/eth.png';
 import left from '../assets/icons/left.png';
 import search from '../assets/icons/search.png';
 
-import logo from '../assets/images/logo.png';
+import fast from '../assets/icons/fast.png';
+import again from '../assets/icons/again.png';
+import good from '../assets/icons/good.png';
+import kindness from '../assets/icons/kindness.png';
+import manner from '../assets/icons/manner.png';
+import time from '../assets/icons/time.png';
 
-import person01 from '../assets/images/person01.png';
-import person02 from '../assets/images/person02.png';
-import person03 from '../assets/images/person03.png';
-import person04 from '../assets/images/person04.png';
+import bronze from '../assets/icons/bronze.png';
+import silver from '../assets/icons/silver.png';
+import gold from '../assets/icons/gold.png';
 
 export default {
   badge,
@@ -16,10 +20,14 @@ export default {
   left,
   search,
 
-  logo,
+  fast,
+  again,
+  good,
+  kindness,
+  manner,
+  time,
 
-  person01,
-  person02,
-  person03,
-  person04,
+  bronze,
+  silver,
+  gold,
 };

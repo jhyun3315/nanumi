@@ -60,13 +60,13 @@ public class UserService {
         UserInfo userInfo =userInfoRepository.findById(user.getUserInfo().getId()).orElseThrow(() -> new CustomException(NOT_FOUND_USER_INFO));
         userInfo.updateRefreshToken(RT);
 
+        if(userInfo.getVisitCount()==0) userInfo.updateVisitCount(userInfo.getVisitCount()+1);
+
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         // 입력받은 비밀번호와 저장된 비밀번호 비교
         if(encoder.matches(userLoginDTO.getPassword(), user.getPassword())){
 
-            if(userInfo.getFcmToken()==null) {
-                userInfo.updateFcmToken(userLoginDTO.getFcmToken());
-            }
+            user.updateFcmToken(userLoginDTO.getFcmToken());
 
             LocalDateTime now = LocalDateTime.now();
             LocalDateTime modifiedDate = user.getUpdateDate();
@@ -86,30 +86,19 @@ public class UserService {
                 userInfo.updateVisitCount(present_visit+1);
 
                 switch (tier) {
-                    case "브론즈" :
+                    case "새싹" :
                         if(present_visit>=2 && given_count>=2 && give_count>=2) {
-                            user.setRoles(Collections.singletonList(Authority.builder().name("ROLE_실버").build()));
-                            userInfo.updateTier("실버");
+                            user.setRoles(Collections.singletonList(Authority.builder().name("ROLE_나무").build()));
+                            userInfo.updateTier("나무");
                         }
                         break;
-                    case "실버" :
-                        if(present_visit>=10 && give_count>=10) {
-                            user.setRoles(Collections.singletonList(Authority.builder().name("ROLE_골드").build()));
-                            userInfo.updateTier("골드");
+                    case "나무" :
+                        if(present_visit>=10 && give_count>=10 && temperature>=40) {
+                            user.setRoles(Collections.singletonList(Authority.builder().name("ROLE_나누미나무").build()));
+                            userInfo.updateTier("나누미나무");
                         }
                         break;
-                    case "골드" :
-                        if(present_visit>=50 && give_count>=50) {
-                            user.setRoles(Collections.singletonList(Authority.builder().name("ROLE_플레티넘").build()));
-                            userInfo.updateTier("플레티넘");
-                        }
-                        break;
-                    case "플레티넘" :
-                        if(present_visit>=50 && give_count>=50 && temperature>=40) {
-                            user.setRoles(Collections.singletonList(Authority.builder().name("ROLE_다이아").build()));
-                            userInfo.updateTier("다이아");
-                        }
-                        break;
+
                     default :
                 }
             }
@@ -139,7 +128,7 @@ public class UserService {
             UserInfo userInfoSaved  = userInfoRepository.save(userInfo);
             if(addressRepository.findById(userJoinDTO.getAddressId()).isEmpty()){
                 throw new CustomException(NOT_FOUND_ADDRESS_CODE);
-            }else{
+            }else {
                 User user = User.builder()
                         .email(userJoinDTO.getEmail())
                         .nickname(userJoinDTO.getNickname())
@@ -151,13 +140,18 @@ public class UserService {
                         .build();
 
                 // Security 관리자 권한 추가
-                if(userJoinDTO.getEmail().equals("admin@nanumi.com"))
+                if (userJoinDTO.getEmail().equals("admin@nanumi.com")) {
                     user.setRoles(Collections.singletonList(Authority.builder().name("ROLE_관리자").build()));
+                    userRepository.save(user);
+                    userInfo.updateTier("관리자");
+                }
                 else {
                     // Security 일반사용자 권한 추가
-                    user.setRoles(Collections.singletonList(Authority.builder().name("ROLE_브론즈").build()));
+                    user.setRoles(Collections.singletonList(Authority.builder().name("ROLE_새싹").build()));
+                    userRepository.save(user);
                 }
-                userRepository.save(user);
+
+
             }
         }
     }
@@ -261,4 +255,5 @@ public class UserService {
     public TokenInfoResDTO isRTValid(TokenInfoDTO request) throws Exception {
         return jwtProvider.validateRefreshToken(request);
     }
+
 }

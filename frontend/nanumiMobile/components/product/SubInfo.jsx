@@ -1,11 +1,17 @@
 import React from 'react';
-import {View, Image, Text} from 'react-native';
+import {View, Image, Text, Pressable} from 'react-native';
 import {SIZES, COLORS, SHADOWS, assets, FONTS} from '../../constants';
+import {useNavigation} from '@react-navigation/native';
 
 export const ProductTitle = ({title, titleSize, subTitle, subTitleSize}) => {
   return (
     <View>
-      <Text style={{fontFamily: FONTS.medium, fontSize: titleSize}}>
+      <Text
+        style={{
+          fontFamily: FONTS.medium,
+          fontSize: titleSize,
+          color: COLORS.primary,
+        }}>
         {title}
       </Text>
       <Text
@@ -53,16 +59,22 @@ export const ImageCmp = ({imgUrl}) => {
         width: 48,
         height: 48,
         marginRight: SIZES.small,
+        borderRadius: SIZES.extraLarge,
       }}
     />
   );
 };
 
-export const People = () => {
+export const People = ({data}) => {
+  const navigation = useNavigation();
   return (
-    <View style={{flexDirection: 'row'}}>
-      <ImageCmp imgUrl={assets.person01} />
-    </View>
+    <Pressable
+      style={{flexDirection: 'row'}}
+      onPress={() =>
+        navigation.navigate('OtherProfile', {userId: data?.userId})
+      }>
+      <ImageCmp imgUrl={{uri: data?.userProfileUrl}} />
+    </Pressable>
   );
 };
 
@@ -93,13 +105,13 @@ export const EndDate = () => {
           fontSize: SIZES.medium,
           color: COLORS.primary,
         }}>
-        19:00
+        16:00
       </Text>
     </View>
   );
 };
 
-export const SubInfo = () => {
+export const SubInfo = ({isMatching, data}) => {
   return (
     <View
       style={{
@@ -109,8 +121,8 @@ export const SubInfo = () => {
         flexDirection: 'row',
         justifyContent: 'space-between',
       }}>
-      <People />
-      <EndDate />
+      <People data={data} />
+      {!isMatching && <EndDate />}
     </View>
   );
 };
