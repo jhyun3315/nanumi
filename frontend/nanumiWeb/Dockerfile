@@ -22,13 +22,13 @@ ADD ./build ./dist
 
 # Install Nginx
 FROM nginx:1.21.0-alpine
-COPY --from=build /app/build /usr/share/nginx/html
+# COPY --from=build /app/build /usr/share/nginx/html
 
 # nginx 의 default.conf 를 삭제
 RUN rm /etc/nginx/conf.d/default.conf
 
 # host pc 의 nginx.conf 를 아래 경로에 복사
-COPY nginx.conf /etc/nginx/sites-available/nginxec2.conf
+COPY ./nginx.conf /etc/nginx/sites-available/nginxec2.conf
 
 
 # Expose port 80
