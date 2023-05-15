@@ -59,9 +59,13 @@ public class User extends BaseTimeEntity {
     @OneToMany(mappedBy = "user")
     private List<Product> products = new ArrayList<>();
 
+    @Column(name = "fcm_token", columnDefinition = "VARCHAR(255)")
+    private String fcmToken;
+
     public void delete(){
         this.isDeleted = true;
     }
+
     @Builder
     public User(long id, String email, String nickname, String profileUrl, String password, boolean isDeleted, Address address, LoginProvider loginProvider, UserInfo userInfo) {
         this.id = id;
