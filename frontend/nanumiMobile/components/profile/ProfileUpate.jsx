@@ -33,7 +33,7 @@ const ProfileUpate = ({navigation, nickname, profileUrl}) => {
         maxSelectedAssets: 1,
         isCrop: false,
         usedCameraButton: false,
-        isPreView: false,
+        isPreview: false,
       });
       const path = response.map(image => {
         const nameParts = image.fileName.split('.');
@@ -75,6 +75,7 @@ const ProfileUpate = ({navigation, nickname, profileUrl}) => {
 
     try {
       const response = await requestProfileUpdate(user.userId, formData);
+      console.log(formData._parts);
       if (response.code === 200) {
         const asyncUser = await AsyncStorage.getItem('user');
         const parsedUser = JSON.parse(asyncUser);
