@@ -89,8 +89,8 @@ const PostCreateForm = () => {
         navigation.navigate('BottomTabs', {screen: 'Home'});
       } else if (response.code === 413) {
         showErrorAlert('파일의 크기가 너무 큽니다.', navigation);
-      } else {
-        showErrorAlert('알 수 없는 에러 발생', navigation);
+      } else if (response.code === 400) {
+        showErrorAlert(response.message, navigation);
       }
     } catch (error) {
       showErrorAlert('알 수 없는 에러 발생', navigation);
