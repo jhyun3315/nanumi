@@ -17,7 +17,7 @@ const ProductList = ({isSearch}) => {
 
   const {data, error, isLoading, fetchNextPage, hasNextPage, refetch} =
     useInfiniteQuery(
-      [user?.userId],
+      ['allProduct'],
       ({pageParam = 0}) => requestGetAllProduct(user?.userId, pageParam),
       {
         getNextPageParam: (lastPage, pages) => {
@@ -32,7 +32,6 @@ const ProductList = ({isSearch}) => {
           }
           return pages ? pages?.length : undefined;
         },
-        enabled: Object.keys(user).length > 0,
       },
     );
 
