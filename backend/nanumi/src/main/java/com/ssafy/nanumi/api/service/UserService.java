@@ -128,7 +128,7 @@ public class UserService {
             UserInfo userInfoSaved  = userInfoRepository.save(userInfo);
             if(addressRepository.findById(userJoinDTO.getAddressId()).isEmpty()){
                 throw new CustomException(NOT_FOUND_ADDRESS_CODE);
-            }else{
+            }else {
                 User user = User.builder()
                         .email(userJoinDTO.getEmail())
                         .nickname(userJoinDTO.getNickname())
@@ -140,14 +140,18 @@ public class UserService {
                         .build();
 
                 // Security 관리자 권한 추가
-                if(userJoinDTO.getEmail().equals("admin@nanumi.com"))
+                if (userJoinDTO.getEmail().equals("admin@nanumi.com")) {
                     user.setRoles(Collections.singletonList(Authority.builder().name("ROLE_관리자").build()));
+                    userRepository.save(user);
+                    userInfo.updateTier("관리자");
+                }
                 else {
                     // Security 일반사용자 권한 추가
                     user.setRoles(Collections.singletonList(Authority.builder().name("ROLE_새싹").build()));
+                    userRepository.save(user);
                 }
 
-                userRepository.save(user);
+
             }
         }
     }
