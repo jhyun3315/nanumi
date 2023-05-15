@@ -22,4 +22,6 @@ public class MatchController {
     public CustomDataResponse getMatchList(@PathVariable("product-id") long productId, @PathVariable("user-id") long userId){
         return responseService.getDataResponse(matchService.getMatchList(productId, userId),RESPONSE_SUCCESS);
     }
+
+   
 }
