@@ -19,6 +19,7 @@ public enum CustomExceptionStatus {
     NOT_FOUND_ADDRESS_CODE(false, 400, "해당 주소가 존재하지 않습니다."),
     CAN_NOT_UPDATE_ADDRESS(false, 400, "해당 주소로 수정할수 없습니다."),
     NOT_FOUND_USER_INFO(false, 400, "해당 유저 정보가 존재하지 않습니다."),
+    NOT_FOUND_FCMTOKEN(false, 400, "FCM TOKEN이 존재하지 않습니다."),
     NOT_FOUND_PRODUCT(false, 404, "상품을 찾을 수 없습니다." ),
     NOT_FOUND_CATEGORY(false, 404, "카테고리를 찾을 수 없습니다."),
     NOT_FOUND_ADDRESS(false, 404, "주소를 찾을 수 없습니다."),

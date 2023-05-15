@@ -65,6 +65,7 @@ public class UserService {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         // 입력받은 비밀번호와 저장된 비밀번호 비교
         if(encoder.matches(userLoginDTO.getPassword(), user.getPassword())){
+            if(userLoginDTO.getFcmToken()==null) throw new CustomException(NOT_FOUND_FCMTOKEN);
 
             user.updateFcmToken(userLoginDTO.getFcmToken());
 
