@@ -1,4 +1,4 @@
-FROM node:18.16.0 as build
+FROM node:18.16.0 as builder
 
 # set working directory
 WORKDIR /app
@@ -16,10 +16,13 @@ RUN npm run build
 
 # Install Nginx
 FROM nginx:1.21.0-alpine
-# COPY --from=build /app/dist /usr/share/nginx/html
+
+RUN rm /etc/nginx/conf.d/default.conf
+
+COPY --from=build /app/dist /usr/share/nginx/html
 
 # Copy Nginx configuration
-COPY nginx.conf /etc/nginx/sites-available/nginxec2.conf
+COPY ./nginx.conf /etc/nginx/sites-available/nginxec2.conf
 
 # Expose port 80
 EXPOSE 80
