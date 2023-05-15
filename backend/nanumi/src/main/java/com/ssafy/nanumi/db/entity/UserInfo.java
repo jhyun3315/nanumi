@@ -119,7 +119,11 @@ public class UserInfo {
     public void updateTier(String tier) { this.tier = tier; }
 
     public void updateTemperature(double temperature) {
-        this.temperature += temperature;
+        if (this.temperature + temperature <= 0) {
+            this.temperature = 0;
+        } else {
+            this.temperature += temperature;
+        } 
     }
 
     public void updateRefreshToken(String refreshToken) { this.refreshToken = refreshToken; }

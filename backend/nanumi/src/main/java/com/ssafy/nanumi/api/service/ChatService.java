@@ -186,6 +186,19 @@ public class ChatService {
             default:
         }
 
+
+        /* 거래 완료 로직
+        - 거래는 1:1 로 완료가 되기에, 해당 상품 매칭에서 is_matched 를 실거래 제외하고 0으로 초기화
+        */
+       List<Match> matchList = matchRepository.findAllByProductId(productId);
+        for (Match match : matchList){
+            if (match.getUser().getId() != givenerId) {
+                match.setMatching(false);
+            }else {
+                match.setMatching(true);
+            }
+        }
+
         return responseService.getSuccessResponse();
     }
 }

@@ -27,12 +27,28 @@ public interface UserRepository extends JpaRepository<User,Long> {
             "and p.isMatched = true ")
     Page<ProductAllDTO> getAllReceiveProduct(@Param("userId") long userId, Pageable pageable);
 
+    /* 나눔한 상품 count */
+    @Query(value = "select count (p) " +
+            "from Product p " +
+            "where p.user.id = :userId " +
+            "and p.isDeleted = false " +
+            "and p.isMatched = true ")
+    int countAllReceiveProduct(@Param("userId") long userId);
+
     @Query(value = "select p " +
             "from Product p " +
             "where p.user.id = :userId " +
             "and p.isDeleted = false "+
             "and p.isMatched = false ")
     Page<ProductAllDTO> getAllMatchProduct(@Param("userId") long userId, Pageable pageable);
+
+    /* 나눔 중인 상품 count */
+    @Query(value = "select count (p) " +
+            "from Product p " +
+            "where p.user.id = :userId " +
+            "and p.isDeleted = false "+
+            "and p.isMatched = false ")
+    int countAllMatchProduct(@Param("userId") long userId);
 
     @Query(value = "select p " +
             "from Product p " +
@@ -47,7 +63,17 @@ public interface UserRepository extends JpaRepository<User,Long> {
             "from Product p " +
             "left join p.Matches m " +
             "where m.user.id = :userId " +
+            "and p.isMatched = true " +
             "and m.isMatching = true "
     )
     Page<ProductAllDTO> getAllGivenProduct(@Param("userId") long userId, Pageable pageable);
+
+    /* 나눔 받은 상품 count */
+    @Query(value = "select count (p) " +
+            "from Product p " +
+            "left join p.Matches m " +
+            "where m.user.id = :userId " +
+            "and m.isMatching = true "
+    )
+    int countAllGivenProduct(@Param("userId") long userId);
 }
