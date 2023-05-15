@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: org.elasticsearch.client:elasticsearch-rest-client:7.17.9">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.elasticsearch.client/elasticsearch-rest-client/7.17.9/1207e86b0a22cdc67c37c23ff596aadac2dac48b/elasticsearch-rest-client-7.17.9.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.elasticsearch.client/elasticsearch-rest-client/7.17.9/87e680fc169f8f0eef6f9899239dfab5504edef2/elasticsearch-rest-client-7.17.9-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

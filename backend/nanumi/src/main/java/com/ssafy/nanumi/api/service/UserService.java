@@ -64,11 +64,9 @@ public class UserService {
         // 입력받은 비밀번호와 저장된 비밀번호 비교
         if(encoder.matches(userLoginDTO.getPassword(), user.getPassword())){
 
-
-            //TODO 우진 FCM
-//            if(userInfo.getFcmToken()==null) {
-//                userInfo.updateFcmToken(userLoginDTO.getFcmToken());
-//            }
+            if(userInfo.getFcmToken()==null) {
+                userInfo.updateFcmToken(userLoginDTO.getFcmToken());
+            }
 
             LocalDateTime now = LocalDateTime.now();
             LocalDateTime modifiedDate = user.getUpdateDate();

@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: org.apache.lucene:lucene-suggest:8.11.1">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-suggest/8.11.1/60bbaf1907cd3ec583df6cd0a86d62c6b25222f8/lucene-suggest-8.11.1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-suggest/8.11.1/4e7ae72ec9bdad8114f3af6b431dcf33ba36a6e3/lucene-suggest-8.11.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
