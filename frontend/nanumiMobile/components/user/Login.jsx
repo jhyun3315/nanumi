@@ -36,7 +36,9 @@ const Login = () => {
       fcmToken: token,
     };
 
+    console.log('data', data);
     const response = await requestLogin(data);
+    console.log(response);
     if (response.code === 200) {
       setUser(response.result);
       await AsyncStorage.setItem('user', JSON.stringify(response.result));
