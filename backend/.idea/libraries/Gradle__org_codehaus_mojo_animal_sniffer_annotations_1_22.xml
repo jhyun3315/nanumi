@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: org.codehaus.mojo:animal-sniffer-annotations:1.22">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.codehaus.mojo/animal-sniffer-annotations/1.22/911f763493163e03d750b369cc162085db09b46b/animal-sniffer-annotations-1.22.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.codehaus.mojo/animal-sniffer-annotations/1.22/c4be5e2fcf686edf71916fed2e9fe2faa136341b/animal-sniffer-annotations-1.22-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

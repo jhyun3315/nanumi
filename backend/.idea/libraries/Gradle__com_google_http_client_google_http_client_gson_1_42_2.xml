@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: com.google.http-client:google-http-client-gson:1.42.2">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.http-client/google-http-client-gson/1.42.2/863fbfbdb35c203c43cefd9e3cc1e3a7c8e9f51e/google-http-client-gson-1.42.2.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.http-client/google-http-client-gson/1.42.2/d8f36398363528d8e8911245518ba317d16a77d3/google-http-client-gson-1.42.2-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
