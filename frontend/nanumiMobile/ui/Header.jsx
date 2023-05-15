@@ -1,14 +1,32 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, Text, Image, StyleSheet, Pressable} from 'react-native';
 import Icon from 'react-native-ionicons';
 import {COLORS, FONTS, SIZES, assets} from '../constants';
 import {useNavigation} from '@react-navigation/native';
 import {useRecoilState} from 'recoil';
 import {userState} from '../state/user';
+import {requestGetUserProfile} from '../api/user';
 
 const Header = () => {
   const navigation = useNavigation();
   const [user] = useRecoilState(userState);
+
+  const [tier, setTier] = useState(user?.tier);
+
+  const handleGetUserProfile = async () => {
+    const response = await requestGetUserProfile(user.userId);
+    setTier(response.result.tier);
+  };
+
+  useEffect(() => {
+    // 타이머 생성
+    const timer = setInterval(() => {
+      handleGetUserProfile();
+    }, 60 * 60 * 1000); // 30분(60초 * 1000밀리초)
+
+    // 타이머 clear 함수 반환
+    return () => clearInterval(timer);
+  }, []);
 
   return (
     <View style={styles.header}>
@@ -41,7 +59,13 @@ const Header = () => {
             />
             {/* tier 있으면 tier image 들어갈곳 */}
             <Image
-              source={assets.badge}
+              source={
+                tier === '새싹'
+                  ? assets.bronze
+                  : tier === '나무'
+                  ? assets.silver
+                  : assets.gold
+              }
               resizeMode="contain"
               style={styles.badgeImage}
             />
@@ -92,8 +116,8 @@ const styles = StyleSheet.create({
 
   badgeImage: {
     position: 'absolute',
-    width: 15,
-    height: 15,
+    width: 12,
+    height: 12,
     bottom: -1,
     right: -1,
   },

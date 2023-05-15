@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -14,7 +14,11 @@ import {COLORS, FONTS, SIZES, SHADOWS, assets} from '../../constants';
 import {RectButton} from '../../ui/Button';
 import {useModal} from '../../hooks/useModal';
 import {useQuery} from '@tanstack/react-query';
-import {requestDeleteUser, requestGetProfile} from '../../api/user';
+import {
+  requestDeleteUser,
+  requestGetProfile,
+  requestGetUserProfile,
+} from '../../api/user';
 import {useRecoilState} from 'recoil';
 import {userState} from './../../state/user';
 import {Fallback} from '../../ui/Fallback';
@@ -28,10 +32,18 @@ const {width} = Dimensions.get('window');
 
 const Profile = ({navigation}) => {
   const {showModal, hideModal} = useModal();
-  const [user] = useRecoilState(userState);
+  const [user, setUser] = useRecoilState(userState);
+  const [tier, setTier] = useState(user?.tier);
+
+  const handleGetUserProfile = async () => {
+    const response = await requestGetUserProfile(user.userId);
+    setTier(response.result.tier);
+  };
 
   const handleLogout = async () => {
     hideModal();
+    setUser({});
+    await AsyncStorage.removeItem('user');
     navigation.navigate('Login');
   };
 
@@ -46,7 +58,7 @@ const Profile = ({navigation}) => {
   const handleDeleteUser = async () => {
     const response = await requestDeleteUser(user.userId);
     if (response.code === 200) {
-      Alert.alert('성공', '탈퇴되었습니다.', [
+      Alert.alert('성공', '탈퇴되었습니다 .', [
         {
           text: '확인',
           onPress: async () => {
@@ -87,11 +99,22 @@ const Profile = ({navigation}) => {
     });
   };
 
+  useEffect(() => {
+    // 타이머 생성
+    const timer = setInterval(() => {
+      handleGetUserProfile();
+    }, 60 * 60 * 1000); // 30분(60초 * 1000밀리초)
+
+    // 타이머 clear 함수 반환
+    return () => clearInterval(timer);
+  }, []);
+
   useFocusEffect(
     useCallback(() => {
       refetch();
     }, []),
   );
+
   if (error) return <ErrorModal handlePress={refetch} />;
   if (isLoading) return <Fallback />;
 
@@ -112,8 +135,15 @@ const Profile = ({navigation}) => {
             />
             <View style={styles.tier}>
               <Image
-                source={assets.badge}
-                style={{width: SIZES.extraLarge, height: SIZES.extraLarge}}
+                source={
+                  tier === '새싹'
+                    ? assets.bronze
+                    : tier === '나무'
+                    ? assets.silver
+                    : assets.gold
+                }
+                resizeMode="contain"
+                style={styles.badgeImage}
               />
             </View>
           </View>
@@ -293,6 +323,10 @@ const styles = StyleSheet.create({
   nickname: {
     fontFamily: FONTS.bold,
     fontSize: SIZES.large,
+  },
+  badgeImage: {
+    width: 24,
+    height: 24,
   },
   statusContainer: {
     flexDirection: 'row',

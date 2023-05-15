@@ -83,3 +83,8 @@ export const requestDeleteUser = async userId => {
   );
   return response.data;
 };
+
+export const requestGetUserProfile = async userId => {
+  const response = await axiosInstance.get(`${API_END_POINT}/users/${userId}`);
+  return response.data;
+};

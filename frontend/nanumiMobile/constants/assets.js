@@ -10,6 +10,10 @@ import kindness from '../assets/icons/kindness.png';
 import manner from '../assets/icons/manner.png';
 import time from '../assets/icons/time.png';
 
+import bronze from '../assets/icons/bronze.png';
+import silver from '../assets/icons/silver.png';
+import gold from '../assets/icons/gold.png';
+
 export default {
   badge,
   eth,
@@ -22,4 +26,8 @@ export default {
   kindness,
   manner,
   time,
+
+  bronze,
+  silver,
+  gold,
 };

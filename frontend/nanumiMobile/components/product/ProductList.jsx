@@ -32,8 +32,10 @@ const ProductList = ({isSearch}) => {
           }
           return pages ? pages?.length : undefined;
         },
+        enabled: !!user?.userId,
       },
     );
+
   const handleLoadMore = () => {
     if (!isLoading && hasNextPage) fetchNextPage();
   };

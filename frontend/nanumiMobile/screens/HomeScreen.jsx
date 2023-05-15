@@ -1,11 +1,11 @@
-import React, {useState, useEffect} from 'react';
-import Home from '../components/home/Home';
+import React, {useState, useEffect, useCallback} from 'react';
 import {BackHandler, ToastAndroid} from 'react-native';
+import Home from '../components/home/Home';
 
 const HomeScreen = ({navigation}) => {
   const [exitApp, setExitApp] = useState(false);
 
-  const handleBackPress = () => {
+  const handleBackPress = useCallback(() => {
     if (exitApp) {
       BackHandler.exitApp();
     } else {
@@ -14,7 +14,7 @@ const HomeScreen = ({navigation}) => {
     }
 
     return true;
-  };
+  }, [exitApp]);
 
   useEffect(() => {
     const backHandler = BackHandler.addEventListener(
@@ -25,7 +25,7 @@ const HomeScreen = ({navigation}) => {
     return () => {
       backHandler.remove();
     };
-  }, [exitApp]);
+  }, [handleBackPress]);
 
   useEffect(() => {
     let timerId;

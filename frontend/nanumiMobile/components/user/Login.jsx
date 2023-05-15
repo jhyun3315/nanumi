@@ -39,15 +39,6 @@ const Login = () => {
     }
   };
 
-  const handleInit = async () => {
-    await AsyncStorage.removeItem('user');
-    setUser({});
-  };
-
-  useEffect(() => {
-    handleInit();
-  }, []);
-
   return (
     <SafeAreaView>
       <View
