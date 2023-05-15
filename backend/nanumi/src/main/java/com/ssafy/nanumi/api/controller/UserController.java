@@ -1,5 +1,6 @@
 package com.ssafy.nanumi.api.controller;
 
+import com.google.api.Http;
 import com.ssafy.nanumi.api.request.AddressDTO;
 import com.ssafy.nanumi.api.request.TokenInfoDTO;
 import com.ssafy.nanumi.api.request.UserJoinDTO;
@@ -24,6 +25,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import javax.mail.MessagingException;
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import static com.ssafy.nanumi.config.response.exception.CustomSuccessStatus.*;
 
@@ -65,16 +67,23 @@ public class UserController {
         return responseService.getDataResponse(emailCheckResDTO, RESPONSE_SUCCESS);
     }
 
+    @GetMapping("/users/token")
+    public long userByAT(@RequestHeader("Authorization") String accessToken) {
+        long userId = userService.userByAT(accessToken);
+        return userId;
+    }
+
     /*사용자 장소 정보 등록 수정*/
     @PatchMapping("/users/address/{user-id}")
-    public CustomResponse saveUserAddress(@PathVariable("user-id")long userId, @RequestBody AddressDTO addressDTO){
-
+    public CustomResponse saveUserAddress( @RequestHeader("Authorization") String accessToken, @RequestBody AddressDTO addressDTO){
+        long userId = userService.userByAT(accessToken);
         return responseService.getDataResponse(userService.updateUserAddress(addressDTO.getAddressId(),userId), RESPONSE_SUCCESS);
     }
 
     /*사용자 주소 조회*/
     @GetMapping("/users/address/{user-id}")
-    public CustomDataResponse findUserAddress(@PathVariable("user-id")long userId){
+    public CustomDataResponse findUserAddress( @RequestHeader("Authorization") String accessToken){
+        long userId = userService.userByAT(accessToken);
        AddressResDTO addressResDTO =  userService.getUserAddress(userId);
        return responseService.getDataResponse(addressResDTO, RESPONSE_SUCCESS);
     }
@@ -82,16 +91,18 @@ public class UserController {
 
     /* 회원 정보 조회 */
     @GetMapping("/users/{user-id}")
-    public CustomDataResponse<UserDetailDTO> findDetailUser(@PathVariable("user-id") Long userId) {
+    public CustomDataResponse<UserDetailDTO> findDetailUser( @RequestHeader("Authorization") String accessToken) {
+        long userId = userService.userByAT(accessToken);
         return responseService.getDataResponse(userService.findDetailUser(userId), RESPONSE_SUCCESS);
     }
 
 
     /* 회원 정보 수정 */
     @PatchMapping("/users/{user-id}")
-    public CustomDataResponse<UserSimpleDTO> updateUser(@PathVariable("user-id") Long userId,
+    public CustomDataResponse<UserSimpleDTO> updateUser( @RequestHeader("Authorization") String accessToken,
                                      @RequestParam("nickname") String nickname,
                                      @RequestParam("profileUrl") MultipartFile profileUrl) throws IOException {
+        long userId = userService.userByAT(accessToken);
         User user = userRepository.findById(userId)
                 .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_USER));
         return responseService.getDataResponse(userService.updateUser(user, nickname, profileUrl), RESPONSE_SUCCESS);
@@ -99,7 +110,8 @@ public class UserController {
 
     /* 회원 정보 탈퇴 */
     @DeleteMapping("/users/{user-id}")
-    public CustomResponse deleteUser(@PathVariable("user-id") Long userId){
+    public CustomResponse deleteUser( @RequestHeader("Authorization") String accessToken){
+        long userId = userService.userByAT(accessToken);
         User user = userRepository.findById(userId)
                 .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_USER));
         userService.deleteUser(user);
@@ -108,7 +120,8 @@ public class UserController {
 
     /* 거래 후기 조회 (남이 나에게) */
     @GetMapping("/users/reviews/{user-id}")
-    public CustomDataResponse<Page<ReviewReadDTO>> getAllReview(@PathVariable("user-id") Long userId, @RequestParam("page") Integer page){
+    public CustomDataResponse<Page<ReviewReadDTO>> getAllReview( @RequestHeader("Authorization") String accessToken, @RequestParam("page") Integer page){
+        long userId = userService.userByAT(accessToken);
         User user = userRepository.findById(userId)
                 .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_USER));
         PageRequest pageRequest = PageRequest.of(page, 6);
@@ -117,7 +130,8 @@ public class UserController {
 
     /* 나눔한 상품 목록 조회 (모든 거래) */
     @GetMapping("/users/products/{user-id}")
-    public CustomDataResponse<Page<ProductAllDTO>> getAllReceiveProduct(@PathVariable("user-id") Long userId, @RequestParam("page") Integer page){
+    public CustomDataResponse<Page<ProductAllDTO>> getAllReceiveProduct( @RequestHeader("Authorization") String accessToken, @RequestParam("page") Integer page){
+        long userId = userService.userByAT(accessToken);
         User user = userRepository.findById(userId)
                 .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_USER));
         PageRequest pageRequest = PageRequest.of(page, 6);
@@ -126,7 +140,8 @@ public class UserController {
 
     /* 매칭 목록 (현재 진행중 "나눔" 목록) */
     @GetMapping("/users/matches/{user-id}")
-    public CustomDataResponse<Page<ProductAllDTO>> getMatchProduct(@PathVariable("user-id") Long userId, @RequestParam("page") Integer page){
+    public CustomDataResponse<Page<ProductAllDTO>> getMatchProduct( @RequestHeader("Authorization") String accessToken, @RequestParam("page") Integer page){
+        long userId = userService.userByAT(accessToken);
         User user = userRepository.findById(userId)
                 .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_USER));
 
@@ -141,7 +156,8 @@ public class UserController {
 
     /* 매칭 중인 상품 목록 조회 */
     @GetMapping("/users/matching/{user-id}")
-    public CustomDataResponse<Page<ProductAllDTO>> getMatchingeProduct(@PathVariable("user-id") Long userId, @RequestParam("page") Integer page ){
+    public CustomDataResponse<Page<ProductAllDTO>> getMatchingeProduct( @RequestHeader("Authorization") String accessToken, @RequestParam("page") Integer page ){
+        long userId = userService.userByAT(accessToken);
         User user = userRepository.findById(userId)
                 .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_USER));
 
@@ -156,7 +172,8 @@ public class UserController {
 
     /* 나눔 받은 상품 목록 조회 */
     @GetMapping("/users/given/{user-id}")
-    public CustomDataResponse<Page<ProductAllDTO>> getGivenProduct(@PathVariable("user-id") Long userId, @RequestParam("page") Integer page){
+    public CustomDataResponse<Page<ProductAllDTO>> getGivenProduct( @RequestHeader("Authorization") String accessToken, @RequestParam("page") Integer page){
+        long userId = userService.userByAT(accessToken);
         User user = userRepository.findById(userId)
                 .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_USER));
 

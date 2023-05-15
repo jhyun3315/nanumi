@@ -6,6 +6,7 @@ import com.ssafy.nanumi.api.response.ProductAllDTO;
 import com.ssafy.nanumi.api.response.ProductDetailDTO;
 import com.ssafy.nanumi.api.service.NanumService;
 import com.ssafy.nanumi.api.service.ProductService;
+import com.ssafy.nanumi.api.service.UserService;
 import com.ssafy.nanumi.common.SearchPageReq;
 import com.ssafy.nanumi.config.response.CustomDataResponse;
 import com.ssafy.nanumi.config.response.CustomResponse;
@@ -35,27 +36,29 @@ public class ProductController {
     private final UserRepository userRepository;
     private final ResponseService responseService;
     private final NanumService nanumService;
+    private final UserService userService;
 
     /* 검색어가 없는 경우 전체 조회 */
     @GetMapping("/search/{page}/{user-id}")
-    public CustomDataResponse<Page<ProductAllDTO>> search(@PathVariable("page")int page, @PathVariable("user-id") long userId){
+    public CustomDataResponse<Page<ProductAllDTO>> search(@PathVariable("page")int page, @RequestHeader("Authorization") String accessToken){
         SearchPageReq searchPageReq = new SearchPageReq(page);
         PageRequest pageRequest = PageRequest.of(searchPageReq.getPageIndex(),
                 searchPageReq.getPageSizeForProduct(),
                 Sort.by(searchPageReq.getSortStdForProduct()).descending()
         );
-
+        long userId = userService.userByAT(accessToken);
         return responseService.getDataResponse(productService.findProductAll(userId, pageRequest), RESPONSE_SUCCESS);
     }
 
     /* 제목으로 상품 검색 */
     @GetMapping("/search/{words}/{page}/{user-id}")
-    public CustomDataResponse<Page<ProductAllDTO>> search(@PathVariable ("words") String words, @PathVariable("page")int page, @PathVariable("user-id") long userId){
+    public CustomDataResponse<Page<ProductAllDTO>> search(@PathVariable ("words") String words, @PathVariable("page")int page, @RequestHeader("Authorization") String accessToken){
         SearchPageReq searchPageReq = new SearchPageReq(page);
         PageRequest pageRequest = PageRequest.of(searchPageReq.getPageIndex(),
                 searchPageReq.getPageSizeForProduct(),
                 Sort.by(searchPageReq.getSortStdForProduct()).descending()
         );
+        long userId = userService.userByAT(accessToken);
         return responseService.getDataResponse(productService.searchProductByWords(userId, words, pageRequest), RESPONSE_SUCCESS);
     }
 
@@ -78,22 +81,24 @@ public class ProductController {
 
     /* 카테고리별 조회 */
     @GetMapping("/categories/{category-id}/{user-id}")
-    public CustomDataResponse<Page<ProductAllDTO>> getCateProductAll(@PathVariable("user-id") long userId, @PathVariable("category-id") long categoryId, @RequestParam("page") Integer page){
+    public CustomDataResponse<Page<ProductAllDTO>> getCateProductAll( @RequestHeader("Authorization") String accessToken, @PathVariable("category-id") long categoryId, @RequestParam("page") Integer page){
         SearchPageReq searchPageReq = new SearchPageReq(page);
         PageRequest pageRequest = PageRequest.of(searchPageReq.getPageIndex(),
                 searchPageReq.getPageSizeForProduct(),
                 Sort.by(searchPageReq.getSortStdForProduct()).descending()
         );
+        long userId = userService.userByAT(accessToken);
         return responseService.getDataResponse(productService.findCateProductAll(categoryId, userId, pageRequest), RESPONSE_SUCCESS);
     }
 
     /* 상품 등록 */
     @PostMapping(path = "/{user-id}")
-    public CustomResponse createProduct(@PathVariable("user-id") long userId,
+    public CustomResponse createProduct( @RequestHeader("Authorization") String accessToken,
                                         @RequestParam("images") MultipartFile[] images,
                                         @RequestParam("name") String name,
                                         @RequestParam("content") String content,
                                         @RequestParam("categoryId") Long categoryId) throws IOException {
+        long userId = userService.userByAT(accessToken);
         User user = userRepository.findById(userId)
                 .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_USER));
         productService.createProduct(images,name,content,categoryId,user);
@@ -118,7 +123,8 @@ public class ProductController {
     }
     /* 상품 신청 - 매칭 */
     @GetMapping("/application/{product-id}/{user-id}")
-    public CustomDataResponse<MatchSuccessDto> applicationProduct(@PathVariable("user-id") long userId, @PathVariable("product-id") long productId) {
+    public CustomDataResponse<MatchSuccessDto> applicationProduct( @RequestHeader("Authorization") String accessToken, @PathVariable("product-id") long productId) {
+        long userId = userService.userByAT(accessToken);
         User user = userRepository.findById(userId)
                 .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_USER));
         return responseService.getDataResponse(nanumService.registerNanum(productId, user),RESPONSE_SUCCESS);

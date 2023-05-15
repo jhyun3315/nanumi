@@ -33,7 +33,7 @@ const ProfileUpate = ({navigation, nickname, profileUrl}) => {
         maxSelectedAssets: 1,
         isCrop: false,
         usedCameraButton: false,
-        isPreView: false,
+        isPreview: false,
       });
       const path = response.map(image => {
         const nameParts = image.fileName.split('.');
@@ -70,7 +70,7 @@ const ProfileUpate = ({navigation, nickname, profileUrl}) => {
         typeof updateProfileUrl !== 'string' &&
         updateProfileUrl.uri.startsWith('/storage')
           ? updateProfileUrl.name
-          : generateUniqueKey(),
+          : `${generateUniqueKey()}.jpg`,
     });
 
     try {

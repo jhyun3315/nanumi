@@ -194,11 +194,8 @@ public class ChatService {
         for (Match match : matchList){
             if (match.getUser().getId() != givenerId) {
                 match.setMatching(false);
-            }else {
-                match.setMatching(true);
             }
         }
-
         return responseService.getSuccessResponse();
     }
 }

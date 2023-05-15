@@ -107,11 +107,15 @@ const DetailHeader = ({data, navigation, handlePresentModalPress}) => {
 
 const ProductDetail = ({route, navigation}) => {
   const {id} = route.params.data;
-  const {data, isLoading, error, refetch} = useQuery(['product', id], () =>
-    requestGetDetailProduct(id),
-  );
 
   const [user] = useRecoilState(userState);
+  const {data, isLoading, error, refetch} = useQuery(
+    ['product', id],
+    () => requestGetDetailProduct(id),
+    {
+      enabled: Object.keys(user).length > 0,
+    },
+  );
   // 내 물건이라면 나눔받기 버튼 못누름
   const isDisable = user.userId === data?.result?.userId;
   const {hideModal, showModal} = useModal();

@@ -1,8 +1,10 @@
 import React from 'react';
 import {View, TextInput, StyleSheet, Pressable} from 'react-native';
 import {COLORS, FONTS, SIZES} from '../../constants';
-import GlobalModal from '../modal/GlobalModal';
 import {useModal} from '../../hooks/useModal';
+import {useRecoilState} from 'recoil';
+import {userState} from '../../state/user';
+import GlobalModal from '../modal/GlobalModal';
 
 export const ProductTitle = ({title, handleTitle}) => {
   return (
@@ -45,10 +47,11 @@ export const ProductCategory = ({selectedCategory, handleCategorySelected}) => {
 };
 
 export const ProductDesc = ({description, handleDescription}) => {
+  const [user] = useRecoilState(userState);
   return (
     <View style={styles.textInputContainer}>
       <TextInput
-        placeholder="OO동에 올릴 게시글 내용을 작성해주세요 (나눔 금지 물품은 게시가 제한될 수 있습니다.)"
+        placeholder={`${user.dong}에 올릴 게시글 내용을 작성해주세요 (나눔 금지 물품은 게시가 제한될 수 있습니다.)`}
         placeholderTextColor={COLORS.gray}
         style={[styles.textInput, styles.desc]}
         numberOfLines={6}

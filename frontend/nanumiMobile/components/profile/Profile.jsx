@@ -51,7 +51,7 @@ const Profile = ({navigation}) => {
     ['profile', user.userId],
     () => requestGetProfile(user.userId),
     {
-      enabled: !!user.userId,
+      enabled: Object.keys(user).length > 0,
     },
   );
 

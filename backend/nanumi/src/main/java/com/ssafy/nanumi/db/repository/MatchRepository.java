@@ -45,11 +45,12 @@ public interface MatchRepository extends CrudRepository<Match, Long> {
             "SELECT m " +
                     "FROM Match m " +
                     "WHERE m.product.id = :productId " +
-                    "AND (m.user.id = :sendUserId OR m.user.id = :receiveUserId) " +
-                    "AND m.isMatching = true"
+                    "AND m.user.id = :receiveUserId "
     )
 
-    Optional<Match> findMatchByProductAndUsers(@Param("productId")long productId, @Param("sendUserId")long sendUser, @Param("receiveUserId")long receiveUser);
+    Optional<Match> findMatchByProductAndUsers(@Param("productId")long productId, @Param("receiveUserId")long receiveUserId);
+
+
     List<Match> findAllByProductId(@Param("productId")long productId);
     boolean existsByProductIdAndUserId(long productId, long userId);
 }

@@ -39,6 +39,10 @@ public class ChatRoomService {
         long receiveUser = DTO.getOpponentId(); // 상대방
         long productId = DTO.getProductId(); // 상품 아이디
 
+        Match match = matchRepository.findMatchByProductAndUsers(productId, receiveUser)
+                .orElseThrow(() -> new CustomException(CustomExceptionStatus.NOT_FOUND_MATCH) );
+        match.setMatching(true);
+
         // Check if the chatroom already exists
         List<ChatRoomEntity> existingChatRooms = chatRoomRepository.findByOpponentIdAndProductId(receiveUser, productId);
         if (!existingChatRooms.isEmpty()) {

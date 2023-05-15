@@ -12,6 +12,8 @@ const Register = () => {
   const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
   const [confirmPasswordErrorMessage, setConfirmPasswordErrorMessage] =
     useState('');
+  const [isDisable, setIsDisable] = useState(false);
+
   const [emailErrorMessage, setEmailErrorMessage] = useState('');
   const [userInfo, setUserInfo] = useState({
     email: '',
@@ -72,9 +74,10 @@ const Register = () => {
   const checkEmailDuplicate = async email => {
     try {
       const response = await requestEmailDuplicateCheck(email);
-      console.log(response);
       if (response.code === 200) {
         setValidCode(response.result.code);
+        setIsDisable(true);
+        Alert.alert('메일을 전송했습니다.');
       } else if (response.code === 400) {
         Alert.alert('이미 존재하는 이메일입니다.');
       }
@@ -119,7 +122,7 @@ const Register = () => {
             <DuplicateButton
               minWidth={48}
               borderRadius={3}
-              isDisable={!handleValidateEmail(userInfo.email)}
+              isDisable={!handleValidateEmail(userInfo.email) || isDisable}
               handlePress={() => checkEmailDuplicate(userInfo.email)}>
               중복확인
             </DuplicateButton>

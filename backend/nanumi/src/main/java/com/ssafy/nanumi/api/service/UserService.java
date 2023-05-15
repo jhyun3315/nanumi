@@ -9,21 +9,30 @@ import com.ssafy.nanumi.api.response.*;
 import com.ssafy.nanumi.common.Image;
 import com.ssafy.nanumi.common.provider.Provider;
 import com.ssafy.nanumi.config.entity.BaseTimeEntity;
+import com.ssafy.nanumi.config.jwt.JpaUserDetailsService;
 import com.ssafy.nanumi.config.jwt.JwtProvider;
 import com.ssafy.nanumi.config.response.exception.CustomException;
 import com.ssafy.nanumi.db.entity.*;
 import com.ssafy.nanumi.db.repository.*;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.UnsupportedJwtException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.mail.MessagingException;
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -43,6 +52,7 @@ public class UserService {
     private final AddressRepository addressRepository;
     private final ProductRepository productRepository;
     private final LoginProviderRepository loginProviderRepository;
+    private final JpaUserDetailsService userDetailsService;
     private final EmailService emailService;
     private final S3Service s3Service;
     private final JwtProvider jwtProvider;
@@ -54,9 +64,9 @@ public class UserService {
     public UserLoginResDTO login(UserLoginDTO userLoginDTO){
         User user = userRepository.findByEmail(userLoginDTO.getEmail()).orElseThrow(() -> new CustomException(NOT_FOUND_USER));
         // Access Token
-        String AT = jwtProvider.createAccessToken(user.getEmail(), user.getTiers());
+        String AT = jwtProvider.createAccessToken(""+user.getId(), user.getTiers());
         // Refresh Token
-        String RT = jwtProvider.createRefreshToken(user.getEmail(), user.getTiers());
+        String RT = jwtProvider.createRefreshToken(""+user.getId(), user.getTiers());
 
         UserInfo userInfo =userInfoRepository.findById(user.getUserInfo().getId()).orElseThrow(() -> new CustomException(NOT_FOUND_USER_INFO));
         userInfo.updateRefreshToken(RT);
@@ -66,6 +76,7 @@ public class UserService {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         // 입력받은 비밀번호와 저장된 비밀번호 비교
         if(encoder.matches(userLoginDTO.getPassword(), user.getPassword())){
+            if(userLoginDTO.getFcmToken()==null) throw new CustomException(NOT_FOUND_FCMTOKEN);
 
             user.updateFcmToken(userLoginDTO.getFcmToken());
 
@@ -229,7 +240,7 @@ public class UserService {
             userNickname = nickname;
         }
         if(profileImg != null) {
-            if(!Objects.requireNonNull(profileImg.getOriginalFilename()).startsWith("https//")){
+            if(!Objects.requireNonNull(profileImg.getOriginalFilename()).startsWith("https")){
                 imageString = s3Service.stringImage(profileImg);
             }
         }
@@ -257,6 +268,13 @@ public class UserService {
     }
     public TokenInfoResDTO isRTValid(TokenInfoDTO request) throws Exception {
         return jwtProvider.validateRefreshToken(request);
+    }
+
+    public long userByAT(String accessToken) {
+            String token = accessToken.split(" ")[1].trim();
+            User user = userRepository.findById(Long.parseLong(jwtProvider.getAccount(token)))
+                        .orElseThrow(() -> new CustomException(NOT_FOUND_USER_INFO));
+            return user.getId();
     }
 
 }
