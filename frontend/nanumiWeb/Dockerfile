@@ -1,7 +1,7 @@
 FROM node:18.16.0 as builder
 
 # set working directory
-WORKDIR /app/build
+WORKDIR /app
 
 # install app dependencies
 COPY package*.json ./
