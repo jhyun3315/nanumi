@@ -37,7 +37,7 @@ public class UserInfo {
     @Column(name = "rating_count", columnDefinition = "INT", nullable = false)
     private int ratingCount;
 
-    @ColumnDefault("'브론즈'")
+    @ColumnDefault("'새싹'")
     @Column(name = "tier", columnDefinition = "VARCHAR(20)")
     private String tier;
 

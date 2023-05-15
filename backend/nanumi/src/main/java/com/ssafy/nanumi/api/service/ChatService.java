@@ -115,9 +115,6 @@ public class ChatService {
         messageTemplate.convertAndSend("/sub/chat/room/" + DTO.getRoomId(), chatEntityJson);
     }
 
-
-
-
     // TODO roomSeq를 입력으로 받아서 해당 채팅방의 최근 20개의 채팅 로그를 반환한다.
     @Transactional
     public List<ChatMessageEntity> GetChatLogLimit20(long roomSeq) {
@@ -135,7 +132,6 @@ public class ChatService {
         // 나눠준 사람
         User giver = userRepository.findById(giverId)
                 .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_USER));
-
         UserInfo giver_info = userInfoRepository.findById(giver.getUserInfo().getId())
                         .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_USER_INFO));
         giver_info.updateGiveCount(giver_info.getGiveCount()+1);
@@ -156,30 +152,16 @@ public class ChatService {
         double giver_temperature = giver_info.getTemperature();
 
         switch (giver_tier) {
-            case "브론즈" :
+            case "새싹" :
                 if(giver_visit>=2 && giver_give_count>=2 && giver_given_count>=2) {
-                    giver.setRoles(Collections.singletonList(Authority.builder().name("ROLE_실버").build()));
-                    giver_info.updateTier("실버");
+                    giver.setRoles(Collections.singletonList(Authority.builder().name("ROLE_나무").build()));
+                    giver_info.updateTier("나무");
                 }
                 break;
-            case "실버" :
-                if(giver_visit>=10 && giver_give_count>=10) {
-                    giver.setRoles(Collections.singletonList(Authority.builder().name("ROLE_골드").build()));
-                    giver_info.updateTier("골드");
-                }
-                break;
-            case "골드" :
-                if(giver_visit>=50 && giver_give_count>=50) {
-                    giver.setRoles(Collections.singletonList(Authority.builder().name("ROLE_플레티넘").build()));
-                    giver_info.updateTier("플레티넘");
-                }
-                break;
-            case "플레티넘" :
-                System.out.println("Giver는 플레티넘입니당.");
-                if(giver_visit>=50 && giver_give_count>=50 && giver_temperature>=40) {
-                    System.out.println("다이아로 승급합니다.");
-                    giver_info.updateTier("다이아");
-                    giver.setRoles(Collections.singletonList(Authority.builder().name("ROLE_다이아").build()));
+            case "나무" :
+                if(giver_visit>=10 && giver_give_count>=10 && giver_temperature>=40) {
+                    giver.setRoles(Collections.singletonList(Authority.builder().name("ROLE_나누미나무").build()));
+                    giver_info.updateTier("나누미나무");
                 }
                 break;
             default:
@@ -194,35 +176,22 @@ public class ChatService {
         double givener_temperature = givener_info.getTemperature();
 
         switch (givener_tier) {
-            case "브론즈" :
-                System.out.println("아직 브론즈입니다.");
+            case "새싹" :
                 if(givener_visit>=2 && givener_give_count>=2 && givener_given_count>=2) {
-                    System.out.println("실버로 승급합니다.");
-                    givener_info.updateTier("실버");
-                    givener.setRoles(Collections.singletonList(Authority.builder().name("ROLE_실버").build()));
+                    givener_info.updateTier("나무");
+                    givener.setRoles(Collections.singletonList(Authority.builder().name("ROLE_나무").build()));
+                }
+                break;
+            case "나무" :
+                if(givener_visit>=10 && givener_give_count>=10 && givener_temperature>=40) {
+                    givener.setRoles(Collections.singletonList(Authority.builder().name("ROLE_나누미나무").build()));
+                    givener_info.updateTier("나누미나무");
+                }
+                break;
 
-                }
-                break;
-            case "실버" :
-                if(givener_visit>=10 && givener_give_count>=10) {
-                    givener.setRoles(Collections.singletonList(Authority.builder().name("ROLE_골드").build()));
-                    givener_info.updateTier("골드");
-                }
-                break;
-            case "골드" :
-                if(givener_visit>=50 && givener_give_count>=50) {
-                    givener.setRoles(Collections.singletonList(Authority.builder().name("ROLE_플레티넘").build()));
-                    givener_info.updateTier("플레티넘");
-                }
-                break;
-            case "플레티넘" :
-                if(givener_visit>=100 && givener_give_count>=100 && givener_temperature>=40) {
-                    givener.setRoles(Collections.singletonList(Authority.builder().name("ROLE_다이아").build()));
-                    givener_info.updateTier("다이아");
-                }
-                break;
             default:
         }
+
 
         /* 거래 완료 로직
         - 거래는 1:1 로 완료가 되기에, 해당 상품 매칭에서 is_matched 를 실거래 제외하고 0으로 초기화
@@ -235,6 +204,7 @@ public class ChatService {
                 match.setMatching(true);
             }
         }
+
         return responseService.getSuccessResponse();
     }
 }
