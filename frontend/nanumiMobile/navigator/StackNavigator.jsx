@@ -40,10 +40,8 @@ const StackNavigator = () => {
       const asynUser = await AsyncStorage.getItem('user');
       if (asynUser) {
         setUser(JSON.parse(asynUser));
-        navigationRef.current.navigate('BottomTabs', {screen: 'Home'});
-        return true;
       } else {
-        return false;
+        navigationRef.current.navigate('Login');
       }
     };
 
@@ -82,7 +80,7 @@ const StackNavigator = () => {
         screenOptions={{
           headerShown: false,
         }}
-        initialRouteName="Login">
+        initialRouteName="BottomTabs">
         <Stack.Screen name="BottomTabs" component={BottomTabs} />
 
         <Stack.Screen

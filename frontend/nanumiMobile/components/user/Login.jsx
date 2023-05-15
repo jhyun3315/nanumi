@@ -27,6 +27,7 @@ const Login = () => {
     const data = {
       email: userInfo.email,
       password: userInfo.password,
+      fcmToken: '',
     };
     const response = await requestLogin(data);
     if (response.code === 200) {

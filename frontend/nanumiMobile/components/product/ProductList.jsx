@@ -32,7 +32,7 @@ const ProductList = ({isSearch}) => {
           }
           return pages ? pages?.length : undefined;
         },
-        enabled: !!user?.userId,
+        enabled: Object.keys(user).length > 0,
       },
     );
 
