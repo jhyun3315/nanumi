@@ -12,11 +12,15 @@ COPY . .
 
 # build the app
 RUN npm run build
+RUN mkdir ./build
+
+# host pc의 현재경로의 build 폴더를 workdir 의 build 폴더로 복사
+ADD ./build ./build
 
 
 # Install Nginx
 FROM nginx:1.21.0-alpine
-COPY --from=build /app/dist /usr/share/nginx/html
+COPY --from=build /app/build /usr/share/nginx/html
 
 # nginx 의 default.conf 를 삭제
 RUN rm /etc/nginx/conf.d/default.conf
