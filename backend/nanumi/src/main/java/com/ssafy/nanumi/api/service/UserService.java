@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Date;
+import java.util.Objects;
 import java.util.UUID;
 
 import static com.ssafy.nanumi.config.response.exception.CustomExceptionStatus.*;
@@ -228,7 +229,9 @@ public class UserService {
             userNickname = nickname;
         }
         if(profileImg != null) {
-            imageString = s3Service.stringImage(profileImg);
+            if(!Objects.requireNonNull(profileImg.getOriginalFilename()).startsWith("https//")){
+                imageString = s3Service.stringImage(profileImg);
+            }
         }
         user.updateUserInfo(userNickname, imageString);
         return new UserSimpleDTO(user);
