@@ -17,6 +17,9 @@ const ChatList = ({navigation}) => {
   const {data, isLoading, error, refetch} = useQuery(
     ['mychat', user.userId],
     () => requestGetMyChatRoom(user.userId),
+    {
+      enabled: Object.keys(user).length > 0,
+    },
   );
 
   useFocusEffect(
