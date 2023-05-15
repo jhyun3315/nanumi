@@ -22,7 +22,7 @@ COPY --from=build /app/dist /usr/share/nginx/html
 RUN rm /etc/nginx/conf.d/default.conf
 
 # host pc 의 nginx.conf 를 아래 경로에 복사
-COPY ./nginx.conf /etc/nginx/conf.d
+COPY nginx.conf /etc/nginx/sites-available/nginxec2.conf
 
 
 # Expose port 80
