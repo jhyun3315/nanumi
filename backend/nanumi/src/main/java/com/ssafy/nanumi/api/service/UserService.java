@@ -89,9 +89,7 @@ public class UserService {
 
                 switch (tier) {
                     case "새싹" :
-                        System.out.println("here 1 !!!!!!!!!!!");
                         if(present_visit>=2 && given_count>=2 && give_count>=2) {
-                            System.out.println("here 2 !!!!!!!!!!!");
                             user.setRoles(Collections.singletonList(Authority.builder().name("ROLE_나무").build()));
                             userInfo.updateTier("나무");
                         }

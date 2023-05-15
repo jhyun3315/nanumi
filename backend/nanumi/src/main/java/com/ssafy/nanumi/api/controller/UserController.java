@@ -57,12 +57,6 @@ public class UserController {
         return new ResponseEntity<>(userService.isRTValid(request), HttpStatus.OK);
     }
 
-    /* 권한에 대한 테스트 용 */
-    @PostMapping("/test")
-    public String test() {
-        return "success";
-    }
-
     @GetMapping("/users/check/{email}")
     public CustomDataResponse emailCheck(@PathVariable("email") String email) throws MessagingException, IOException {
         // 이메일 중복 처리, 인증 처리
