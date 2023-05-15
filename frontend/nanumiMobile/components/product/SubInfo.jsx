@@ -105,7 +105,7 @@ export const EndDate = () => {
           fontSize: SIZES.medium,
           color: COLORS.primary,
         }}>
-        14:00
+        16:00
       </Text>
     </View>
   );
