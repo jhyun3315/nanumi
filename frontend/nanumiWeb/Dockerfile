@@ -16,12 +16,13 @@ RUN npm run build
 
 # Install Nginx
 FROM nginx:1.21.0-alpine
-# COPY --from=build /app/build /usr/share/nginx/html
 
 RUN rm /etc/nginx/conf.d/default.conf
 
 # Copy Nginx configuration
 COPY nginx.conf /etc/nginx/sites-available/nginxec2.conf
+
+COPY --from=build /app/build /usr/share/nginx/html
 
 # Expose port 80
 EXPOSE 80
