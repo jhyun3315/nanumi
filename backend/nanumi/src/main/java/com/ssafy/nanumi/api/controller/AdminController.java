@@ -6,6 +6,7 @@ import com.ssafy.nanumi.api.request.UserBanDTO;
 import com.ssafy.nanumi.api.response.AdminLoginResDTO;
 import com.ssafy.nanumi.api.response.ReportAllDTO;
 import com.ssafy.nanumi.api.service.AdminService;
+import com.ssafy.nanumi.api.service.UserService;
 import com.ssafy.nanumi.config.response.CustomDataResponse;
 import com.ssafy.nanumi.config.response.CustomResponse;
 import com.ssafy.nanumi.config.response.ResponseService;
@@ -24,6 +25,7 @@ public class AdminController {
 
     private final AdminService adminService;
     private final ResponseService responseService;
+    private final UserService userService;
 
     /* 관리자 로그인 */
     @PostMapping("/admin/login")
@@ -58,13 +60,11 @@ public class AdminController {
 
     /* 사용자 신고 */
     @PostMapping("/reports/{user-id}")
-    public CustomResponse reportUser(@PathVariable("user-id") long userId, @RequestBody ReportUserDTO reportUserDTO) {
+    public CustomResponse reportUser(@RequestHeader("Authorization") String accessToken, @RequestBody ReportUserDTO reportUserDTO) {
 
         // TODO : OAuth에서 userId(reporterId) 받아와야 함.
-
-        long reporterId = userId;
-
-        adminService.reportUser(reporterId, reportUserDTO);
+        long userId = userService.userByAT(accessToken);
+        adminService.reportUser(userId, reportUserDTO);
 
         return responseService.getSuccessResponse();
     }

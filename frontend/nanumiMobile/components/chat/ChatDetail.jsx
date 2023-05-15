@@ -196,8 +196,8 @@ const ChatDetail = ({
   const handleCompleteTransaction = async () => {
     const response = await requsetCompleteTransaction(
       productId,
-      user.userId,
-      opponentId,
+      data?.result?.userId,
+      data?.result?.userId !== user.userId ? user.userId : opponentId,
     );
     return response;
   };

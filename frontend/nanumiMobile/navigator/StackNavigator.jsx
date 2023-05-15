@@ -41,9 +41,8 @@ const StackNavigator = () => {
       if (asynUser) {
         setUser(JSON.parse(asynUser));
         navigationRef.current.navigate('BottomTabs', {screen: 'Home'});
-        return true;
       } else {
-        return false;
+        return;
       }
     };
 

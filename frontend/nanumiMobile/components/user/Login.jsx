@@ -16,6 +16,11 @@ const Login = () => {
     password: '',
   });
 
+  const handleGetFcmToken = async () => {
+    const fcmToken = await AsyncStorage.getItem('fcmtoken');
+    return fcmToken;
+  };
+
   const handleInputChange = (key, value) => {
     setUserInfo({
       ...userInfo,
@@ -24,10 +29,13 @@ const Login = () => {
   };
 
   const handleLogin = async () => {
+    const token = await handleGetFcmToken();
     const data = {
       email: userInfo.email,
       password: userInfo.password,
+      fcmToken: token,
     };
+
     const response = await requestLogin(data);
     if (response.code === 200) {
       setUser(response.result);

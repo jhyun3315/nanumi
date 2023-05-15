@@ -6,15 +6,18 @@ const HomeScreen = ({navigation}) => {
   const [exitApp, setExitApp] = useState(false);
 
   const handleBackPress = useCallback(() => {
-    if (exitApp) {
-      BackHandler.exitApp();
-    } else {
-      ToastAndroid.show('한 번 더 누르면 종료됩니다', ToastAndroid.SHORT);
-      setExitApp(true);
+    if (navigation.isFocused()) {
+      // 홈 스크린에서만 동작하도록 체크
+      if (exitApp) {
+        BackHandler.exitApp();
+      } else {
+        ToastAndroid.show('한 번 더 누르면 종료됩니다', ToastAndroid.SHORT);
+        setExitApp(true);
+      }
+      return true;
     }
-
-    return true;
-  }, [exitApp]);
+    return false; // 다른 화면에서는 기본 뒤로가기 동작 유지
+  }, [exitApp, navigation]);
 
   useEffect(() => {
     const backHandler = BackHandler.addEventListener(

@@ -3,6 +3,7 @@ package com.ssafy.nanumi.api.controller;
 import com.ssafy.nanumi.api.request.BlockDTO;
 import com.ssafy.nanumi.api.response.BlacklistDTO;
 import com.ssafy.nanumi.api.service.BlacklistService;
+import com.ssafy.nanumi.api.service.UserService;
 import com.ssafy.nanumi.config.response.CustomDataResponse;
 import com.ssafy.nanumi.config.response.CustomResponse;
 import com.ssafy.nanumi.config.response.ResponseService;
@@ -21,6 +22,7 @@ public class BlacklistController {
 
     private final ResponseService responseService;
     private final BlacklistService blacklistService;
+    private final UserService userService;
 
     /* 사용자 차단 */
     @PostMapping("/block/{user-id}")
@@ -37,11 +39,10 @@ public class BlacklistController {
 
     /* 사용자 차단 해제 */
     @PatchMapping("/block/{user-id}")
-    public CustomResponse blockCancel(@PathVariable("user-id") long userId, @RequestBody BlockDTO blockDTO) {
+    public CustomResponse blockCancel(@RequestHeader("Authorization") String accessToken, @RequestBody BlockDTO blockDTO) {
 
         // TODO : userId는 JWT에서
-
-        long blockerId = userId;
+        long blockerId = userService.userByAT(accessToken);
 
         blacklistService.blockCancel(blockerId, blockDTO);
 
