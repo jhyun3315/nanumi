@@ -1,23 +1,17 @@
 FROM node:18.16.0 as build
 
 # set working directory
-WORKDIR /app
+WORKDIR /app/build
+
+# copy app files
+COPY . .
 
 # install app dependencies
 COPY package*.json ./
 RUN npm install --silent
 
-# copy app files
-COPY . .
-
 # build the app
 RUN npm run build
-
-# work dir 에 build 폴더 생성 /app/build
-RUN mkdir ./build
-
-# host pc의 현재경로의 build 폴더를 workdir 의 build 폴더로 복사
-ADD ./build ./build
 
 
 # Install Nginx
