@@ -18,14 +18,10 @@ const UserTextInput = ({onChangeText, value, ...props}) => {
         {
           fontFamily: FONTS.medium,
           fontSize: SIZES.small,
-          paddingHorizontal: SIZES.base * 2,
-          paddingVertical: SIZES.base,
+          padding: SIZES.base * 3,
           backgroundColor: COLORS.lightBlue,
-          borderRadius: 3,
+          borderRadius: SIZES.base,
           marginVertical: SIZES.base,
-          color: COLORS.primary,
-
-          width: '100%',
         },
         focused && {borderWidth: 1, borderColor: COLORS.blue},
       ]}

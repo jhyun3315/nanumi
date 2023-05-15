@@ -16,8 +16,6 @@ public class MatchResDTO {
     private long productId;
     private long matchId;
     private String createDate;
-
-    private long opponentId;
     @Builder
     public MatchResDTO(long userId, String userNickname, String userProfileUrl, long productId, long matchId, String createDate) {
         this.userId = userId;

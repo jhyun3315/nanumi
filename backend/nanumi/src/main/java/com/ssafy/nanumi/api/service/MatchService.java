@@ -53,8 +53,4 @@ public class MatchService {
                 ))
                 .collect(Collectors.toList());
     }
-
-
-
-
 }
