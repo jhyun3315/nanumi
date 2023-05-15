@@ -1,7 +1,7 @@
 FROM node:18.16.0 as build
 
 # set working directory
-WORKDIR /app
+WORKDIR /app/build
 
 # install app dependencies
 COPY package*.json ./
@@ -16,7 +16,7 @@ RUN npm run build
 
 # Install Nginx
 FROM nginx:1.21.0-alpine
-COPY --from=build /app/dist /usr/share/nginx/html
+# COPY --from=build /app/build /usr/share/nginx/html
 
 # Copy Nginx configuration
 COPY nginx.conf /etc/nginx/sites-available/nginxec2.conf
