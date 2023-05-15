@@ -67,7 +67,7 @@ public class User extends BaseTimeEntity {
     }
 
     @Builder
-    public User(long id, String email, String nickname, String profileUrl,String fcmToken, String password, boolean isDeleted, Address address, LoginProvider loginProvider, UserInfo userInfo) {
+    public User(long id, String email, String nickname, String profileUrl, String password, boolean isDeleted, Address address, LoginProvider loginProvider, UserInfo userInfo) {
         this.id = id;
         this.email = email;
         this.nickname = nickname;
@@ -77,8 +77,6 @@ public class User extends BaseTimeEntity {
         this.address = address;
         this.loginProvider = loginProvider;
         this.userInfo = userInfo;
-        this.fcmToken = fcmToken;
-
     }
 
     public void updateAddress(Address address){
@@ -97,7 +95,4 @@ public class User extends BaseTimeEntity {
     public String getProfileUrl() {
         return profileUrl;
     }
-
-    public void updateFcmToken(String fcmToken) { this.fcmToken = fcmToken; }
-
 }
