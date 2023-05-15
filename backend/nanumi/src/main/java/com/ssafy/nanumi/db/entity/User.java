@@ -59,11 +59,16 @@ public class User extends BaseTimeEntity {
     @OneToMany(mappedBy = "user")
     private List<Product> products = new ArrayList<>();
 
+    @Column(name = "fcm_token", columnDefinition = "VARCHAR(255)")
+    private String fcmToken;
+
     public void delete(){
         this.isDeleted = true;
     }
+
+
     @Builder
-    public User(long id, String email, String nickname, String profileUrl, String password, boolean isDeleted, Address address, LoginProvider loginProvider, UserInfo userInfo) {
+    public User(long id, String email, String nickname, String profileUrl,String fcmToken, String password, boolean isDeleted, Address address, LoginProvider loginProvider, UserInfo userInfo) {
         this.id = id;
         this.email = email;
         this.nickname = nickname;
@@ -73,7 +78,9 @@ public class User extends BaseTimeEntity {
         this.address = address;
         this.loginProvider = loginProvider;
         this.userInfo = userInfo;
+        this.fcmToken = fcmToken;
     }
+
 
     public void updateAddress(Address address){
         this.address = address;
@@ -83,12 +90,18 @@ public class User extends BaseTimeEntity {
         this.nickname = nickname;
     }
 
+
     public void setRoles(List<Authority> tier) {
         this.tiers = tier;
         tier.forEach(o -> o.setUser(this));
     }
 
+
     public String getProfileUrl() {
         return profileUrl;
     }
+
+
+    public void updateFcmToken(String fcmToken) { this.fcmToken = fcmToken; }
+
 }
