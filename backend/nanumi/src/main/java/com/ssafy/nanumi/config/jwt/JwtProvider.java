@@ -121,7 +121,7 @@ public class JwtProvider {
             String RT = request.getRefreshToken();
             UserInfo userInfo = userInfoRepository.findByRefreshToken(RT)
                     .orElseThrow(() -> new CustomException(NOT_FOUND_USER_INFO));
-            User user = userRepository.findByEmail(request.getEmail())
+            User user = userRepository.findById(request.getUserId())
                     .orElseThrow(() -> new CustomException(NOT_FOUND_USER_INFO));
             String userInfo_RT = userInfo.getRefreshToken();
             if (!RT.equals(userInfo_RT)) {
@@ -135,7 +135,7 @@ public class JwtProvider {
             // RT가 만료되지 않았을 때
             Jws<Claims> rt_claims = Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(userInfo_RT);
             if (rt_claims.getBody().getExpiration().before(new Date())) {
-                String AT = this.createAccessToken(user.getEmail(), user.getTiers());
+                String AT = this.createAccessToken(""+user.getId(), user.getTiers());
                 // Refresh Token
                 return TokenInfoResDTO.builder()
                         .grantType("Bearer ")
@@ -156,7 +156,7 @@ public class JwtProvider {
 
             } catch (Exception e) {
                 // AT expired, RT is OK
-                String AT = this.createAccessToken(user.getEmail(), user.getTiers());
+                String AT = this.createAccessToken(""+user.getId(), user.getTiers());
                 return TokenInfoResDTO.builder()
                         .grantType("Bearer ")
                         .accessToken(AT)
