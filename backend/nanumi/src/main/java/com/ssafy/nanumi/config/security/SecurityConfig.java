@@ -55,8 +55,8 @@ public class SecurityConfig {
                 .antMatchers("/admintest").hasRole("관리자")
                 .antMatchers("/users/join", "/users/login", "/users/isRTValid", "/users/check/**", "/admin/login",  "/health",
                         "/webjars/**", "/ws-stomp/**").permitAll()
+//                .antMatchers("/api/v2/**", "/swagger-ui.html", "/swagger/**","/swagger-ui/**","/swagger-resources/**", "/v2/api-docs").permitAll()
                 .antMatchers("/users/**").hasAnyRole("새싹", "나무", "나누미나무", "관리자")
-                .antMatchers("/api/v2/**", "/swagger-ui.html", "/swagger/**","/swagger-ui/**","/swagger-resources/**", "/v2/api-docs").permitAll()
                 .antMatchers("/actuator/**").permitAll()
                 .antMatchers("/admin/**").hasRole("관리자")
                 //관리자 접근 허용
