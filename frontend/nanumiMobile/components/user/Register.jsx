@@ -17,7 +17,7 @@ const Register = () => {
   const [emailErrorMessage, setEmailErrorMessage] = useState('');
   const [userInfo, setUserInfo] = useState({
     email: '',
-    validCode: '인증코드를 입력해주세요',
+    validCode: '',
     nickname: '',
     password: '',
     confirmPassword: '',
@@ -137,7 +137,7 @@ const Register = () => {
           </Text>
           {validCode !== '' && (
             <UserTextInput
-              placeholder="인증코드"
+              placeholder="인증코드를 입력해주세요"
               value={userInfo.validCode}
               onChangeText={value => handleInputChange('validCode', value)}
             />

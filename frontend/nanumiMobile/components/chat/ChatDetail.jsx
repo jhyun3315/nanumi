@@ -36,6 +36,7 @@ import * as StompJs from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
 import ErrorModal from '../modal/ErrorModal';
 import DataErrorModal from '../modal/DataErrorModal';
+import {API_END_POINT} from '../../api/constant';
 
 const {width} = Dimensions.get('window');
 
@@ -87,6 +88,7 @@ const ChatDetail = ({
     if (client.current) {
       client.current.subscribe(`/sub/chat/room/${chatRoomId}`, message => {
         const receivedChatTransform = decodeJson(message._binaryBody);
+        console.log(message);
         setTransformChatData(prevChatData => {
           const newChatData = [
             {
@@ -116,8 +118,7 @@ const ChatDetail = ({
 
   const connect = () => {
     client.current = new StompJs.Client({
-      webSocketFactory: () =>
-        new SockJS(`https://k8b103.p.ssafy.io/api/ws-stomp`),
+      webSocketFactory: () => new SockJS(`${API_END_POINT}/ws-stomp`),
 
       onConnect: () => {
         setIsDisconnet(false);

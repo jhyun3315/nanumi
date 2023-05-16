@@ -125,7 +125,7 @@ const Login = () => {
           </Text>
         </Pressable>
 
-        {/* <View
+        <View
           style={{
             marginVertical: SIZES.base * 2,
           }}>
@@ -162,7 +162,7 @@ const Login = () => {
               />
             </Pressable>
           </View>
-        </View> */}
+        </View>
       </View>
     </SafeAreaView>
   );
