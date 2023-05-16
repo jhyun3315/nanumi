@@ -60,8 +60,10 @@ public class UserService {
     private String bucket;
     private final AmazonS3 amazonS3;
 
-
     public UserLoginResDTO login(UserLoginDTO userLoginDTO){
+        LoginProvider loginProvider = loginProviderRepository
+                .findByProvider(userLoginDTO.getProvider()).orElseThrow(() -> new CustomException(NOT_FOUND_LOGIN_PROVIDER));
+
         User user = userRepository.findByEmail(userLoginDTO.getEmail()).orElseThrow(() -> new CustomException(NOT_FOUND_USER));
         // Access Token
         String AT = jwtProvider.createAccessToken(""+user.getId(), user.getTiers());
@@ -74,8 +76,10 @@ public class UserService {
         if(userInfo.getVisitCount()==0) userInfo.updateVisitCount(userInfo.getVisitCount()+1);
 
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+
         // 입력받은 비밀번호와 저장된 비밀번호 비교
-        if(encoder.matches(userLoginDTO.getPassword(), user.getPassword())){
+        if (loginProvider.getProvider().equals(Provider.kakao) || encoder.matches(userLoginDTO.getPassword(), user.getPassword())) {
+
             if(userLoginDTO.getFcmToken()==null) throw new CustomException(NOT_FOUND_FCMTOKEN);
 
             user.updateFcmToken(userLoginDTO.getFcmToken());
@@ -122,50 +126,54 @@ public class UserService {
         }
     }
 
-    public void join(UserJoinDTO userJoinDTO) {
-        LoginProvider loginProvider = loginProviderRepository.findByProvider(Provider.local)
+    public User join(UserJoinDTO userJoinDTO,Provider provider) {
+
+        LoginProvider loginProvider = loginProviderRepository.findByProvider(provider)
                 .orElseThrow(() -> new CustomException(NOT_FOUND_LOGIN_PROVIDER));
 
+        Address address = addressRepository.findById(
+                userJoinDTO.getAddressId()).orElseThrow(() -> new CustomException(NOT_FOUND_ADDRESS_CODE));
+
         String email = userJoinDTO.getEmail();
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
-        if( userRepository.findByEmail(email).isPresent() ){
-            throw new CustomException(RESPONSE_EMAIL_EXISTED);
-        }else{
-            UserInfo userInfo = UserInfo.builder()
-                    .stopDate(null)
-                    .refreshToken(null)
-                    .build();
+        if (userRepository.findByEmailAndLoginProvider(email, loginProvider).isPresent())
+            throw new CustomException(RESPONSE_ACCOUNT_EXISTED);
 
-            UserInfo userInfoSaved  = userInfoRepository.save(userInfo);
-            if(addressRepository.findById(userJoinDTO.getAddressId()).isEmpty()){
-                throw new CustomException(NOT_FOUND_ADDRESS_CODE);
-            }else {
-                User user = User.builder()
-                        .email(userJoinDTO.getEmail())
-                        .nickname(userJoinDTO.getNickname())
-                        .profileUrl(Image.DefaultImage.getValue())
-                        .password(passwordEncoder.encode(userJoinDTO.getPassword()))
-                        .loginProvider(loginProvider)
-                        .address(addressRepository.getById(userJoinDTO.getAddressId()))
-                        .userInfo(userInfoSaved)
-                        .build();
+        String profileImage = provider.equals(Provider.local) ? Image.DefaultImage.getValue() : userJoinDTO.getProfileUrl();
 
-                // Security 관리자 권한 추가
-                if (userJoinDTO.getEmail().equals("admin@nanumi.com")) {
-                    user.setRoles(Collections.singletonList(Authority.builder().name("ROLE_관리자").build()));
-                    userRepository.save(user);
-                    userInfo.updateTier("관리자");
-                }
-                else {
-                    // Security 일반사용자 권한 추가
-                    user.setRoles(Collections.singletonList(Authority.builder().name("ROLE_새싹").build()));
-                    userRepository.save(user);
-                }
+        System.out.println("<회원가입> "+ userJoinDTO.getEmail());
+        System.out.println("<회원가입> "+ userJoinDTO.getNickname());
+        System.out.println("<회원가입> "+ userJoinDTO.getProfileUrl());
 
+        UserInfo userInfo = UserInfo.builder()
+                .stopDate(null)
+                .refreshToken(null)
+                .tier("새싹")
+                .build();
 
-            }
+        UserInfo userInfoSaved = userInfoRepository.save(userInfo);
+
+        User user = User.builder()
+                .email(email)
+                .nickname(userJoinDTO.getNickname())
+                .profileUrl(profileImage)
+                .password(encoder.encode(userJoinDTO.getPassword()))
+                .loginProvider(loginProvider)
+                .address(address)
+                .userInfo(userInfoSaved)
+                .build();
+
+        // Security 관리자 권한 추가
+        if (userJoinDTO.getEmail().equals("admin@nanumi.com")) {
+            user.setRoles(Collections.singletonList(Authority.builder().name("ROLE_관리자").build()));
+
+            userInfo.updateTier("관리자");
+        } else {
+            // Security 일반사용자 권한 추가
+            user.setRoles(Collections.singletonList(Authority.builder().name("ROLE_새싹").build()));
         }
+        return userRepository.save(user);
     }
 
     public EmailCheckResDTO checkEmail(String email) throws MessagingException, IOException {
