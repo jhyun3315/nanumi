@@ -66,8 +66,6 @@ public class UserInfo {
 
     @Column(name = "refresh_token", columnDefinition = "VARCHAR(255)")
     private String refreshToken;
-    @Column(name="fcm_token", columnDefinition = "VARCHAR(255)")
-    private String fcmToken;
 
 
     @OneToOne(mappedBy = "userInfo")
@@ -75,7 +73,7 @@ public class UserInfo {
     private User user;
 
     @Builder
-    public UserInfo(long id, int starTotal, int starCount, int ratingTotal, int ratingCount, String tier, double temperature, long visitCount, int giveCount, int givenCount, int reportedTotalCount, LocalDateTime stopDate, String refreshToken, String fcmToken, User user) {
+    public UserInfo(long id, int starTotal, int starCount, int ratingTotal, int ratingCount, String tier, double temperature, long visitCount, int giveCount, int givenCount, int reportedTotalCount, LocalDateTime stopDate, String refreshToken, User user) {
         this.id = id;
         this.starTotal = starTotal;
         this.starCount = starCount;
@@ -89,7 +87,6 @@ public class UserInfo {
         this.reportedTotalCount = reportedTotalCount; // 신고당한 횟수
         this.stopDate = stopDate;
         this.refreshToken = refreshToken;
-        this.fcmToken = fcmToken;
         this.user = user;
     }
 
@@ -125,8 +122,6 @@ public class UserInfo {
             this.temperature += temperature;
         } 
     }
-
     public void updateRefreshToken(String refreshToken) { this.refreshToken = refreshToken; }
 
-    public void updateFcmToken(String fcmToken) { this.fcmToken = fcmToken; }
 }
