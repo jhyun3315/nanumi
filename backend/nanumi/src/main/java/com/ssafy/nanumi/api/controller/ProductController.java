@@ -106,19 +106,23 @@ public class ProductController {
     }
     /* 상품 수정 */
     @PatchMapping("/{product-id}")
-    public CustomResponse updateProduct(@PathVariable("product-id") long productId,
+    public CustomResponse updateProduct(@RequestHeader("Authorization") String accessToken,
+                                        @PathVariable("product-id") long productId,
                                         @RequestParam("images") MultipartFile[] images,
                                         @RequestParam("name") String name,
                                         @RequestParam("content") String content,
                                         @RequestParam("categoryId") Long categoryId
                                         ) throws IOException {
-        productService.updateProduct(productId,images,name,content,categoryId);
+        long userId = userService.userByAT(accessToken);
+        productService.updateProduct(userId,productId,images,name,content,categoryId);
         return responseService.getSuccessResponse();
     }
     /* 상품 삭제 */
     @DeleteMapping("/{product-id}")
-    public CustomResponse deleteProduct(@PathVariable("product-id") long productId) {
-        productService.deleteProduct(productId);
+    public CustomResponse deleteProduct(@RequestHeader("Authorization") String accessToken,
+                                        @PathVariable("product-id") long productId) {
+        long userId = userService.userByAT(accessToken);
+        productService.deleteProduct(userId,productId);
         return responseService.getSuccessResponse();
     }
     /* 상품 신청 - 매칭 */

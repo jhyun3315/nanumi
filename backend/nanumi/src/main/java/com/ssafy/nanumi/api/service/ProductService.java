@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -112,12 +111,12 @@ public class ProductService {
 
     public void createProduct(MultipartFile[] images,String name,String content,Long categoryId, User user) throws IOException {
 
-//        // 서버시간 확인.
-//        LocalTime currentTime = LocalTime.now();
-//        // 오후 2시에서 3시 사이 확인
-//        if (currentTime.isAfter(LocalTime.of(9, 0)) & currentTime.isBefore(LocalTime.of(10, 0))){
-//            throw new CustomException(CustomExceptionStatus.NOT_ALLOWED_CREATE);
-//        }
+        // 서버시간 확인.
+        LocalTime currentTime = LocalTime.now();
+        // 오후 2시에서 3시 사이 확인
+        if (currentTime.isAfter(LocalTime.of(10,25)) & currentTime.isBefore(LocalTime.of(10, 35))){
+            throw new CustomException(CustomExceptionStatus.NOT_ALLOWED_CREATE);
+        }
 
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_CATEGORY));
@@ -149,7 +148,8 @@ public class ProductService {
         }
     }
 
-    public void updateProduct(Long productId,
+    public void updateProduct(long userId,
+                              Long productId,
                               MultipartFile[] images,
                               String name,
                               String content,
@@ -157,6 +157,10 @@ public class ProductService {
 
         Product product = productRepository.findById(productId)
                 .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_PRODUCT));
+
+        if (userId != product.getUser().getId()){
+            throw new CustomException(NOT_ALLOWED_USER);
+        }
 
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_CATEGORY));
@@ -181,11 +185,14 @@ public class ProductService {
         product.setCategory(category);
 
     }
-    public void deleteProduct(Long productId){
+    public void deleteProduct(long userId, Long productId){
         
         Product product = productRepository.findById(productId)
                 .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_PRODUCT));
 
+        if (userId != product.getUser().getId()){
+            throw new CustomException(NOT_ALLOWED_USER);
+        }
         product.delete();
     }
     private LocalDateTime calCutoffDateTime(){
@@ -199,13 +206,13 @@ public class ProductService {
         log.info("Current DateTime: {}", formattedDateTime);
 
         // cutoffDateTime 계산
-        int time = currentDateTime.toLocalTime().compareTo(LocalTime.of(10, 0));
+        int time = currentDateTime.toLocalTime().compareTo(LocalTime.of(10, 35));
         if (time < 0) {
             // 현재 시간이 오후 3시 이전인 경우 처리 - 전날 3시 ~
-            cutoffDateTime = LocalDateTime.of(currentDateTime.toLocalDate().minusDays(1), LocalTime.of(10, 0));
+            cutoffDateTime = LocalDateTime.of(currentDateTime.toLocalDate().minusDays(1), LocalTime.of(10, 35));
         } else {
             // 현재 시간이 오후 3시 이후인 경우 처리 - 오늘 3시 ~
-            cutoffDateTime = LocalDateTime.of(currentDateTime.toLocalDate(), LocalTime.of(10, 0));
+            cutoffDateTime = LocalDateTime.of(currentDateTime.toLocalDate(), LocalTime.of(10, 35));
         }
 
         //로그
