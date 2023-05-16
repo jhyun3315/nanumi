@@ -27,6 +27,7 @@ public enum CustomExceptionStatus {
     NOT_SUPPORTED_FORMAT(false, 404, "지원하지 않는 format 입니다."),
     NOT_FOUND_CHAT_ROOM(false,404, "Not found chat room"),
     NOT_ALLOWED_CREATE(false, 400, "등록이 허용 되지 않는 시간대 입니다"),
+    NOT_ALLOWED_USER(false,400,"등록이 허용되지 않은 사용자 입니다."),
 
     EXIST_BLACKLIST(false, 400, "이미 차단한 사용자입니다."),
     ;
