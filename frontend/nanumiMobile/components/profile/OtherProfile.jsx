@@ -16,12 +16,19 @@ import {Fallback} from '../../ui/Fallback';
 import ErrorModal from '../modal/ErrorModal';
 import ProgressBar from './ProgressBar';
 import GlobalModal from '../modal/GlobalModal';
+import {useRecoilState} from 'recoil';
+import {userState} from '../../state/user';
 
 const {width} = Dimensions.get('window');
 
 const OtherProfile = ({navigation, userId}) => {
-  const {data, error, isLoading, refetch} = useQuery(['profile', userId], () =>
-    requestGetProfile(userId),
+  const [user] = useRecoilState(userState);
+  const {data, error, isLoading, refetch} = useQuery(
+    ['profile', userId],
+    () => requestGetProfile(userId),
+    {
+      enabled: Object.keys(user).length > 0,
+    },
   );
 
   if (error) return <ErrorModal handlePress={refetch} />;
