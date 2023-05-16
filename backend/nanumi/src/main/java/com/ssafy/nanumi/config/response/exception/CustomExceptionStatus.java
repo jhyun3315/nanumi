@@ -29,6 +29,8 @@ public enum CustomExceptionStatus {
     NOT_ALLOWED_CREATE(false, 400, "등록이 허용 되지 않는 시간대 입니다"),
     NOT_ALLOWED_USER(false,400,"등록이 허용되지 않은 사용자 입니다."),
 
+    RESPONSE_ACCOUNT_EXISTED(false, 400,"이미 존재하는 사용자 입니다."),
+
     EXIST_BLACKLIST(false, 400, "이미 차단한 사용자입니다."),
     ;
 
