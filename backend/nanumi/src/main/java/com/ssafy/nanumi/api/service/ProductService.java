@@ -114,7 +114,7 @@ public class ProductService {
         // 서버시간 확인.
         LocalTime currentTime = LocalTime.now();
         // 오후 2시에서 3시 사이 확인
-        if (currentTime.isAfter(LocalTime.of(10,25)) & currentTime.isBefore(LocalTime.of(10, 35))){
+        if (currentTime.isAfter(LocalTime.of(12,0)) & currentTime.isBefore(LocalTime.of(12, 5))){
             throw new CustomException(CustomExceptionStatus.NOT_ALLOWED_CREATE);
         }
 
@@ -206,13 +206,13 @@ public class ProductService {
         log.info("Current DateTime: {}", formattedDateTime);
 
         // cutoffDateTime 계산
-        int time = currentDateTime.toLocalTime().compareTo(LocalTime.of(10, 35));
+        int time = currentDateTime.toLocalTime().compareTo(LocalTime.of(12, 0));
         if (time < 0) {
             // 현재 시간이 오후 3시 이전인 경우 처리 - 전날 3시 ~
-            cutoffDateTime = LocalDateTime.of(currentDateTime.toLocalDate().minusDays(1), LocalTime.of(10, 35));
+            cutoffDateTime = LocalDateTime.of(currentDateTime.toLocalDate().minusDays(1), LocalTime.of(12, 0));
         } else {
             // 현재 시간이 오후 3시 이후인 경우 처리 - 오늘 3시 ~
-            cutoffDateTime = LocalDateTime.of(currentDateTime.toLocalDate(), LocalTime.of(10, 35));
+            cutoffDateTime = LocalDateTime.of(currentDateTime.toLocalDate(), LocalTime.of(12, 0));
         }
 
         //로그
