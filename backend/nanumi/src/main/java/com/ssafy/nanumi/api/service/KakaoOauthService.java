@@ -11,16 +11,15 @@ import com.ssafy.nanumi.db.entity.User;
 import com.ssafy.nanumi.db.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.HashMap;
 import java.util.Optional;
 
 
@@ -41,6 +40,36 @@ public class KakaoOauthService {
 
     private final UserRepository userRepository;
     private final UserService userService;
+
+    public HttpStatus logout(String accessToken){
+        // accessToken 으로 사용자 정보 가져옴
+        User user = userService.getUserByAT(accessToken);
+
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+
+        HashMap<String, String> request = new HashMap<>();
+        request.put("target_id_type","user_id");
+        request.put("target_id", String.valueOf(user.getId()));
+
+        // 카카오 로그아웃 요청을 위한 request 생성
+        // HTTP Header 생성
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "KakaoAK " + adminKey);
+        headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+
+        // HTTP 요청 보내기
+        HttpEntity<MultiValueMap<String, String>> kakaoUserInfoRequest = new HttpEntity<>(headers);
+        RestTemplate rt = new RestTemplate();
+        ResponseEntity<String> response = rt.exchange(
+                "https://kapi.kakao.com/v1/user/logout",
+                HttpMethod.POST,
+                kakaoUserInfoRequest,
+                String.class
+        );
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        return response.getStatusCode();
+    }
 
     public String loginPage(String fcmToken) {
         return "https://kauth.kakao.com/oauth/authorize?client_id="+restApiKey+"&redirect_uri="+redirctURI+"&state="+fcmToken+"&response_type=code";
@@ -84,23 +113,15 @@ public class KakaoOauthService {
 //        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
         String id = jsonNode.get("id").asText();
-        System.out.println("카카오 id : " + id);
-
         String email = jsonNode.get("kakao_account").get("email_needs_agreement").asBoolean() ? id : jsonNode.get("kakao_account").get("email").asText();
-        System.out.println("카카오 email: " + email);
-
         String nickname = jsonNode.get("properties").get("nickname").asText();
-        System.out.println("카카오 nickname : " + nickname);
-
-//        String profileImage = jsonNode.get("kakao_account").get("profile_image_needs_agreement").asBoolean() ? Image.DefaultImage.getValue() : jsonNode.get("properties").get("thumbnail_image_url").asText();
         String profileImage = jsonNode.get("properties").get("thumbnail_image").asText();
-        System.out.println("카카오 profileImage : " + profileImage);
 
         Optional<User> user = userRepository.findByEmail(email);
         // 해당 이메일로 가입한 사용자가 없거나,
         // 해당 이메일로 가입한 사용자가 있지만 카카오 로그인 가입이 아니라면
         if(user.isEmpty() || (user.isPresent() && user.get().getLoginProvider().getProvider()!=Provider.kakao)){
-            System.out.println("가입된 사용자가 아니다");
+//            System.out.println("가입된 사용자가 아니다");
             //로컬 회원가입
             // UserJoinDTO(String email, String nickname, String password, long addressId, String profileUrl)
             return userService.join(new UserJoinDTO(email, nickname, id, 1000000000, profileImage), Provider.kakao);

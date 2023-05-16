@@ -142,10 +142,6 @@ public class UserService {
 
         String profileImage = provider.equals(Provider.local) ? Image.DefaultImage.getValue() : userJoinDTO.getProfileUrl();
 
-        System.out.println("<회원가입> "+ userJoinDTO.getEmail());
-        System.out.println("<회원가입> "+ userJoinDTO.getNickname());
-        System.out.println("<회원가입> "+ userJoinDTO.getProfileUrl());
-
         UserInfo userInfo = UserInfo.builder()
                 .stopDate(null)
                 .refreshToken(null)
@@ -283,6 +279,12 @@ public class UserService {
             User user = userRepository.findById(Long.parseLong(jwtProvider.getAccount(token)))
                         .orElseThrow(() -> new CustomException(NOT_FOUND_USER_INFO));
             return user.getId();
+    }
+
+    public User getUserByAT(String accessToken){
+        String token = accessToken.split(" ")[1].trim();
+        return userRepository.findById(Long.parseLong(jwtProvider.getAccount(token)))
+                .orElseThrow(() -> new CustomException(NOT_FOUND_USER_INFO));
     }
 
 }
