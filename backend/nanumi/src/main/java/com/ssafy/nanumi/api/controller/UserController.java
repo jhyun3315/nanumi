@@ -91,8 +91,7 @@ public class UserController {
 
     /* 회원 정보 조회 */
     @GetMapping("/users/{user-id}")
-    public CustomDataResponse<UserDetailDTO> findDetailUser( @RequestHeader("Authorization") String accessToken) {
-        long userId = userService.userByAT(accessToken);
+    public CustomDataResponse<UserDetailDTO> findDetailUser(@PathVariable("user-id") long userId ){
         return responseService.getDataResponse(userService.findDetailUser(userId), RESPONSE_SUCCESS);
     }
 
@@ -120,8 +119,7 @@ public class UserController {
 
     /* 거래 후기 조회 (남이 나에게) */
     @GetMapping("/users/reviews/{user-id}")
-    public CustomDataResponse<Page<ReviewReadDTO>> getAllReview( @RequestHeader("Authorization") String accessToken, @RequestParam("page") Integer page){
-        long userId = userService.userByAT(accessToken);
+    public CustomDataResponse<Page<ReviewReadDTO>> getAllReview( @PathVariable("user-id") long userId, @RequestParam("page") Integer page){
         User user = userRepository.findById(userId)
                 .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_USER));
         PageRequest pageRequest = PageRequest.of(page, 6);
@@ -130,8 +128,7 @@ public class UserController {
 
     /* 나눔한 상품 목록 조회 (모든 거래) */
     @GetMapping("/users/products/{user-id}")
-    public CustomDataResponse<Page<ProductAllDTO>> getAllReceiveProduct( @RequestHeader("Authorization") String accessToken, @RequestParam("page") Integer page){
-        long userId = userService.userByAT(accessToken);
+    public CustomDataResponse<Page<ProductAllDTO>> getAllReceiveProduct(@PathVariable("user-id") long userId,@RequestHeader("Authorization") String accessToken, @RequestParam("page") Integer page){
         User user = userRepository.findById(userId)
                 .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_USER));
         PageRequest pageRequest = PageRequest.of(page, 6);
@@ -140,8 +137,7 @@ public class UserController {
 
     /* 매칭 목록 (현재 진행중 "나눔" 목록) */
     @GetMapping("/users/matches/{user-id}")
-    public CustomDataResponse<Page<ProductAllDTO>> getMatchProduct( @RequestHeader("Authorization") String accessToken, @RequestParam("page") Integer page){
-        long userId = userService.userByAT(accessToken);
+    public CustomDataResponse<Page<ProductAllDTO>> getMatchProduct(@PathVariable("user-id") long userId, @RequestHeader("Authorization") String accessToken, @RequestParam("page") Integer page){
         User user = userRepository.findById(userId)
                 .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_USER));
 
@@ -156,8 +152,7 @@ public class UserController {
 
     /* 매칭 중인 상품 목록 조회 */
     @GetMapping("/users/matching/{user-id}")
-    public CustomDataResponse<Page<ProductAllDTO>> getMatchingeProduct( @RequestHeader("Authorization") String accessToken, @RequestParam("page") Integer page ){
-        long userId = userService.userByAT(accessToken);
+    public CustomDataResponse<Page<ProductAllDTO>> getMatchingeProduct( @PathVariable("user-id") long userId, @RequestParam("page") Integer page ){
         User user = userRepository.findById(userId)
                 .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_USER));
 
@@ -172,8 +167,7 @@ public class UserController {
 
     /* 나눔 받은 상품 목록 조회 */
     @GetMapping("/users/given/{user-id}")
-    public CustomDataResponse<Page<ProductAllDTO>> getGivenProduct( @RequestHeader("Authorization") String accessToken, @RequestParam("page") Integer page){
-        long userId = userService.userByAT(accessToken);
+    public CustomDataResponse<Page<ProductAllDTO>> getGivenProduct( @PathVariable("user-id") long userId,@RequestParam("page") Integer page){
         User user = userRepository.findById(userId)
                 .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_USER));
 
