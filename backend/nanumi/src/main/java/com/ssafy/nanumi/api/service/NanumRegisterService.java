@@ -30,7 +30,7 @@ public class NanumRegisterService {
         // 서버시간 확인.
         LocalTime currentTime = LocalTime.now();
         // 오후 2시에서 3시 사이 확인
-        if (!(currentTime.isAfter(LocalTime.of(12, 0)) & currentTime.isBefore(LocalTime.of(12, 5)))) {
+        if (!(currentTime.isAfter(LocalTime.of(12, 45)) & currentTime.isBefore(LocalTime.of(12, 50)))) {
             return MatchSuccessDto.builder()
                     .result(false)
                     .resultMessage("상품 나눔 시간이 아닙니다.")
