@@ -10,6 +10,7 @@ import javax.persistence.Column;
 import javax.persistence.EntityListeners;
 import javax.persistence.MappedSuperclass;
 import javax.transaction.Transactional;
+import java.time.Instant;
 import java.time.LocalDateTime;
 
 @Getter
@@ -19,7 +20,7 @@ public class BaseTimeEntity {
 
     @CreatedDate
     @Column(name = "create_date", columnDefinition = "TIMESTAMP", updatable = false)
-    private LocalDateTime createDate;
+    private Instant createDate = Instant.now();
 
     @LastModifiedDate
     @Column(name = "update_date", columnDefinition = "TIMESTAMP")
