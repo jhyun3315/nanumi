@@ -52,7 +52,7 @@ public class UserService {
         LoginProvider loginProvider = loginProviderRepository
                 .findByProvider(userLoginDTO.getProvider()).orElseThrow(() -> new CustomException(NOT_FOUND_LOGIN_PROVIDER));
 
-        User user = userRepository.findByEmail(userLoginDTO.getEmail()).orElseThrow(() -> new CustomException(NOT_FOUND_USER));
+        User user = userRepository.findByEmailAndLoginProvider(userLoginDTO.getEmail(), loginProvider).orElseThrow(() -> new CustomException(NOT_FOUND_USER));
         // Access Token
         String AT = jwtProvider.createAccessToken(""+user.getId(), user.getTiers());
         // Refresh Token
