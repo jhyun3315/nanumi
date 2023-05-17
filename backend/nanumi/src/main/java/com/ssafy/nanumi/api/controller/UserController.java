@@ -8,6 +8,7 @@ import com.ssafy.nanumi.api.request.UserLoginDTO;
 import com.ssafy.nanumi.api.response.*;
 import com.ssafy.nanumi.api.service.UserService;
 import com.ssafy.nanumi.common.SearchPageReq;
+import com.ssafy.nanumi.common.provider.Provider;
 import com.ssafy.nanumi.config.response.CustomDataResponse;
 import com.ssafy.nanumi.config.response.CustomResponse;
 import com.ssafy.nanumi.config.response.ResponseService;
@@ -42,13 +43,14 @@ public class UserController {
     /* 로컬 회원가입 */
     @PostMapping("/users/join")
     public CustomResponse join(@RequestBody UserJoinDTO userJoinDTO) {
-        userService.join(userJoinDTO);
+        userService.join(userJoinDTO, Provider.local);
         return responseService.getSuccessResponse();
     }
 
     /* 로컬 로그인 */
     @PostMapping("/users/login")
     public CustomDataResponse login(@RequestBody UserLoginDTO userLoginDTO){
+        userLoginDTO.ifLocalLogin();
         UserLoginResDTO userLoginResDTO = userService.login(userLoginDTO);
         return responseService.getDataResponse(userLoginResDTO, RESPONSE_SUCCESS);
     }

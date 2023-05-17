@@ -1,44 +1,32 @@
 package com.ssafy.nanumi.api.service;
 
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.ssafy.nanumi.api.request.TokenInfoDTO;
 import com.ssafy.nanumi.api.request.UserJoinDTO;
 import com.ssafy.nanumi.api.request.UserLoginDTO;
 import com.ssafy.nanumi.api.response.*;
 import com.ssafy.nanumi.common.Image;
 import com.ssafy.nanumi.common.provider.Provider;
-import com.ssafy.nanumi.config.entity.BaseTimeEntity;
 import com.ssafy.nanumi.config.jwt.JpaUserDetailsService;
 import com.ssafy.nanumi.config.jwt.JwtProvider;
 import com.ssafy.nanumi.config.response.exception.CustomException;
 import com.ssafy.nanumi.db.entity.*;
 import com.ssafy.nanumi.db.repository.*;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.MalformedJwtException;
-import io.jsonwebtoken.UnsupportedJwtException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.mail.MessagingException;
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Collections;
-import java.util.Date;
 import java.util.Objects;
-import java.util.UUID;
 
 import static com.ssafy.nanumi.config.response.exception.CustomExceptionStatus.*;
 
@@ -60,9 +48,11 @@ public class UserService {
     private String bucket;
     private final AmazonS3 amazonS3;
 
-
     public UserLoginResDTO login(UserLoginDTO userLoginDTO){
-        User user = userRepository.findByEmail(userLoginDTO.getEmail()).orElseThrow(() -> new CustomException(NOT_FOUND_USER));
+        LoginProvider loginProvider = loginProviderRepository
+                .findByProvider(userLoginDTO.getProvider()).orElseThrow(() -> new CustomException(NOT_FOUND_LOGIN_PROVIDER));
+
+        User user = userRepository.findByEmailAndLoginProvider(userLoginDTO.getEmail(), loginProvider).orElseThrow(() -> new CustomException(NOT_FOUND_USER));
         // Access Token
         String AT = jwtProvider.createAccessToken(""+user.getId(), user.getTiers());
         // Refresh Token
@@ -74,8 +64,10 @@ public class UserService {
         if(userInfo.getVisitCount()==0) userInfo.updateVisitCount(userInfo.getVisitCount()+1);
 
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+
         // 입력받은 비밀번호와 저장된 비밀번호 비교
-        if(encoder.matches(userLoginDTO.getPassword(), user.getPassword())){
+        if (loginProvider.getProvider().equals(Provider.kakao) || encoder.matches(userLoginDTO.getPassword(), user.getPassword())) {
+
             if(userLoginDTO.getFcmToken()==null) throw new CustomException(NOT_FOUND_FCMTOKEN);
 
             user.updateFcmToken(userLoginDTO.getFcmToken());
@@ -122,50 +114,50 @@ public class UserService {
         }
     }
 
-    public void join(UserJoinDTO userJoinDTO) {
-        LoginProvider loginProvider = loginProviderRepository.findByProvider(Provider.local)
+    public User join(UserJoinDTO userJoinDTO,Provider provider) {
+
+        LoginProvider loginProvider = loginProviderRepository.findByProvider(provider)
                 .orElseThrow(() -> new CustomException(NOT_FOUND_LOGIN_PROVIDER));
 
+        Address address = addressRepository.findById(
+                userJoinDTO.getAddressId()).orElseThrow(() -> new CustomException(NOT_FOUND_ADDRESS_CODE));
+
         String email = userJoinDTO.getEmail();
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
-        if( userRepository.findByEmail(email).isPresent() ){
-            throw new CustomException(RESPONSE_EMAIL_EXISTED);
-        }else{
-            UserInfo userInfo = UserInfo.builder()
-                    .stopDate(null)
-                    .refreshToken(null)
-                    .build();
+        if (userRepository.findByEmailAndLoginProvider(email, loginProvider).isPresent())
+            throw new CustomException(RESPONSE_ACCOUNT_EXISTED);
 
-            UserInfo userInfoSaved  = userInfoRepository.save(userInfo);
-            if(addressRepository.findById(userJoinDTO.getAddressId()).isEmpty()){
-                throw new CustomException(NOT_FOUND_ADDRESS_CODE);
-            }else {
-                User user = User.builder()
-                        .email(userJoinDTO.getEmail())
-                        .nickname(userJoinDTO.getNickname())
-                        .profileUrl(Image.DefaultImage.getValue())
-                        .password(passwordEncoder.encode(userJoinDTO.getPassword()))
-                        .loginProvider(loginProvider)
-                        .address(addressRepository.getById(userJoinDTO.getAddressId()))
-                        .userInfo(userInfoSaved)
-                        .build();
+        String profileImage = provider.equals(Provider.local) ? Image.DefaultImage.getValue() : userJoinDTO.getProfileUrl();
 
-                // Security 관리자 권한 추가
-                if (userJoinDTO.getEmail().equals("admin@nanumi.com")) {
-                    user.setRoles(Collections.singletonList(Authority.builder().name("ROLE_관리자").build()));
-                    userRepository.save(user);
-                    userInfo.updateTier("관리자");
-                }
-                else {
-                    // Security 일반사용자 권한 추가
-                    user.setRoles(Collections.singletonList(Authority.builder().name("ROLE_새싹").build()));
-                    userRepository.save(user);
-                }
+        UserInfo userInfo = UserInfo.builder()
+                .stopDate(null)
+                .refreshToken(null)
+                .tier("새싹")
+                .build();
 
+        UserInfo userInfoSaved = userInfoRepository.save(userInfo);
 
-            }
+        User user = User.builder()
+                .email(email)
+                .nickname(userJoinDTO.getNickname())
+                .profileUrl(profileImage)
+                .password(encoder.encode(userJoinDTO.getPassword()))
+                .loginProvider(loginProvider)
+                .address(address)
+                .userInfo(userInfoSaved)
+                .build();
+
+        // Security 관리자 권한 추가
+        if (userJoinDTO.getEmail().equals("admin@nanumi.com")) {
+            user.setRoles(Collections.singletonList(Authority.builder().name("ROLE_관리자").build()));
+
+            userInfo.updateTier("관리자");
+        } else {
+            // Security 일반사용자 권한 추가
+            user.setRoles(Collections.singletonList(Authority.builder().name("ROLE_새싹").build()));
         }
+        return userRepository.save(user);
     }
 
     public EmailCheckResDTO checkEmail(String email) throws MessagingException, IOException {
@@ -275,6 +267,12 @@ public class UserService {
             User user = userRepository.findById(Long.parseLong(jwtProvider.getAccount(token)))
                         .orElseThrow(() -> new CustomException(NOT_FOUND_USER_INFO));
             return user.getId();
+    }
+
+    public User getUserByAT(String accessToken){
+        String token = accessToken.split(" ")[1].trim();
+        return userRepository.findById(Long.parseLong(jwtProvider.getAccount(token)))
+                .orElseThrow(() -> new CustomException(NOT_FOUND_USER_INFO));
     }
 
 }

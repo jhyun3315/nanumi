@@ -1,5 +1,6 @@
 package com.ssafy.nanumi.api.request;
 
+import com.ssafy.nanumi.common.provider.Provider;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -10,13 +11,17 @@ public class UserLoginDTO {
     private String email;
     private String password;
     private String fcmToken;
-
+    private Provider provider;
 
     @Builder
-    public UserLoginDTO(String email, String password, String fcmToken) {
+    public UserLoginDTO(String email, String password, String fcmToken, Provider provider) {
         this.email = email;
         this.password = password;
         this.fcmToken = fcmToken;
+        this.provider = provider;
+    }
 
+    public void ifLocalLogin(){
+        this.provider = Provider.local;
     }
 }
