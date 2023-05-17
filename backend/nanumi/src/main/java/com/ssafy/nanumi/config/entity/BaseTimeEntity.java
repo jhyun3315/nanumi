@@ -20,7 +20,7 @@ public class BaseTimeEntity {
 
     @CreatedDate
     @Column(name = "create_date", columnDefinition = "TIMESTAMP", updatable = false)
-    private Instant createDate = Instant.now();
+    private LocalDateTime createDate;
 
     @LastModifiedDate
     @Column(name = "update_date", columnDefinition = "TIMESTAMP")
