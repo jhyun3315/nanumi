@@ -35,8 +35,10 @@ const PostUpdateForm = ({navigation, productId}) => {
 
   const [title, setTitle] = useState(data?.result?.name);
   const [description, setDescription] = useState(data?.result?.content);
+  const [isLoad, setIsLoad] = useState(false);
+
   const isDisable =
-    !title || !selectedCategory || !description || !images.length > 0;
+    !title || !selectedCategory || !description || !images.length > 0 || isLoad;
   const handleCategorySelected = useCallback((categoryId, categoryName) => {
     setSelectedCategory({categoryId, categoryName});
   }, []);
@@ -89,7 +91,7 @@ const PostUpdateForm = ({navigation, productId}) => {
 
   const handleUpdateProduct = async () => {
     const formData = new FormData();
-
+    setIsLoad(true);
     images.forEach(image => {
       if (image.uri.startsWith('/storage')) {
         formData.append('images', {

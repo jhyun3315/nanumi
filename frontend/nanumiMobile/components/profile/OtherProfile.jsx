@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -23,6 +23,7 @@ const {width} = Dimensions.get('window');
 
 const OtherProfile = ({navigation, userId}) => {
   const [user] = useRecoilState(userState);
+  const [tier, setTier] = useState(user?.tier);
   const {data, error, isLoading, refetch} = useQuery(
     ['profile', userId],
     () => requestGetProfile(userId),
@@ -51,8 +52,15 @@ const OtherProfile = ({navigation, userId}) => {
             />
             <View style={styles.tier}>
               <Image
-                source={assets.badge}
-                style={{width: SIZES.extraLarge, height: SIZES.extraLarge}}
+                source={
+                  tier === '새싹'
+                    ? assets.bronze
+                    : tier === '나무'
+                    ? assets.silver
+                    : assets.gold
+                }
+                resizeMode="contain"
+                style={styles.badgeImage}
               />
             </View>
           </View>
@@ -163,6 +171,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: SIZES.large,
     paddingVertical: SIZES.base * 2,
+  },
+  badgeImage: {
+    width: 24,
+    height: 24,
   },
   profileImage: {
     width: 85,

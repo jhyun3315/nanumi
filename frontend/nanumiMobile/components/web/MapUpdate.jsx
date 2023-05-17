@@ -64,23 +64,21 @@ const MapUpdate = ({navigation}) => {
       addressId: state.newCode,
     });
 
-    if (isMounted) {
-      if (response.code === 200) {
-        const asyncUser = await AsyncStorage.getItem('user');
-        const parsedUser = JSON.parse(asyncUser);
-        const updateUser = {
-          ...parsedUser,
-          addressId: response.result.addressId,
-          si: response.result.si,
-          gugun: response.result.gugun,
-          dong: response.result.dong,
-        };
-        await AsyncStorage.setItem('user', JSON.stringify(updateUser));
-        setUser(updateUser);
-        navigation.navigate('BottomTabs', {screen: 'Home'});
-      } else {
-        showErrorAlert(response.message, navigation);
-      }
+    if (response.code === 200) {
+      const asyncUser = await AsyncStorage.getItem('user');
+      const parsedUser = JSON.parse(asyncUser);
+      const updateUser = {
+        ...parsedUser,
+        addressId: response.result.addressId,
+        si: response.result.si,
+        gugun: response.result.gugun,
+        dong: response.result.dong,
+      };
+      await AsyncStorage.setItem('user', JSON.stringify(updateUser));
+      setUser(updateUser);
+      navigation.navigate('BottomTabs', {screen: 'Home'});
+    } else {
+      showErrorAlert(response.message, navigation);
     }
   };
 

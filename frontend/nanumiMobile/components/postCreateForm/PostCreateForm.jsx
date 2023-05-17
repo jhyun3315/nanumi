@@ -20,8 +20,13 @@ const PostCreateForm = () => {
   const [images, setImages] = useState([]);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const isDisable =
-    !title || !selectedCategory || !description || !images.length > 0;
+    !title ||
+    !selectedCategory ||
+    !description ||
+    !images.length > 0 ||
+    isLoading;
 
   const handleCategorySelected = useCallback((categoryId, categoryName) => {
     setSelectedCategory({categoryId, categoryName});
@@ -70,6 +75,7 @@ const PostCreateForm = () => {
 
   const handleCreateProduct = async () => {
     const formData = new FormData();
+    setIsLoading(true);
 
     images.forEach(image => {
       formData.append('images', {
@@ -82,7 +88,6 @@ const PostCreateForm = () => {
     formData.append('name', title);
     formData.append('content', description);
     formData.append('categoryId', selectedCategory.categoryId);
-
     try {
       const response = await requestCreateProduct(user.userId, formData);
       if (response.code === 200) {

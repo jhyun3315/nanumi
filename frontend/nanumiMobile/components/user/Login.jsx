@@ -152,7 +152,8 @@ const Login = () => {
                 marginHorizontal: SIZES.base,
                 alignItems: 'center',
                 justifyContent: 'center',
-              }}>
+              }}
+              onPress={() => navigation.navigate('KakaoLogin')}>
               <Image
                 source={require('../../assets/images/kakao.png')}
                 style={{

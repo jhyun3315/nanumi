@@ -26,6 +26,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {COLORS} from '../constants';
 import {useRecoilState} from 'recoil';
 import {userState} from '../state/user';
+import KakaoLogin from '../components/web/KakaoLogin';
 
 const Stack = createNativeStackNavigator();
 
@@ -100,6 +101,7 @@ const StackNavigator = () => {
         <Stack.Screen name="MapUpdate" component={MapUpdateScreen} />
         <Stack.Screen name="ProfileUpdate" component={ProfileUpdateScreen} />
         <Stack.Screen name="OtherProfile" component={OtherProfileScreen} />
+        <Stack.Screen name="KakaoLogin" component={KakaoLogin} />
         <Stack.Screen
           name="MatchingProduct"
           component={MatchingProductScreen}

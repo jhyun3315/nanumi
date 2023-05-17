@@ -17,6 +17,7 @@ const Search = () => {
   const [words, setWords] = useState('');
 
   const handleWords = text => {
+    if (/^\s*$/.test(text)) return;
     setWords(text);
   };
 
@@ -79,6 +80,7 @@ const styles = StyleSheet.create({
   },
   searchInput: {
     flex: 1,
+    color: COLORS.primary,
   },
 });
 
