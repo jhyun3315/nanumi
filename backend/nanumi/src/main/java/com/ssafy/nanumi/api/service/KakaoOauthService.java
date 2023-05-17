@@ -21,9 +21,11 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Optional;
 
-import static com.ssafy.nanumi.config.response.exception.CustomExceptionStatus.NOT_FOUND_LOGIN_PROVIDER;
+import static com.ssafy.nanumi.config.response.exception.CustomExceptionStatus.*;
 
 
 @Service
@@ -44,6 +46,7 @@ public class KakaoOauthService {
     private final UserRepository userRepository;
     private final LoginProviderRepository loginProviderRepository;
     private final UserService userService;
+
 
 //    public HttpStatus logout(String accessToken){
 //        // accessToken 으로 사용자 정보 가져옴
@@ -79,9 +82,10 @@ public class KakaoOauthService {
         return "https://kauth.kakao.com/oauth/authorize?client_id="+restApiKey+"&redirect_uri="+redirctURI+"&state="+fcmToken+"&response_type=code";
     }
 
-    public UserLoginResDTO kakaoLogin(String req, String fcmToken) throws JsonProcessingException {
+    public UserLoginResDTO kakaoLogin(String code, String fcmToken) throws JsonProcessingException {
+
         // 1. "인가 코드"로 "액세스 토큰" 요청 -> 프론트에서 진행해서 넘겨줌
-        String accessToken = getAccessToken(req);
+        String accessToken = getAccessToken(code);
 
         // 2. 토큰으로 카카오 API 호출 및 최초 로그인시 회원가입 처리
         User user = getKakaoUserInfo(accessToken);
