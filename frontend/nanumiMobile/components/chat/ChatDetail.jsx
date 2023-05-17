@@ -158,6 +158,7 @@ const ChatDetail = ({
 
   const handleCloseAndBack = () => {
     hideModal();
+    navigation.goBack();
   };
 
   const handleCloseBottomModal = () => {
