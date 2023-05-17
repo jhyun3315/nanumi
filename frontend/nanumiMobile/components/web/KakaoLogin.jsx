@@ -5,6 +5,7 @@ import {useRecoilState} from 'recoil';
 import {userState} from '../../state/user';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigation} from '@react-navigation/native';
+import {API_END_POINT} from '../../api/constant';
 
 const INJECTED_JAVASCRIPT = `window.ReactNativeWebView.postMessage(document.documentElement.innerText)`;
 
@@ -29,6 +30,7 @@ const KakaoLogin = () => {
     if (event.nativeEvent.data.length !== 0) {
       if (event.nativeEvent.data.includes('"code"')) {
         const data = JSON.parse(event.nativeEvent.data);
+        console.log(data);
         if (data.result.dong === '') {
           setUser(data.result);
           await AsyncStorage.setItem('user', JSON.stringify(data.result));
@@ -57,7 +59,7 @@ const KakaoLogin = () => {
     <View style={{flex: 1}}>
       <WebView
         source={{
-          uri: `https://kauth.kakao.com/oauth/authorize?client_id=059f792c853c89a41b38b2f02b2dacec&redirect_uri=https://k8b103.p.ssafy.io/api/oauth/kakao/callback&state=${fcmToken}&response_type=code`,
+          uri: `https://kauth.kakao.com/oauth/authorize?client_id=059f792c853c89a41b38b2f02b2dacec&redirect_uri=${API_END_POINT}/oauth/kakao/callback&state=${fcmToken}&response_type=code`,
         }}
         injectedJavaScript={INJECTED_JAVASCRIPT}
         onMessage={handleMessage}
