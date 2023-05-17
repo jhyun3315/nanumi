@@ -1,20 +1,17 @@
 package com.ssafy.nanumi.api.service;
 
-import com.amazonaws.services.s3.AmazonS3;
 import com.ssafy.nanumi.api.request.TokenInfoDTO;
 import com.ssafy.nanumi.api.request.UserJoinDTO;
 import com.ssafy.nanumi.api.request.UserLoginDTO;
 import com.ssafy.nanumi.api.response.*;
 import com.ssafy.nanumi.common.Image;
 import com.ssafy.nanumi.common.provider.Provider;
-import com.ssafy.nanumi.config.jwt.JpaUserDetailsService;
 import com.ssafy.nanumi.config.jwt.JwtProvider;
 import com.ssafy.nanumi.config.response.exception.CustomException;
 import com.ssafy.nanumi.db.entity.*;
 import com.ssafy.nanumi.db.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -32,27 +29,23 @@ import static com.ssafy.nanumi.config.response.exception.CustomExceptionStatus.*
 
 @Slf4j
 @Service
-@Transactional(readOnly = false)
+@Transactional
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
     private final UserInfoRepository userInfoRepository;
     private final AddressRepository addressRepository;
-    private final ProductRepository productRepository;
     private final LoginProviderRepository loginProviderRepository;
-    private final JpaUserDetailsService userDetailsService;
     private final EmailService emailService;
     private final S3Service s3Service;
     private final JwtProvider jwtProvider;
-    @Value("${cloud.aws.s3.bucket}")
-    private String bucket;
-    private final AmazonS3 amazonS3;
 
     public UserLoginResDTO login(UserLoginDTO userLoginDTO){
         LoginProvider loginProvider = loginProviderRepository
                 .findByProvider(userLoginDTO.getProvider()).orElseThrow(() -> new CustomException(NOT_FOUND_LOGIN_PROVIDER));
 
         User user = userRepository.findByEmailAndLoginProvider(userLoginDTO.getEmail(), loginProvider).orElseThrow(() -> new CustomException(NOT_FOUND_USER));
+
         // Access Token
         String AT = jwtProvider.createAccessToken(""+user.getId(), user.getTiers());
         // Refresh Token
