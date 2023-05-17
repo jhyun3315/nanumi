@@ -41,35 +41,35 @@ public class KakaoOauthService {
     private final UserRepository userRepository;
     private final UserService userService;
 
-    public HttpStatus logout(String accessToken){
-        // accessToken 으로 사용자 정보 가져옴
-        User user = userService.getUserByAT(accessToken);
-
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-
-        HashMap<String, String> request = new HashMap<>();
-        request.put("target_id_type","user_id");
-        request.put("target_id", String.valueOf(user.getId()));
-
-        // 카카오 로그아웃 요청을 위한 request 생성
-        // HTTP Header 생성
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", "KakaoAK " + adminKey);
-        headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
-
-        // HTTP 요청 보내기
-        HttpEntity<MultiValueMap<String, String>> kakaoUserInfoRequest = new HttpEntity<>(headers);
-        RestTemplate rt = new RestTemplate();
-        ResponseEntity<String> response = rt.exchange(
-                "https://kapi.kakao.com/v1/user/logout",
-                HttpMethod.POST,
-                kakaoUserInfoRequest,
-                String.class
-        );
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        return response.getStatusCode();
-    }
+//    public HttpStatus logout(String accessToken){
+//        // accessToken 으로 사용자 정보 가져옴
+//        User user = userService.getUserByAT(accessToken);
+//
+//        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+//
+//        HashMap<String, String> request = new HashMap<>();
+//        request.put("target_id_type","user_id");
+//        request.put("target_id", String.valueOf(user.getId()));
+//
+//        // 카카오 로그아웃 요청을 위한 request 생성
+//        // HTTP Header 생성
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.add("Authorization", "KakaoAK " + adminKey);
+//        headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+//
+//        // HTTP 요청 보내기
+//        HttpEntity<MultiValueMap<String, String>> kakaoUserInfoRequest = new HttpEntity<>(headers);
+//        RestTemplate rt = new RestTemplate();
+//        ResponseEntity<String> response = rt.exchange(
+//                "https://kapi.kakao.com/v1/user/logout",
+//                HttpMethod.POST,
+//                kakaoUserInfoRequest,
+//                String.class
+//        );
+//
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        return response.getStatusCode();
+//    }
 
     public String loginPage(String fcmToken) {
         return "https://kauth.kakao.com/oauth/authorize?client_id="+restApiKey+"&redirect_uri="+redirctURI+"&state="+fcmToken+"&response_type=code";

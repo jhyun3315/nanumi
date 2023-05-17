@@ -41,10 +41,10 @@ public class OauthController {
         return responseService.getDataResponse(kakaoOauthService.kakaoLogin(code, fcmToken),RESPONSE_SUCCESS);
     }
 
-    @PostMapping("/logout")
-    public CustomResponse kakaoLogout(@RequestHeader("Authorization") String accessToken){
-        HttpStatus status = kakaoOauthService.logout(accessToken);
-        System.out.println("< kakao logout response statue > "+status.value());
-        return responseService.getSuccessResponse();
-    }
+//    @PostMapping("/logout")
+//    public CustomResponse kakaoLogout(@RequestHeader("Authorization") String accessToken){
+//        HttpStatus status = kakaoOauthService.logout(accessToken);
+//        System.out.println("< kakao logout response statue > "+status.value());
+//        return responseService.getSuccessResponse();
+//    }
 }
