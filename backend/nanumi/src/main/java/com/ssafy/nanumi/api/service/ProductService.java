@@ -52,14 +52,9 @@ public class ProductService {
         Address address = addressRepository.findById(user.getAddress().getId())
                 .orElseThrow( () ->  new CustomException(NOT_FOUND_ADDRESS_CODE));
 
-        System.out.println(words);
-        System.out.println(URLDecoder.decode(words, StandardCharsets.UTF_8));
-
         // 검색어가 없다면 전체 조회
-        if(words==null) return findProductAll(userId, pageRequest);
+        if(words.equals("")) return findProductAll(userId, pageRequest);
 
-        // injection 방지
-//        if(words.matches(".*[<>&\"#%].*")) throw new CustomException(REQUEST_ERROR);
 
         // 차단자 조회
         List<Long> blockers = blacklistRepository.findBlockerId(user.getId());
