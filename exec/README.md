@@ -91,20 +91,18 @@
 <summary>상세 기술스택 및 버전</summary>
 <div markdown="1">
 
-| 구분     | 기술스택   | 상세내용           | 버전    |
-| -------- | ---------- | ------------------ | ------- |
-| FrontEnd | HTML5      |                    | -       |
-|          | CSS3       |                    | -       |
-|          | React      | React              | 8.19.3  |
-|          |            | React-Router-Dom   | 8.19.3  |
-|          |            | React-Query        | 3.39.3  |
-|          |            | Recoil             | 8.19.3  |
-|          |            | Styled-Component   | 5.3.6   |
-|          | TypeScript |                    | 4.9.4   |
-|          | Node.js    |                    | 16.19.0 |
-|          | WebRTC     |                    | -       |
-|          | WebSocket  |                    | -       |
-|          | IDE        | Visual Studio Code | -       |
+| 구분     | 기술스택      | 상세내용            | 버전    |
+| -------- | ------------ | ------------------ | ------- |
+| FrontEnd | HTML5        |                    | -       |
+|          | Tailwind CSS |                    | -       |
+|          | Typescript   |                    | -       |
+|          | React        | React              | 17.0.2  |
+|          |              | React-Router-Dom   | 18.2.0  |
+|          |              | React-Query        | 4.29.5  |
+|          |              | Recoil             | 0.7.7   |
+|          |              | Sockjs-Client      | 1.6.1   |
+|          | React-Native | React-Native       | 0.68    |
+|          | IDE          | Visual Studio Code | -       |
 
 </div>
 </details>
@@ -205,9 +203,9 @@ main
 | ------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
 | [바로가기](https://www.figma.com/file/MAQCt5mQ3sWZnZODE4GpO2/%EB%82%98%EB%88%84%EB%AF%B8?type=design&node-id=0-1) | [바로가기](https://raspy-slicer-570.notion.site/BE-API-de404cf20d6a43cfac442d5e7e577f74) | [바로가기](https://raspy-slicer-570.notion.site/bad6048352d24845a799f5ce77677002) |
 
-### 프로젝트 아키텍쳐
+### 시스템 아키텍처
 
-![system architecture](https://github.com/yeonnno/Algorithm/assets/109949649/97b07b20-2d34-4d4d-8833-bd5e9feb1ced)
+![system architecture](https://github.com/yeonnno/Algorithm/assets/109949649/6666110b-298e-45b0-8f43-e59b470e6a72)
 
 ### ERD
 
