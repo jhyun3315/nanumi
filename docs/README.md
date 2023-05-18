@@ -42,11 +42,11 @@
             <img src="https://avatars.githubusercontent.com/u/66712534?v=4" width="140px" /> <br><br> 😶 한상준 <br>(Front-End) </a> <br></td>
     </tr>
     <tr>
-        <td align="center">REST API<br/>S3<br/>Redis<br/></td>
+        <td align="center">REST API<br/>Redis<br/>S3<br/></td>
         <td align="center">REST API<br/>WebSocket<br/></td>
         <td align="center">REST API<br/>CI/CD<br/>Database<br/></td>
         <td align="center">REST API<br/>CI/CD<br/>OAuth<br/></td>
-        <td align="center">Spring Security<br/>JWT<br/></td>
+        <td align="center">REST API<br/>Spring Security<br/></td>
         <td align="center">UI/UX<br/>React<br/>WebSocket<br/></td>
     </tr>
 </table>
@@ -114,15 +114,18 @@
 
 | 구분    | 기술스택      | 상세내용        | 버전     |
 | ------- | ------------- | --------------- | -------- |
-| BackEnd | DB            | MySQL           | 8.0.30   |
-|         |               | JPA             | -        |
-|         | Java          | Zulu            | 11.0.17  |
+| BackEnd | JAVA          | JDK             | 11.0.17  |
 |         | Spring        | Spring          | -        |
-|         |               | Spring Boot     | 2.7.8    |
-|         |               | Spring Security | 5.7.6    |
+|         |               | Spring Boot     | 2.7.10   |
+|         |               | Spring Security | 5.6.2    |
+|         | DB            | MariaDB         | 10.6.12  |
+|         |               | MongoDB         | 6.0.5    |
+|         |               | Redis           | 3.17.4   |
+|         |               | Redisson        | 3.0.504  |
 |         | API Docs      | Swagger2        | 3.0.0    |
-|         | WebRTC        |                 | -        |
 |         | Cloud Storage | AWS S3          | -        |
+|         | Monitoring    | Grafana         | 9.5.2    |
+|         |               | Prometheus      | 2.44.0   |
 |         | IDE           | IntelliJ        | 2022.3.1 |
 
 </div>
@@ -134,25 +137,30 @@
 
 - 커밋 컨벤션
 
-```
-    Feat: 새로운 기능 추가
-    Fix: 버그 수정
-    Comment: 필요한 주석 변경 및 추가
-    Docs: 문서 수정
-    Test: 테스트 코드 추가
-    Refactor: 코드 리펙토링
-```
+| 태그     | 설명                          | 예시                            |
+| -------- | ----------------------------- | ------------------------------- |
+| Feat     | 새로운 기능을 추가            | Feat : 로그인 기능 추가         |
+| Fix      | 파일, 코드, 버그 수정/삭제    | Fix : 차단 목록 DTO 수정        |
+| Design   | 사용자 UI 디자인 추가 및 변경 | Design : 네비바 색깔 수정       |
+| Comment  | 필요한 주석 추가 및 변경      | Comment : 로그인 주석 추가      |
+| Docs     | 문서 수정                     | Docs : README.md 수정           |
+| Test     | 테스트 코드 추가              | Test : 로그인 테스트            |
+| Refactor | 프로덕션 코드 리팩토링        | Refactor : Header 컴포넌트 분리 |
 
 - 브랜치 전략
 
 ```
 main
  │
- ├─be_develop
- │      └─be_feature_<기능명>
- │
- └─fe_develop
-        └─fe_feature_<기능명>
+ └─develop
+      |
+      ├──be_dev
+      |     |
+      |     └─be_feature_<기능명>
+      |
+      └─-fe_dev
+            |
+            └─fe_feature_<기능명>
 ```
 
 ### Notion
