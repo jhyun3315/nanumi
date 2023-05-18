@@ -52,8 +52,11 @@ public class ProductService {
         Address address = addressRepository.findById(user.getAddress().getId())
                 .orElseThrow( () ->  new CustomException(NOT_FOUND_ADDRESS_CODE));
 
-        // 검색어가 없다면 전체 조회
-        if(words.equals("")) return findProductAll(userId, pageRequest);
+        // 검색어 디코딩
+//        words = URLDecoder.decode(words, StandardCharsets.UTF_8);
+
+        // 검색어가 없다면 빈 페이지 반환
+        if(words.equals("") || words==null)  return Page.empty(pageRequest);
 
 
         // 차단자 조회
