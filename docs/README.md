@@ -165,10 +165,10 @@ main
 
 ### Notion
 
-![notion](https://user-images.githubusercontent.com/109949649/219284776-edef859e-782a-4f2b-9603-427d1698da6b.PNG)
+![notion]()
 
 - 일정관리
-  ![plan](https://user-images.githubusercontent.com/109949649/219297987-8a6801ae-cfea-44a6-ad2d-34391f054613.PNG)
+  ![plan]()
 
 ### JIRA
 
@@ -191,7 +191,7 @@ main
   ```
 
 - 번다운차트  
-  <img src="https://user-images.githubusercontent.com/109949649/219249394-e6f0419a-0c11-49d4-baa7-ba308d9bdfbc.PNG" width=1000px height=400px>
+  <img src="" width=1000px height=400px>
 
 ## 📃 **프로젝트 산출물**
 
@@ -203,8 +203,8 @@ main
 
 ### 프로젝트 아키텍쳐
 
-![system architecture](https://user-images.githubusercontent.com/109949649/219231301-e4cf2a26-34b1-4559-8cce-4cbf0d37d54b.png)
+![system architecture]()
 
 ### ERD
 
-![ERD](https://user-images.githubusercontent.com/109949649/219233985-d465a910-efb4-4df8-b657-9f9ef129392c.png)
+![ERD]()
