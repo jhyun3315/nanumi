@@ -44,7 +44,8 @@ public class UserService {
         LoginProvider loginProvider = loginProviderRepository
                 .findByProvider(userLoginDTO.getProvider()).orElseThrow(() -> new CustomException(NOT_FOUND_LOGIN_PROVIDER));
 
-        User user = userRepository.findByEmailAndLoginProvider(userLoginDTO.getEmail(), loginProvider).orElseThrow(() -> new CustomException(NOT_FOUND_USER));
+        User user = userRepository.findByEmailAndLoginProvider(userLoginDTO.getEmail(), loginProvider)
+                .orElseThrow(() -> new CustomException(NOT_FOUND_USER));
 
         // Access Token
         String AT = jwtProvider.createAccessToken(""+user.getId(), user.getTiers());
@@ -176,21 +177,14 @@ public class UserService {
        }
     }
 
-    public AddressResDTO getUserAddress(long user_id){
-        if(userRepository.findById(user_id).isEmpty()){
-            throw new CustomException(NOT_FOUND_USER_INFO);
-        }else{
-            User user = userRepository.getById(user_id);
+    public AddressResDTO getUserAddress(long userId){
+            User user = userRepository.findById(userId)
+                    .orElseThrow(() -> new CustomException(NOT_FOUND_USER_INFO));
+
             long addressCode = user.getAddress().getId();
-
-            if(addressRepository.findById(addressCode).isEmpty()){
-                throw new CustomException(NOT_FOUND_ADDRESS_CODE);
-            }else{
-                Address address = addressRepository.getById(addressCode);
+            Address address = addressRepository.findById(addressCode)
+                    .orElseThrow( () -> new CustomException(NOT_FOUND_ADDRESS_CODE));
                 return new AddressResDTO(address);
-            }
-
-        }
     }
 
     public UserDetailDTO findDetailUser(long userId) {
