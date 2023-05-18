@@ -162,9 +162,11 @@ main
       |     |
       |     └─be_feature_<기능명>
       |
-      └─-fe_dev
-            |
-            └─fe_feature_<기능명>
+      ├──fe_dev
+      |     |
+      |     └─fe_feature_<기능명>
+      |
+      └──docs_dev
 ```
 
 ### Notion
@@ -201,7 +203,7 @@ main
 
 | 와이어프레임                                                        | API 명세서                                                                                   | 기능정의서                                                                                                               |
 | ------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
-| [바로가기](https://www.figma.com/file/OhPubKRknLzypGwBBso5bS/SMILE) | [바로가기](https://delicate-utensil-152.notion.site/BE-API-a429a1cc5d1e46a49e69532f14ef7bd5) | [바로가기](https://delicate-utensil-152.notion.site/17a345f0215446c1b837221700de8b35?v=1533dd0fe6864cd0928d782cb1af4075) |
+| [바로가기](https://www.figma.com/file/MAQCt5mQ3sWZnZODE4GpO2/%EB%82%98%EB%88%84%EB%AF%B8?type=design&node-id=0-1) | [바로가기](https://raspy-slicer-570.notion.site/BE-API-de404cf20d6a43cfac442d5e7e577f74) | [바로가기](https://raspy-slicer-570.notion.site/bad6048352d24845a799f5ce77677002) |
 
 ### 프로젝트 아키텍쳐
 
