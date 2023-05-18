@@ -55,7 +55,7 @@
         <td height="140px" align="center"> <a href="https://github.com/yeonnno">
             <img src="https://github.com/yeonnno/Algorithm/assets/109949649/81dac1d5-438e-41e8-ae15-53f329f3796e" width="140px" /> <br><br> 😆 양연호 <br>(Back-End) </a> <br></td>
         <td height="140px" align="center"> <a href="https://github.com/jhyun3315">
-            <img src="https://avatars.githubusercontent.com/u/81564593?v=4" width="140px" /> <br><br> 😁 이지현 <br>(Back-End) </a> <br></td>
+            <img src="https://github.com/yeonnno/Algorithm/assets/109949649/043105bd-d4b2-4913-99f3-a65f3c4a8a2b" width="140px" /> <br><br> 😁 이지현 <br>(Back-End) </a> <br></td>
         <td height="140px" align="center"> <a href="https://github.com/whdydrhks">
             <img src="https://github.com/yeonnno/Algorithm/assets/109949649/3d59516e-c8b4-4f6b-84ac-151b582d53d8" width="140px" /> <br><br> 🙄 조용관 <br>(Back-End) </a> <br></td>
         <td height="140px" align="center"> <a href="https://github.com/sangzun-han">
