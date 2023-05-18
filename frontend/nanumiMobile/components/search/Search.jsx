@@ -17,7 +17,7 @@ const Search = () => {
   const [words, setWords] = useState('');
 
   const handleWords = text => {
-    setWords(encodeURIComponent(text));
+    setWords(text);
   };
 
   return (
