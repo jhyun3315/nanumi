@@ -12,12 +12,28 @@
 
 ### **_무료 나눔 전용 플랫폼._**
 
-나누미는 ㅇㅇㅇㅇ 서비스 입니다.
+나누미를 통해 물건 무료나눔 해보세요.
+- 따듯한 마음과 추억이 담긴 물건을 나누며 나눔 문화를 함께 만들어가요.
+
+당신 근처의 나누미.
+- 나눔에는 값을 매길수 없어요. 동네 주민들과 가깝고 따듯한 거래를 지금 경험해 보세요.
+
+시간이 중요한 당신에게는 나누미.
+- 소중한 당신의 시간의 가치를 아는 나누미, 정해진 시간에 나눔을 해봐요.
 
 ## ✨ **주요기능** ✨
 
--
--
+- 나눔 
+    - 사진 / 카테고리 / text
+    - 설정한 주소
+- 선착순 예약
+    - 정해진 시간에 선착순으로 예약
+- 채팅 
+    - 매칭 선택 가능 
+    - 나눔시 채팅으로 진행  
+
+- 티어
+    - 나눔 거래수, 온도, 방문 횟수 기반 티어 산출
 
 ### 프로젝트 기간
 
@@ -33,17 +49,17 @@
 <table>
     <tr>
         <td height="140px" align="center"> <a href="https://github.com/caerinso">
-            <img src="https://avatars.githubusercontent.com/u/56991244?v=4" width="140px" /> <br><br> 👑 소채린 <br>(Back-End) </a> <br></td>
+            <img src="https://github.com/yeonnno/Algorithm/assets/109949649/6457f7f1-7d95-4322-9c8a-4fb6b532f19d" width="140px" /> <br><br> 👑 소채린 <br>(Back-End) </a> <br></td>
         <td height="140px" align="center"> <a href="https://github.com/woozink">
-            <img src="https://avatars.githubusercontent.com/u/33685064?v=4" width="140px" /> <br><br> 🙂 김우진 <br>(Back-End) </a> <br></td>
+            <img src="https://github.com/yeonnno/Algorithm/assets/109949649/3f2c7cf6-d9a5-417f-bc80-39ba1c60233d" width="140px" /> <br><br> 🙂 김우진 <br>(Back-End) </a> <br></td>
         <td height="140px" align="center"> <a href="https://github.com/yeonnno">
-            <img src="https://avatars.githubusercontent.com/u/109949649?v=4" width="140px" /> <br><br> 😆 양연호 <br>(Back-End) </a> <br></td>
+            <img src="https://github.com/yeonnno/Algorithm/assets/109949649/81dac1d5-438e-41e8-ae15-53f329f3796e" width="140px" /> <br><br> 😆 양연호 <br>(Back-End) </a> <br></td>
         <td height="140px" align="center"> <a href="https://github.com/jhyun3315">
             <img src="https://avatars.githubusercontent.com/u/81564593?v=4" width="140px" /> <br><br> 😁 이지현 <br>(Back-End) </a> <br></td>
         <td height="140px" align="center"> <a href="https://github.com/whdydrhks">
-            <img src="https://avatars.githubusercontent.com/u/85232755?v=4" width="140px" /> <br><br> 🙄 조용관 <br>(Back-End) </a> <br></td>
+            <img src="https://github.com/yeonnno/Algorithm/assets/109949649/3d59516e-c8b4-4f6b-84ac-151b582d53d8" width="140px" /> <br><br> 🙄 조용관 <br>(Back-End) </a> <br></td>
         <td height="140px" align="center"> <a href="https://github.com/sangzun-han">
-            <img src="https://avatars.githubusercontent.com/u/66712534?v=4" width="140px" /> <br><br> 😶 한상준 <br>(Front-End) </a> <br></td>
+            <img src="https://github.com/yeonnno/Algorithm/assets/109949649/2535f736-de42-418e-8fb6-5a519c844183" width="140px" /> <br><br> 😶 한상준 <br>(Front-End) </a> <br></td>
     </tr>
     <tr>
         <td align="center">REST API<br/>Redis<br/>S3<br/></td>
@@ -85,7 +101,7 @@
 
 ### 🖥 프론트
 
-<img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=React&logoColor=black"> <img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=Html5&logoColor=white"> <img src="https://img.shields.io/badge/Css3-1572B6?style=for-the-badge&logo=css3&logoColor=white"> <img src="https://img.shields.io/badge/typescript-3178C6?style=for-the-badge&logo=typescript&logoColor=white"> <img src="https://img.shields.io/badge/styled components-DB7093?style=for-the-badge&logo=styled-components&logoColor=white"> <img src="https://img.shields.io/badge/React Query-FF4154?style=for-the-badge&logo=React Query&logoColor=white"> <img src="https://img.shields.io/badge/recoil-3178C6?style=for-the-badge&logo=recoil&logoColor=white">
+<img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=React&logoColor=black"> <img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=Html5&logoColor=white"> <img src="https://img.shields.io/badge/Tailwind CSS-06B6D4?style=for-the-badge&logo=Tailwind CSS&logoColor=white"> <img src="https://img.shields.io/badge/typescript-3178C6?style=for-the-badge&logo=typescript&logoColor=white"> <img src="https://img.shields.io/badge/Sockjs Client-DB7093?style=for-the-badge&logo=Sockjs Client&logoColor=white"> <img src="https://img.shields.io/badge/React Query-FF4154?style=for-the-badge&logo=React Query&logoColor=white"> <img src="https://img.shields.io/badge/React Native-FF4154?style=for-the-badge&logo=React Native&logoColor=white"> <img src="https://img.shields.io/badge/recoil-3178C6?style=for-the-badge&logo=recoil&logoColor=white">
 
 <details>
 <summary>상세 기술스택 및 버전</summary>
@@ -108,7 +124,7 @@
 </details>
   
 ### 💻 백엔드  
-<img src="https://img.shields.io/badge/Spring-6DB33F?style=for-the-badge&logo=Spring&logoColor=white"> <img src="https://img.shields.io/badge/Spring Boot-6DB33F?style=for-the-badge&logo=SpringBoot&logoColor=white"> <img src="https://img.shields.io/badge/Spring Security-6DB33F?style=for-the-badge&logo=SpringSecurity&logoColor=white"> <img src="https://img.shields.io/badge/jpa-6DB33F?style=for-the-badge&logo=jpa&logoColor=white"> <img src="https://img.shields.io/badge/MariaDB-4479A1?style=for-the-badge&logo=MariaDB&logoColor=black"> <img src="https://img.shields.io/badge/MongoDB-4479A1?style=for-the-badge&logo=MongoDB&logoColor=black"> <img src="https://img.shields.io/badge/redis-DC382D?style=for-the-badge&logo=redis&logoColor=white"> <img src="https://img.shields.io/badge/Redisson-4479A1?style=for-the-badge&logo=Redisson&logoColor=black"> <img src="https://img.shields.io/badge/Grafana-4479A1?style=for-the-badge&logo=Grafana&logoColor=black"> <img src="https://img.shields.io/badge/Prometheus-4479A1?style=for-the-badge&logo=Prometheus&logoColor=black"> <img src="https://img.shields.io/badge/s3-569A31?style=for-the-badge&logo=amazon s3&logoColor=white"> <img src="https://img.shields.io/badge/rds-527FFF?style=for-the-badge&logo=amazon rds&logoColor=white">
+<img src="https://img.shields.io/badge/Spring-6DB33F?style=for-the-badge&logo=Spring&logoColor=white"> <img src="https://img.shields.io/badge/Spring Boot-6DB33F?style=for-the-badge&logo=SpringBoot&logoColor=white"> <img src="https://img.shields.io/badge/Spring Security-6DB33F?style=for-the-badge&logo=SpringSecurity&logoColor=white"> <img src="https://img.shields.io/badge/jpa-6DB33F?style=for-the-badge&logo=jpa&logoColor=white"> <img src="https://img.shields.io/badge/MariaDB-003545?style=for-the-badge&logo=MariaDB&logoColor=white"> <img src="https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=MongoDB&logoColor=white"> <img src="https://img.shields.io/badge/redis-DC382D?style=for-the-badge&logo=redis&logoColor=white"> <img src="https://img.shields.io/badge/Redisson-4479A1?style=for-the-badge&logo=Redisson&logoColor=black"> <img src="https://img.shields.io/badge/Grafana-F46800?style=for-the-badge&logo=Grafana&logoColor=white"> <img src="https://img.shields.io/badge/Prometheus-E6522C?style=for-the-badge&logo=Prometheus&logoColor=white"> <img src="https://img.shields.io/badge/s3-569A31?style=for-the-badge&logo=amazon s3&logoColor=white"> <img src="https://img.shields.io/badge/rds-527FFF?style=for-the-badge&logo=amazon rds&logoColor=white">
 
 <details>
 <summary>상세 기술스택 및 버전</summary>
@@ -205,7 +221,7 @@ main
 
 ### 시스템 아키텍처
 
-![system architecture](https://github.com/yeonnno/Algorithm/assets/109949649/6666110b-298e-45b0-8f43-e59b470e6a72)
+![system architecture](https://github.com/yeonnno/Algorithm/assets/109949649/f85b3bc9-a302-4ead-a2a9-34b9fad84726)
 
 ### ERD
 
