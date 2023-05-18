@@ -40,6 +40,7 @@ const StackNavigator = () => {
     const isUser = async () => {
       const asynUser = await AsyncStorage.getItem('user');
       if (asynUser) {
+        console.log(asynUser);
         setUser(JSON.parse(asynUser));
         navigationRef.current.navigate('BottomTabs', {screen: 'Home'});
       } else {

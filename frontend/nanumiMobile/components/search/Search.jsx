@@ -17,8 +17,7 @@ const Search = () => {
   const [words, setWords] = useState('');
 
   const handleWords = text => {
-    if (/^\s*$/.test(text)) return;
-    setWords(text);
+    setWords(encodeURIComponent(text));
   };
 
   return (

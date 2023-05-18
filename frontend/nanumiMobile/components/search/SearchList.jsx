@@ -4,18 +4,14 @@ import {View, FlatList, StyleSheet} from 'react-native';
 import {useInfiniteQuery} from '@tanstack/react-query';
 import {requestSearchProduct} from './../../api/product';
 import {Fallback} from '../../ui/Fallback';
-import {userState} from '../../state/user';
-import {useRecoilState} from 'recoil';
 import ProductCard from '../product/ProductCard';
 import ErrorModal from '../modal/ErrorModal';
 import EmptyState from '../../ui/EmptyState';
 
 const SearchList = ({words}) => {
-  const [user] = useRecoilState(userState);
-
   const {data, error, isLoading, fetchNextPage, hasNextPage} = useInfiniteQuery(
     ['search', words],
-    ({pageParam = 0}) => requestSearchProduct(words, user.userId, pageParam),
+    ({pageParam = 0}) => requestSearchProduct(words, pageParam),
     {
       getNextPageParam: (lastPage, pages) => {
         if (

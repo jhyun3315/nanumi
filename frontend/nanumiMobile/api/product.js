@@ -56,10 +56,13 @@ export const requestDeleteProduct = async productId => {
   return response.data;
 };
 
-export const requestSearchProduct = async (words, userId, page) => {
-  const response = await axiosInstance.get(
-    `${API_END_POINT}/products/search/${words}/${page}/${userId}`,
-  );
+export const requestSearchProduct = async (words, page) => {
+  const response = await axiosInstance.get(`${API_END_POINT}/products/search`, {
+    params: {
+      words: words,
+      page: page,
+    },
+  });
   return response.data;
 };
 
