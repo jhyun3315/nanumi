@@ -32,17 +32,17 @@
 
 <table>
     <tr>
-        <td height="140px" align="center"> <a href="https://github.com/">
+        <td height="140px" align="center"> <a href="https://github.com/caerinso">
             <img src="https://avatars.githubusercontent.com/u/56991244?v=4" width="140px" /> <br><br> 👑 소채린 <br>(Back-End) </a> <br></td>
-        <td height="140px" align="center"> <a href="https://github.com/">
+        <td height="140px" align="center"> <a href="https://github.com/woozink">
             <img src="https://avatars.githubusercontent.com/u/33685064?v=4" width="140px" /> <br><br> 🙂 김우진 <br>(Back-End) </a> <br></td>
         <td height="140px" align="center"> <a href="https://github.com/yeonnno">
             <img src="https://avatars.githubusercontent.com/u/109949649?v=4" width="140px" /> <br><br> 😆 양연호 <br>(Back-End) </a> <br></td>
         <td height="140px" align="center"> <a href="https://github.com/jhyun3315">
             <img src="https://avatars.githubusercontent.com/u/81564593?v=4" width="140px" /> <br><br> 😁 이지현 <br>(Back-End) </a> <br></td>
-        <td height="140px" align="center"> <a href="https://github.com/">
+        <td height="140px" align="center"> <a href="https://github.com/whdydrhks">
             <img src="https://avatars.githubusercontent.com/u/85232755?v=4" width="140px" /> <br><br> 🙄 조용관 <br>(Back-End) </a> <br></td>
-        <td height="140px" align="center"> <a href="https://github.com/">
+        <td height="140px" align="center"> <a href="https://github.com/sangzun-han">
             <img src="https://avatars.githubusercontent.com/u/66712534?v=4" width="140px" /> <br><br> 😶 한상준 <br>(Front-End) </a> <br></td>
     </tr>
     <tr>
@@ -110,7 +110,7 @@
 </details>
   
 ### 💻 백엔드  
-<img src="https://img.shields.io/badge/Spring-6DB33F?style=for-the-badge&logo=Spring&logoColor=white"> <img src="https://img.shields.io/badge/Spring Boot-6DB33F?style=for-the-badge&logo=SpringBoot&logoColor=white"> <img src="https://img.shields.io/badge/Spring Security-6DB33F?style=for-the-badge&logo=SpringSecurity&logoColor=white"> <img src="https://img.shields.io/badge/jpa-6DB33F?style=for-the-badge&logo=jpa&logoColor=white"> <img src="https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=black"> <img src="https://img.shields.io/badge/redis-DC382D?style=for-the-badge&logo=redis&logoColor=white"> <img src="https://img.shields.io/badge/s3-569A31?style=for-the-badge&logo=amazon s3&logoColor=white"> <img src="https://img.shields.io/badge/rds-527FFF?style=for-the-badge&logo=amazon rds&logoColor=white">
+<img src="https://img.shields.io/badge/Spring-6DB33F?style=for-the-badge&logo=Spring&logoColor=white"> <img src="https://img.shields.io/badge/Spring Boot-6DB33F?style=for-the-badge&logo=SpringBoot&logoColor=white"> <img src="https://img.shields.io/badge/Spring Security-6DB33F?style=for-the-badge&logo=SpringSecurity&logoColor=white"> <img src="https://img.shields.io/badge/jpa-6DB33F?style=for-the-badge&logo=jpa&logoColor=white"> <img src="https://img.shields.io/badge/MariaDB-4479A1?style=for-the-badge&logo=MariaDB&logoColor=black"> <img src="https://img.shields.io/badge/MongoDB-4479A1?style=for-the-badge&logo=MongoDB&logoColor=black"> <img src="https://img.shields.io/badge/redis-DC382D?style=for-the-badge&logo=redis&logoColor=white"> <img src="https://img.shields.io/badge/Redisson-4479A1?style=for-the-badge&logo=Redisson&logoColor=black"> <img src="https://img.shields.io/badge/Grafana-4479A1?style=for-the-badge&logo=Grafana&logoColor=black"> <img src="https://img.shields.io/badge/Prometheus-4479A1?style=for-the-badge&logo=Prometheus&logoColor=black"> <img src="https://img.shields.io/badge/s3-569A31?style=for-the-badge&logo=amazon s3&logoColor=white"> <img src="https://img.shields.io/badge/rds-527FFF?style=for-the-badge&logo=amazon rds&logoColor=white">
 
 <details>
 <summary>상세 기술스택 및 버전</summary>
@@ -207,7 +207,7 @@ main
 
 ### 프로젝트 아키텍쳐
 
-![system architecture]()
+![system architecture](https://github.com/yeonnno/Algorithm/assets/109949649/97b07b20-2d34-4d4d-8833-bd5e9feb1ced)
 
 ### ERD
 
