@@ -2,15 +2,19 @@
 
 ### 무료 나눔 전용 플렛폼 **_나누미_**
 
+<div align="center">
+
 ![image](https://github.com/yeonnno/nanumi_yyh/assets/109949649/ba5a7f93-f7ef-4db6-88e0-5e9f2936638e)
 
-## 😃**프로젝트 소개**😃
+</div>
+
+## 😃 **프로젝트 소개** 😃
 
 ### **_무료 나눔 전용 플랫폼._**
 
 나누미는 ㅇㅇㅇㅇ 서비스 입니다.
 
-### ✨ 주요기능
+## ✨ **주요기능** ✨
 
 -
 -
@@ -43,7 +47,7 @@
     </tr>
     <tr>
         <td align="center">REST API<br/>Redis<br/>S3<br/></td>
-        <td align="center">REST API<br/>WebSocket<br/></td>
+        <td align="center">REST API<br/>WebSocket<br/>Monitoring</td>
         <td align="center">REST API<br/>CI/CD<br/>Database<br/></td>
         <td align="center">REST API<br/>CI/CD<br/>OAuth<br/></td>
         <td align="center">REST API<br/>Spring Security<br/></td>
@@ -51,7 +55,7 @@
     </tr>
 </table>
 
-## 🛠 **개발 환경**
+## 🛠 **개발 환경** 🛠
 
 ### 협업
 
@@ -131,11 +135,11 @@
 </div>
 </details>
 
-## 협업 관리
+## **협업 관리**
 
 ### GIT
 
-- 커밋 컨벤션
+- Commit 컨벤션
 
 | 태그     | 설명                          | 예시                            |
 | -------- | ----------------------------- | ------------------------------- |
@@ -147,7 +151,7 @@
 | Test     | 테스트 코드 추가              | Test : 로그인 테스트            |
 | Refactor | 프로덕션 코드 리팩토링        | Refactor : Header 컴포넌트 분리 |
 
-- 브랜치 전략
+- Branch 전략
 
 ```
 main
@@ -165,33 +169,31 @@ main
 
 ### Notion
 
-![notion]()
+![notion](https://github.com/yeonnno/Algorithm/assets/109949649/2f7386fe-3dbc-4a82-98d9-0b3cc7bdde9f)
 
 - 일정관리
-  ![plan]()
+  ![plan](https://github.com/yeonnno/Algorithm/assets/109949649/37b52dee-adae-4701-8314-72302c48e5f7)
 
 ### JIRA
 
 - 컨벤션
 
   ```
-      구체적으로 뭘 했는지 적기 ex) 프론트 학습X, 파일 동시 편집 학습 O
-      에픽 컨벤션
-          에픽 컨벤션에서는 FE / BE 나누지 않는다.
-          영어단어는 camel 케이스로 작성한다.
-              ex : BE_LoginTest 클래스 작성
-      스토리 컨벤션
-          공통은 앞에 BE,FE없이 바로 작성한다.
-              ex: 스크럼 회의
+      최대한 구체적으로 작성
+      Epic 컨벤션
+          에픽 컨벤션에서는 FE / BE / 공통 으로 분류
+          BE, FE는 대괄호, 공통은 X. ex) [BE] API개발 - 로그인
+      Story/Task 컨벤션
+          Story -> 개발 / Task -> 비개발
+          맨 앞에 요일 명시한다.
+          BE, FE 구분없이 바로 작성한다.
           내용 작성시 단어는 띄어쓰기로 구분한다.
-              ex: BE_요구사항 분석
           단어는 명사로만 작성한다.
-              ex: BE_요구사항 분석
-              ex: BE_실시간 채팅 구현
+              ex: (월) AIP개발 - 메인 페이지
   ```
 
 - 번다운차트  
-  <img src="" width=1000px height=400px>
+  <img src="https://github.com/yeonnno/Algorithm/assets/109949649/90e20413-71bd-4f96-9923-00d81a87a534" width=1000px height=400px>
 
 ## 📃 **프로젝트 산출물**
 
@@ -207,4 +209,4 @@ main
 
 ### ERD
 
-![ERD]()
+![ERD](https://github.com/yeonnno/Algorithm/assets/109949649/2fab9ef0-329d-419f-90b5-5862b8e5c9e2)
