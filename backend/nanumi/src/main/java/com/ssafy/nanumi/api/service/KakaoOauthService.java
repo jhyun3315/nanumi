@@ -7,20 +7,25 @@ import com.ssafy.nanumi.api.request.UserJoinDTO;
 import com.ssafy.nanumi.api.request.UserLoginDTO;
 import com.ssafy.nanumi.api.response.UserLoginResDTO;
 import com.ssafy.nanumi.common.provider.Provider;
+import com.ssafy.nanumi.config.response.exception.CustomException;
+import com.ssafy.nanumi.db.entity.LoginProvider;
 import com.ssafy.nanumi.db.entity.User;
+import com.ssafy.nanumi.db.repository.LoginProviderRepository;
 import com.ssafy.nanumi.db.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.HashMap;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Optional;
+
+import static com.ssafy.nanumi.config.response.exception.CustomExceptionStatus.*;
 
 
 @Service
@@ -39,7 +44,9 @@ public class KakaoOauthService {
     private String adminKey;
 
     private final UserRepository userRepository;
+    private final LoginProviderRepository loginProviderRepository;
     private final UserService userService;
+
 
 //    public HttpStatus logout(String accessToken){
 //        // accessToken 으로 사용자 정보 가져옴
@@ -75,16 +82,15 @@ public class KakaoOauthService {
         return "https://kauth.kakao.com/oauth/authorize?client_id="+restApiKey+"&redirect_uri="+redirctURI+"&state="+fcmToken+"&response_type=code";
     }
 
-    public UserLoginResDTO kakaoLogin(String req, String fcmToken) throws JsonProcessingException {
-        System.out.println("토큰 잘 넘어옴? :: " + fcmToken);
+    public UserLoginResDTO kakaoLogin(String code, String fcmToken) throws JsonProcessingException {
+
         // 1. "인가 코드"로 "액세스 토큰" 요청 -> 프론트에서 진행해서 넘겨줌
-        String accessToken = getAccessToken(req);
+        String accessToken = getAccessToken(code);
 
         // 2. 토큰으로 카카오 API 호출 및 최초 로그인시 회원가입 처리
         User user = getKakaoUserInfo(accessToken);
 
         // 3. 로그인 처리
-        // UserLoginDTO(String email, String password, String fcmToken)
         return userService.login(new UserLoginDTO(user.getEmail(), user.getPassword(), fcmToken, Provider.kakao));
     }
 
@@ -108,26 +114,18 @@ public class KakaoOauthService {
         // responseBody에 있는 정보를 꺼냄
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode jsonNode = objectMapper.readTree(response.getBody());
-        System.out.println(jsonNode);
-
-//        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
         String id = jsonNode.get("id").asText();
         String email = jsonNode.get("kakao_account").get("email_needs_agreement").asBoolean() ? id : jsonNode.get("kakao_account").get("email").asText();
         String nickname = jsonNode.get("properties").get("nickname").asText();
         String profileImage = jsonNode.get("properties").get("thumbnail_image").asText();
 
-        Optional<User> user = userRepository.findByEmail(email);
-        // 해당 이메일로 가입한 사용자가 없거나,
-        // 해당 이메일로 가입한 사용자가 있지만 카카오 로그인 가입이 아니라면
-        if(user.isEmpty() || (user.isPresent() && user.get().getLoginProvider().getProvider()!=Provider.kakao)){
-//            System.out.println("가입된 사용자가 아니다");
-            //로컬 회원가입
-            // UserJoinDTO(String email, String nickname, String password, long addressId, String profileUrl)
-            return userService.join(new UserJoinDTO(email, nickname, id, 1000000000, profileImage), Provider.kakao);
-        }else{ // 이미 가입한 사용라면 (그냥 카카오 로그인만 하려는 사람)
-            return user.get();
-        }
+        LoginProvider loginProvider = loginProviderRepository.findByProvider(Provider.kakao).orElseThrow(() -> new CustomException(NOT_FOUND_LOGIN_PROVIDER));
+        Optional<User> user = userRepository.findByEmailAndLoginProvider(email,loginProvider);
+
+        // 해당 이메일+카카오 로그인으로 가입한 사용자가 없다면, 로컬 회원 가입
+        // 이미 가입한 사용라면 (그냥 카카오 로그인만 하려는 사람)
+        return user.orElseGet(() -> userService.join(new UserJoinDTO(email, nickname, id, 1000000000, profileImage), Provider.kakao));
     }
 
     public String getAccessToken(String authorizeCode) throws JsonProcessingException {

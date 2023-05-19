@@ -16,6 +16,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -41,11 +44,20 @@ public class ProductService {
     private final AmazonS3 amazonS3;
 
 
-    public Page<ProductAllDTO> searchProductByWords(long userId, String words, PageRequest pageRequest){
+    public Page<ProductAllDTO> searchProductByWords(long userId, String words, PageRequest pageRequest) throws UnsupportedEncodingException {
 
-        User user = userRepository.findById(userId).orElseThrow(() ->  new CustomException(NOT_FOUND_USER));
+        User user = userRepository.findById(userId)
+                .orElseThrow(() ->  new CustomException(NOT_FOUND_USER));
 
-        Address address = addressRepository.findById(user.getAddress().getId()).orElseThrow( () ->  new CustomException(NOT_FOUND_ADDRESS_CODE));
+        Address address = addressRepository.findById(user.getAddress().getId())
+                .orElseThrow( () ->  new CustomException(NOT_FOUND_ADDRESS_CODE));
+
+        // 검색어 디코딩
+//        words = URLDecoder.decode(words, StandardCharsets.UTF_8);
+
+        // 검색어가 없다면 빈 페이지 반환
+        if(words.equals("") || words==null)  return Page.empty(pageRequest);
+
 
         // 차단자 조회
         List<Long> blockers = blacklistRepository.findBlockerId(user.getId());

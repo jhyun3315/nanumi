@@ -24,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 
 import static com.ssafy.nanumi.config.response.exception.CustomSuccessStatus.RESPONSE_SUCCESS;
 
@@ -38,26 +39,18 @@ public class ProductController {
     private final NanumService nanumService;
     private final UserService userService;
 
-    /* 검색어가 없는 경우 전체 조회 */
-    @GetMapping("/search/{page}/{user-id}")
-    public CustomDataResponse<Page<ProductAllDTO>> search(@PathVariable("page")int page, @RequestHeader("Authorization") String accessToken){
-        SearchPageReq searchPageReq = new SearchPageReq(page);
-        PageRequest pageRequest = PageRequest.of(searchPageReq.getPageIndex(),
-                searchPageReq.getPageSizeForProduct(),
-                Sort.by(searchPageReq.getSortStdForProduct()).descending()
-        );
-        long userId = userService.userByAT(accessToken);
-        return responseService.getDataResponse(productService.findProductAll(userId, pageRequest), RESPONSE_SUCCESS);
-    }
 
     /* 제목으로 상품 검색 */
-    @GetMapping("/search/{words}/{page}/{user-id}")
-    public CustomDataResponse<Page<ProductAllDTO>> search(@PathVariable ("words") String words, @PathVariable("page")int page, @RequestHeader("Authorization") String accessToken){
+    @GetMapping("/search")
+    public CustomDataResponse<Page<ProductAllDTO>> search(@RequestParam ("words") String words,
+                                                          @RequestParam("page")int page,
+                                                          @RequestHeader("Authorization") String accessToken) throws UnsupportedEncodingException {
         SearchPageReq searchPageReq = new SearchPageReq(page);
         PageRequest pageRequest = PageRequest.of(searchPageReq.getPageIndex(),
                 searchPageReq.getPageSizeForProduct(),
                 Sort.by(searchPageReq.getSortStdForProduct()).descending()
         );
+
         long userId = userService.userByAT(accessToken);
         return responseService.getDataResponse(productService.searchProductByWords(userId, words, pageRequest), RESPONSE_SUCCESS);
     }

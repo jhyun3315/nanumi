@@ -1,23 +1,18 @@
 package com.ssafy.nanumi.api.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.ssafy.nanumi.api.request.UserLoginDTO;
-import com.ssafy.nanumi.api.request.kakaoLoginReqDTO;
-import com.ssafy.nanumi.api.response.UserLoginResDTO;
 import com.ssafy.nanumi.api.service.KakaoOauthService;
 import com.ssafy.nanumi.api.service.UserService;
 import com.ssafy.nanumi.config.response.CustomDataResponse;
-import com.ssafy.nanumi.config.response.CustomResponse;
 import com.ssafy.nanumi.config.response.ResponseService;
-import com.ssafy.nanumi.db.entity.User;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import static com.ssafy.nanumi.config.response.exception.CustomSuccessStatus.RESPONSE_SUCCESS;
+import static com.ssafy.nanumi.config.response.exception.CustomSuccessStatus.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -35,11 +30,11 @@ public class OauthController {
 
     /* 카카오 로그인 */
     @GetMapping("/callback")
-//    public UserLoginResDTO kakaoLogin(@RequestBody kakaoLoginReqDTO kakaoLoginReqDTO) throws JsonProcessingException {
-    public CustomDataResponse kakaoLogin(@RequestParam("code") String code, @RequestParam("state")String fcmToken) throws JsonProcessingException {
-//        System.out.println("이게 인가 코드 !! "+code);
+    public CustomDataResponse kakaoLogin( @RequestParam("code") String code, @RequestParam("state")String fcmToken) throws JsonProcessingException {
         return responseService.getDataResponse(kakaoOauthService.kakaoLogin(code, fcmToken),RESPONSE_SUCCESS);
     }
+
+
 
 //    @PostMapping("/logout")
 //    public CustomResponse kakaoLogout(@RequestHeader("Authorization") String accessToken){
@@ -47,4 +42,6 @@ public class OauthController {
 //        System.out.println("< kakao logout response statue > "+status.value());
 //        return responseService.getSuccessResponse();
 //    }
+
+
 }
