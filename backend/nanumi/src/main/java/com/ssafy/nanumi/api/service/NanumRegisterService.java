@@ -2,19 +2,15 @@ package com.ssafy.nanumi.api.service;
 
 import com.ssafy.nanumi.common.lock.DistributeLock;
 import com.ssafy.nanumi.api.response.MatchSuccessDto;
-import com.ssafy.nanumi.config.response.exception.CustomException;
-import com.ssafy.nanumi.config.response.exception.CustomExceptionStatus;
 import com.ssafy.nanumi.db.entity.Match;
 import com.ssafy.nanumi.db.entity.Product;
 import com.ssafy.nanumi.db.entity.User;
 import com.ssafy.nanumi.db.repository.MatchRepository;
 import com.ssafy.nanumi.db.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
-import org.json.JSONObject;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalTime;
-import java.util.List;
 
 @Component
 @RequiredArgsConstructor
