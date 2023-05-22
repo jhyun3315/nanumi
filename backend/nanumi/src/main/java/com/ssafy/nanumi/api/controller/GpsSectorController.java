@@ -2,18 +2,11 @@ package com.ssafy.nanumi.api.controller;
 
 import com.ssafy.nanumi.common.LocationDTO;
 import com.ssafy.nanumi.api.service.PushNotificationService;
-import com.ssafy.nanumi.db.entity.ChatRoomEntity;
-import com.ssafy.nanumi.db.entity.User;
-import com.ssafy.nanumi.db.entity.UserInfo;
-import com.ssafy.nanumi.db.repository.ChatRoomRepository;
 import com.ssafy.nanumi.db.repository.UserInfoRepository;
-import com.ssafy.nanumi.db.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import java.util.List;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @RequestMapping("accounts")

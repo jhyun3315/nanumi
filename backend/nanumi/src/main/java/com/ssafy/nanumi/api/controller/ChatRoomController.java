@@ -4,7 +4,6 @@ package com.ssafy.nanumi.api.controller;
 import com.ssafy.nanumi.api.service.ChatRoomService;
 import com.ssafy.nanumi.common.ChatRoomInfoDTO;
 import com.ssafy.nanumi.common.CreateChatRoomDTO;
-import com.ssafy.nanumi.db.entity.ChatRoomEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

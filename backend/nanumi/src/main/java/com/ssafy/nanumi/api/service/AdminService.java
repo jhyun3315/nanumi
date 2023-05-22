@@ -42,8 +42,7 @@ public class AdminService {
     /* 관리자 로그인 */
     public AdminLoginResDTO adminLogin(String email, String password) {
 
-        // TODO : OAuth
-        // TODO : 예외처리 수정
+        // TODO : OAuth, 예외 처리 수정
 
         User adminUser = userRepository.findByEmail(email)
                 .orElseThrow(() -> new CustomException(REQUEST_ERROR));

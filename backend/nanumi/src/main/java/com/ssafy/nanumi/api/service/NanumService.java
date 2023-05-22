@@ -1,7 +1,6 @@
 package com.ssafy.nanumi.api.service;
 
 import com.ssafy.nanumi.api.response.MatchSuccessDto;
-import com.ssafy.nanumi.api.service.NanumRegisterService;
 import com.ssafy.nanumi.db.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

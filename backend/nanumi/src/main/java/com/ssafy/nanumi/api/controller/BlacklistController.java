@@ -28,7 +28,7 @@ public class BlacklistController {
     @PostMapping("/block/{user-id}")
     public CustomResponse blockUser(@PathVariable("user-id") long userId, @RequestBody BlockDTO blockDTO) {
 
-        // TODO : userId는 JWT에서
+        // TODO : OAuth
 
         long blockerId = userId;
 
@@ -41,7 +41,8 @@ public class BlacklistController {
     @PatchMapping("/block/{user-id}")
     public CustomResponse blockCancel(@RequestHeader("Authorization") String accessToken, @RequestBody BlockDTO blockDTO) {
 
-        // TODO : userId는 JWT에서
+        // TODO : OAuth
+
         long blockerId = userService.userByAT(accessToken);
 
         blacklistService.blockCancel(blockerId, blockDTO);
@@ -53,7 +54,7 @@ public class BlacklistController {
     @GetMapping("block/{user-id}")
     public CustomDataResponse<List<BlacklistDTO>> findBlacklist(@PathVariable("user-id") long userId) {
 
-        // TODO : userId는 JWT에서
+        // TODO : OAuth
 
         List<BlacklistDTO> blacklistDTOS = blacklistService.findBlacklist(userId);
 
