@@ -123,12 +123,12 @@ public class ProductService {
 
     public void createProduct(MultipartFile[] images,String name,String content,Long categoryId, User user) throws IOException {
 
-        // 서버시간 확인.
-        LocalTime currentTime = LocalTime.now();
-        // 오후 2시에서 3시 사이 확인
-        if (currentTime.isAfter(LocalTime.of(10,45)) & currentTime.isBefore(LocalTime.of(11, 30))){
-            throw new CustomException(CustomExceptionStatus.NOT_ALLOWED_CREATE);
-        }
+//        // 서버시간 확인.
+//        LocalTime currentTime = LocalTime.now();
+//        // 오후 2시에서 3시 사이 확인
+//        if (currentTime.isAfter(LocalTime.of(10,45)) & currentTime.isBefore(LocalTime.of(11, 30))){
+//            throw new CustomException(CustomExceptionStatus.NOT_ALLOWED_CREATE);
+//        }
 
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(()-> new CustomException(CustomExceptionStatus.NOT_FOUND_CATEGORY));
