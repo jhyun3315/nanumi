@@ -4,7 +4,7 @@
 
 <div align="center">
 
-![image](https://github.com/yeonnno/nanumi_yyh/assets/109949649/ba5a7f93-f7ef-4db6-88e0-5e9f2936638e)
+![image](https://github.com/yeonnno/Algorithm/assets/109949649/6f9c0bf8-2e42-4fdf-af52-236ddfcc6c2c)
 
 </div>
 
