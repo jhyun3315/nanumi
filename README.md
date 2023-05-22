@@ -226,3 +226,43 @@ main
 | 와이어프레임                                                        | API 명세서                                                                                   | 기능정의서                                                                                                               |
 | ------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
 | [바로가기](https://www.figma.com/file/MAQCt5mQ3sWZnZODE4GpO2/%EB%82%98%EB%88%84%EB%AF%B8?type=design&node-id=0-1) | [바로가기](https://raspy-slicer-570.notion.site/BE-API-de404cf20d6a43cfac442d5e7e577f74) | [바로가기](https://raspy-slicer-570.notion.site/bad6048352d24845a799f5ce77677002) |
+
+### 화면
+---
+<div style="display:flex">
+<img src="https://github.com/sangzun-han/nanumi/assets/57563053/fea44265-5bfa-4eb6-93cc-9507b3b18d99" width="250" height="500"/>
+<img src="https://github.com/sangzun-han/nanumi/assets/57563053/1a8702ce-b830-4196-9e90-7a2eaf21c031" width="250" height="500" />
+</div>
+
+<div style="display:flex">
+  <img src="https://github.com/sangzun-han/nanumi/assets/57563053/9da8df32-b127-4c83-a1c1-06126c2ad160" width="250" height="500" />
+  <img src="https://github.com/sangzun-han/nanumi/assets/57563053/f83f499e-df93-4714-a243-1aafba37a7cd" width="250" height="500"/>
+</div>
+
+<div style="display:flex">
+    <img src="https://github.com/sangzun-han/nanumi/assets/57563053/0accdad6-439f-411c-a393-61154be5d51c" width="250" height="500" />
+    <img src="https://github.com/sangzun-han/nanumi/assets/57563053/13278e46-a96c-4792-a7e6-80b71013465e"width="250" height="500"  />
+</div>
+
+<div style="display:flex">
+    <img src="https://github.com/sangzun-han/nanumi/assets/57563053/68a508c5-8ead-4781-8a29-c5636297b9ba" width="250" height="500"/>
+    <img src="https://github.com/sangzun-han/nanumi/assets/57563053/e9a84b4c-ab00-4367-8528-b9a885e5c0ee" width="250" height="500"/>
+    <img src="https://github.com/sangzun-han/nanumi/assets/57563053/36cd5a24-bb92-4bd4-a19c-6afca40b947a" width="250" height="500"/>
+</div>
+
+
+<div style="display:flex">
+    <img src="https://github.com/sangzun-han/nanumi/assets/57563053/615c79ed-248d-4ea1-ba13-9913d0bff3ad" width="250" height="500" />
+    <img src="https://github.com/sangzun-han/nanumi/assets/57563053/42fc3b11-e134-4722-bb6c-666fa6909dd6" width="250" height="500" />
+    <img src="https://github.com/sangzun-han/nanumi/assets/57563053/8cfd6bfe-e772-478d-a89d-abc6f8479b54" width="250" height="500" />
+    <img src="https://github.com/sangzun-han/nanumi/assets/57563053/1d70070a-2e99-4c42-95f8-9d15bb296f02" width="250" height="500" />
+    <img src="https://github.com/sangzun-han/nanumi/assets/57563053/b6c55465-1be1-4a3f-8e06-9c155fee9bd0" width="250" height="500" />
+    <img src="https://github.com/sangzun-han/nanumi/assets/57563053/19df7c60-12f5-418a-aa13-deefa89bb4dd" width="250" height="500" />
+</div>
+
+<div style="display:flex">
+    <img src="https://github.com/sangzun-han/nanumi/assets/57563053/da97ccd4-1c1b-4710-a0a8-33efb769972f" width="250" height="500" />
+    <img src="https://github.com/sangzun-han/nanumi/assets/57563053/f0a9bb82-a260-44e3-8ff9-d5a0c6b47704"  width="250" height="500"/>
+</div>
+
+
