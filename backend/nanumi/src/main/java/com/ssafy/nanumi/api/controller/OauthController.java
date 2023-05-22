@@ -8,7 +8,6 @@ import com.ssafy.nanumi.config.response.ResponseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
@@ -21,7 +20,6 @@ import static com.ssafy.nanumi.config.response.exception.CustomSuccessStatus.*;
 public class OauthController {
     private final KakaoOauthService kakaoOauthService;
     private final ResponseService responseService;
-    private final UserService userService;
 
     @GetMapping("/login")
     public void kakaoLogin(HttpServletResponse response, @RequestParam("fcmToken") String fcmToken) throws IOException {

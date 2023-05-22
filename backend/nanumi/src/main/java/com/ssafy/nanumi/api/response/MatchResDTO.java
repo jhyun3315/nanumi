@@ -1,11 +1,9 @@
 package com.ssafy.nanumi.api.response;
 
-import com.ssafy.nanumi.db.entity.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import java.time.LocalDateTime;
 
 @RequiredArgsConstructor
 @Getter

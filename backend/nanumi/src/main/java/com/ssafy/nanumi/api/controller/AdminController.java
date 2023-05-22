@@ -31,7 +31,7 @@ public class AdminController {
     @PostMapping("/admin/login")
     public CustomDataResponse<AdminLoginResDTO> adminLogin(@RequestBody AdminLoginDTO adminLoginDTO) {
 
-        // TODO : 관리자 ID 검증부분, password match해주는 로직 추가
+        // TODO : 관리자 ID 검증 추가
 
         AdminLoginResDTO adminLoginResDTO = adminService.adminLogin(adminLoginDTO.getEmail(), adminLoginDTO.getPassword());
 
@@ -42,7 +42,7 @@ public class AdminController {
     @GetMapping("/admin")
     public CustomDataResponse<List<ReportAllDTO>> findReportList() {
 
-        // TODO : 아직 처리되지 않은 신고 목록만 뿌려줘야하는지 고민
+        // TODO : 아직 처리되지 않은 신고 목록만 반환해줘야하는지
 
         List<ReportAllDTO> reportAllDTOS = adminService.findReportAll();
 
@@ -62,8 +62,10 @@ public class AdminController {
     @PostMapping("/reports/{user-id}")
     public CustomResponse reportUser(@RequestHeader("Authorization") String accessToken, @RequestBody ReportUserDTO reportUserDTO) {
 
-        // TODO : OAuth에서 userId(reporterId) 받아와야 함.
+        // TODO : OAuth
+
         long userId = userService.userByAT(accessToken);
+
         adminService.reportUser(userId, reportUserDTO);
 
         return responseService.getSuccessResponse();
