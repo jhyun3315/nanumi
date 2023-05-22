@@ -1,6 +1,5 @@
 package com.ssafy.nanumi.api.controller;
 
-import com.google.api.Http;
 import com.ssafy.nanumi.api.request.AddressDTO;
 import com.ssafy.nanumi.api.request.TokenInfoDTO;
 import com.ssafy.nanumi.api.request.UserJoinDTO;
@@ -26,7 +25,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import javax.mail.MessagingException;
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import static com.ssafy.nanumi.config.response.exception.CustomSuccessStatus.*;
 

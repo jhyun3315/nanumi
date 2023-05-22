@@ -1,6 +1,5 @@
 package com.ssafy.nanumi.api.controller;
 
-import com.ssafy.nanumi.NanumiApplication;
 import com.ssafy.nanumi.api.response.MatchSuccessDto;
 import com.ssafy.nanumi.api.response.ProductAllDTO;
 import com.ssafy.nanumi.api.response.ProductDetailDTO;
