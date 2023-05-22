@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: org.redisson:redisson-spring-data-27:3.17.7">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.redisson/redisson-spring-data-27/3.17.7/4e9ff6e045426b68c5b96eb27bb8176e6784547c/redisson-spring-data-27-3.17.7.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.redisson/redisson-spring-data-27/3.17.7/7ae43f58383b0f1d6f23dcaa0c30b4713921a892/redisson-spring-data-27-3.17.7-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

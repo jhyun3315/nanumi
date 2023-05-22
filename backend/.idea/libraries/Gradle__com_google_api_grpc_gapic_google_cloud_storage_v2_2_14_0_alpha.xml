@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: com.google.api.grpc:gapic-google-cloud-storage-v2:2.14.0-alpha">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.api.grpc/gapic-google-cloud-storage-v2/2.14.0-alpha/4f2f8eaaed0d2cb09abaf46f01060d36eb875a43/gapic-google-cloud-storage-v2-2.14.0-alpha.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.api.grpc/gapic-google-cloud-storage-v2/2.14.0-alpha/8b7382cf9d50b2bb5168751a8a1a3804b29b3de7/gapic-google-cloud-storage-v2-2.14.0-alpha-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
